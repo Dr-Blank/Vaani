@@ -1,10 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:shimmer/shimmer.dart' show Shimmer, ShimmerDirection;
+import 'package:shimmer/shimmer.dart' show Shimmer;
 import 'package:whispering_pages/api/image_provider.dart';
+import 'package:whispering_pages/extensions/hero_tag_conventions.dart';
+import 'package:whispering_pages/router/models/library_item_extras.dart';
+import 'package:whispering_pages/router/router.dart';
 import 'package:whispering_pages/widgets/shelves/home_shelf.dart';
 
 /// A shelf that displays books on the home page
@@ -28,6 +32,7 @@ class BookHomeShelf extends HookConsumerWidget {
               MediaType.book => BookOnShelf(
                   item: item,
                   key: ValueKey(shelf.id + item.id),
+                  heroTagSuffix: shelf.id,
                 ),
               _ => Container(),
             },
@@ -42,9 +47,13 @@ class BookOnShelf extends HookConsumerWidget {
   const BookOnShelf({
     super.key,
     required this.item,
+    this.heroTagSuffix = '',
   });
 
   final LibraryItem item;
+
+  /// makes the hero tag unique
+  final String heroTagSuffix;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,30 +72,49 @@ class BookOnShelf extends HookConsumerWidget {
               // the cover image of the book
               // take up remaining space
               Expanded(
-                // border radius
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: coverImage.when(
-                    data: (image) {
-                      // return const BookCoverSkeleton();
-                      if (image.isEmpty) {
-                        return const Icon(Icons.error);
-                      }
-                      // cover 80% of parent height
-                      return Image.memory(
-                        image,
-                        fit: BoxFit.cover,
-                        cacheWidth:
-                            (height * MediaQuery.of(context).devicePixelRatio)
+                child: InkWell(
+                  onTap: () {
+                    // open the book
+                    context.pushNamed(
+                      Routes.libraryItem.name,
+                      pathParameters: {
+                        Routes.libraryItem.pathParamName: item.id,
+                      },
+                      extra: LibraryItemExtras(
+                        book: book,
+                        heroTagSuffix: heroTagSuffix,
+                      ),
+                    );
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: coverImage.when(
+                      data: (image) {
+                        // return const BookCoverSkeleton();
+                        if (image.isEmpty) {
+                          return const Icon(Icons.error);
+                        }
+                        // cover 80% of parent height
+                        return Hero(
+                          tag: HeroTagPrefixes.bookCover +
+                              item.id +
+                              heroTagSuffix,
+                          child: Image.memory(
+                            image,
+                            fit: BoxFit.cover,
+                            cacheWidth: (height *
+                                    MediaQuery.of(context).devicePixelRatio)
                                 .round(),
-                      );
-                    },
-                    loading: () {
-                      return const Center(child: BookCoverSkeleton());
-                    },
-                    error: (error, stack) {
-                      return const Icon(Icons.error);
-                    },
+                          ),
+                        );
+                      },
+                      loading: () {
+                        return const Center(child: BookCoverSkeleton());
+                      },
+                      error: (error, stack) {
+                        return const Icon(Icons.error);
+                      },
+                    ),
                   ),
                 ),
               ),

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:whispering_pages/api/server_provider.dart';
 import 'package:whispering_pages/db/storage.dart';
-import 'package:whispering_pages/pages/onboarding/onboarding.dart';
-import 'package:whispering_pages/pages/pages.dart';
+import 'package:whispering_pages/router/router.dart';
 import 'package:whispering_pages/settings/api_settings_provider.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 import 'package:whispering_pages/theme/theme.dart';
@@ -32,13 +31,13 @@ class MyApp extends ConsumerWidget {
     bool needOnboarding() {
       return apiSettings.activeUser == null || servers.isEmpty;
     }
-    return MaterialApp(
+    return MaterialApp.router(
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ref.watch(appSettingsProvider).isDarkMode
           ? ThemeMode.dark
           : ThemeMode.light,
-      home: needOnboarding() ? const OnboardingPage() : const HomePage(),
+      routerConfig: MyAppRouter(needOnboarding: needOnboarding()).config,
     );
   }
 }

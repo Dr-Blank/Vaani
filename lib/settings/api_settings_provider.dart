@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:whispering_pages/settings/models/api_settings.dart' as model;
 import 'package:whispering_pages/db/available_boxes.dart';
+import 'package:whispering_pages/settings/models/api_settings.dart' as model;
 
 part 'api_settings_provider.g.dart';
 
@@ -41,7 +41,12 @@ class ApiSettings extends _$ApiSettings {
     debugPrint('wrote api settings to box: $state');
   }
 
-  void updateState(model.ApiSettings newSettings) {
+  void updateState(model.ApiSettings newSettings, {bool force = false}) {
+    // check if the settings are different
+
+    if (state == newSettings && !force) {
+      return;
+    }
     state = newSettings;
   }
 }
