@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
@@ -14,7 +16,7 @@ class HomeShelf extends HookConsumerWidget {
     required this.title,
   });
 
-  final Widget title;
+  final String title;
   final Shelf shelf;
 
   @override
@@ -33,30 +35,46 @@ class HomeShelf extends HookConsumerWidget {
   }
 }
 
-/// A shelf that displays books on the home page
+/// A shelf that displays children on the home page
 class SimpleHomeShelf extends HookConsumerWidget {
   const SimpleHomeShelf({
     super.key,
     required this.children,
     required this.title,
+    this.height,
   });
 
-  final Widget title;
+  /// the title of the shelf
+  final String title;
+
+  /// the children to display on the shelf
   final List<Widget> children;
+  final double? height;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // if height is null take up 30% of the smallest screen dimension
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          title,
+          Text(title, style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 16),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: children,
+          SizedBox(
+            height: max(
+              min(
+                height ?? 0.3 * MediaQuery.of(context).size.shortestSide,
+                200.0,
+              ),
+              150.0,
+            ),
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) => children[index],
+              separatorBuilder: (context, index) => const SizedBox(width: 16),
+              itemCount: children.length,
             ),
           ),
         ],

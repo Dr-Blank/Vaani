@@ -1,7 +1,9 @@
-import 'package:auto_scroll_text/auto_scroll_text.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
+import 'package:shimmer/shimmer.dart' show Shimmer, ShimmerDirection;
 import 'package:whispering_pages/api/image_provider.dart';
 import 'package:whispering_pages/widgets/shelves/home_shelf.dart';
 
@@ -13,7 +15,7 @@ class BookHomeShelf extends HookConsumerWidget {
     required this.title,
   });
 
-  final Widget title;
+  final String title;
   final LibraryItemShelf shelf;
 
   @override
@@ -49,69 +51,94 @@ class BookOnShelf extends HookConsumerWidget {
     final book = BookMinified.fromJson(item.media.toJson());
     final metadata = BookMetadataMinified.fromJson(book.metadata.toJson());
     final coverImage = ref.watch(coverImageProvider(item));
-    const coverSize = 150.0;
-    return Container(
-      margin: const EdgeInsets.only(right: 10, bottom: 10),
-      constraints: const BoxConstraints(maxWidth: coverSize),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: coverSize),
-                color: Colors.grey[800],
-                child: coverImage.when(
-                  data: (image) {
-                    if (image.isEmpty) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final height = min(constraints.maxHeight, 500);
+        final width = height * 0.75;
+        return SizedBox(
+          width: width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // the cover image of the book
+              // take up remaining space
+              Expanded(
+                // border radius
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: coverImage.when(
+                    data: (image) {
+                      // return const BookCoverSkeleton();
+                      if (image.isEmpty) {
+                        return const Icon(Icons.error);
+                      }
+                      // cover 80% of parent height
+                      return Image.memory(
+                        image,
+                        fit: BoxFit.cover,
+                        cacheWidth:
+                            (height * MediaQuery.of(context).devicePixelRatio)
+                                .round(),
+                      );
+                    },
+                    loading: () {
+                      return const Center(child: BookCoverSkeleton());
+                    },
+                    error: (error, stack) {
                       return const Icon(Icons.error);
-                    }
-                    return Image.memory(
-                      image,
-                      fit: BoxFit.cover,
-                      cacheWidth:
-                          (coverSize * MediaQuery.of(context).devicePixelRatio)
-                              .round(),
-                    );
-                  },
-                  loading: () {
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                  error: (error, stack) {
-                    return const Icon(Icons.error);
-                  },
+                    },
+                  ),
                 ),
               ),
-            ),
+              // the title and author of the book
+              // AutoScrollText(
+              Text(
+                metadata.title ?? '',
+                // mode: AutoScrollTextMode.bouncing,
+                // curve: Curves.easeInOut,
+                // velocity: const Velocity(pixelsPerSecond: Offset(15, 0)),
+                // delayBefore: const Duration(seconds: 2),
+                // pauseBetween: const Duration(seconds: 2),
+                // numberOfReps: 15,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 3),
+              Text(
+                metadata.authorName ?? '',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
           ),
-          Container(
-            margin: const EdgeInsets.all(5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AutoScrollText(
-                  metadata.title ?? '',
-                  mode: AutoScrollTextMode.bouncing,
-                  curve: Curves.easeInOut,
-                  velocity: const Velocity(pixelsPerSecond: Offset(15, 0)),
-                  delayBefore: const Duration(seconds: 2),
-                  pauseBetween: const Duration(seconds: 2),
-                  numberOfReps: 15,
-                  // maxLines: 1,
-                  // overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  metadata.authorName ?? '',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
+        );
+      },
+    );
+  }
+}
+
+// a skeleton for the book cover
+class BookCoverSkeleton extends StatelessWidget {
+  const BookCoverSkeleton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 1,
+      child: SizedBox(
+        width: 150,
+        child: Shimmer.fromColors(
+          baseColor: Theme.of(context).colorScheme.surface.withOpacity(0.3),
+          highlightColor:
+              Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+          child: Container(
+            color: Theme.of(context).colorScheme.surface,
           ),
-        ],
+        ),
       ),
     );
   }

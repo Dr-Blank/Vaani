@@ -6,7 +6,7 @@ part of 'image_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$coverImageHash() => r'34c6aaf6831fea198984d22ecdf2c5b74e110891';
+String _$coverImageHash() => r'57a164772b0350cd451535ed9d6347ff74671d2e';
 
 /// Copied from Dart SDK
 class _SystemHash {

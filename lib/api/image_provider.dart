@@ -20,11 +20,17 @@ class CoverImage extends _$CoverImage {
   Stream<Uint8List> build(LibraryItem libraryItem) async* {
     final api = ref.watch(authenticatedApiProvider);
 
+    // ! artifical delay for testing
+    // await Future.delayed(const Duration(seconds: 2));
+
     // try to get the image from the cache
     final file = await imageCacheManager.getFileFromCache(libraryItem.id);
 
     if (file != null) {
       // if the image is in the cache, yield it
+      debugPrint(
+        'cover image found in cache for ${libraryItem.id} at ${file.file.path}',
+      );
       yield await file.file.readAsBytes();
       // return if no need to fetch from the server
       if (libraryItem.updatedAt.isBefore(await file.file.lastModified())) {
@@ -39,7 +45,7 @@ class CoverImage extends _$CoverImage {
     // check if the image is in the cache
     final coverImage = await api.items.getCover(
       libraryItemId: libraryItem.id,
-      parameters: const GetImageReqParams(width: 500),
+      parameters: const GetImageReqParams(width: 1000),
     );
     // save the image to the cache
     final newFile = await imageCacheManager.putFile(

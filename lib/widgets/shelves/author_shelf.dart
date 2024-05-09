@@ -12,7 +12,7 @@ class AuthorHomeShelf extends HookConsumerWidget {
     required this.title,
   });
 
-  final Widget title;
+  final String title;
   final AuthorShelf shelf;
 
   @override

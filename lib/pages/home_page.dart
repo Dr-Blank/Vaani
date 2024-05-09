@@ -38,19 +38,16 @@ class HomePage extends HookConsumerWidget {
         child: views.when(
           data: (data) {
             final shelvesToDisplay = data
-                .where((element) => !element.id.contains('discover'))
-                .map(
-                  (shelf) => HomeShelf(
-                    title: Text(shelf.label),
-                    shelf: shelf,
-                  ),
-                )
-                .toList();
+                // .where((element) => !element.id.contains('discover'))
+                .map((shelf) {
+              debugPrint('building shelf ${shelf.label}');
+              return HomeShelf(
+                title: shelf.label,
+                shelf: shelf,
+              );
+            }).toList();
             return RefreshIndicator(
               onRefresh: () async {
-                // await ref
-                //     .read(personalizedViewProvider.notifier)
-                //     .forceRefresh();
                 return ref.refresh(personalizedViewProvider);
               },
               child: ListView.separated(
@@ -65,11 +62,25 @@ class HomePage extends HookConsumerWidget {
               ),
             );
           },
-          loading: () => const CircularProgressIndicator(),
+          loading: () => const HomePageSkeleton(),
           error: (error, stack) {
             return Text('Error: $error');
           },
         ),
+      ),
+    );
+  }
+}
+
+
+class HomePageSkeleton extends StatelessWidget {
+  const HomePageSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }
