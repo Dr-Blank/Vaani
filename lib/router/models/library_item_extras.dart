@@ -1,10 +1,11 @@
 // a freezed class to store the settings of the app
 
+import 'dart:typed_data';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 
 part 'library_item_extras.freezed.dart';
-part 'library_item_extras.g.dart';
 
 /// any extras when navigating to a library item
 ///
@@ -15,9 +16,8 @@ part 'library_item_extras.g.dart';
 class LibraryItemExtras with _$LibraryItemExtras {
   const factory LibraryItemExtras({
     BookMinified? book,
-    String? heroTagSuffix,
+    @Default('') String heroTagSuffix,
+    Uint8List? coverImage,
   }) = _LibraryItemExtras;
 
-  factory LibraryItemExtras.fromJson(Map<String, dynamic> json) =>
-      _$LibraryItemExtrasFromJson(json);
 }

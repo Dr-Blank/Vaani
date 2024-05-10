@@ -83,19 +83,20 @@ class PersonalizedView extends _$PersonalizedView {
     final apiSettings = ref.watch(apiSettingsProvider);
     final user = apiSettings.activeUser;
     if (apiSettings.activeLibraryId == null) {
-    // set it to default user library by logging in and getting the library id
-    final login =
-        await api.login(username: user!.username!, password: user.password!);
+      // set it to default user library by logging in and getting the library id
+      final login =
+          await api.login(username: user!.username!, password: user.password!);
       ref.read(apiSettingsProvider.notifier).updateState(
             apiSettings.copyWith(activeLibraryId: login!.userDefaultLibraryId),
           );
-  }
+    }
     // try to find in cache
     // final cacheKey = 'personalizedView:${apiSettings.activeLibraryId}';
     var key = 'personalizedView:${apiSettings.activeLibraryId! + user!.id!}';
-    final cachedRes = await apiResponseCacheManager.getFileFromCache(
-      key,
-    );
+    final cachedRes = await apiResponseCacheManager.getFileFromMemory(
+          key,
+        ) ??
+        await apiResponseCacheManager.getFileFromCache(key);
     if (cachedRes != null) {
       final resJson = jsonDecode(await cachedRes.file.readAsString()) as List;
       final res = [
@@ -107,8 +108,8 @@ class PersonalizedView extends _$PersonalizedView {
     }
 
     // ! exagerated delay
-    await Future.delayed(const Duration(seconds: 2));
-  final res = await api.libraries
+    // await Future.delayed(const Duration(seconds: 2));
+    final res = await api.libraries
         .getPersonalized(libraryId: apiSettings.activeLibraryId!);
     // debugPrint('personalizedView: ${res!.map((e) => e).toSet()}');
     // save to cache

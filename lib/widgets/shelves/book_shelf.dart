@@ -83,6 +83,7 @@ class BookOnShelf extends HookConsumerWidget {
                       extra: LibraryItemExtras(
                         book: book,
                         heroTagSuffix: heroTagSuffix,
+                        coverImage: coverImage.valueOrNull,
                       ),
                     );
                   },
@@ -103,6 +104,7 @@ class BookOnShelf extends HookConsumerWidget {
                             image,
                             fit: BoxFit.cover,
                             cacheWidth: (height *
+                                    1.2 * 
                                     MediaQuery.of(context).devicePixelRatio)
                                 .round(),
                           ),

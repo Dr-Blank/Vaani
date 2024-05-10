@@ -12,25 +12,34 @@ void main() async {
 
   // initialize the storage
   await initStorage();
-  runApp(const ProviderScope(
-    child: MyApp(),
+
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
     ),
   );
 }
 
+// final _router = MyAppRouter(needOnboarding: _needAuth());
+
+// bool _needAuth() {
+//   final apiSettings = ApiSettings().readFromBoxOrCreate();
+//   final servers = AudiobookShelfServer().readFromBoxOrCreate();
+//   return apiSettings.activeUser == null || servers.isEmpty;
+// }
+
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
-
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final servers = ref.watch(audiobookShelfServerProvider);
-    final appSettings = ref.watch(appSettingsProvider);
     final apiSettings = ref.watch(apiSettingsProvider);
 
     bool needOnboarding() {
       return apiSettings.activeUser == null || servers.isEmpty;
     }
+
     return MaterialApp.router(
       theme: lightTheme,
       darkTheme: darkTheme,
@@ -38,6 +47,8 @@ class MyApp extends ConsumerWidget {
           ? ThemeMode.dark
           : ThemeMode.light,
       routerConfig: MyAppRouter(needOnboarding: needOnboarding()).config,
+      // routerConfig: _router.config,
+
     );
   }
 }

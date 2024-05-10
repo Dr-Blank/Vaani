@@ -14,16 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-LibraryItemExtras _$LibraryItemExtrasFromJson(Map<String, dynamic> json) {
-  return _LibraryItemExtras.fromJson(json);
-}
-
 /// @nodoc
 mixin _$LibraryItemExtras {
   BookMinified? get book => throw _privateConstructorUsedError;
-  String? get heroTagSuffix => throw _privateConstructorUsedError;
+  String get heroTagSuffix => throw _privateConstructorUsedError;
+  Uint8List? get coverImage => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $LibraryItemExtrasCopyWith<LibraryItemExtras> get copyWith =>
       throw _privateConstructorUsedError;
@@ -35,7 +31,7 @@ abstract class $LibraryItemExtrasCopyWith<$Res> {
           LibraryItemExtras value, $Res Function(LibraryItemExtras) then) =
       _$LibraryItemExtrasCopyWithImpl<$Res, LibraryItemExtras>;
   @useResult
-  $Res call({BookMinified? book, String? heroTagSuffix});
+  $Res call({BookMinified? book, String heroTagSuffix, Uint8List? coverImage});
 }
 
 /// @nodoc
@@ -52,17 +48,22 @@ class _$LibraryItemExtrasCopyWithImpl<$Res, $Val extends LibraryItemExtras>
   @override
   $Res call({
     Object? book = freezed,
-    Object? heroTagSuffix = freezed,
+    Object? heroTagSuffix = null,
+    Object? coverImage = freezed,
   }) {
     return _then(_value.copyWith(
       book: freezed == book
           ? _value.book
           : book // ignore: cast_nullable_to_non_nullable
               as BookMinified?,
-      heroTagSuffix: freezed == heroTagSuffix
+      heroTagSuffix: null == heroTagSuffix
           ? _value.heroTagSuffix
           : heroTagSuffix // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
+      coverImage: freezed == coverImage
+          ? _value.coverImage
+          : coverImage // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
     ) as $Val);
   }
 }
@@ -75,7 +76,7 @@ abstract class _$$LibraryItemExtrasImplCopyWith<$Res>
       __$$LibraryItemExtrasImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({BookMinified? book, String? heroTagSuffix});
+  $Res call({BookMinified? book, String heroTagSuffix, Uint8List? coverImage});
 }
 
 /// @nodoc
@@ -90,37 +91,43 @@ class __$$LibraryItemExtrasImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? book = freezed,
-    Object? heroTagSuffix = freezed,
+    Object? heroTagSuffix = null,
+    Object? coverImage = freezed,
   }) {
     return _then(_$LibraryItemExtrasImpl(
       book: freezed == book
           ? _value.book
           : book // ignore: cast_nullable_to_non_nullable
               as BookMinified?,
-      heroTagSuffix: freezed == heroTagSuffix
+      heroTagSuffix: null == heroTagSuffix
           ? _value.heroTagSuffix
           : heroTagSuffix // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
+      coverImage: freezed == coverImage
+          ? _value.coverImage
+          : coverImage // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$LibraryItemExtrasImpl implements _LibraryItemExtras {
-  const _$LibraryItemExtrasImpl({this.book, this.heroTagSuffix});
 
-  factory _$LibraryItemExtrasImpl.fromJson(Map<String, dynamic> json) =>
-      _$$LibraryItemExtrasImplFromJson(json);
+class _$LibraryItemExtrasImpl implements _LibraryItemExtras {
+  const _$LibraryItemExtrasImpl(
+      {this.book, this.heroTagSuffix = '', this.coverImage});
 
   @override
   final BookMinified? book;
   @override
-  final String? heroTagSuffix;
+  @JsonKey()
+  final String heroTagSuffix;
+  @override
+  final Uint8List? coverImage;
 
   @override
   String toString() {
-    return 'LibraryItemExtras(book: $book, heroTagSuffix: $heroTagSuffix)';
+    return 'LibraryItemExtras(book: $book, heroTagSuffix: $heroTagSuffix, coverImage: $coverImage)';
   }
 
   @override
@@ -130,12 +137,14 @@ class _$LibraryItemExtrasImpl implements _LibraryItemExtras {
             other is _$LibraryItemExtrasImpl &&
             (identical(other.book, book) || other.book == book) &&
             (identical(other.heroTagSuffix, heroTagSuffix) ||
-                other.heroTagSuffix == heroTagSuffix));
+                other.heroTagSuffix == heroTagSuffix) &&
+            const DeepCollectionEquality()
+                .equals(other.coverImage, coverImage));
   }
 
-  @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, book, heroTagSuffix);
+  int get hashCode => Object.hash(runtimeType, book, heroTagSuffix,
+      const DeepCollectionEquality().hash(coverImage));
 
   @JsonKey(ignore: true)
   @override
@@ -143,27 +152,20 @@ class _$LibraryItemExtrasImpl implements _LibraryItemExtras {
   _$$LibraryItemExtrasImplCopyWith<_$LibraryItemExtrasImpl> get copyWith =>
       __$$LibraryItemExtrasImplCopyWithImpl<_$LibraryItemExtrasImpl>(
           this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$LibraryItemExtrasImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class _LibraryItemExtras implements LibraryItemExtras {
   const factory _LibraryItemExtras(
       {final BookMinified? book,
-      final String? heroTagSuffix}) = _$LibraryItemExtrasImpl;
-
-  factory _LibraryItemExtras.fromJson(Map<String, dynamic> json) =
-      _$LibraryItemExtrasImpl.fromJson;
+      final String heroTagSuffix,
+      final Uint8List? coverImage}) = _$LibraryItemExtrasImpl;
 
   @override
   BookMinified? get book;
   @override
-  String? get heroTagSuffix;
+  String get heroTagSuffix;
+  @override
+  Uint8List? get coverImage;
   @override
   @JsonKey(ignore: true)
   _$$LibraryItemExtrasImplCopyWith<_$LibraryItemExtrasImpl> get copyWith =>

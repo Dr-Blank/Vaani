@@ -348,7 +348,7 @@ final fetchContinueListeningProvider =
 
 typedef FetchContinueListeningRef
     = AutoDisposeFutureProviderRef<GetUserSessionsResponse>;
-String _$personalizedViewHash() => r'52a89c46ce668238ca11b5394fd1d14c910947f5';
+String _$personalizedViewHash() => r'2e70fe2bfc766a963f7a8e94211ad50d959fbaa2';
 
 /// fetch the personalized view
 ///

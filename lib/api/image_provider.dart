@@ -24,7 +24,8 @@ class CoverImage extends _$CoverImage {
     // await Future.delayed(const Duration(seconds: 2));
 
     // try to get the image from the cache
-    final file = await imageCacheManager.getFileFromCache(libraryItem.id);
+    final file = await imageCacheManager.getFileFromMemory(libraryItem.id) ??
+        await imageCacheManager.getFileFromCache(libraryItem.id);
 
     if (file != null) {
       // if the image is in the cache, yield it
@@ -34,6 +35,9 @@ class CoverImage extends _$CoverImage {
       yield await file.file.readAsBytes();
       // return if no need to fetch from the server
       if (libraryItem.updatedAt.isBefore(await file.file.lastModified())) {
+        debugPrint(
+          'cover image is up to date for ${libraryItem.id}, no need to fetch from the server',
+        );
         return;
       } else {
         debugPrint(
@@ -45,17 +49,20 @@ class CoverImage extends _$CoverImage {
     // check if the image is in the cache
     final coverImage = await api.items.getCover(
       libraryItemId: libraryItem.id,
-      parameters: const GetImageReqParams(width: 1000),
+      parameters: const GetImageReqParams(width: 1200),
     );
     // save the image to the cache
-    final newFile = await imageCacheManager.putFile(
-      libraryItem.id,
-      coverImage ?? Uint8List(0),
-      key: libraryItem.id,
-    );
-    debugPrint(
-      'cover image fetched for for ${libraryItem.id}, file time: ${await newFile.lastModified()}',
-    );
+    if (coverImage != null) {
+      final newFile = await imageCacheManager.putFile(
+        libraryItem.id,
+        coverImage,
+        key: libraryItem.id,
+      );
+      debugPrint(
+        'cover image fetched for for ${libraryItem.id}, file time: ${await newFile.lastModified()}',
+      );
+    }
+
     yield coverImage ?? Uint8List(0);
   }
 }
