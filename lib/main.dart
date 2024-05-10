@@ -40,15 +40,20 @@ class MyApp extends ConsumerWidget {
       return apiSettings.activeUser == null || servers.isEmpty;
     }
 
+    var routerConfig = MyAppRouter(needOnboarding: needOnboarding()).config;
+    // if (needOnboarding()) {
+    //   routerConfig.goNamed(Routes.onboarding);
+    // }
+
+
     return MaterialApp.router(
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ref.watch(appSettingsProvider).isDarkMode
           ? ThemeMode.dark
           : ThemeMode.light,
-      routerConfig: MyAppRouter(needOnboarding: needOnboarding()).config,
+      routerConfig: routerConfig,
       // routerConfig: _router.config,
-
     );
   }
 }

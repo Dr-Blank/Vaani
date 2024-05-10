@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:whispering_pages/pages/home_page.dart';
 import 'package:whispering_pages/pages/library_item_page.dart';
 import 'package:whispering_pages/pages/library_page.dart';
-import 'package:whispering_pages/pages/onboarding/onboarding.dart';
+import 'package:whispering_pages/pages/onboarding/onboarding_single_page.dart';
 
 part 'constants.dart';
 
@@ -17,7 +17,7 @@ class MyAppRouter {
           GoRoute(
             path: '/login',
             name: Routes.onboarding,
-            builder: (context, state) => const OnboardingPage(),
+            builder: (context, state) => const OnboardingSinglePage(),
           ),
           GoRoute(
             path: '/',
@@ -44,7 +44,7 @@ class MyAppRouter {
         ],
         redirect: (context, state) {
           if (needOnboarding) {
-            return context.namedLocation(Routes.onboarding);
+            return config.namedLocation(Routes.onboarding);
           }
           return null;
         },
