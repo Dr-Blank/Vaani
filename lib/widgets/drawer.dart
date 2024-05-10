@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:whispering_pages/pages/app_settings.dart';
+import 'package:go_router/go_router.dart';
 import 'package:whispering_pages/pages/server_manager.dart';
+import 'package:whispering_pages/router/router.dart';
 
 
 class MyDrawer extends StatelessWidget {
@@ -35,11 +36,7 @@ class MyDrawer extends StatelessWidget {
           ListTile(
             title: const Text('App Settings'),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const AppSettingsPage(),
-                ),
-              );
+              context.goNamed(Routes.settings.name);
             },
           ),
         ],

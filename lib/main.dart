@@ -20,13 +20,7 @@ void main() async {
   );
 }
 
-// final _router = MyAppRouter(needOnboarding: _needAuth());
-
-// bool _needAuth() {
-//   final apiSettings = ApiSettings().readFromBoxOrCreate();
-//   final servers = AudiobookShelfServer().readFromBoxOrCreate();
-//   return apiSettings.activeUser == null || servers.isEmpty;
-// }
+var routerConfig = const MyAppRouter().config;
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
@@ -36,15 +30,11 @@ class MyApp extends ConsumerWidget {
     final servers = ref.watch(audiobookShelfServerProvider);
     final apiSettings = ref.watch(apiSettingsProvider);
 
-    bool needOnboarding() {
-      return apiSettings.activeUser == null || servers.isEmpty;
+    final needOnboarding = apiSettings.activeUser == null || servers.isEmpty;
+
+    if (needOnboarding) {
+      routerConfig.goNamed(Routes.onboarding.name);
     }
-
-    var routerConfig = MyAppRouter(needOnboarding: needOnboarding()).config;
-    // if (needOnboarding()) {
-    //   routerConfig.goNamed(Routes.onboarding);
-    // }
-
 
     return MaterialApp.router(
       theme: lightTheme,
@@ -53,7 +43,6 @@ class MyApp extends ConsumerWidget {
           ? ThemeMode.dark
           : ThemeMode.light,
       routerConfig: routerConfig,
-      // routerConfig: _router.config,
     );
   }
 }

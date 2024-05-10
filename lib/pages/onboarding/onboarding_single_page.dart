@@ -30,7 +30,6 @@ class OnboardingSinglePage extends HookConsumerWidget {
     final usernameController = useTextEditingController();
     final passwordController = useTextEditingController();
 
-    // reverse the animation if the user is not logged in
     void addServer() {
       var newServer = serverUriController.text.isEmpty
           ? null

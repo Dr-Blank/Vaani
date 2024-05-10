@@ -23,7 +23,14 @@ class ApiSettings extends _$ApiSettings {
   model.ApiSettings readFromBoxOrCreate() {
     // see if the settings are already in the box
     if (_box.isNotEmpty) {
-      final foundSettings = _box.getAt(0);
+      var foundSettings = _box.getAt(0);
+      // foundSettings.activeServer ??= foundSettings.activeUser?.server;
+      // foundSettings =foundSettings.copyWith(activeServer: foundSettings.activeUser?.server);
+      if (foundSettings.activeServer == null) {
+        foundSettings = foundSettings.copyWith(
+          activeServer: foundSettings.activeUser?.server,
+        );
+      }
       debugPrint('found api settings in box: $foundSettings');
       return foundSettings;
     } else {

@@ -4,7 +4,10 @@ part of 'router.dart';
 
 class Routes {
   static const home = 'home';
-  static const onboarding = 'onboarding';
+  static const onboarding = _SimpleRoute(
+    pathName: 'login',
+    name: 'onboarding',
+  );
   static const library = _SimpleRoute(
     pathName: 'library',
     pathParamName: 'libraryId',
@@ -15,6 +18,10 @@ class Routes {
     pathParamName: 'itemId',
     name: 'libraryItem',
   );
+  static const settings = _SimpleRoute(
+    pathName: 'config',
+    name: 'settings',
+  );
 }
 
 // a class to store path
@@ -22,13 +29,14 @@ class Routes {
 class _SimpleRoute {
   const _SimpleRoute({
     required this.pathName,
-    required this.pathParamName,
+    this.pathParamName,
     required this.name,
   });
 
   final String pathName;
-  final String pathParamName;
+  final String? pathParamName;
   final String name;
 
-  String get path => '/$pathName/:$pathParamName';
+  String get path =>
+      '/$pathName${pathParamName != null ? '/:$pathParamName' : ''}';
 }

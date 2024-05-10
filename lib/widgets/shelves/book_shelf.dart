@@ -72,50 +72,59 @@ class BookOnShelf extends HookConsumerWidget {
               // the cover image of the book
               // take up remaining space
               Expanded(
-                child: InkWell(
-                  onTap: () {
-                    // open the book
-                    context.pushNamed(
-                      Routes.libraryItem.name,
-                      pathParameters: {
-                        Routes.libraryItem.pathParamName: item.id,
-                      },
-                      extra: LibraryItemExtras(
-                        book: book,
-                        heroTagSuffix: heroTagSuffix,
-                        coverImage: coverImage.valueOrNull,
-                      ),
-                    );
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: coverImage.when(
-                      data: (image) {
-                        // return const BookCoverSkeleton();
-                        if (image.isEmpty) {
-                          return const Icon(Icons.error);
-                        }
-                        // cover 80% of parent height
-                        return Hero(
-                          tag: HeroTagPrefixes.bookCover +
-                              item.id +
-                              heroTagSuffix,
-                          child: Image.memory(
+                child: Center(
+                  child: InkWell(
+                    onTap: () {
+                      // open the book
+                      context.pushNamed(
+                        Routes.libraryItem.name,
+                        pathParameters: {
+                          Routes.libraryItem.pathParamName!: item.id,
+                        },
+                        extra: LibraryItemExtras(
+                          book: book,
+                          heroTagSuffix: heroTagSuffix,
+                          coverImage: coverImage.valueOrNull,
+                        ),
+                      );
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: coverImage.when(
+                        data: (image) {
+                          // return const BookCoverSkeleton();
+                          if (image.isEmpty) {
+                            return const Icon(Icons.error);
+                          }
+                          var imageWidget = Image.memory(
                             image,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                             cacheWidth: (height *
-                                    1.2 * 
+                                    1.2 *
                                     MediaQuery.of(context).devicePixelRatio)
                                 .round(),
-                          ),
-                        );
-                      },
-                      loading: () {
-                        return const Center(child: BookCoverSkeleton());
-                      },
-                      error: (error, stack) {
-                        return const Icon(Icons.error);
-                      },
+                          );
+                          return Hero(
+                            tag: HeroTagPrefixes.bookCover +
+                                item.id +
+                                heroTagSuffix,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
+                              ),
+                              child: imageWidget,
+                            ),
+                          );
+                        },
+                        loading: () {
+                          return const Center(child: BookCoverSkeleton());
+                        },
+                        error: (error, stack) {
+                          return const Icon(Icons.error);
+                        },
+                      ),
                     ),
                   ),
                 ),
