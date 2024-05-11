@@ -9,9 +9,12 @@ part of 'app_settings.dart';
 _$AppSettingsImpl _$$AppSettingsImplFromJson(Map<String, dynamic> json) =>
     _$AppSettingsImpl(
       isDarkMode: json['isDarkMode'] as bool? ?? true,
+      useMaterialThemeOnItemPage:
+          json['useMaterialThemeOnItemPage'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
     <String, dynamic>{
       'isDarkMode': instance.isDarkMode,
+      'useMaterialThemeOnItemPage': instance.useMaterialThemeOnItemPage,
     };

@@ -39,6 +39,18 @@ class AppSettingsPage extends HookConsumerWidget {
                   ref.read(appSettingsProvider.notifier).toggleDarkMode();
                 },
               ),
+              SettingsTile.switchTile(
+                initialValue: appSettings.useMaterialThemeOnItemPage,
+                title: const Text('Use Material Theming on Item Page'),
+                leading: const Icon(Icons.dynamic_form_outlined),
+                onToggle: (value) {
+                  ref.read(appSettingsProvider.notifier).updateState(
+                        appSettings.copyWith(
+                          useMaterialThemeOnItemPage: value,
+                        ),
+                      );
+                },
+              ),
             ],
           ),
         ],

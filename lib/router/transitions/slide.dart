@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 
 // class CustomSlideTransition extends CustomTransitionPage<void> {
@@ -29,7 +28,8 @@ CustomTransitionPage buildPageWithDefaultTransition<T>({
 }) {
   return CustomTransitionPage<T>(
     key: state.pageKey,
-    transitionDuration: 250.ms,
+    // transitionDuration: 1250.ms,
+    // reverseTransitionDuration: 1250.ms,
     child: child,
     transitionsBuilder: (context, animation, secondaryAnimation, child) =>
         FadeTransition(

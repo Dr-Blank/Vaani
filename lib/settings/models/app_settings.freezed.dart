@@ -21,6 +21,7 @@ AppSettings _$AppSettingsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AppSettings {
   bool get isDarkMode => throw _privateConstructorUsedError;
+  bool get useMaterialThemeOnItemPage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +35,7 @@ abstract class $AppSettingsCopyWith<$Res> {
           AppSettings value, $Res Function(AppSettings) then) =
       _$AppSettingsCopyWithImpl<$Res, AppSettings>;
   @useResult
-  $Res call({bool isDarkMode});
+  $Res call({bool isDarkMode, bool useMaterialThemeOnItemPage});
 }
 
 /// @nodoc
@@ -51,11 +52,16 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
   @override
   $Res call({
     Object? isDarkMode = null,
+    Object? useMaterialThemeOnItemPage = null,
   }) {
     return _then(_value.copyWith(
       isDarkMode: null == isDarkMode
           ? _value.isDarkMode
           : isDarkMode // ignore: cast_nullable_to_non_nullable
+              as bool,
+      useMaterialThemeOnItemPage: null == useMaterialThemeOnItemPage
+          ? _value.useMaterialThemeOnItemPage
+          : useMaterialThemeOnItemPage // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -69,7 +75,7 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
       __$$AppSettingsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isDarkMode});
+  $Res call({bool isDarkMode, bool useMaterialThemeOnItemPage});
 }
 
 /// @nodoc
@@ -84,11 +90,16 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isDarkMode = null,
+    Object? useMaterialThemeOnItemPage = null,
   }) {
     return _then(_$AppSettingsImpl(
       isDarkMode: null == isDarkMode
           ? _value.isDarkMode
           : isDarkMode // ignore: cast_nullable_to_non_nullable
+              as bool,
+      useMaterialThemeOnItemPage: null == useMaterialThemeOnItemPage
+          ? _value.useMaterialThemeOnItemPage
+          : useMaterialThemeOnItemPage // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -97,7 +108,8 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AppSettingsImpl implements _AppSettings {
-  const _$AppSettingsImpl({this.isDarkMode = true});
+  const _$AppSettingsImpl(
+      {this.isDarkMode = true, this.useMaterialThemeOnItemPage = false});
 
   factory _$AppSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppSettingsImplFromJson(json);
@@ -105,10 +117,13 @@ class _$AppSettingsImpl implements _AppSettings {
   @override
   @JsonKey()
   final bool isDarkMode;
+  @override
+  @JsonKey()
+  final bool useMaterialThemeOnItemPage;
 
   @override
   String toString() {
-    return 'AppSettings(isDarkMode: $isDarkMode)';
+    return 'AppSettings(isDarkMode: $isDarkMode, useMaterialThemeOnItemPage: $useMaterialThemeOnItemPage)';
   }
 
   @override
@@ -117,12 +132,17 @@ class _$AppSettingsImpl implements _AppSettings {
         (other.runtimeType == runtimeType &&
             other is _$AppSettingsImpl &&
             (identical(other.isDarkMode, isDarkMode) ||
-                other.isDarkMode == isDarkMode));
+                other.isDarkMode == isDarkMode) &&
+            (identical(other.useMaterialThemeOnItemPage,
+                    useMaterialThemeOnItemPage) ||
+                other.useMaterialThemeOnItemPage ==
+                    useMaterialThemeOnItemPage));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, isDarkMode);
+  int get hashCode =>
+      Object.hash(runtimeType, isDarkMode, useMaterialThemeOnItemPage);
 
   @JsonKey(ignore: true)
   @override
@@ -139,13 +159,17 @@ class _$AppSettingsImpl implements _AppSettings {
 }
 
 abstract class _AppSettings implements AppSettings {
-  const factory _AppSettings({final bool isDarkMode}) = _$AppSettingsImpl;
+  const factory _AppSettings(
+      {final bool isDarkMode,
+      final bool useMaterialThemeOnItemPage}) = _$AppSettingsImpl;
 
   factory _AppSettings.fromJson(Map<String, dynamic> json) =
       _$AppSettingsImpl.fromJson;
 
   @override
   bool get isDarkMode;
+  @override
+  bool get useMaterialThemeOnItemPage;
   @override
   @JsonKey(ignore: true)
   _$$AppSettingsImplCopyWith<_$AppSettingsImpl> get copyWith =>

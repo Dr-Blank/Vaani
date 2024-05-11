@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:whispering_pages/api/api_provider.dart';
 import 'package:whispering_pages/api/authenticated_user_provider.dart';
 import 'package:whispering_pages/api/server_provider.dart';
+import 'package:whispering_pages/router/router.dart';
 import 'package:whispering_pages/settings/api_settings_provider.dart';
 import 'package:whispering_pages/settings/models/models.dart' as model;
 import 'package:whispering_pages/widgets/add_new_server.dart';
@@ -86,10 +88,13 @@ class OnboardingSinglePage extends HookConsumerWidget {
                 activeUser: authenticatedUser,
               ),
             );
+
+        // redirect to the library page
+        GoRouter.of(context).goNamed(Routes.home);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Login failed'),
+            content: Text('Login failed. Please check your credentials.'),
           ),
         );
         // give focus back to the username field
@@ -205,7 +210,7 @@ class RedirectToABS extends StatelessWidget {
 Future<void> _launchUrl(Uri url) async {
   if (!await launchUrl(
     url,
-    mode: LaunchMode.inAppWebView,
+    mode: LaunchMode.platformDefault,
     webOnlyWindowName: '_blank',
   )) {
     // throw Exception('Could not launch $url');

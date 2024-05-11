@@ -44,6 +44,7 @@ dependencies:
   flutter_cache_manager: ^3.3.2
   flutter_hooks: ^0.20.5
   flutter_settings_ui: ^3.0.1
+  font_awesome_flutter: ^10.7.0
   freezed_annotation: ^2.4.1
   go_router: ^14.0.2
   hive: ^4.0.0-dev.2

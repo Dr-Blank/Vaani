@@ -73,82 +73,88 @@ class BookOnShelf extends HookConsumerWidget {
               // take up remaining space
               Expanded(
                 child: Center(
-                  child: InkWell(
-                    onTap: () {
-                      // open the book
-                      context.pushNamed(
-                        Routes.libraryItem.name,
-                        pathParameters: {
-                          Routes.libraryItem.pathParamName!: item.id,
-                        },
-                        extra: LibraryItemExtras(
-                          book: book,
-                          heroTagSuffix: heroTagSuffix,
-                          coverImage: coverImage.valueOrNull,
-                        ),
-                      );
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: coverImage.when(
-                        data: (image) {
-                          // return const BookCoverSkeleton();
-                          if (image.isEmpty) {
-                            return const Icon(Icons.error);
-                          }
-                          var imageWidget = Image.memory(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: coverImage.when(
+                      data: (image) {
+                        // return const BookCoverSkeleton();
+                        if (image.isEmpty) {
+                          return const Icon(Icons.error);
+                        }
+                        var imageWidget = InkWell(
+                          onTap: () {
+                            // open the book
+                            context.pushNamed(
+                              Routes.libraryItem.name,
+                              pathParameters: {
+                                Routes.libraryItem.pathParamName!: item.id,
+                              },
+                              extra: LibraryItemExtras(
+                                book: book,
+                                heroTagSuffix: heroTagSuffix,
+                                coverImage: coverImage.valueOrNull,
+                              ),
+                            );
+                          },
+                          child: Image.memory(
                             image,
                             fit: BoxFit.fill,
                             cacheWidth: (height *
                                     1.2 *
                                     MediaQuery.of(context).devicePixelRatio)
                                 .round(),
-                          );
-                          return Hero(
-                            tag: HeroTagPrefixes.bookCover +
-                                item.id +
-                                heroTagSuffix,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer,
-                              ),
-                              child: imageWidget,
+                          ),
+                        );
+                        return Hero(
+                          tag: HeroTagPrefixes.bookCover +
+                              item.id +
+                              heroTagSuffix,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer,
                             ),
-                          );
-                        },
-                        loading: () {
-                          return const Center(child: BookCoverSkeleton());
-                        },
-                        error: (error, stack) {
-                          return const Icon(Icons.error);
-                        },
-                      ),
+                            child: imageWidget,
+                          ),
+                        );
+                      },
+                      loading: () {
+                        return const Center(child: BookCoverSkeleton());
+                      },
+                      error: (error, stack) {
+                        return const Icon(Icons.error);
+                      },
                     ),
                   ),
                 ),
               ),
               // the title and author of the book
               // AutoScrollText(
-              Text(
-                metadata.title ?? '',
-                // mode: AutoScrollTextMode.bouncing,
-                // curve: Curves.easeInOut,
-                // velocity: const Velocity(pixelsPerSecond: Offset(15, 0)),
-                // delayBefore: const Duration(seconds: 2),
-                // pauseBetween: const Duration(seconds: 2),
-                // numberOfReps: 15,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyLarge,
+              Hero(
+                tag: HeroTagPrefixes.bookTitle + item.id + heroTagSuffix,
+                child: Text(
+                  metadata.title ?? '',
+                  // mode: AutoScrollTextMode.bouncing,
+                  // curve: Curves.easeInOut,
+                  // velocity: const Velocity(pixelsPerSecond: Offset(15, 0)),
+                  // delayBefore: const Duration(seconds: 2),
+                  // pauseBetween: const Duration(seconds: 2),
+                  // numberOfReps: 15,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
               ),
               const SizedBox(height: 3),
-              Text(
-                metadata.authorName ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall,
+              Hero(
+                tag: HeroTagPrefixes.authorName + item.id + heroTagSuffix,
+                child: Text(
+                  metadata.authorName ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ),
             ],
           ),

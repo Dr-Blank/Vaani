@@ -12,6 +12,7 @@ part 'app_settings.g.dart';
 class AppSettings with _$AppSettings {
   const factory AppSettings({
     @Default(true) bool isDarkMode,
+    @Default(false) bool useMaterialThemeOnItemPage,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>
