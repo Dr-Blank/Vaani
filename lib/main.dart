@@ -1,3 +1,4 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:whispering_pages/api/server_provider.dart';
@@ -36,14 +37,16 @@ class MyApp extends ConsumerWidget {
       routerConfig.goNamed(Routes.onboarding.name);
     }
 
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ref.watch(appSettingsProvider).isDarkMode
-          ? ThemeMode.dark
-          : ThemeMode.light,
-      routerConfig: routerConfig,
+    return ThemeProvider(
+      initTheme:
+          ref.read(appSettingsProvider).isDarkMode ? darkTheme : lightTheme,
+      builder: (context, myTheme) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          routerConfig: routerConfig,
+          theme: myTheme,
+        );
+      },
     );
   }
 }
