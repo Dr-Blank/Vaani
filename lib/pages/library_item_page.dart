@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
@@ -51,71 +53,117 @@ class LibraryItemPage extends HookConsumerWidget {
       debugPrint('useMaterialThemeOnItemPage is false');
       // AsyncValue<ColorScheme?> coverColorScheme = const AsyncValue.loading();
     }
-    return Theme(
-      data: coverColorScheme.valueOrNull != null && useMaterialThemeOnItemPage
-          ? ThemeData.from(
-              colorScheme: coverColorScheme.valueOrNull!,
-              textTheme: Theme.of(context).textTheme,
-            )
-          : Theme.of(context),
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            const LibraryItemSliverAppBar(),
-            SliverPadding(
-              padding: const EdgeInsets.all(8),
-              sliver: SliverToBoxAdapter(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    LayoutBuilder(
-                      builder: (context, constraints) {
-                        return SizedBox(
-                          height: calculateWidth(
-                            context,
-                            constraints,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: _BookCover(
-                              itemId: itemId,
-                              extraMap: extraMap,
-                              providedCacheImage: providedCacheImage,
-                              item: item,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox.square(
-                      dimension: 8,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _BookTitle(
-                            extraMap: extraMap,
-                            itemBookMetadata: itemBookMetadata,
-                            bookDetailsCached: bookDetailsCached,
-                          ),
-                          _BookAuthors(
-                            itemBookMetadata: itemBookMetadata,
-                            bookDetailsCached: bookDetailsCached,
-                            coverColorScheme: coverColorScheme.valueOrNull,
-                          ),
-                          // series info if available
+    return ThemeProvider(
+      initTheme: Theme.of(context),
+      duration: 200.ms,
 
-                          // narrators info if available
-                        ],
-                      ),
+      // data: coverColorScheme.valueOrNull != null && useMaterialThemeOnItemPage
+      //     ? ThemeData.from(
+      //         colorScheme: coverColorScheme.valueOrNull!,
+      //         textTheme: Theme.of(context).textTheme,
+      //       )
+      //     : Theme.of(context),
+      child: ThemeSwitchingArea(
+        child: Builder(
+          builder: (context) {
+            return Scaffold(
+              body: CustomScrollView(
+                slivers: [
+                  const LibraryItemSliverAppBar(),
+                  SliverPadding(
+                    padding: const EdgeInsets.all(8),
+                    sliver: LibraryItemHeroSection(
+                      itemId: itemId,
+                      extraMap: extraMap,
+                      providedCacheImage: providedCacheImage,
+                      item: item,
+                      itemBookMetadata: itemBookMetadata,
+                      bookDetailsCached: bookDetailsCached,
+                      coverColorScheme: coverColorScheme,
+                      useMaterialThemeOnItemPage: useMaterialThemeOnItemPage,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-          ],
+            );
+          },
         ),
+      ),
+    );
+  }
+}
+
+class LibraryItemHeroSection extends StatelessWidget {
+  const LibraryItemHeroSection({
+    super.key,
+    required this.itemId,
+    required this.extraMap,
+    required this.providedCacheImage,
+    required this.item,
+    required this.itemBookMetadata,
+    required this.bookDetailsCached,
+    required this.coverColorScheme,
+    required this.useMaterialThemeOnItemPage,
+  });
+
+  final bool useMaterialThemeOnItemPage;
+  final String itemId;
+  final LibraryItemExtras? extraMap;
+  final Image? providedCacheImage;
+  final AsyncValue<shelfsdk.LibraryItem> item;
+  final shelfsdk.BookMetadata? itemBookMetadata;
+  final shelfsdk.BookMinified? bookDetailsCached;
+  final AsyncValue<ColorScheme?> coverColorScheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return SizedBox(
+                height: calculateWidth(
+                  context,
+                  constraints,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: _BookCover(
+                    itemId: itemId,
+                    extraMap: extraMap,
+                    providedCacheImage: providedCacheImage,
+                    coverColorScheme: coverColorScheme.valueOrNull,
+                    item: item,
+                  ),
+                ),
+              );
+            },
+          ),
+          const SizedBox.square(
+            dimension: 8,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _BookTitle(
+                  extraMap: extraMap,
+                  itemBookMetadata: itemBookMetadata,
+                  bookDetailsCached: bookDetailsCached,
+                ),
+                _BookAuthors(
+                  itemBookMetadata: itemBookMetadata,
+                  bookDetailsCached: bookDetailsCached,
+                ),
+                // series info if available
+
+                // narrators info if available
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -128,53 +176,72 @@ class _BookCover extends HookConsumerWidget {
     required this.extraMap,
     required this.providedCacheImage,
     required this.item,
+    this.coverColorScheme,
   });
 
   final String itemId;
   final LibraryItemExtras? extraMap;
   final Image? providedCacheImage;
   final AsyncValue<shelfsdk.LibraryItem> item;
+  final ColorScheme? coverColorScheme;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Hero(
-      tag: HeroTagPrefixes.bookCover + itemId + (extraMap?.heroTagSuffix ?? ''),
-      child: providedCacheImage ??
-          item.when(
-            data: (libraryItem) {
-              final coverImage = ref.watch(coverImageProvider(libraryItem));
-              return Stack(
-                children: [
-                  coverImage.when(
-                    data: (image) {
-                      // return const BookCoverSkeleton();
-                      if (image.isEmpty) {
-                        return const Icon(Icons.error);
-                      }
-                      // cover 80% of parent height
-                      return Image.memory(
-                        image,
-                        fit: BoxFit.cover,
-                        // cacheWidth: (height *
-                        //         MediaQuery.of(context).devicePixelRatio)
-                        //     .round(),
-                      );
-                    },
-                    loading: () {
-                      return const Center(
-                        child: BookCoverSkeleton(),
-                      );
-                    },
-                    error: (error, stack) {
-                      return const Icon(Icons.error);
-                    },
-                  ),
-                ],
-              );
-            },
-            error: (error, stack) => const Icon(Icons.error),
-            loading: () => const Center(child: BookCoverSkeleton()),
-          ),
+    return ThemeSwitcher(
+      builder: (context) {
+        // change theme after 2 seconds
+        Future.delayed(150.ms, () {
+          ThemeSwitcher.of(context).changeTheme(
+            theme: coverColorScheme != null
+                ? ThemeData.from(
+                    colorScheme: coverColorScheme!,
+                    textTheme: Theme.of(context).textTheme,
+                  )
+                : Theme.of(context),
+          );
+        });
+        return Hero(
+          tag: HeroTagPrefixes.bookCover +
+              itemId +
+              (extraMap?.heroTagSuffix ?? ''),
+          child: providedCacheImage ??
+              item.when(
+                data: (libraryItem) {
+                  final coverImage = ref.watch(coverImageProvider(libraryItem));
+                  return Stack(
+                    children: [
+                      coverImage.when(
+                        data: (image) {
+                          // return const BookCoverSkeleton();
+                          if (image.isEmpty) {
+                            return const Icon(Icons.error);
+                          }
+                          // cover 80% of parent height
+                          return Image.memory(
+                            image,
+                            fit: BoxFit.cover,
+                            // cacheWidth: (height *
+                            //         MediaQuery.of(context).devicePixelRatio)
+                            //     .round(),
+                          );
+                        },
+                        loading: () {
+                          return const Center(
+                            child: BookCoverSkeleton(),
+                          );
+                        },
+                        error: (error, stack) {
+                          return const Icon(Icons.error);
+                        },
+                      ),
+                    ],
+                  );
+                },
+                error: (error, stack) => const Icon(Icons.error),
+                loading: () => const Center(child: BookCoverSkeleton()),
+              ),
+        );
+      },
     );
   }
 }
@@ -211,20 +278,18 @@ class _BookTitle extends StatelessWidget {
   }
 }
 
-class _BookAuthors extends StatelessWidget {
+class _BookAuthors extends HookConsumerWidget {
   const _BookAuthors({
     super.key,
     required this.itemBookMetadata,
     required this.bookDetailsCached,
-    this.coverColorScheme,
   });
 
   final shelfsdk.BookMetadata? itemBookMetadata;
   final shelfsdk.BookMinified? bookDetailsCached;
-  final ColorScheme? coverColorScheme;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     String generateAuthorsString() {
       final authors = (itemBookMetadata)?.authors ?? [];
       if (authors.isEmpty) {
@@ -235,6 +300,9 @@ class _BookAuthors extends StatelessWidget {
       return authors.map((e) => e.name).join(', ');
     }
 
+    final useMaterialThemeOnItemPage =
+        ref.watch(appSettingsProvider).useMaterialThemeOnItemPage;
+
     return Row(
       children: [
         Container(
@@ -242,8 +310,9 @@ class _BookAuthors extends StatelessWidget {
           child: FaIcon(
             FontAwesomeIcons.penNib,
             size: 16,
-            color: coverColorScheme?.primary ??
-                Theme.of(context).colorScheme.onBackground,
+            color: useMaterialThemeOnItemPage
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.onBackground.withOpacity(0.75),
           ),
         ),
         Expanded(

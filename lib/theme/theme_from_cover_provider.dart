@@ -13,7 +13,7 @@ Future<FutureOr<ColorScheme?>> themeFromCover(
   Brightness brightness = Brightness.dark,
 }) async {
   // add deliberate delay to simulate a long running task
-  await Future.delayed(200.ms);
+  await Future.delayed(500.ms);
   return ColorScheme.fromImageProvider(
     provider: img,
     brightness: brightness,
