@@ -32,6 +32,7 @@ class AppSettingsPage extends HookConsumerWidget {
               SettingsTile.switchTile(
                 initialValue: appSettings.isDarkMode,
                 title: const Text('Dark Mode'),
+                description: const Text('we all know dark mode is better'),
                 leading: appSettings.isDarkMode
                     ? const Icon(Icons.dark_mode)
                     : const Icon(Icons.light_mode),
@@ -42,6 +43,9 @@ class AppSettingsPage extends HookConsumerWidget {
               SettingsTile.switchTile(
                 initialValue: appSettings.useMaterialThemeOnItemPage,
                 title: const Text('Use Material Theming on Item Page'),
+                description: const Text(
+                  'get fancy with the colors on the item page at the cost of some performance',
+                ),
                 leading: const Icon(Icons.dynamic_form_outlined),
                 onToggle: (value) {
                   ref.read(appSettingsProvider.notifier).updateState(

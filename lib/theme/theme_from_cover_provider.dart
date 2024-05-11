@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:whispering_pages/api/image_provider.dart';
@@ -6,15 +7,38 @@ import 'package:whispering_pages/api/image_provider.dart';
 part 'theme_from_cover_provider.g.dart';
 
 @riverpod
-FutureOr<ColorScheme> themeFromCover(
+Future<FutureOr<ColorScheme?>> themeFromCover(
   ThemeFromCoverRef ref,
   ImageProvider<Object> img, {
   Brightness brightness = Brightness.dark,
-}) {
+}) async {
+  // add deliberate delay to simulate a long running task
+  await Future.delayed(200.ms);
   return ColorScheme.fromImageProvider(
     provider: img,
     brightness: brightness,
   );
+  // TODO isolate is not working
+  // see https://github.com/flutter/flutter/issues/119207
+  // use isolate to generate the color scheme
+  // RootIsolateToken? token = RootIsolateToken.instance;
+  // final scheme = await Isolate.run(
+  //   () async {
+  //     debugPrint('Isolate running ${Isolate.current.debugName}');
+  //     try {
+  //       BackgroundIsolateBinaryMessenger.ensureInitialized(token!);
+  //       WidgetsFlutterBinding.ensureInitialized();
+  //       return await ColorScheme.fromImageProvider(
+  //         provider: img,
+  //         brightness: brightness,
+  //       );
+  //     } catch (e) {
+  //       debugPrint('Error in isolate: $e');
+  //       return null;
+  //     }
+  //   },
+  // );
+  // return scheme;
 }
 
 @riverpod

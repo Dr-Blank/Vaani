@@ -6,7 +6,7 @@ part of 'theme_from_cover_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$themeFromCoverHash() => r'e52e7b9c644f3fcc266cfc480b7003ec7492431c';
+String _$themeFromCoverHash() => r'b1d56a4add77d157a803424d02ef52c4d8c3f1d7';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const themeFromCoverProvider = ThemeFromCoverFamily();
 
 /// See also [themeFromCover].
-class ThemeFromCoverFamily extends Family<AsyncValue<ColorScheme>> {
+class ThemeFromCoverFamily extends Family<AsyncValue<FutureOr<ColorScheme?>>> {
   /// See also [themeFromCover].
   const ThemeFromCoverFamily();
 
@@ -75,7 +75,8 @@ class ThemeFromCoverFamily extends Family<AsyncValue<ColorScheme>> {
 }
 
 /// See also [themeFromCover].
-class ThemeFromCoverProvider extends AutoDisposeFutureProvider<ColorScheme> {
+class ThemeFromCoverProvider
+    extends AutoDisposeFutureProvider<FutureOr<ColorScheme?>> {
   /// See also [themeFromCover].
   ThemeFromCoverProvider(
     ImageProvider<Object> img, {
@@ -115,7 +116,8 @@ class ThemeFromCoverProvider extends AutoDisposeFutureProvider<ColorScheme> {
 
   @override
   Override overrideWith(
-    FutureOr<ColorScheme> Function(ThemeFromCoverRef provider) create,
+    FutureOr<FutureOr<ColorScheme?>> Function(ThemeFromCoverRef provider)
+        create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -133,7 +135,7 @@ class ThemeFromCoverProvider extends AutoDisposeFutureProvider<ColorScheme> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<ColorScheme> createElement() {
+  AutoDisposeFutureProviderElement<FutureOr<ColorScheme?>> createElement() {
     return _ThemeFromCoverProviderElement(this);
   }
 
@@ -154,7 +156,8 @@ class ThemeFromCoverProvider extends AutoDisposeFutureProvider<ColorScheme> {
   }
 }
 
-mixin ThemeFromCoverRef on AutoDisposeFutureProviderRef<ColorScheme> {
+mixin ThemeFromCoverRef
+    on AutoDisposeFutureProviderRef<FutureOr<ColorScheme?>> {
   /// The parameter `img` of this provider.
   ImageProvider<Object> get img;
 
@@ -163,7 +166,7 @@ mixin ThemeFromCoverRef on AutoDisposeFutureProviderRef<ColorScheme> {
 }
 
 class _ThemeFromCoverProviderElement
-    extends AutoDisposeFutureProviderElement<ColorScheme>
+    extends AutoDisposeFutureProviderElement<FutureOr<ColorScheme?>>
     with ThemeFromCoverRef {
   _ThemeFromCoverProviderElement(super.provider);
 

@@ -22,7 +22,8 @@ class ScaffoldWithNavBar extends StatelessWidget {
         landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
         selectedFontSize: Theme.of(context).textTheme.labelMedium!.fontSize!,
         unselectedFontSize: Theme.of(context).textTheme.labelMedium!.fontSize!,
-        // fixedColor: Theme.of(context).colorScheme.primary,
+        showUnselectedLabels: false,
+        fixedColor: Theme.of(context).colorScheme.onBackground,
         // type: BottomNavigationBarType.fixed,
 
         // Here, the items of BottomNavigationBar are hard coded. In a real
