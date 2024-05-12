@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -15,12 +16,13 @@ Future initStorage() async {
   // use whispering_pages as the directory for hive
   final storageDir = Directory(p.join(
     dir.path,
-    AppMetadata.appName.toLowerCase().replaceAll(' ', '_'),
+      AppMetadata.appNameLowerCase,
     ),
   );
   await storageDir.create(recursive: true);
 
   Hive.defaultDirectory = storageDir.path;
+  debugPrint('Hive storage directory init: ${Hive.defaultDirectory}');
 
   await registerModels();
 }

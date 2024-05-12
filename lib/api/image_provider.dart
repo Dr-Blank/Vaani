@@ -44,6 +44,8 @@ class CoverImage extends _$CoverImage {
           'cover image stale for ${libraryItem.id}, fetching from the server',
         );
       }
+    } else {
+      debugPrint('cover image not found in cache for ${libraryItem.id}');
     }
 
     // check if the image is in the cache
@@ -57,6 +59,7 @@ class CoverImage extends _$CoverImage {
         libraryItem.id,
         coverImage,
         key: libraryItem.id,
+        fileExtension: 'jpg',
       );
       debugPrint(
         'cover image fetched for for ${libraryItem.id}, file time: ${await newFile.lastModified()}',

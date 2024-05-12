@@ -1,8 +1,9 @@
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:whispering_pages/settings/constants.dart';
 
 final imageCacheManager = CacheManager(
   Config(
-    'image_cache_manager',
+    '${AppMetadata.appNameLowerCase}_image_cache',
     stalePeriod: const Duration(days: 365 * 10),
     repo: JsonCacheInfoRepository(),
     maxNrOfCacheObjects: 1000,
@@ -11,8 +12,8 @@ final imageCacheManager = CacheManager(
 
 final apiResponseCacheManager = CacheManager(
   Config(
-    'api_response_cache_manager',
-    stalePeriod: const Duration(days: 1),
+    '${AppMetadata.appNameLowerCase}_api_response_cache',
+    stalePeriod: const Duration(days: 7),
     repo: JsonCacheInfoRepository(),
     maxNrOfCacheObjects: 1000,
   ),

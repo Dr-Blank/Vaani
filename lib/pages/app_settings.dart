@@ -27,7 +27,14 @@ class AppSettingsPage extends HookConsumerWidget {
       body: SettingsList(
         sections: [
           SettingsSection(
-            title: const Text('Appearance'),
+            margin: const EdgeInsetsDirectional.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
+            title: Text(
+              'Appearance',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             tiles: [
               SettingsTile.switchTile(
                 initialValue: appSettings.isDarkMode,
@@ -42,11 +49,13 @@ class AppSettingsPage extends HookConsumerWidget {
               ),
               SettingsTile.switchTile(
                 initialValue: appSettings.useMaterialThemeOnItemPage,
-                title: const Text('Use Material Theming on Item Page'),
+                title: const Text('Adaptive Theme on Item Page'),
                 description: const Text(
                   'get fancy with the colors on the item page at the cost of some performance',
                 ),
-                leading: const Icon(Icons.dynamic_form_outlined),
+                leading: appSettings.useMaterialThemeOnItemPage
+                    ? const Icon(Icons.auto_fix_high)
+                    : const Icon(Icons.auto_fix_off), 
                 onToggle: (value) {
                   ref.read(appSettingsProvider.notifier).updateState(
                         appSettings.copyWith(

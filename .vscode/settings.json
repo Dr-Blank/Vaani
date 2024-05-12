@@ -8,5 +8,11 @@
     "**/*.freezed.dart": true,
     "**/*.g.dart": true
   },
-  "cSpell.words": ["Autovalidate", "mocktail", "riverpod", "shelfsdk"]
+  "cSpell.words": [
+    "Autovalidate",
+    "mocktail",
+    "riverpod",
+    "shelfsdk",
+    "tapable"
+  ]
 }

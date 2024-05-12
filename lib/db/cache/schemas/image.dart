@@ -1,6 +1,6 @@
 import 'package:isar/isar.dart';
 
-part '../image.g.dart';
+part 'image.g.dart';
 
 /// Represents a cover image for a library item
 ///

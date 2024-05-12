@@ -13,8 +13,8 @@ part 'constants.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
-final GlobalKey<NavigatorState> _sectionANavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'sectionANav');
+final GlobalKey<NavigatorState> _sectionHomeNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'HomeNavigator');
 
 // GoRouter configuration
 class MyAppRouter {
@@ -43,7 +43,7 @@ class MyAppRouter {
             branches: <StatefulShellBranch>[
               // The route branch for the first tab of the bottom navigation bar.
               StatefulShellBranch(
-                navigatorKey: _sectionANavigatorKey,
+                navigatorKey: _sectionHomeNavigatorKey,
                 routes: <RouteBase>[
                   GoRoute(
                     path: '/',

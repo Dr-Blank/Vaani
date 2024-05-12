@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'schemas/image.dart';
+part of 'image.dart';
 
 // **************************************************************************
 // _IsarCollectionGenerator
@@ -16,7 +16,7 @@ extension GetImageCollection on Isar {
 
 const ImageSchema = IsarGeneratedSchema(
   schema: IsarSchema(
-    name: 'Image',
+    name: 'CacheImage',
     idName: 'id',
     embedded: false,
     properties: [
