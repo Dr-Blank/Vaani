@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:whispering_pages/features/player/view/audioobok_player.dart';
 
 /// Builds the "shell" for the app by building a Scaffold with a
 /// BottomNavigationBar, where [child] is placed in the body of the Scaffold.
-class ScaffoldWithNavBar extends StatelessWidget {
+class ScaffoldWithNavBar extends HookConsumerWidget {
   /// Constructs an [ScaffoldWithNavBar].
   const ScaffoldWithNavBar({
     required this.navigationShell,
@@ -14,9 +16,14 @@ class ScaffoldWithNavBar extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      body: navigationShell,
+      body: Stack(
+        children: [
+          navigationShell,
+          const AudiobookPlayer(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0.0,
         landscapeLayout: BottomNavigationBarLandscapeLayout.centered,

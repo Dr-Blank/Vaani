@@ -8,15 +8,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
 import 'package:whispering_pages/api/image_provider.dart';
 import 'package:whispering_pages/api/library_item_provider.dart';
-import 'package:whispering_pages/extensions/hero_tag_conventions.dart';
+import 'package:whispering_pages/constants/hero_tag_conventions.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player_provider.dart';
 import 'package:whispering_pages/router/models/library_item_extras.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 import 'package:whispering_pages/theme/theme_from_cover_provider.dart';
-import 'package:whispering_pages/widgets/shelves/book_shelf.dart';
+import 'package:whispering_pages/shared/widgets/shelves/book_shelf.dart';
 
-import '../../../widgets/expandable_description.dart';
-import '../../../widgets/library_item_sliver_app_bar.dart';
+import '../../../shared/widgets/expandable_description.dart';
+import 'library_item_sliver_app_bar.dart';
 
 class LibraryItemPage extends HookConsumerWidget {
   const LibraryItemPage({

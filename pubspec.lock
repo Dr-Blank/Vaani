@@ -688,6 +688,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  miniplayer:
+    dependency: "direct main"
+    description:
+      name: miniplayer
+      sha256: "6e12c27aef7432fc16508460a6dc824f3edfeb01761bd0dbfbccc84d516121bf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   octo_image:
     dependency: transitive
     description:

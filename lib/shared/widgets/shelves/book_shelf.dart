@@ -6,10 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:shimmer/shimmer.dart' show Shimmer;
 import 'package:whispering_pages/api/image_provider.dart';
-import 'package:whispering_pages/extensions/hero_tag_conventions.dart';
+import 'package:whispering_pages/constants/hero_tag_conventions.dart';
 import 'package:whispering_pages/router/models/library_item_extras.dart';
 import 'package:whispering_pages/router/router.dart';
-import 'package:whispering_pages/widgets/shelves/home_shelf.dart';
+import 'package:whispering_pages/shared/widgets/shelves/home_shelf.dart';
 
 /// A shelf that displays books on the home page
 class BookHomeShelf extends HookConsumerWidget {

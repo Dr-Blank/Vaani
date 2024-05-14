@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/widgets/shelves/author_shelf.dart';
-import 'package:whispering_pages/widgets/shelves/book_shelf.dart';
+import 'package:whispering_pages/shared/widgets/shelves/author_shelf.dart';
+import 'package:whispering_pages/shared/widgets/shelves/book_shelf.dart';
 
 /// A shelf that displays books/authors/series on the home page
 ///

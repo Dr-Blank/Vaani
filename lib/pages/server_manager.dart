@@ -5,7 +5,7 @@ import 'package:whispering_pages/api/authenticated_user_provider.dart';
 import 'package:whispering_pages/api/server_provider.dart';
 import 'package:whispering_pages/settings/models/audiobookshelf_server.dart' as model;
 import 'package:whispering_pages/settings/api_settings_provider.dart';
-import 'package:whispering_pages/widgets/add_new_server.dart';
+import 'package:whispering_pages/shared/widgets/add_new_server.dart';
 
 class ServerManagerPage extends HookConsumerWidget {
   const ServerManagerPage({

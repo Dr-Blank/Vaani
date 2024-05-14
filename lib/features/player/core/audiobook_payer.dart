@@ -9,7 +9,7 @@ import 'package:shelfsdk/audiobookshelf_api.dart';
 /// will manage the audio player instance
 class AudiobookPlayer extends AudioPlayer {
   // constructor which takes in the BookExpanded object
-  AudiobookPlayer(this.token, this.baseUrl) : super() {
+  AudiobookPlayer(this.token, this.baseUrl, {super.playerId}) : super() {
     // set the source of the player to the first track in the book
   }
 
@@ -31,12 +31,20 @@ class AudiobookPlayer extends AudioPlayer {
   final int _currentIndex = 0;
 
   /// sets the current [AudioTrack] as the source of the player
-  Future<void> setSourceAudioBook(BookExpanded book) async {
+  Future<void> setSourceAudioBook(BookExpanded? book) async {
+    // if the book is null, stop the player
+    if (book == null) {
+      _book = null;
+      return stop();
+    }
+
     // see if the book is the same as the current book
     if (_book == book) {
       // if the book is the same, do nothing
       return;
     }
+    // first stop the player
+    await stop();
 
     var track = book.tracks[_currentIndex];
     var url = '$baseUrl${track.contentUrl}?token=$token';
@@ -64,9 +72,14 @@ class AudiobookPlayer extends AudioPlayer {
       PlayerState.disposed => throw StateError('Player is disposed'),
     };
   }
+
+  /// override resume to set the source if the book is not set
+  @override
+  Future<void> resume() async {
+    if (_book == null) {
+      throw StateError('No book is set');
+    }
+    return super.resume();
+  }
 }
 
-void main(List<String> args) {
-  final AudiobookPlayer abPlayer = AudiobookPlayer('', Uri.parse(''));
-  print(abPlayer.resume());
-}

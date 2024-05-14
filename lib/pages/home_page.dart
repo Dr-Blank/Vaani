@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:whispering_pages/api/api_provider.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 
-import '../widgets/drawer.dart';
-import '../widgets/shelves/home_shelf.dart';
+import '../shared/widgets/drawer.dart';
+import '../shared/widgets/shelves/home_shelf.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});

@@ -4,7 +4,7 @@ import 'package:whispering_pages/pages/app_settings.dart';
 import 'package:whispering_pages/pages/home_page.dart';
 import 'package:whispering_pages/features/item_viewer/view/library_item_page.dart';
 import 'package:whispering_pages/pages/library_page.dart';
-import 'package:whispering_pages/pages/onboarding/onboarding_single_page.dart';
+import 'package:whispering_pages/features/onboarding/view/onboarding_single_page.dart';
 
 import 'scaffold_with_nav_bar.dart';
 import 'transitions/slide.dart';
@@ -28,6 +28,7 @@ class MyAppRouter {
             name: Routes.onboarding.name,
             builder: (context, state) => const OnboardingSinglePage(),
           ),
+          // The main app shell
           StatefulShellRoute.indexedStack(
             builder: (
               BuildContext context,
