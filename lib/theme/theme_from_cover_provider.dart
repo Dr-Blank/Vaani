@@ -6,14 +6,16 @@ import 'package:whispering_pages/api/image_provider.dart';
 
 part 'theme_from_cover_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<FutureOr<ColorScheme?>> themeFromCover(
   ThemeFromCoverRef ref,
   ImageProvider<Object> img, {
   Brightness brightness = Brightness.dark,
 }) async {
-  // add deliberate delay to simulate a long running task
+  // ! add deliberate delay to simulate a long running task
   await Future.delayed(500.ms);
+
+  debugPrint('Generating color scheme from cover image');
   return ColorScheme.fromImageProvider(
     provider: img,
     brightness: brightness,
@@ -41,7 +43,7 @@ Future<FutureOr<ColorScheme?>> themeFromCover(
   // return scheme;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<ColorScheme?> themeOfLibraryItem(
   ThemeOfLibraryItemRef ref,
   LibraryItem? item, {

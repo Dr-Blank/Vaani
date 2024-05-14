@@ -6,7 +6,7 @@ part of 'theme_from_cover_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$themeFromCoverHash() => r'7a364393ffff46152db31f0ed0f8f8b9d58c3b5e';
+String _$themeFromCoverHash() => r'bb4c5f32dfe7b6da6f43b8d002267d554cdf98ec';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -75,8 +75,7 @@ class ThemeFromCoverFamily extends Family<AsyncValue<FutureOr<ColorScheme?>>> {
 }
 
 /// See also [themeFromCover].
-class ThemeFromCoverProvider
-    extends AutoDisposeFutureProvider<FutureOr<ColorScheme?>> {
+class ThemeFromCoverProvider extends FutureProvider<FutureOr<ColorScheme?>> {
   /// See also [themeFromCover].
   ThemeFromCoverProvider(
     ImageProvider<Object> img, {
@@ -135,7 +134,7 @@ class ThemeFromCoverProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<FutureOr<ColorScheme?>> createElement() {
+  FutureProviderElement<FutureOr<ColorScheme?>> createElement() {
     return _ThemeFromCoverProviderElement(this);
   }
 
@@ -156,8 +155,7 @@ class ThemeFromCoverProvider
   }
 }
 
-mixin ThemeFromCoverRef
-    on AutoDisposeFutureProviderRef<FutureOr<ColorScheme?>> {
+mixin ThemeFromCoverRef on FutureProviderRef<FutureOr<ColorScheme?>> {
   /// The parameter `img` of this provider.
   ImageProvider<Object> get img;
 
@@ -166,7 +164,7 @@ mixin ThemeFromCoverRef
 }
 
 class _ThemeFromCoverProviderElement
-    extends AutoDisposeFutureProviderElement<FutureOr<ColorScheme?>>
+    extends FutureProviderElement<FutureOr<ColorScheme?>>
     with ThemeFromCoverRef {
   _ThemeFromCoverProviderElement(super.provider);
 
@@ -177,7 +175,7 @@ class _ThemeFromCoverProviderElement
 }
 
 String _$themeOfLibraryItemHash() =>
-    r'53be78f35075ced924e7b2f3cb7310a09d4cd232';
+    r'575a390a0ab0e66cf54cb090a358c08847270798';
 
 /// See also [themeOfLibraryItem].
 @ProviderFor(themeOfLibraryItem)
@@ -225,8 +223,7 @@ class ThemeOfLibraryItemFamily extends Family<AsyncValue<ColorScheme?>> {
 }
 
 /// See also [themeOfLibraryItem].
-class ThemeOfLibraryItemProvider
-    extends AutoDisposeFutureProvider<ColorScheme?> {
+class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
   /// See also [themeOfLibraryItem].
   ThemeOfLibraryItemProvider(
     LibraryItem? item, {
@@ -284,7 +281,7 @@ class ThemeOfLibraryItemProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<ColorScheme?> createElement() {
+  FutureProviderElement<ColorScheme?> createElement() {
     return _ThemeOfLibraryItemProviderElement(this);
   }
 
@@ -305,7 +302,7 @@ class ThemeOfLibraryItemProvider
   }
 }
 
-mixin ThemeOfLibraryItemRef on AutoDisposeFutureProviderRef<ColorScheme?> {
+mixin ThemeOfLibraryItemRef on FutureProviderRef<ColorScheme?> {
   /// The parameter `item` of this provider.
   LibraryItem? get item;
 
@@ -314,8 +311,7 @@ mixin ThemeOfLibraryItemRef on AutoDisposeFutureProviderRef<ColorScheme?> {
 }
 
 class _ThemeOfLibraryItemProviderElement
-    extends AutoDisposeFutureProviderElement<ColorScheme?>
-    with ThemeOfLibraryItemRef {
+    extends FutureProviderElement<ColorScheme?> with ThemeOfLibraryItemRef {
   _ThemeOfLibraryItemProviderElement(super.provider);
 
   @override

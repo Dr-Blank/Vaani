@@ -14,7 +14,7 @@ import 'package:whispering_pages/db/cache_manager.dart';
 
 part 'image_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class CoverImage extends _$CoverImage {
   @override
   Stream<Uint8List> build(LibraryItem libraryItem) async* {

@@ -32,6 +32,7 @@ isar_version: &isar_version ^4.0.0-dev.13 # define the version to be used
 dependencies:
   animated_list_plus: ^0.5.2
   animated_theme_switcher: ^2.0.10
+  audioplayers: ^6.0.0
   auto_scroll_text: ^0.0.7
   cached_network_image: ^3.3.1
   coast: ^2.0.2

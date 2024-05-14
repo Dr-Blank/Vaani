@@ -9,13 +9,14 @@ import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
 import 'package:whispering_pages/api/image_provider.dart';
 import 'package:whispering_pages/api/library_item_provider.dart';
 import 'package:whispering_pages/extensions/hero_tag_conventions.dart';
+import 'package:whispering_pages/features/player/providers/audiobook_player_provider.dart';
 import 'package:whispering_pages/router/models/library_item_extras.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 import 'package:whispering_pages/theme/theme_from_cover_provider.dart';
 import 'package:whispering_pages/widgets/shelves/book_shelf.dart';
 
-import '../widgets/expandable_description.dart';
-import '../widgets/library_item_sliver_app_bar.dart';
+import '../../../widgets/expandable_description.dart';
+import '../../../widgets/library_item_sliver_app_bar.dart';
 
 class LibraryItemPage extends HookConsumerWidget {
   const LibraryItemPage({
@@ -36,8 +37,13 @@ class LibraryItemPage extends HookConsumerWidget {
         : null;
 
     final itemFromApi = ref.watch(libraryItemProvider(itemId));
-    var itemBookMetadata =
-        itemFromApi.valueOrNull?.media.metadata as shelfsdk.BookMetadata?;
+
+    var itemBookMetadata = itemFromApi.valueOrNull == null
+        ? null
+        : shelfsdk.BookMetadataExpanded.fromJson(
+            itemFromApi.valueOrNull!.media.metadata.toJson(),
+          );
+    // itemFromApi.valueOrNull?.media.metadata as shelfsdk.BookMetadata?;
 
     final useMaterialThemeOnItemPage =
         ref.watch(appSettingsProvider).useMaterialThemeOnItemPage;
@@ -87,9 +93,10 @@ class LibraryItemPage extends HookConsumerWidget {
                         : const SizedBox.shrink(),
                   ),
                   // a row of actions like play, download, share, etc
-                  const SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                    sliver: LibraryItemActions(),
+                  SliverToBoxAdapter(
+                    child: itemFromApi.valueOrNull != null
+                        ? LibraryItemActions(item: itemFromApi.valueOrNull!)
+                        : const SizedBox.shrink(),
                   ),
                   // a expandable section for book description
                   SliverToBoxAdapter(
@@ -122,7 +129,7 @@ class LibraryItemMetadata extends StatelessWidget {
   });
 
   final shelfsdk.LibraryItem item;
-  final shelfsdk.BookMetadata? itemBookMetadata;
+  final shelfsdk.BookMetadataExpanded? itemBookMetadata;
   final shelfsdk.BookMinified? bookDetailsCached;
 
   @override
@@ -178,7 +185,7 @@ class LibraryItemMetadata extends StatelessWidget {
   /// will add up all the durations of the audio files first
   /// then convert them to the given format
   String? getDurationFormatted() {
-    final book = (item.media as shelfsdk.Book?);
+    final book = (item.media as shelfsdk.BookExpanded?);
     if (book == null) {
       return null;
     }
@@ -195,7 +202,7 @@ class LibraryItemMetadata extends StatelessWidget {
   /// will add up all the sizes of the audio files first
   /// then convert them to MB
   String? getSizeFormatted() {
-    final book = (item.media as shelfsdk.Book?);
+    final book = (item.media as shelfsdk.BookExpanded?);
     if (book == null) {
       return null;
     }
@@ -207,7 +214,7 @@ class LibraryItemMetadata extends StatelessWidget {
 
   /// will return the codec and bitrate of the book
   String? getCodecAndBitrate() {
-    final book = (item.media as shelfsdk.Book?);
+    final book = (item.media as shelfsdk.BookExpanded?);
     if (book == null) {
       return null;
     }
@@ -246,7 +253,7 @@ class _MetadataItem extends StatelessWidget {
         Text(
           style: themeData.textTheme.bodySmall?.copyWith(
             color: themeData.colorScheme.onBackground.withOpacity(0.7),
-              ),
+          ),
           title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -256,26 +263,46 @@ class _MetadataItem extends StatelessWidget {
   }
 }
 
-class LibraryItemActions extends StatelessWidget {
-  const LibraryItemActions({
+class LibraryItemActions extends HookConsumerWidget {
+  LibraryItemActions({
     super.key,
-  });
+    required this.item,
+  }) {
+    book = shelfsdk.BookExpanded.fromJson(item.media.toJson());
+  }
 
+  final shelfsdk.LibraryItem item;
+  late final shelfsdk.BookExpanded book;
   @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final player = ref.read(audiobookPlayerProvider);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            // play/resume button the same widht as image
+            // play/resume button the same width as image
             LayoutBuilder(
               builder: (context, constraints) {
                 return SizedBox(
                   width: calculateWidth(context, constraints),
                   // a boxy button with icon and text but little rounded corner
                   child: ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () async {
+                      // play the book
+                      debugPrint('Pressed play/resume button');
+                      // set the book to the player if not already set
+                      if (player.book != book) {
+                        debugPrint('Setting the book ${book.libraryItemId}');
+                        await player.setSourceAudioBook(book);
+                        ref
+                            .read(audiobookPlayerProvider.notifier)
+                            .notifyListeners();
+                      }
+                      // toggle play/pause
+                      player.togglePlayPause();
+                    },
                     icon: const Icon(Icons.play_arrow_rounded),
                     label: const Text('Play/Resume'),
                     style: ElevatedButton.styleFrom(
@@ -350,7 +377,7 @@ class LibraryItemHeroSection extends HookConsumerWidget {
   final LibraryItemExtras? extraMap;
   final Image? providedCacheImage;
   final AsyncValue<shelfsdk.LibraryItem> item;
-  final shelfsdk.BookMetadata? itemBookMetadata;
+  final shelfsdk.BookMetadataExpanded? itemBookMetadata;
   final shelfsdk.BookMinified? bookDetailsCached;
   final AsyncValue<ColorScheme?> coverColorScheme;
 
@@ -490,7 +517,7 @@ class _BookSeries extends StatelessWidget {
     required this.bookDetailsCached,
   });
 
-  final shelfsdk.BookMetadata? itemBookMetadata;
+  final shelfsdk.BookMetadataExpanded? itemBookMetadata;
   final shelfsdk.BookMinified? bookDetailsCached;
 
   @override
@@ -536,12 +563,11 @@ class _BookNarrators extends StatelessWidget {
     required this.bookDetailsCached,
   });
 
-  final shelfsdk.BookMetadata? itemBookMetadata;
+  final shelfsdk.BookMetadataExpanded? itemBookMetadata;
   final shelfsdk.BookMinified? bookDetailsCached;
 
   @override
   Widget build(BuildContext context) {
-
     String generateNarratorsString() {
       final narrators = (itemBookMetadata)?.narrators ?? [];
       if (narrators.isEmpty) {
@@ -553,7 +579,6 @@ class _BookNarrators extends StatelessWidget {
     }
 
     final themeData = Theme.of(context);
-    
 
     return generateNarratorsString() == ''
         ? const SizedBox.shrink()
@@ -654,7 +679,7 @@ class _BookTitle extends StatelessWidget {
   });
 
   final LibraryItemExtras? extraMap;
-  final shelfsdk.BookMetadata? itemBookMetadata;
+  final shelfsdk.BookMetadataExpanded? itemBookMetadata;
   final shelfsdk.BookMinified? bookDetailsCached;
 
   @override
@@ -683,11 +708,8 @@ class _BookTitle extends StatelessWidget {
             ? const SizedBox.shrink()
             : Text(
                 style: themeData.textTheme.titleSmall?.copyWith(
-                  color: themeData
-                          .colorScheme
-                          .onBackground
-                          .withOpacity(0.8),
-                    ),
+                  color: themeData.colorScheme.onBackground.withOpacity(0.8),
+                ),
                 itemBookMetadata?.subtitle ?? '',
               ),
       ],
@@ -702,7 +724,7 @@ class _BookAuthors extends StatelessWidget {
     required this.bookDetailsCached,
   });
 
-  final shelfsdk.BookMetadata? itemBookMetadata;
+  final shelfsdk.BookMetadataExpanded? itemBookMetadata;
   final shelfsdk.BookMinified? bookDetailsCached;
 
   @override

@@ -9,7 +9,7 @@ part 'api_settings_provider.g.dart';
 
 final _box = AvailableHiveBoxes.apiSettingsBox;
 
-@riverpod
+@Riverpod(keepAlive: true)
 class ApiSettings extends _$ApiSettings {
   @override
   model.ApiSettings build() {

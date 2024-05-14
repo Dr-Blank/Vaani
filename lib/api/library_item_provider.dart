@@ -33,7 +33,10 @@ class LibraryItem extends _$LibraryItem {
       );
       yield cachedItem;
     }
-    final item = await api.items.get(libraryItemId: id);
+    final item = await api.items.get(
+      libraryItemId: id,
+      parameters: const shelfsdk.GetItemReqParams(expanded: true),
+    );
     if (item != null) {
       // save to cache
       final newFile = await apiResponseCacheManager.putFile(

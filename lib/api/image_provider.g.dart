@@ -6,7 +6,7 @@ part of 'image_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$coverImageHash() => r'3f4ef56a2539dd2082e7de55098bed8876098e9f';
+String _$coverImageHash() => r'fa97592576b5450053066fcd644f2b5c30d3a5bc';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,8 +29,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$CoverImage
-    extends BuildlessAutoDisposeStreamNotifier<Uint8List> {
+abstract class _$CoverImage extends BuildlessStreamNotifier<Uint8List> {
   late final LibraryItem libraryItem;
 
   Stream<Uint8List> build(
@@ -82,7 +81,7 @@ class CoverImageFamily extends Family<AsyncValue<Uint8List>> {
 
 /// See also [CoverImage].
 class CoverImageProvider
-    extends AutoDisposeStreamNotifierProviderImpl<CoverImage, Uint8List> {
+    extends StreamNotifierProviderImpl<CoverImage, Uint8List> {
   /// See also [CoverImage].
   CoverImageProvider(
     LibraryItem libraryItem,
@@ -138,8 +137,7 @@ class CoverImageProvider
   }
 
   @override
-  AutoDisposeStreamNotifierProviderElement<CoverImage, Uint8List>
-      createElement() {
+  StreamNotifierProviderElement<CoverImage, Uint8List> createElement() {
     return _CoverImageProviderElement(this);
   }
 
@@ -157,13 +155,13 @@ class CoverImageProvider
   }
 }
 
-mixin CoverImageRef on AutoDisposeStreamNotifierProviderRef<Uint8List> {
+mixin CoverImageRef on StreamNotifierProviderRef<Uint8List> {
   /// The parameter `libraryItem` of this provider.
   LibraryItem get libraryItem;
 }
 
 class _CoverImageProviderElement
-    extends AutoDisposeStreamNotifierProviderElement<CoverImage, Uint8List>
+    extends StreamNotifierProviderElement<CoverImage, Uint8List>
     with CoverImageRef {
   _CoverImageProviderElement(super.provider);
 

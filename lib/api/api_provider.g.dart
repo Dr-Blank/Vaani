@@ -168,7 +168,7 @@ class _AudiobookshelfApiProviderElement
   Uri? get baseUrl => (origin as AudiobookshelfApiProvider).baseUrl;
 }
 
-String _$authenticatedApiHash() => r'62213d5d0268eeaa2a16211cd60b1b6f0d19dd40';
+String _$authenticatedApiHash() => r'd99ea87b21dfb63b5f6fed8f79e835af42f2296f';
 
 /// get the api instance for the authenticated user
 ///
@@ -176,8 +176,7 @@ String _$authenticatedApiHash() => r'62213d5d0268eeaa2a16211cd60b1b6f0d19dd40';
 ///
 /// Copied from [authenticatedApi].
 @ProviderFor(authenticatedApi)
-final authenticatedApiProvider =
-    AutoDisposeProvider<AudiobookshelfApi>.internal(
+final authenticatedApiProvider = Provider<AudiobookshelfApi>.internal(
   authenticatedApi,
   name: r'authenticatedApiProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -187,7 +186,7 @@ final authenticatedApiProvider =
   allTransitiveDependencies: null,
 );
 
-typedef AuthenticatedApiRef = AutoDisposeProviderRef<AudiobookshelfApi>;
+typedef AuthenticatedApiRef = ProviderRef<AudiobookshelfApi>;
 String _$isServerAliveHash() => r'f839350795fbdeb0ca1d5f0c84a9065cac4dd40a';
 
 /// ping the server to check if it is reachable

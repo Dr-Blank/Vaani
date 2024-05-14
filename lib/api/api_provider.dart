@@ -37,7 +37,7 @@ AudiobookshelfApi audiobookshelfApi(AudiobookshelfApiRef ref, Uri? baseUrl) {
 /// get the api instance for the authenticated user
 ///
 /// if the user is not authenticated throw an error
-@riverpod
+@Riverpod(keepAlive: true)
 AudiobookshelfApi authenticatedApi(AuthenticatedApiRef ref) {
   final apiSettings = ref.watch(apiSettingsProvider);
   final user = apiSettings.activeUser;

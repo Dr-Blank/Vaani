@@ -9,6 +9,7 @@
     "**/*.g.dart": true
   },
   "cSpell.words": [
+    "audioplayers",
     "Autovalidate",
     "mocktail",
     "riverpod",
