@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'audiobook_player_provider.dart';
+part of 'audiobook_player.dart';
 
 // **************************************************************************
 // RiverpodGenerator

@@ -30,6 +30,9 @@ class AudiobookPlayer extends AudioPlayer {
   // the current index of the audio file in the [book]
   final int _currentIndex = 0;
 
+  // available audio tracks
+  int? get availableTracks => _book?.tracks.length;
+
   /// sets the current [AudioTrack] as the source of the player
   Future<void> setSourceAudioBook(BookExpanded? book) async {
     // if the book is null, stop the player
@@ -50,7 +53,6 @@ class AudiobookPlayer extends AudioPlayer {
     var url = '$baseUrl${track.contentUrl}?token=$token';
     await setSourceUrl(
       url,
-      // '${track.contentUrl}?token=$token',
       mimeType: track.mimeType,
     );
     _book = book;
@@ -81,5 +83,37 @@ class AudiobookPlayer extends AudioPlayer {
     }
     return super.resume();
   }
-}
 
+  /// a convenience stream for onPositionEveryXSeconds
+  Stream<Duration> onPositionEvery(Duration duration) => TimerPositionUpdater(
+        getPosition: getCurrentPosition,
+        interval: duration,
+      ).positionStream;
+
+  /// need to override getDuration and getCurrentPosition to return according to the book instead of the current track
+  /// this is because the book can be a list of audio files and the player is only aware of the current track
+  /// so we need to calculate the duration and current position based on the book
+  @override
+  Future<Duration?> getDuration() async {
+    if (_book == null) {
+      return null;
+    }
+    return _book!.tracks.fold<Duration>(
+      Duration.zero,
+      (previousValue, element) => previousValue + element.duration,
+    );
+  }
+
+  @override
+  Future<Duration?> getCurrentPosition() async {
+    if (_book == null) {
+      return null;
+    }
+    var currentTrack = _book!.tracks[_currentIndex];
+    var currentTrackDuration = currentTrack.duration;
+    var currentTrackPosition = await super.getCurrentPosition();
+    return currentTrackPosition != null
+        ? currentTrackPosition + currentTrackDuration
+        : null;
+  }
+}
