@@ -32,8 +32,8 @@ isar_version: &isar_version ^4.0.0-dev.13 # define the version to be used
 dependencies:
   animated_list_plus: ^0.5.2
   animated_theme_switcher: ^2.0.10
+  audio_session: ^0.1.19
   audio_video_progress_bar: ^2.0.2
-  audioplayers: ^6.0.0
   auto_scroll_text: ^0.0.7
   cached_network_image: ^3.3.1
   coast: ^2.0.2
@@ -54,11 +54,18 @@ dependencies:
   isar: ^4.0.0-dev.13
   isar_flutter_libs: ^4.0.0-dev.13
   json_annotation: ^4.9.0
+  just_audio: ^0.9.37
+  just_audio_background: ^0.0.1-beta.11
+  just_audio_media_kit: ^2.0.4
   lottie: ^3.1.0
-  miniplayer: ^1.0.1
+  media_kit_libs_linux: any
+  media_kit_libs_windows_audio: any
+  miniplayer:
+    path: ../miniplayer
   path: ^1.9.0
   path_provider: ^2.1.0
   riverpod_annotation: ^2.3.5
+  rxdart: ^0.27.7
   scroll_loop_auto_scroll: ^0.0.5
   shelfsdk:
     path: ../../_dart/shelfsdk

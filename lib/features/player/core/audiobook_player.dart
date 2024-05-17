@@ -3,13 +3,15 @@
 /// this is needed as audiobook can be a list of audio files instead of a single file
 library;
 
-import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 
 /// will manage the audio player instance
 class AudiobookPlayer extends AudioPlayer {
   // constructor which takes in the BookExpanded object
-  AudiobookPlayer(this.token, this.baseUrl, {super.playerId}) : super() {
+  AudiobookPlayer(this.token, this.baseUrl) : super() {
     // set the source of the player to the first track in the book
   }
 
@@ -28,7 +30,7 @@ class AudiobookPlayer extends AudioPlayer {
   final Uri baseUrl;
 
   // the current index of the audio file in the [book]
-  final int _currentIndex = 0;
+  // final int _currentIndex = 0;
 
   // available audio tracks
   int? get availableTracks => _book?.tracks.length;
@@ -46,15 +48,32 @@ class AudiobookPlayer extends AudioPlayer {
       // if the book is the same, do nothing
       return;
     }
-    // first stop the player
+    // first stop the player and clear the source
     await stop();
 
-    var track = book.tracks[_currentIndex];
-    var url = '$baseUrl${track.contentUrl}?token=$token';
-    await setSourceUrl(
-      url,
-      mimeType: track.mimeType,
-    );
+    await setAudioSource(
+      ConcatenatingAudioSource(
+        useLazyPreparation: true,
+        children: book.tracks.map((track) {
+          return AudioSource.uri(
+            Uri.parse('$baseUrl${track.contentUrl}?token=$token'),
+            tag: MediaItem(
+              // Specify a unique ID for each media item:
+              id: book.libraryItemId + track.index.toString(),
+              // Metadata to display in the notification:
+              album: book.metadata.title,
+              title: book.metadata.title ?? track.title,
+              artUri: Uri.parse(
+                '$baseUrl/api/items/${book.libraryItemId}/cover?token=$token&width=800',
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    ).catchError((error) {
+      debugPrint('Error: $error');
+    });
+
     _book = book;
   }
 
@@ -64,56 +83,37 @@ class AudiobookPlayer extends AudioPlayer {
     if (_book == null) {
       throw StateError('No book is set');
     }
-    return switch (state) {
-      PlayerState.playing => pause(),
-      PlayerState.paused ||
-      PlayerState.stopped ||
-      PlayerState.completed =>
-        resume(),
-      // do nothing if the player is disposed
-      PlayerState.disposed => throw StateError('Player is disposed'),
+
+    // ! refactor this
+    return switch (playerState) {
+      PlayerState(playing: var isPlaying) => isPlaying ? pause() : play(),
     };
   }
-
-  /// override resume to set the source if the book is not set
-  @override
-  Future<void> resume() async {
-    if (_book == null) {
-      throw StateError('No book is set');
-    }
-    return super.resume();
-  }
-
-  /// a convenience stream for onPositionEveryXSeconds
-  Stream<Duration> onPositionEvery(Duration duration) => TimerPositionUpdater(
-        getPosition: getCurrentPosition,
-        interval: duration,
-      ).positionStream;
 
   /// need to override getDuration and getCurrentPosition to return according to the book instead of the current track
   /// this is because the book can be a list of audio files and the player is only aware of the current track
   /// so we need to calculate the duration and current position based on the book
-  @override
-  Future<Duration?> getDuration() async {
-    if (_book == null) {
-      return null;
-    }
-    return _book!.tracks.fold<Duration>(
-      Duration.zero,
-      (previousValue, element) => previousValue + element.duration,
-    );
-  }
+  // @override
+  // Future<Duration?> getDuration() async {
+  //   if (_book == null) {
+  //     return null;
+  //   }
+  //   return _book!.tracks.fold<Duration>(
+  //     Duration.zero,
+  //     (previousValue, element) => previousValue + element.duration,
+  //   );
+// }
 
-  @override
-  Future<Duration?> getCurrentPosition() async {
-    if (_book == null) {
-      return null;
-    }
-    var currentTrack = _book!.tracks[_currentIndex];
-    var currentTrackDuration = currentTrack.duration;
-    var currentTrackPosition = await super.getCurrentPosition();
-    return currentTrackPosition != null
-        ? currentTrackPosition + currentTrackDuration
-        : null;
-  }
+  // @override
+  // Future<Duration?> getCurrentPosition() async {
+  //   if (_book == null) {
+  //     return null;
+  //   }
+  //   var currentTrack = _book!.tracks[_currentIndex];
+  //   var currentTrackDuration = currentTrack.duration;
+  //   var currentTrackPosition = await super.getCurrentPosition();
+  //   return currentTrackPosition != null
+  //       ? currentTrackPosition + currentTrackDuration
+  //       : null;
+  // }
 }

@@ -10,7 +10,7 @@ class PlayerWhenExpanded extends StatelessWidget {
     required this.percentageExpandedPlayer,
     required this.text,
     required this.buttonSkipBackwards,
-    required this.buttonPlayExpanded,
+    required this.playPauseButton,
     required this.buttonSkipForward,
     required this.progressIndicator,
   });
@@ -23,7 +23,7 @@ class PlayerWhenExpanded extends StatelessWidget {
   final double percentageExpandedPlayer;
   final Text text;
   final IconButton buttonSkipBackwards;
-  final IconButton buttonPlayExpanded;
+  final Widget playPauseButton;
   final IconButton buttonSkipForward;
   final Widget progressIndicator;
 
@@ -62,7 +62,7 @@ class PlayerWhenExpanded extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         buttonSkipBackwards,
-                        buttonPlayExpanded,
+                        playPauseButton,
                         buttonSkipForward,
                       ],
                     ),

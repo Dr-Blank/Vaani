@@ -24,12 +24,12 @@ class AudiobookPlayer extends _$AudiobookPlayer {
   abp.AudiobookPlayer build() {
     final api = ref.watch(authenticatedApiProvider);
     final player =
-        abp.AudiobookPlayer(api.token!, api.baseUrl, playerId: playerId);
+        abp.AudiobookPlayer(api.token!, api.baseUrl);
 
     ref.onDispose(player.dispose);
 
     // bind notify listeners to the player
-    player.onPlayerStateChanged.listen((_) {
+    player.playerStateStream.listen((_) {
       notifyListeners();
     });
 

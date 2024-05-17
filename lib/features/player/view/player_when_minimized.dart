@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:miniplayer/miniplayer.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
-import 'package:whispering_pages/features/player/view/audiobook_player.dart';
+import 'package:whispering_pages/features/player/providers/player_form.dart';
 
 class PlayerWhenMinimized extends HookConsumerWidget {
   const PlayerWhenMinimized({
@@ -11,20 +10,19 @@ class PlayerWhenMinimized extends HookConsumerWidget {
     required this.imgWidget,
     required this.elementOpacity,
     required this.playPauseButton,
-    required this.progressIndicatorHeight,
     required this.progressIndicator,
   });
 
   final double maxImgSize;
   final Widget imgWidget;
   final double elementOpacity;
-  final IconButton playPauseButton;
-  final double progressIndicatorHeight;
+  final Widget playPauseButton;
   final Widget progressIndicator;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(audiobookPlayerProvider);
+    final controller = ref.watch(miniplayerControllerProvider);
     return Column(
       children: [
         Expanded(
@@ -67,14 +65,14 @@ class PlayerWhenMinimized extends HookConsumerWidget {
                   ),
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.fullscreen),
-                onPressed: () {
-                  controller.animateToHeight(state: PanelState.MAX);
-                },
-              ),
+              // IconButton(
+              //   icon: const Icon(Icons.fullscreen),
+              //   onPressed: () {
+              //     controller.animateToHeight(state: PanelState.MAX);
+              //   },
+              // ),
               Padding(
-                padding: const EdgeInsets.only(right: 3),
+                padding: const EdgeInsets.all(8),
                 child: Opacity(
                   opacity: elementOpacity,
                   child: playPauseButton,
@@ -83,13 +81,13 @@ class PlayerWhenMinimized extends HookConsumerWidget {
             ],
           ),
         ),
-        SizedBox(
-          height: progressIndicatorHeight,
-          child: Opacity(
-            opacity: elementOpacity,
-            child: progressIndicator,
-          ),
-        ),
+        // SizedBox(
+        //   height: progressIndicatorHeight,
+        //   child: Opacity(
+        //     opacity: elementOpacity,
+        //     child: progressIndicator,
+        //   ),
+        // ),
       ],
     );
   }

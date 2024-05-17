@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:whispering_pages/features/player/providers/player_form.dart';
 import 'package:whispering_pages/features/player/view/audiobook_player.dart';
 
 /// Builds the "shell" for the app by building a Scaffold with a
@@ -17,6 +20,16 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // playerExpandProgress is used to animate bottom navigation bar to opacity 0 and slide down when player is expanded
+    // final playerProgress =
+    //     useValueListenable(ref.watch(playerExpandProgressNotifierProvider));
+    final playerProgress = ref.watch(playerHeightProvider);
+    final playerMaxHeight = MediaQuery.of(context).size.height;
+    var percentExpanded = (playerProgress - playerMinHeight) /
+        (playerMaxHeight - playerMinHeight);
+    // Clamp the value between 0 and 1
+    percentExpanded = max(0, min(1, percentExpanded));
+
     return Scaffold(
       body: Stack(
         children: [
@@ -24,33 +37,44 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
           const AudiobookPlayer(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0.0,
-        landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
-        selectedFontSize: Theme.of(context).textTheme.labelMedium!.fontSize!,
-        unselectedFontSize: Theme.of(context).textTheme.labelMedium!.fontSize!,
-        showUnselectedLabels: false,
-        fixedColor: Theme.of(context).colorScheme.onBackground,
-        // type: BottomNavigationBarType.fixed,
+      bottomNavigationBar: Opacity(
+        // Opacity is interpolated from 1 to 0 when player is expanded
+        opacity: 1 - percentExpanded,
+        child: SizedBox(
+          // height is interpolated from 0 to 56 when player is expanded
+          height: 56 * (1 - percentExpanded),
 
-        // Here, the items of BottomNavigationBar are hard coded. In a real
-        // world scenario, the items would most likely be generated from the
-        // branches of the shell route, which can be fetched using
-        // `navigationShell.route.branches`.
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            label: 'Home',
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
+          child: BottomNavigationBar(
+            elevation: 0.0,
+            landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
+            selectedFontSize:
+                Theme.of(context).textTheme.labelMedium!.fontSize!,
+            unselectedFontSize:
+                Theme.of(context).textTheme.labelMedium!.fontSize!,
+            showUnselectedLabels: false,
+            fixedColor: Theme.of(context).colorScheme.onBackground,
+            // type: BottomNavigationBarType.fixed,
+
+            // Here, the items of BottomNavigationBar are hard coded. In a real
+            // world scenario, the items would most likely be generated from the
+            // branches of the shell route, which can be fetched using
+            // `navigationShell.route.branches`.
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                label: 'Home',
+                icon: Icon(Icons.home_outlined),
+                activeIcon: Icon(Icons.home),
+              ),
+              BottomNavigationBarItem(
+                label: 'Settings',
+                icon: Icon(Icons.settings_outlined),
+                activeIcon: Icon(Icons.settings),
+              ),
+            ],
+            currentIndex: navigationShell.currentIndex,
+            onTap: (int index) => _onTap(context, index),
           ),
-          BottomNavigationBarItem(
-            label: 'Settings',
-            icon: Icon(Icons.settings_outlined),
-            activeIcon: Icon(Icons.settings),
-          ),
-        ],
-        currentIndex: navigationShell.currentIndex,
-        onTap: (int index) => _onTap(context, index),
+        ),
       ),
     );
   }

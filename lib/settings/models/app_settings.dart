@@ -13,8 +13,30 @@ class AppSettings with _$AppSettings {
   const factory AppSettings({
     @Default(true) bool isDarkMode,
     @Default(false) bool useMaterialThemeOnItemPage,
+    @Default(PlayerSettings()) PlayerSettings playerSettings,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>
       _$AppSettingsFromJson(json);
+}
+
+@freezed
+class PlayerSettings with _$PlayerSettings {
+  const factory PlayerSettings({
+    @Default(MinimizedPlayerSettings())
+    MinimizedPlayerSettings miniPlayerSettings,
+  }) = _PlayerSettings;
+
+  factory PlayerSettings.fromJson(Map<String, dynamic> json) =>
+      _$PlayerSettingsFromJson(json);
+}
+
+@freezed
+class MinimizedPlayerSettings with _$MinimizedPlayerSettings {
+  const factory MinimizedPlayerSettings({
+    @Default(false) bool useChapterInfo,
+  }) = _MiniPlayerSettings;
+
+  factory MinimizedPlayerSettings.fromJson(Map<String, dynamic> json) =>
+      _$MinimizedPlayerSettingsFromJson(json);
 }

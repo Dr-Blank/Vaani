@@ -12,8 +12,8 @@ import 'package:whispering_pages/constants/hero_tag_conventions.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
 import 'package:whispering_pages/router/models/library_item_extras.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
-import 'package:whispering_pages/theme/theme_from_cover_provider.dart';
 import 'package:whispering_pages/shared/widgets/shelves/book_shelf.dart';
+import 'package:whispering_pages/theme/theme_from_cover_provider.dart';
 
 import '../../../shared/widgets/expandable_description.dart';
 import 'library_item_sliver_app_bar.dart';
@@ -219,7 +219,7 @@ class LibraryItemMetadata extends StatelessWidget {
       return null;
     }
     final codec = book.audioFiles.first.codec.toUpperCase();
-    final bitrate = book.audioFiles.first.bitRate;
+    // final bitrate = book.audioFiles.first.bitRate;
     return codec;
   }
 }
@@ -277,85 +277,83 @@ class LibraryItemActions extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.read(audiobookPlayerProvider);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            // play/resume button the same width as image
-            LayoutBuilder(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          // play/resume button the same width as image
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return SizedBox(
+                width: calculateWidth(context, constraints),
+                // a boxy button with icon and text but little rounded corner
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    // play the book
+                    debugPrint('Pressed play/resume button');
+                    // set the book to the player if not already set
+                    if (player.book != book) {
+                      debugPrint('Setting the book ${book.libraryItemId}');
+                      await player.setSourceAudioBook(book);
+                      ref
+                          .read(audiobookPlayerProvider.notifier)
+                          .notifyListeners();
+                    }
+                    // toggle play/pause
+                    player.togglePlayPause();
+                  },
+                  icon: const Icon(Icons.play_arrow_rounded),
+                  label: const Text('Play/Resume'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+          Expanded(
+            child: LayoutBuilder(
               builder: (context, constraints) {
                 return SizedBox(
-                  width: calculateWidth(context, constraints),
-                  // a boxy button with icon and text but little rounded corner
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      // play the book
-                      debugPrint('Pressed play/resume button');
-                      // set the book to the player if not already set
-                      if (player.book != book) {
-                        debugPrint('Setting the book ${book.libraryItemId}');
-                        await player.setSourceAudioBook(book);
-                        ref
-                            .read(audiobookPlayerProvider.notifier)
-                            .notifyListeners();
-                      }
-                      // toggle play/pause
-                      player.togglePlayPause();
-                    },
-                    icon: const Icon(Icons.play_arrow_rounded),
-                    label: const Text('Play/Resume'),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
+                  width: constraints.maxWidth * 0.6,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // read list button
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.playlist_add_rounded,
+                        ),
                       ),
-                    ),
+                      // share button
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.share_rounded),
+                      ),
+                      // download button
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.download_rounded,
+                        ),
+                      ),
+                      // more button
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.more_vert_rounded,
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },
             ),
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return SizedBox(
-                    width: constraints.maxWidth * 0.6,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        // read list button
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.playlist_add_rounded,
-                          ),
-                        ),
-                        // share button
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.share_rounded),
-                        ),
-                        // download button
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.download_rounded,
-                          ),
-                        ),
-                        // more button
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.more_vert_rounded,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

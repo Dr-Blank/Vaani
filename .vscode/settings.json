@@ -17,5 +17,6 @@
     "riverpod",
     "shelfsdk",
     "tapable"
-  ]
+  ],
+  "cmake.configureOnOpen": false
 }
