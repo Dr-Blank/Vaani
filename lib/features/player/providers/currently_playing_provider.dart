@@ -14,13 +14,7 @@ BookExpanded? currentlyPlayingBook(CurrentlyPlayingBookRef ref) {
 @riverpod
 BookChapter? currentPlayingChapter(CurrentPlayingChapterRef ref) {
   final player = ref.watch(audiobookPlayerProvider);
-  // get the current timestamp
-  final currentTimestamp = player.position;
-  // get the chapter that contains the current timestamp
-  return player.book?.chapters.firstWhere(
-    (element) =>
-        element.start <= currentTimestamp && element.end >= currentTimestamp,
-  );
+  return player.currentChapter;
 }
 
 /// provides the book metadata of the currently playing book

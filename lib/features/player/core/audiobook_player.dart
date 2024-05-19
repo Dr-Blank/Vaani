@@ -22,14 +22,21 @@ Duration sumOfTracks(BookExpanded book, int? index) {
 
 /// returns the [AudioTrack] to play based on the [position] in the [book]
 AudioTrack getTrackToPlay(BookExpanded book, Duration position) {
-  var totalDuration = Duration.zero;
-  for (var track in book.tracks) {
-    totalDuration += track.duration;
-    if (totalDuration >= position) {
-      return track;
-    }
-  }
-  return book.tracks.last;
+  // var totalDuration = Duration.zero;
+  // for (var track in book.tracks) {
+  //   totalDuration += track.duration;
+  //   if (totalDuration >= position) {
+  //     return track;
+  //   }
+  // }
+  // return book.tracks.last;
+  return book.tracks.firstWhere(
+    (element) {
+      return element.startOffset <= position &&
+          (element.startOffset + element.duration) >= position;
+    },
+    orElse: () => book.tracks.last,
+  );
 }
 
 /// will manage the audio player instance
@@ -90,11 +97,11 @@ class AudiobookPlayer extends AudioPlayer {
     // hence first we need to calculate the current track which will be used to set the initial position
     // then we set the initial index to the current track index and position as the remaining duration from the position
     // after subtracting the duration of all the previous tracks
-
+    // initialPosition ;
     final trackToPlay = getTrackToPlay(book, initialPosition ?? Duration.zero);
     final initialIndex = book.tracks.indexOf(trackToPlay);
     final initialPositionInTrack = initialPosition != null
-        ? initialPosition - sumOfTracks(book, initialIndex - 1)
+        ? initialPosition - trackToPlay.startOffset
         : null;
 
     await setAudioSource(
@@ -131,7 +138,7 @@ class AudiobookPlayer extends AudioPlayer {
       throw StateError('No book is set');
     }
 
-    // TODO refactor this
+    // TODO refactor this to cover all the states
     return switch (playerState) {
       PlayerState(playing: var isPlaying) => isPlaying ? pause() : play(),
     };
@@ -142,17 +149,34 @@ class AudiobookPlayer extends AudioPlayer {
   /// so we need to calculate the duration and current position based on the book
 
   @override
-  Future<void> seek(Duration? position, {int? index}) async {
+  Future<void> seek(Duration? positionInBook, {int? index}) async {
     if (_book == null) {
       return;
     }
-    if (position == null) {
+    if (positionInBook == null) {
       return;
     }
-    final trackToPlay = getTrackToPlay(_book!, position);
-    final index = _book!.tracks.indexOf(trackToPlay);
-    final positionInTrack = position - sumOfTracks(_book!, index - 1);
+    final tracks = _book!.tracks;
+    final trackToPlay = getTrackToPlay(_book!, positionInBook);
+    final index = tracks.indexOf(trackToPlay);
+    final positionInTrack = positionInBook - trackToPlay.startOffset;
     return super.seek(positionInTrack, index: index);
+  }
+
+  /// a convenience method to get position in the book instead of the current track position
+  Duration get positionInBook {
+    if (_book == null) {
+      return Duration.zero;
+    }
+    return position + _book!.tracks[sequenceState!.currentIndex].startOffset;
+  }
+
+  /// a convenience method to get the buffered position in the book instead of the current track position
+  Duration get bufferedPositionInBook {
+    if (_book == null) {
+      return Duration.zero;
+    }
+    return bufferedPosition + _book!.tracks[sequenceState!.currentIndex].startOffset;
   }
 
   /// streams to override to suit the book instead of the current track
@@ -161,11 +185,12 @@ class AudiobookPlayer extends AudioPlayer {
 
   @override
   Stream<Duration> get positionStream {
+    // return the positioninbook stream
     return super.positionStream.map((position) {
       if (_book == null) {
         return Duration.zero;
       }
-      return position + sumOfTracks(_book!, sequenceState!.currentIndex);
+      return position + _book!.tracks[sequenceState!.currentIndex].startOffset;
     });
   }
 
@@ -175,7 +200,7 @@ class AudiobookPlayer extends AudioPlayer {
       if (_book == null) {
         return Duration.zero;
       }
-      return position + sumOfTracks(_book!, sequenceState!.currentIndex);
+      return position + _book!.tracks[sequenceState!.currentIndex].startOffset;
     });
   }
 
@@ -186,12 +211,9 @@ class AudiobookPlayer extends AudioPlayer {
     }
     return _book!.chapters.firstWhere(
       (element) {
-        return element.start <= position && element.end >= position;
+        return element.start <= positionInBook && element.end >= positionInBook;
       },
       orElse: () => _book!.chapters.first,
     );
   }
-
-
-
 }

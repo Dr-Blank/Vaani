@@ -1,5 +1,4 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -270,6 +269,7 @@ class AudiobookChapterProgressBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(audiobookPlayerProvider);
+    final currentChapter = ref.watch(currentPlayingChapterProvider);
     final position = useStream(
       player.positionStream,
       initialData: const Duration(seconds: 0),
@@ -278,34 +278,22 @@ class AudiobookChapterProgressBar extends HookConsumerWidget {
       player.bufferedPositionStream,
       initialData: const Duration(seconds: 0),
     );
-    final currentIndex = useStream(
-      player.currentIndexStream,
-      initialData: 0,
-    );
-    final durationOfPreviousTracks =
-        player.book?.tracks.sublist(0, currentIndex.data).fold(
-                  const Duration(seconds: 0),
-                  (previousValue, element) => previousValue + element.duration,
-                ) ??
-            const Duration(seconds: 0);
-    final totalProgress = durationOfPreviousTracks +
-        (position.data ?? const Duration(seconds: 0));
-    final totalBuffered = durationOfPreviousTracks +
-        (buffered.data ?? const Duration(seconds: 0));
+
     // now find the chapter that corresponds to the current time
     // and calculate the progress of the current chapter
-    final currentChapter = player.book?.chapters.firstWhereOrNull(
-      (element) =>
-          (element.start <= totalProgress) && (element.end >= totalProgress),
-    );
     final currentChapterProgress =
-        currentChapter == null ? null : (totalProgress - currentChapter.start);
+        currentChapter == null
+        ? null
+        : (player.positionInBook - currentChapter.start);
 
     final currentChapterBuffered =
-        currentChapter == null ? null : (totalBuffered - currentChapter.start);
+        currentChapter == null
+        ? null
+        : (player.bufferedPositionInBook - currentChapter.start);
 
     return ProgressBar(
-      progress: currentChapterProgress ?? totalProgress,
+      progress:
+          currentChapterProgress ?? position.data ?? const Duration(seconds: 0),
       total: currentChapter == null
           ? player.book?.duration ?? const Duration(seconds: 0)
           : currentChapter.end - currentChapter.start,
@@ -316,7 +304,8 @@ class AudiobookChapterProgressBar extends HookConsumerWidget {
         );
       },
       thumbRadius: 8,
-      buffered: currentChapterBuffered ?? totalBuffered,
+      buffered:
+          currentChapterBuffered ?? buffered.data ?? const Duration(seconds: 0),
       bufferedBarColor: Theme.of(context).colorScheme.secondary,
       timeLabelType: TimeLabelType.remainingTime,
       timeLabelLocation: TimeLabelLocation.below,
