@@ -299,6 +299,13 @@ class LibraryItemActions extends HookConsumerWidget {
                           .read(audiobookPlayerProvider.notifier)
                           .notifyListeners();
                     }
+                    // set the volume
+                    await player.setVolume(
+                      ref
+                          .read(appSettingsProvider)
+                          .playerSettings
+                          .preferredVolume,
+                    );
                     // toggle play/pause
                     player.togglePlayPause();
                   },
