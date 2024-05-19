@@ -1,4 +1,5 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,31 +10,20 @@ import 'package:whispering_pages/api/library_item_provider.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
 import 'package:whispering_pages/features/player/providers/currently_playing_provider.dart';
 import 'package:whispering_pages/features/player/providers/player_form.dart';
+import 'package:whispering_pages/settings/app_settings_provider.dart';
+import 'package:whispering_pages/shared/extensions/inverse_lerp.dart';
 import 'package:whispering_pages/shared/widgets/shelves/book_shelf.dart';
 import 'package:whispering_pages/theme/theme_from_cover_provider.dart';
 
 import 'player_when_expanded.dart';
 import 'player_when_minimized.dart';
 
-double valueFromPercentageInRange({
-  required final double min,
-  max,
-  percentage,
-}) {
-  return percentage * (max - min) + min;
-}
-
-double percentageFromValueInRange({required final double min, max, value}) {
-  return (value - min) / (max - min);
-}
-
-
-
 class AudiobookPlayer extends HookConsumerWidget {
   const AudiobookPlayer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final appSettings = ref.watch(appSettingsProvider);
     final currentBook = ref.watch(currentlyPlayingBookProvider);
     if (currentBook == null) {
       return const SizedBox.shrink();
@@ -67,11 +57,8 @@ class AudiobookPlayer extends HookConsumerWidget {
       }
     });
 
-    final playPauseButton = AudiobookPlayerPlayPauseButton(
-      playPauseController: playPauseController,
-    );
-
     const progressBar = AudiobookTotalProgressBar();
+    const chapterProgressBar = AudiobookChapterProgressBar();
 
     // theme from image
     final imageTheme = ref.watch(
@@ -84,14 +71,25 @@ class AudiobookPlayer extends HookConsumerWidget {
     // max height of the player is the height of the screen
     final playerMaxHeight = MediaQuery.of(context).size.height;
 
+    final availWidth = MediaQuery.of(context).size.width;
 
+    // the image width when the player is expanded
+    final maxImgSize = availWidth * 0.9;
+
+    final preferredVolume = appSettings.playerSettings.preferredVolume;
     return Theme(
       data: ThemeData(
         colorScheme: imageTheme.valueOrNull ?? Theme.of(context).colorScheme,
       ),
       child: Miniplayer(
         valueNotifier: ref.watch(playerExpandProgressNotifierProvider),
+        onDragDown: (percentage) async {
+          // preferred volume
+          // set volume to 0 when dragging down
+          await player.setVolume(preferredVolume * (1 - percentage));
+        },
         minHeight: playerMinHeight,
+        // subtract the height of notches and other system UI
         maxHeight: playerMaxHeight,
         controller: ref.watch(miniplayerControllerProvider),
         elevation: 4,
@@ -102,81 +100,47 @@ class AudiobookPlayer extends HookConsumerWidget {
         builder: (height, percentage) {
           // return SafeArea(
           //   child: Text(
-          //     'percentage: ${percentage.toStringAsFixed(2)}, height: ${height.toStringAsFixed(2)}',
+          //     'percentage: ${percentage.toStringAsFixed(2)}, height: ${height.toStringAsFixed(2)} volume: ${player.volume.toStringAsFixed(2)}',
           //   ),
           // );
+
+          // at what point should the player switch from miniplayer to expanded player
+          // at this point the image should be at its max size and in the center of the player
+          final miniplayerPercentageDeclaration =
+              (maxImgSize - playerMinHeight) /
+                  (playerMaxHeight - playerMinHeight);
           final bool isFormMiniplayer =
               percentage < miniplayerPercentageDeclaration;
-          final double availWidth = MediaQuery.of(context).size.width;
-          final maxImgSize = availWidth * 0.4;
-      
-          final bookTitle = Text(player.book?.metadata.title ?? '');
-      
-          //Declare additional widgets (eg. SkipButton) and variables
+
           if (!isFormMiniplayer) {
-            var percentageExpandedPlayer = percentageFromValueInRange(
-              min: playerMaxHeight * miniplayerPercentageDeclaration +
-                  playerMinHeight,
-              max: playerMaxHeight,
-              value: height,
-            );
-            if (percentageExpandedPlayer < 0) percentageExpandedPlayer = 0;
-            final paddingVertical = valueFromPercentageInRange(
-              min: 0,
-              max: 16,
-              percentage: percentageExpandedPlayer,
-            );
-            final double heightWithoutPadding = height - paddingVertical * 2;
-            final double imageSize = heightWithoutPadding > maxImgSize
-                ? maxImgSize
-                : heightWithoutPadding;
-            final paddingLeft = valueFromPercentageInRange(
-                  min: 0,
-                  max: availWidth - imageSize,
-                  percentage: percentageExpandedPlayer,
-                ) /
-                2;
-      
-            const buttonSkipForward = IconButton(
-              icon: Icon(Icons.forward_30),
-              iconSize: 33,
-              onPressed: onTap,
-            );
-            const buttonSkipBackwards = IconButton(
-              icon: Icon(Icons.replay_10),
-              iconSize: 33,
-              onPressed: onTap,
-            );
+            // this calculation needs a refactor
+            var percentageExpandedPlayer = percentage
+                .inverseLerp(
+                  miniplayerPercentageDeclaration,
+                  1,
+                )
+                .clamp(0.0, 1.0);
+
             return PlayerWhenExpanded(
-              imgPaddingLeft: paddingLeft,
-              imgPaddingVertical: paddingVertical,
-              imageSize: imageSize,
+              imageSize: maxImgSize,
               img: imgWidget,
               percentageExpandedPlayer: percentageExpandedPlayer,
-              text: bookTitle,
-              buttonSkipBackwards: buttonSkipBackwards,
-              playPauseButton: playPauseButton,
-              buttonSkipForward: buttonSkipForward,
-              progressIndicator: progressBar,
+              playPauseController: playPauseController,
             );
           }
-      
+
           //Miniplayer
-          final percentageMiniplayer = percentageFromValueInRange(
-            min: playerMinHeight,
-            max: playerMaxHeight * miniplayerPercentageDeclaration +
-                playerMinHeight,
-            value: height,
+          final percentageMiniplayer = percentage.inverseLerp(
+            0,
+            miniplayerPercentageDeclaration,
           );
-      
-          final elementOpacity = 1 - 1 * percentageMiniplayer;
-      
+
           return PlayerWhenMinimized(
             maxImgSize: maxImgSize,
+            availWidth: availWidth,
             imgWidget: imgWidget,
-            elementOpacity: elementOpacity,
-            playPauseButton: playPauseButton,
-            progressIndicator: progressBar,
+            playPauseController: playPauseController,
+            percentageMiniplayer: percentageMiniplayer,
           );
         },
       ),
@@ -188,32 +152,37 @@ class AudiobookPlayerPlayPauseButton extends HookConsumerWidget {
   const AudiobookPlayerPlayPauseButton({
     super.key,
     required this.playPauseController,
+    this.iconSize = 48.0,
   });
 
+  final double iconSize;
   final AnimationController playPauseController;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(audiobookPlayerProvider);
+
     return switch (player.processingState) {
-      ProcessingState.loading ||
-      ProcessingState.buffering =>
-        const CircularProgressIndicator(),
+      ProcessingState.loading || ProcessingState.buffering => const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: CircularProgressIndicator(),
+        ),
       ProcessingState.completed => IconButton(
           onPressed: () async {
             await player.seek(const Duration(seconds: 0));
             await player.play();
           },
-          icon: const Icon(Icons.replay),
+          icon: const Icon(
+            Icons.replay,
+          ),
         ),
       ProcessingState.ready => IconButton(
           onPressed: () async {
             await player.togglePlayPause();
           },
+          iconSize: iconSize,
           icon: AnimatedIcon(
             icon: AnimatedIcons.play_pause,
             progress: playPauseController,
-            size: 50,
           ),
         ),
       ProcessingState.idle => const SizedBox.shrink(),
@@ -227,56 +196,130 @@ class AudiobookPlayerPlayPauseButton extends HookConsumerWidget {
 class AudiobookTotalProgressBar extends HookConsumerWidget {
   const AudiobookTotalProgressBar({
     super.key,
+    this.barHeight = 5.0,
+    this.barCapShape = BarCapShape.round,
+    this.thumbRadius = 10.0,
+    this.thumbGlowRadius = 30.0,
+    this.thumbCanPaintOutsideBar = true,
+    this.timeLabelLocation,
+    this.timeLabelType,
+    this.timeLabelTextStyle,
+    this.timeLabelPadding = 0.0,
+  });
+
+  final double barHeight;
+  final BarCapShape barCapShape;
+  final double thumbRadius;
+  final double thumbGlowRadius;
+  final bool thumbCanPaintOutsideBar;
+  final TimeLabelLocation? timeLabelLocation;
+  final TimeLabelType? timeLabelType;
+  final TextStyle? timeLabelTextStyle;
+  final double timeLabelPadding;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final player = ref.watch(audiobookPlayerProvider);
+    final position = useStream(
+      player.positionStream,
+      initialData: const Duration(seconds: 0),
+    );
+    final buffered = useStream(
+      player.bufferedPositionStream,
+      initialData: const Duration(seconds: 0),
+    );
+    final currentIndex = useStream(
+      player.currentIndexStream,
+      initialData: 0,
+    );
+    var durationOfPreviousTracks =
+        player.book?.tracks.sublist(0, currentIndex.data).fold(
+                  const Duration(seconds: 0),
+                  (previousValue, element) => previousValue + element.duration,
+                ) ??
+            const Duration(seconds: 0);
+    final totalProgress = durationOfPreviousTracks +
+        (position.data ?? const Duration(seconds: 0));
+    final totalBuffered = durationOfPreviousTracks +
+        (buffered.data ?? const Duration(seconds: 0));
+
+    return ProgressBar(
+      progress: totalProgress,
+      total: player.book?.duration ?? const Duration(seconds: 0),
+      onSeek: player.seek,
+      buffered: totalBuffered,
+      bufferedBarColor: Theme.of(context).colorScheme.secondary,
+      thumbRadius: thumbRadius,
+      thumbGlowRadius: thumbGlowRadius,
+      thumbCanPaintOutsideBar: thumbCanPaintOutsideBar,
+      barHeight: barHeight,
+      barCapShape: barCapShape,
+      timeLabelLocation: timeLabelLocation,
+      timeLabelType: timeLabelType,
+      timeLabelTextStyle: timeLabelTextStyle,
+      timeLabelPadding: timeLabelPadding,
+    );
+  }
+}
+
+class AudiobookChapterProgressBar extends HookConsumerWidget {
+  const AudiobookChapterProgressBar({
+    super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(audiobookPlayerProvider);
-    // final playerState = useState(player.processingState);
-    // add a listener to the player state
-    // player.processingStateStream.listen((state) {
-    //   playerState.value = state;
-    // });
-    return StreamBuilder(
-      stream: player.currentIndexStream,
-      builder: (context, currentTrackIndex) {
-        return StreamBuilder(
-          stream: player.positionStream,
-          builder: (context, progress) {
-            // totalProgress is the sum of the duration of all the tracks before the current track + the current track position
-            final totalProgress =
-                player.book?.tracks.sublist(0, currentTrackIndex.data).fold(
-                          const Duration(seconds: 0),
-                          (previousValue, element) =>
-                              previousValue + element.duration,
-                        ) ??
-                    const Duration(seconds: 0) +
-                        (progress.data ?? const Duration(seconds: 0));
+    final position = useStream(
+      player.positionStream,
+      initialData: const Duration(seconds: 0),
+    );
+    final buffered = useStream(
+      player.bufferedPositionStream,
+      initialData: const Duration(seconds: 0),
+    );
+    final currentIndex = useStream(
+      player.currentIndexStream,
+      initialData: 0,
+    );
+    final durationOfPreviousTracks =
+        player.book?.tracks.sublist(0, currentIndex.data).fold(
+                  const Duration(seconds: 0),
+                  (previousValue, element) => previousValue + element.duration,
+                ) ??
+            const Duration(seconds: 0);
+    final totalProgress = durationOfPreviousTracks +
+        (position.data ?? const Duration(seconds: 0));
+    final totalBuffered = durationOfPreviousTracks +
+        (buffered.data ?? const Duration(seconds: 0));
+    // now find the chapter that corresponds to the current time
+    // and calculate the progress of the current chapter
+    final currentChapter = player.book?.chapters.firstWhereOrNull(
+      (element) =>
+          (element.start <= totalProgress) && (element.end >= totalProgress),
+    );
+    final currentChapterProgress =
+        currentChapter == null ? null : (totalProgress - currentChapter.start);
 
-            return StreamBuilder(
-              stream: player.bufferedPositionStream,
-              builder: (context, buffered) {
-                final totalBuffered =
-                    player.book?.tracks.sublist(0, currentTrackIndex.data).fold(
-                              const Duration(seconds: 0),
-                              (previousValue, element) =>
-                                  previousValue + element.duration,
-                            ) ??
-                        const Duration(seconds: 0) +
-                            (buffered.data ?? const Duration(seconds: 0));
-                return ProgressBar(
-                  progress: totalProgress,
-                  total: player.book?.duration ?? const Duration(seconds: 0),
-                  onSeek: player.seek,
-                  thumbRadius: 8,
-                  buffered: totalBuffered,
-                  bufferedBarColor: Theme.of(context).colorScheme.secondary,
-                );
-              },
-            );
-          },
+    final currentChapterBuffered =
+        currentChapter == null ? null : (totalBuffered - currentChapter.start);
+
+    return ProgressBar(
+      progress: currentChapterProgress ?? totalProgress,
+      total: currentChapter == null
+          ? player.book?.duration ?? const Duration(seconds: 0)
+          : currentChapter.end - currentChapter.start,
+      // ! TODO add onSeek
+      onSeek: (duration) {
+        player.seek(
+          duration + (currentChapter?.start ?? const Duration(seconds: 0)),
         );
       },
+      thumbRadius: 8,
+      buffered: currentChapterBuffered ?? totalBuffered,
+      bufferedBarColor: Theme.of(context).colorScheme.secondary,
+      timeLabelType: TimeLabelType.remainingTime,
+      timeLabelLocation: TimeLabelLocation.below,
     );
   }
 }

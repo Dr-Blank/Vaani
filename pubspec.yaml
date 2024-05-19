@@ -32,6 +32,7 @@ isar_version: &isar_version ^4.0.0-dev.13 # define the version to be used
 dependencies:
   animated_list_plus: ^0.5.2
   animated_theme_switcher: ^2.0.10
+  flutter_material_pickers: ^3.6.0
   audio_session: ^0.1.19
   audio_video_progress_bar: ^2.0.2
   auto_scroll_text: ^0.0.7
@@ -62,6 +63,7 @@ dependencies:
   media_kit_libs_windows_audio: any
   miniplayer:
     path: ../miniplayer
+  numberpicker: ^2.1.2
   path: ^1.9.0
   path_provider: ^2.1.0
   riverpod_annotation: ^2.3.5

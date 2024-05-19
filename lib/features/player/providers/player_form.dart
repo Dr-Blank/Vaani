@@ -10,7 +10,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'player_form.g.dart';
 
 const double playerMinHeight = 70;
-const miniplayerPercentageDeclaration = 0.2;
+// const miniplayerPercentageDeclaration = 0.2;
 
 extension on Ref {
   // We can move the previous logic to a Ref extension.

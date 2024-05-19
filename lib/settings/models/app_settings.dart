@@ -25,6 +25,11 @@ class PlayerSettings with _$PlayerSettings {
   const factory PlayerSettings({
     @Default(MinimizedPlayerSettings())
     MinimizedPlayerSettings miniPlayerSettings,
+    @Default(ExpandedPlayerSettings())
+    ExpandedPlayerSettings expandedPlayerSettings,
+    @Default(1) double preferredVolume,
+    @Default(1) double preferredSpeed,
+    @Default(Duration(minutes: 15)) Duration sleepTimer,
   }) = _PlayerSettings;
 
   factory PlayerSettings.fromJson(Map<String, dynamic> json) =>
@@ -32,10 +37,20 @@ class PlayerSettings with _$PlayerSettings {
 }
 
 @freezed
+class ExpandedPlayerSettings with _$ExpandedPlayerSettings {
+  const factory ExpandedPlayerSettings({
+    @Default(false) bool showTotalProgress,
+    @Default(true) bool showChapterProgress,
+  }) = _ExpandedPlayerSettings;
+
+  factory ExpandedPlayerSettings.fromJson(Map<String, dynamic> json) =>
+      _$ExpandedPlayerSettingsFromJson(json);
+}
+@freezed
 class MinimizedPlayerSettings with _$MinimizedPlayerSettings {
   const factory MinimizedPlayerSettings({
     @Default(false) bool useChapterInfo,
-  }) = _MiniPlayerSettings;
+  }) = _MinimizedPlayerSettings;
 
   factory MinimizedPlayerSettings.fromJson(Map<String, dynamic> json) =>
       _$MinimizedPlayerSettingsFromJson(json);

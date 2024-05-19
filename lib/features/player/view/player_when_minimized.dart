@@ -1,93 +1,146 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:whispering_pages/constants/sizes.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
-import 'package:whispering_pages/features/player/providers/player_form.dart';
+import 'package:whispering_pages/features/player/providers/currently_playing_provider.dart';
+import 'package:whispering_pages/features/player/view/audiobook_player.dart';
+import 'package:whispering_pages/router/router.dart';
 
 class PlayerWhenMinimized extends HookConsumerWidget {
   const PlayerWhenMinimized({
     super.key,
+    required this.availWidth,
     required this.maxImgSize,
     required this.imgWidget,
-    required this.elementOpacity,
-    required this.playPauseButton,
-    required this.progressIndicator,
+    required this.playPauseController,
+    required this.percentageMiniplayer,
   });
 
+  final double availWidth;
   final double maxImgSize;
   final Widget imgWidget;
-  final double elementOpacity;
-  final Widget playPauseButton;
-  final Widget progressIndicator;
+  final AnimationController playPauseController;
+
+  /// 0 - 1, from minimized to when switched to expanded player
+  ///
+  /// by the time 1 is reached only image should be visible in the center of the widget
+  final double percentageMiniplayer;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(audiobookPlayerProvider);
-    final controller = ref.watch(miniplayerControllerProvider);
-    return Column(
+    final vanishingPercentage = 1 - percentageMiniplayer;
+    final progress =
+        useStream(player.positionStream, initialData: Duration.zero);
+
+    final bookMetaExpanded = ref.watch(currentBookMetadataProvider);
+
+    var barHeight = vanishingPercentage * 3;
+    return Stack(
+      alignment: Alignment.bottomCenter,
       children: [
-        Expanded(
-          child: Row(
-            children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: maxImgSize),
-                child: imgWidget,
+        Row(
+          children: [
+            // image
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal:
+                    ((availWidth - maxImgSize) / 2) * percentageMiniplayer,
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Opacity(
-                    opacity: elementOpacity,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          player.book?.metadata.title ?? '',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(fontSize: 16),
-                        ),
-                        Text(
-                          'audioObject.subtitle',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .color!
-                                        .withOpacity(0.55),
-                                  ),
-                        ),
-                      ],
-                    ),
+              child: InkWell(
+                onTap: () {
+                  // navigate to item page
+                  context.pushNamed(
+                    Routes.libraryItem.name,
+                    pathParameters: {
+                      Routes.libraryItem.pathParamName!:
+                          player.book!.libraryItemId,
+                    },
+                  );
+                },
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: maxImgSize,
                   ),
+                  child: imgWidget,
                 ),
               ),
-              // IconButton(
-              //   icon: const Icon(Icons.fullscreen),
-              //   onPressed: () {
-              //     controller.animateToHeight(state: PanelState.MAX);
-              //   },
-              // ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Opacity(
-                  opacity: elementOpacity,
-                  child: playPauseButton,
+            ),
+            // author and title of the book
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // AutoScrollText(
+                    Text(
+                      bookMetaExpanded?.title ?? '',
+                      maxLines: 1, overflow: TextOverflow.ellipsis,
+                      // velocity:
+                      //     const Velocity(pixelsPerSecond: Offset(16, 0)),
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    Text(
+                      bookMetaExpanded?.authorName ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onBackground
+                                .withOpacity(0.7),
+                          ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
+            // IconButton(
+            //   icon: const Icon(Icons.fullscreen),
+            //   onPressed: () {
+            //     controller.animateToHeight(state: PanelState.MAX);
+            //   },
+            // ),
+            // rewind button
+            Opacity(
+              opacity: vanishingPercentage,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.replay_30,
+                    size: AppElementSizes.iconSizeSmall,
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+            // play/pause button
+            Opacity(
+              opacity: vanishingPercentage,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: AudiobookPlayerPlayPauseButton(
+                  playPauseController: playPauseController,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: barHeight,
+          child: LinearProgressIndicator(
+            value: (progress.data ?? Duration.zero).inSeconds /
+                player.book!.duration.inSeconds,
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
           ),
         ),
-        // SizedBox(
-        //   height: progressIndicatorHeight,
-        //   child: Opacity(
-        //     opacity: elementOpacity,
-        //     child: progressIndicator,
-        //   ),
-        // ),
       ],
     );
   }

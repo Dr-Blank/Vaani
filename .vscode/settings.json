@@ -12,6 +12,7 @@
     "audioplayers",
     "Autovalidate",
     "fullscreen",
+    "Lerp",
     "miniplayer",
     "mocktail",
     "riverpod",

@@ -8,6 +8,30 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 
+/// returns the sum of the duration of all the previous tracks before the [index]
+Duration sumOfTracks(BookExpanded book, int? index) {
+  // return 0 if index is less than 0
+  if (index == null || index < 0) {
+    return Duration.zero;
+  }
+  return book.tracks.sublist(0, index).fold<Duration>(Duration.zero,
+      (previousValue, element) {
+    return previousValue + element.duration;
+  });
+}
+
+/// returns the [AudioTrack] to play based on the [position] in the [book]
+AudioTrack getTrackToPlay(BookExpanded book, Duration position) {
+  var totalDuration = Duration.zero;
+  for (var track in book.tracks) {
+    totalDuration += track.duration;
+    if (totalDuration >= position) {
+      return track;
+    }
+  }
+  return book.tracks.last;
+}
+
 /// will manage the audio player instance
 class AudiobookPlayer extends AudioPlayer {
   // constructor which takes in the BookExpanded object
@@ -17,6 +41,9 @@ class AudiobookPlayer extends AudioPlayer {
 
   /// the [BookExpanded] being played
   BookExpanded? _book;
+
+  // /// the [BookExpanded] trying to be played
+  // BookExpanded? _intended_book;
 
   /// the [BookExpanded] being played
   ///
@@ -36,7 +63,12 @@ class AudiobookPlayer extends AudioPlayer {
   int? get availableTracks => _book?.tracks.length;
 
   /// sets the current [AudioTrack] as the source of the player
-  Future<void> setSourceAudioBook(BookExpanded? book) async {
+  Future<void> setSourceAudioBook(
+    BookExpanded? book, {
+    bool preload = true,
+    // int? initialIndex,
+    Duration? initialPosition,
+  }) async {
     // if the book is null, stop the player
     if (book == null) {
       _book = null;
@@ -51,7 +83,24 @@ class AudiobookPlayer extends AudioPlayer {
     // first stop the player and clear the source
     await stop();
 
+    _book = book;
+
+    // some calculations to set the initial index and position
+    // initialPosition is of the entire book not just the current track
+    // hence first we need to calculate the current track which will be used to set the initial position
+    // then we set the initial index to the current track index and position as the remaining duration from the position
+    // after subtracting the duration of all the previous tracks
+
+    final trackToPlay = getTrackToPlay(book, initialPosition ?? Duration.zero);
+    final initialIndex = book.tracks.indexOf(trackToPlay);
+    final initialPositionInTrack = initialPosition != null
+        ? initialPosition - sumOfTracks(book, initialIndex - 1)
+        : null;
+
     await setAudioSource(
+      preload: preload,
+      initialIndex: initialIndex,
+      initialPosition: initialPositionInTrack,
       ConcatenatingAudioSource(
         useLazyPreparation: true,
         children: book.tracks.map((track) {
@@ -73,8 +122,6 @@ class AudiobookPlayer extends AudioPlayer {
     ).catchError((error) {
       debugPrint('Error: $error');
     });
-
-    _book = book;
   }
 
   /// toggles the player between play and pause
@@ -84,7 +131,7 @@ class AudiobookPlayer extends AudioPlayer {
       throw StateError('No book is set');
     }
 
-    // ! refactor this
+    // TODO refactor this
     return switch (playerState) {
       PlayerState(playing: var isPlaying) => isPlaying ? pause() : play(),
     };
@@ -93,27 +140,58 @@ class AudiobookPlayer extends AudioPlayer {
   /// need to override getDuration and getCurrentPosition to return according to the book instead of the current track
   /// this is because the book can be a list of audio files and the player is only aware of the current track
   /// so we need to calculate the duration and current position based on the book
-  // @override
-  // Future<Duration?> getDuration() async {
-  //   if (_book == null) {
-  //     return null;
-  //   }
-  //   return _book!.tracks.fold<Duration>(
-  //     Duration.zero,
-  //     (previousValue, element) => previousValue + element.duration,
-  //   );
-// }
 
-  // @override
-  // Future<Duration?> getCurrentPosition() async {
-  //   if (_book == null) {
-  //     return null;
-  //   }
-  //   var currentTrack = _book!.tracks[_currentIndex];
-  //   var currentTrackDuration = currentTrack.duration;
-  //   var currentTrackPosition = await super.getCurrentPosition();
-  //   return currentTrackPosition != null
-  //       ? currentTrackPosition + currentTrackDuration
-  //       : null;
-  // }
+  @override
+  Future<void> seek(Duration? position, {int? index}) async {
+    if (_book == null) {
+      return;
+    }
+    if (position == null) {
+      return;
+    }
+    final trackToPlay = getTrackToPlay(_book!, position);
+    final index = _book!.tracks.indexOf(trackToPlay);
+    final positionInTrack = position - sumOfTracks(_book!, index - 1);
+    return super.seek(positionInTrack, index: index);
+  }
+
+  /// streams to override to suit the book instead of the current track
+  // - positionStream
+  // - bufferedPositionStream
+
+  @override
+  Stream<Duration> get positionStream {
+    return super.positionStream.map((position) {
+      if (_book == null) {
+        return Duration.zero;
+      }
+      return position + sumOfTracks(_book!, sequenceState!.currentIndex);
+    });
+  }
+
+  @override
+  Stream<Duration> get bufferedPositionStream {
+    return super.bufferedPositionStream.map((position) {
+      if (_book == null) {
+        return Duration.zero;
+      }
+      return position + sumOfTracks(_book!, sequenceState!.currentIndex);
+    });
+  }
+
+  /// get current chapter
+  BookChapter? get currentChapter {
+    if (_book == null) {
+      return null;
+    }
+    return _book!.chapters.firstWhere(
+      (element) {
+        return element.start <= position && element.end >= position;
+      },
+      orElse: () => _book!.chapters.first,
+    );
+  }
+
+
+
 }

@@ -30,22 +30,49 @@ _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
           ? const MinimizedPlayerSettings()
           : MinimizedPlayerSettings.fromJson(
               json['miniPlayerSettings'] as Map<String, dynamic>),
+      expandedPlayerSettings: json['expandedPlayerSettings'] == null
+          ? const ExpandedPlayerSettings()
+          : ExpandedPlayerSettings.fromJson(
+              json['expandedPlayerSettings'] as Map<String, dynamic>),
+      preferredVolume: (json['preferredVolume'] as num?)?.toDouble() ?? 1,
+      preferredSpeed: (json['preferredSpeed'] as num?)?.toDouble() ?? 1,
+      sleepTimer: json['sleepTimer'] == null
+          ? const Duration(minutes: 15)
+          : Duration(microseconds: (json['sleepTimer'] as num).toInt()),
     );
 
 Map<String, dynamic> _$$PlayerSettingsImplToJson(
         _$PlayerSettingsImpl instance) =>
     <String, dynamic>{
       'miniPlayerSettings': instance.miniPlayerSettings,
+      'expandedPlayerSettings': instance.expandedPlayerSettings,
+      'preferredVolume': instance.preferredVolume,
+      'preferredSpeed': instance.preferredSpeed,
+      'sleepTimer': instance.sleepTimer.inMicroseconds,
     };
 
-_$MiniPlayerSettingsImpl _$$MiniPlayerSettingsImplFromJson(
+_$ExpandedPlayerSettingsImpl _$$ExpandedPlayerSettingsImplFromJson(
         Map<String, dynamic> json) =>
-    _$MiniPlayerSettingsImpl(
+    _$ExpandedPlayerSettingsImpl(
+      showTotalProgress: json['showTotalProgress'] as bool? ?? false,
+      showChapterProgress: json['showChapterProgress'] as bool? ?? true,
+    );
+
+Map<String, dynamic> _$$ExpandedPlayerSettingsImplToJson(
+        _$ExpandedPlayerSettingsImpl instance) =>
+    <String, dynamic>{
+      'showTotalProgress': instance.showTotalProgress,
+      'showChapterProgress': instance.showChapterProgress,
+    };
+
+_$MinimizedPlayerSettingsImpl _$$MinimizedPlayerSettingsImplFromJson(
+        Map<String, dynamic> json) =>
+    _$MinimizedPlayerSettingsImpl(
       useChapterInfo: json['useChapterInfo'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$$MiniPlayerSettingsImplToJson(
-        _$MiniPlayerSettingsImpl instance) =>
+Map<String, dynamic> _$$MinimizedPlayerSettingsImplToJson(
+        _$MinimizedPlayerSettingsImpl instance) =>
     <String, dynamic>{
       'useChapterInfo': instance.useChapterInfo,
     };

@@ -224,6 +224,11 @@ PlayerSettings _$PlayerSettingsFromJson(Map<String, dynamic> json) {
 mixin _$PlayerSettings {
   MinimizedPlayerSettings get miniPlayerSettings =>
       throw _privateConstructorUsedError;
+  ExpandedPlayerSettings get expandedPlayerSettings =>
+      throw _privateConstructorUsedError;
+  double get preferredVolume => throw _privateConstructorUsedError;
+  double get preferredSpeed => throw _privateConstructorUsedError;
+  Duration get sleepTimer => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -237,9 +242,15 @@ abstract class $PlayerSettingsCopyWith<$Res> {
           PlayerSettings value, $Res Function(PlayerSettings) then) =
       _$PlayerSettingsCopyWithImpl<$Res, PlayerSettings>;
   @useResult
-  $Res call({MinimizedPlayerSettings miniPlayerSettings});
+  $Res call(
+      {MinimizedPlayerSettings miniPlayerSettings,
+      ExpandedPlayerSettings expandedPlayerSettings,
+      double preferredVolume,
+      double preferredSpeed,
+      Duration sleepTimer});
 
   $MinimizedPlayerSettingsCopyWith<$Res> get miniPlayerSettings;
+  $ExpandedPlayerSettingsCopyWith<$Res> get expandedPlayerSettings;
 }
 
 /// @nodoc
@@ -256,12 +267,32 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
   @override
   $Res call({
     Object? miniPlayerSettings = null,
+    Object? expandedPlayerSettings = null,
+    Object? preferredVolume = null,
+    Object? preferredSpeed = null,
+    Object? sleepTimer = null,
   }) {
     return _then(_value.copyWith(
       miniPlayerSettings: null == miniPlayerSettings
           ? _value.miniPlayerSettings
           : miniPlayerSettings // ignore: cast_nullable_to_non_nullable
               as MinimizedPlayerSettings,
+      expandedPlayerSettings: null == expandedPlayerSettings
+          ? _value.expandedPlayerSettings
+          : expandedPlayerSettings // ignore: cast_nullable_to_non_nullable
+              as ExpandedPlayerSettings,
+      preferredVolume: null == preferredVolume
+          ? _value.preferredVolume
+          : preferredVolume // ignore: cast_nullable_to_non_nullable
+              as double,
+      preferredSpeed: null == preferredSpeed
+          ? _value.preferredSpeed
+          : preferredSpeed // ignore: cast_nullable_to_non_nullable
+              as double,
+      sleepTimer: null == sleepTimer
+          ? _value.sleepTimer
+          : sleepTimer // ignore: cast_nullable_to_non_nullable
+              as Duration,
     ) as $Val);
   }
 
@@ -271,6 +302,15 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
     return $MinimizedPlayerSettingsCopyWith<$Res>(_value.miniPlayerSettings,
         (value) {
       return _then(_value.copyWith(miniPlayerSettings: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ExpandedPlayerSettingsCopyWith<$Res> get expandedPlayerSettings {
+    return $ExpandedPlayerSettingsCopyWith<$Res>(_value.expandedPlayerSettings,
+        (value) {
+      return _then(_value.copyWith(expandedPlayerSettings: value) as $Val);
     });
   }
 }
@@ -283,10 +323,17 @@ abstract class _$$PlayerSettingsImplCopyWith<$Res>
       __$$PlayerSettingsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({MinimizedPlayerSettings miniPlayerSettings});
+  $Res call(
+      {MinimizedPlayerSettings miniPlayerSettings,
+      ExpandedPlayerSettings expandedPlayerSettings,
+      double preferredVolume,
+      double preferredSpeed,
+      Duration sleepTimer});
 
   @override
   $MinimizedPlayerSettingsCopyWith<$Res> get miniPlayerSettings;
+  @override
+  $ExpandedPlayerSettingsCopyWith<$Res> get expandedPlayerSettings;
 }
 
 /// @nodoc
@@ -301,12 +348,32 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? miniPlayerSettings = null,
+    Object? expandedPlayerSettings = null,
+    Object? preferredVolume = null,
+    Object? preferredSpeed = null,
+    Object? sleepTimer = null,
   }) {
     return _then(_$PlayerSettingsImpl(
       miniPlayerSettings: null == miniPlayerSettings
           ? _value.miniPlayerSettings
           : miniPlayerSettings // ignore: cast_nullable_to_non_nullable
               as MinimizedPlayerSettings,
+      expandedPlayerSettings: null == expandedPlayerSettings
+          ? _value.expandedPlayerSettings
+          : expandedPlayerSettings // ignore: cast_nullable_to_non_nullable
+              as ExpandedPlayerSettings,
+      preferredVolume: null == preferredVolume
+          ? _value.preferredVolume
+          : preferredVolume // ignore: cast_nullable_to_non_nullable
+              as double,
+      preferredSpeed: null == preferredSpeed
+          ? _value.preferredSpeed
+          : preferredSpeed // ignore: cast_nullable_to_non_nullable
+              as double,
+      sleepTimer: null == sleepTimer
+          ? _value.sleepTimer
+          : sleepTimer // ignore: cast_nullable_to_non_nullable
+              as Duration,
     ));
   }
 }
@@ -315,7 +382,11 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PlayerSettingsImpl implements _PlayerSettings {
   const _$PlayerSettingsImpl(
-      {this.miniPlayerSettings = const MinimizedPlayerSettings()});
+      {this.miniPlayerSettings = const MinimizedPlayerSettings(),
+      this.expandedPlayerSettings = const ExpandedPlayerSettings(),
+      this.preferredVolume = 1,
+      this.preferredSpeed = 1,
+      this.sleepTimer = const Duration(minutes: 15)});
 
   factory _$PlayerSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$PlayerSettingsImplFromJson(json);
@@ -323,10 +394,22 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
   @override
   @JsonKey()
   final MinimizedPlayerSettings miniPlayerSettings;
+  @override
+  @JsonKey()
+  final ExpandedPlayerSettings expandedPlayerSettings;
+  @override
+  @JsonKey()
+  final double preferredVolume;
+  @override
+  @JsonKey()
+  final double preferredSpeed;
+  @override
+  @JsonKey()
+  final Duration sleepTimer;
 
   @override
   String toString() {
-    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings)';
+    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredVolume: $preferredVolume, preferredSpeed: $preferredSpeed, sleepTimer: $sleepTimer)';
   }
 
   @override
@@ -335,12 +418,21 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
         (other.runtimeType == runtimeType &&
             other is _$PlayerSettingsImpl &&
             (identical(other.miniPlayerSettings, miniPlayerSettings) ||
-                other.miniPlayerSettings == miniPlayerSettings));
+                other.miniPlayerSettings == miniPlayerSettings) &&
+            (identical(other.expandedPlayerSettings, expandedPlayerSettings) ||
+                other.expandedPlayerSettings == expandedPlayerSettings) &&
+            (identical(other.preferredVolume, preferredVolume) ||
+                other.preferredVolume == preferredVolume) &&
+            (identical(other.preferredSpeed, preferredSpeed) ||
+                other.preferredSpeed == preferredSpeed) &&
+            (identical(other.sleepTimer, sleepTimer) ||
+                other.sleepTimer == sleepTimer));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, miniPlayerSettings);
+  int get hashCode => Object.hash(runtimeType, miniPlayerSettings,
+      expandedPlayerSettings, preferredVolume, preferredSpeed, sleepTimer);
 
   @JsonKey(ignore: true)
   @override
@@ -359,8 +451,11 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
 
 abstract class _PlayerSettings implements PlayerSettings {
   const factory _PlayerSettings(
-          {final MinimizedPlayerSettings miniPlayerSettings}) =
-      _$PlayerSettingsImpl;
+      {final MinimizedPlayerSettings miniPlayerSettings,
+      final ExpandedPlayerSettings expandedPlayerSettings,
+      final double preferredVolume,
+      final double preferredSpeed,
+      final Duration sleepTimer}) = _$PlayerSettingsImpl;
 
   factory _PlayerSettings.fromJson(Map<String, dynamic> json) =
       _$PlayerSettingsImpl.fromJson;
@@ -368,14 +463,188 @@ abstract class _PlayerSettings implements PlayerSettings {
   @override
   MinimizedPlayerSettings get miniPlayerSettings;
   @override
+  ExpandedPlayerSettings get expandedPlayerSettings;
+  @override
+  double get preferredVolume;
+  @override
+  double get preferredSpeed;
+  @override
+  Duration get sleepTimer;
+  @override
   @JsonKey(ignore: true)
   _$$PlayerSettingsImplCopyWith<_$PlayerSettingsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
+ExpandedPlayerSettings _$ExpandedPlayerSettingsFromJson(
+    Map<String, dynamic> json) {
+  return _ExpandedPlayerSettings.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ExpandedPlayerSettings {
+  bool get showTotalProgress => throw _privateConstructorUsedError;
+  bool get showChapterProgress => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ExpandedPlayerSettingsCopyWith<ExpandedPlayerSettings> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ExpandedPlayerSettingsCopyWith<$Res> {
+  factory $ExpandedPlayerSettingsCopyWith(ExpandedPlayerSettings value,
+          $Res Function(ExpandedPlayerSettings) then) =
+      _$ExpandedPlayerSettingsCopyWithImpl<$Res, ExpandedPlayerSettings>;
+  @useResult
+  $Res call({bool showTotalProgress, bool showChapterProgress});
+}
+
+/// @nodoc
+class _$ExpandedPlayerSettingsCopyWithImpl<$Res,
+        $Val extends ExpandedPlayerSettings>
+    implements $ExpandedPlayerSettingsCopyWith<$Res> {
+  _$ExpandedPlayerSettingsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? showTotalProgress = null,
+    Object? showChapterProgress = null,
+  }) {
+    return _then(_value.copyWith(
+      showTotalProgress: null == showTotalProgress
+          ? _value.showTotalProgress
+          : showTotalProgress // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showChapterProgress: null == showChapterProgress
+          ? _value.showChapterProgress
+          : showChapterProgress // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ExpandedPlayerSettingsImplCopyWith<$Res>
+    implements $ExpandedPlayerSettingsCopyWith<$Res> {
+  factory _$$ExpandedPlayerSettingsImplCopyWith(
+          _$ExpandedPlayerSettingsImpl value,
+          $Res Function(_$ExpandedPlayerSettingsImpl) then) =
+      __$$ExpandedPlayerSettingsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({bool showTotalProgress, bool showChapterProgress});
+}
+
+/// @nodoc
+class __$$ExpandedPlayerSettingsImplCopyWithImpl<$Res>
+    extends _$ExpandedPlayerSettingsCopyWithImpl<$Res,
+        _$ExpandedPlayerSettingsImpl>
+    implements _$$ExpandedPlayerSettingsImplCopyWith<$Res> {
+  __$$ExpandedPlayerSettingsImplCopyWithImpl(
+      _$ExpandedPlayerSettingsImpl _value,
+      $Res Function(_$ExpandedPlayerSettingsImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? showTotalProgress = null,
+    Object? showChapterProgress = null,
+  }) {
+    return _then(_$ExpandedPlayerSettingsImpl(
+      showTotalProgress: null == showTotalProgress
+          ? _value.showTotalProgress
+          : showTotalProgress // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showChapterProgress: null == showChapterProgress
+          ? _value.showChapterProgress
+          : showChapterProgress // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ExpandedPlayerSettingsImpl implements _ExpandedPlayerSettings {
+  const _$ExpandedPlayerSettingsImpl(
+      {this.showTotalProgress = false, this.showChapterProgress = true});
+
+  factory _$ExpandedPlayerSettingsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ExpandedPlayerSettingsImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final bool showTotalProgress;
+  @override
+  @JsonKey()
+  final bool showChapterProgress;
+
+  @override
+  String toString() {
+    return 'ExpandedPlayerSettings(showTotalProgress: $showTotalProgress, showChapterProgress: $showChapterProgress)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ExpandedPlayerSettingsImpl &&
+            (identical(other.showTotalProgress, showTotalProgress) ||
+                other.showTotalProgress == showTotalProgress) &&
+            (identical(other.showChapterProgress, showChapterProgress) ||
+                other.showChapterProgress == showChapterProgress));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, showTotalProgress, showChapterProgress);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ExpandedPlayerSettingsImplCopyWith<_$ExpandedPlayerSettingsImpl>
+      get copyWith => __$$ExpandedPlayerSettingsImplCopyWithImpl<
+          _$ExpandedPlayerSettingsImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ExpandedPlayerSettingsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ExpandedPlayerSettings implements ExpandedPlayerSettings {
+  const factory _ExpandedPlayerSettings(
+      {final bool showTotalProgress,
+      final bool showChapterProgress}) = _$ExpandedPlayerSettingsImpl;
+
+  factory _ExpandedPlayerSettings.fromJson(Map<String, dynamic> json) =
+      _$ExpandedPlayerSettingsImpl.fromJson;
+
+  @override
+  bool get showTotalProgress;
+  @override
+  bool get showChapterProgress;
+  @override
+  @JsonKey(ignore: true)
+  _$$ExpandedPlayerSettingsImplCopyWith<_$ExpandedPlayerSettingsImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
 MinimizedPlayerSettings _$MinimizedPlayerSettingsFromJson(
     Map<String, dynamic> json) {
-  return _MiniPlayerSettings.fromJson(json);
+  return _MinimizedPlayerSettings.fromJson(json);
 }
 
 /// @nodoc
@@ -423,23 +692,25 @@ class _$MinimizedPlayerSettingsCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$MiniPlayerSettingsImplCopyWith<$Res>
+abstract class _$$MinimizedPlayerSettingsImplCopyWith<$Res>
     implements $MinimizedPlayerSettingsCopyWith<$Res> {
-  factory _$$MiniPlayerSettingsImplCopyWith(_$MiniPlayerSettingsImpl value,
-          $Res Function(_$MiniPlayerSettingsImpl) then) =
-      __$$MiniPlayerSettingsImplCopyWithImpl<$Res>;
+  factory _$$MinimizedPlayerSettingsImplCopyWith(
+          _$MinimizedPlayerSettingsImpl value,
+          $Res Function(_$MinimizedPlayerSettingsImpl) then) =
+      __$$MinimizedPlayerSettingsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({bool useChapterInfo});
 }
 
 /// @nodoc
-class __$$MiniPlayerSettingsImplCopyWithImpl<$Res>
+class __$$MinimizedPlayerSettingsImplCopyWithImpl<$Res>
     extends _$MinimizedPlayerSettingsCopyWithImpl<$Res,
-        _$MiniPlayerSettingsImpl>
-    implements _$$MiniPlayerSettingsImplCopyWith<$Res> {
-  __$$MiniPlayerSettingsImplCopyWithImpl(_$MiniPlayerSettingsImpl _value,
-      $Res Function(_$MiniPlayerSettingsImpl) _then)
+        _$MinimizedPlayerSettingsImpl>
+    implements _$$MinimizedPlayerSettingsImplCopyWith<$Res> {
+  __$$MinimizedPlayerSettingsImplCopyWithImpl(
+      _$MinimizedPlayerSettingsImpl _value,
+      $Res Function(_$MinimizedPlayerSettingsImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -447,7 +718,7 @@ class __$$MiniPlayerSettingsImplCopyWithImpl<$Res>
   $Res call({
     Object? useChapterInfo = null,
   }) {
-    return _then(_$MiniPlayerSettingsImpl(
+    return _then(_$MinimizedPlayerSettingsImpl(
       useChapterInfo: null == useChapterInfo
           ? _value.useChapterInfo
           : useChapterInfo // ignore: cast_nullable_to_non_nullable
@@ -458,11 +729,11 @@ class __$$MiniPlayerSettingsImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$MiniPlayerSettingsImpl implements _MiniPlayerSettings {
-  const _$MiniPlayerSettingsImpl({this.useChapterInfo = false});
+class _$MinimizedPlayerSettingsImpl implements _MinimizedPlayerSettings {
+  const _$MinimizedPlayerSettingsImpl({this.useChapterInfo = false});
 
-  factory _$MiniPlayerSettingsImpl.fromJson(Map<String, dynamic> json) =>
-      _$$MiniPlayerSettingsImplFromJson(json);
+  factory _$MinimizedPlayerSettingsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MinimizedPlayerSettingsImplFromJson(json);
 
   @override
   @JsonKey()
@@ -477,7 +748,7 @@ class _$MiniPlayerSettingsImpl implements _MiniPlayerSettings {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MiniPlayerSettingsImpl &&
+            other is _$MinimizedPlayerSettingsImpl &&
             (identical(other.useChapterInfo, useChapterInfo) ||
                 other.useChapterInfo == useChapterInfo));
   }
@@ -489,29 +760,29 @@ class _$MiniPlayerSettingsImpl implements _MiniPlayerSettings {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MiniPlayerSettingsImplCopyWith<_$MiniPlayerSettingsImpl> get copyWith =>
-      __$$MiniPlayerSettingsImplCopyWithImpl<_$MiniPlayerSettingsImpl>(
-          this, _$identity);
+  _$$MinimizedPlayerSettingsImplCopyWith<_$MinimizedPlayerSettingsImpl>
+      get copyWith => __$$MinimizedPlayerSettingsImplCopyWithImpl<
+          _$MinimizedPlayerSettingsImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$MiniPlayerSettingsImplToJson(
+    return _$$MinimizedPlayerSettingsImplToJson(
       this,
     );
   }
 }
 
-abstract class _MiniPlayerSettings implements MinimizedPlayerSettings {
-  const factory _MiniPlayerSettings({final bool useChapterInfo}) =
-      _$MiniPlayerSettingsImpl;
+abstract class _MinimizedPlayerSettings implements MinimizedPlayerSettings {
+  const factory _MinimizedPlayerSettings({final bool useChapterInfo}) =
+      _$MinimizedPlayerSettingsImpl;
 
-  factory _MiniPlayerSettings.fromJson(Map<String, dynamic> json) =
-      _$MiniPlayerSettingsImpl.fromJson;
+  factory _MinimizedPlayerSettings.fromJson(Map<String, dynamic> json) =
+      _$MinimizedPlayerSettingsImpl.fromJson;
 
   @override
   bool get useChapterInfo;
   @override
   @JsonKey(ignore: true)
-  _$$MiniPlayerSettingsImplCopyWith<_$MiniPlayerSettingsImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$MinimizedPlayerSettingsImplCopyWith<_$MinimizedPlayerSettingsImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
