@@ -24,7 +24,7 @@ final currentlyPlayingBookProvider =
 
 typedef CurrentlyPlayingBookRef = AutoDisposeProviderRef<BookExpanded?>;
 String _$currentPlayingChapterHash() =>
-    r'3a621260211cddecfd974b31d5c4820ed24b1545';
+    r'91ca01ee93e0d556c77237ceebb3f9281d2d2b3f';
 
 /// provided the current chapter of the book being played
 ///
