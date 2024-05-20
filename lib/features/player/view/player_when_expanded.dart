@@ -279,9 +279,9 @@ class AudiobookPlayerSeekButton extends HookConsumerWidget {
       ),
       onPressed: () {
         if (isForward) {
-          player.seek(player.position + const Duration(seconds: 30));
+          player.seek(player.positionInBook + const Duration(seconds: 30));
         } else {
-          player.seek(player.position - const Duration(seconds: 30));
+          player.seek(player.positionInBook - const Duration(seconds: 30));
         }
       },
     );
@@ -318,7 +318,7 @@ class AudiobookPlayerSeekChapterButton extends HookConsumerWidget {
             player.seek(
               player.book!.chapters[index + 1].start +
                   const Duration(
-                    microseconds: 50,
+                    milliseconds: 10,
                   ), // add a small offset so the display does not show the previous chapter for a split second
             );
           } else {
@@ -327,18 +327,18 @@ class AudiobookPlayerSeekChapterButton extends HookConsumerWidget {
         } else {
           // if player position is less than 5 seconds into the chapter, go to the previous chapter
           final chapterPosition =
-              player.position - player.currentChapter!.start;
+              player.positionInBook - player.currentChapter!.start;
           if (chapterPosition < const Duration(seconds: 5)) {
             final index = player.book!.chapters.indexOf(player.currentChapter!);
             if (index > 0) {
               player.seek(
                 player.book!.chapters[index - 1].start +
-                    const Duration(microseconds: 50),
+                    const Duration(milliseconds: 10),
               );
             }
           } else {
             player.seek(
-              player.currentChapter!.start + const Duration(microseconds: 50),
+              player.currentChapter!.start + const Duration(milliseconds: 10),
             );
           }
         }

@@ -14,7 +14,7 @@ BookExpanded? currentlyPlayingBook(CurrentlyPlayingBookRef ref) {
 @riverpod
 BookChapter? currentPlayingChapter(CurrentPlayingChapterRef ref) {
   final player = ref.watch(audiobookPlayerProvider);
-  player.positionStream.listen((_) {
+  player.slowPositionStream.listen((_) {
     ref.invalidateSelf();
   });
 

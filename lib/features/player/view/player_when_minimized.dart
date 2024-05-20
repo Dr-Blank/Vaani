@@ -33,7 +33,7 @@ class PlayerWhenMinimized extends HookConsumerWidget {
     final player = ref.watch(audiobookPlayerProvider);
     final vanishingPercentage = 1 - percentageMiniplayer;
     final progress =
-        useStream(player.positionStream, initialData: Duration.zero);
+        useStream(player.slowPositionStream, initialData: Duration.zero);
 
     final bookMetaExpanded = ref.watch(currentBookMetadataProvider);
 

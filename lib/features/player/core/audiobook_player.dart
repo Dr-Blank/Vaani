@@ -204,6 +204,22 @@ class AudiobookPlayer extends AudioPlayer {
     });
   }
 
+  /// a convenience getter for slow position stream
+  Stream<Duration> get slowPositionStream {
+    final superPositionStream = createPositionStream(
+      steps: 100,
+      minPeriod: const Duration(milliseconds: 500),
+      maxPeriod: const Duration(seconds: 1),
+    );
+    // now we need to map the position to the book instead of the current track
+    return superPositionStream.map((position) {
+      if (_book == null) {
+        return Duration.zero;
+      }
+      return position + _book!.tracks[sequenceState!.currentIndex].startOffset;
+    });
+  }
+
   /// get current chapter
   BookChapter? get currentChapter {
     if (_book == null) {
