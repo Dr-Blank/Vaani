@@ -8,7 +8,6 @@
     <application
         android:label="whispering_pages"
         android:name="${applicationName}"
-        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher">
         <!-- android:name=".MainActivity" -->
         <activity
