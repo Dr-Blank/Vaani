@@ -304,10 +304,10 @@ class LibraryItemActions extends HookConsumerWidget {
                       ref
                           .read(appSettingsProvider)
                           .playerSettings
-                          .preferredVolume,
+                          .preferredDefaultVolume,
                     );
                     // toggle play/pause
-                    player.togglePlayPause();
+                    await player.play();
                   },
                   icon: const Icon(Icons.play_arrow_rounded),
                   label: const Text('Play/Resume'),

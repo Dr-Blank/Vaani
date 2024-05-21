@@ -27,8 +27,9 @@ class PlayerSettings with _$PlayerSettings {
     MinimizedPlayerSettings miniPlayerSettings,
     @Default(ExpandedPlayerSettings())
     ExpandedPlayerSettings expandedPlayerSettings,
-    @Default(1) double preferredVolume,
-    @Default(1) double preferredSpeed,
+    @Default(1) double preferredDefaultVolume,
+    @Default(1) double preferredDefaultSpeed,
+    @Default([0.8, 1, 1.25, 1.5, 1.75, 2]) List<double> speedOptions,
     @Default(Duration(minutes: 15)) Duration sleepTimer,
   }) = _PlayerSettings;
 
@@ -46,6 +47,7 @@ class ExpandedPlayerSettings with _$ExpandedPlayerSettings {
   factory ExpandedPlayerSettings.fromJson(Map<String, dynamic> json) =>
       _$ExpandedPlayerSettingsFromJson(json);
 }
+
 @freezed
 class MinimizedPlayerSettings with _$MinimizedPlayerSettings {
   const factory MinimizedPlayerSettings({

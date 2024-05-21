@@ -226,8 +226,9 @@ mixin _$PlayerSettings {
       throw _privateConstructorUsedError;
   ExpandedPlayerSettings get expandedPlayerSettings =>
       throw _privateConstructorUsedError;
-  double get preferredVolume => throw _privateConstructorUsedError;
-  double get preferredSpeed => throw _privateConstructorUsedError;
+  double get preferredDefaultVolume => throw _privateConstructorUsedError;
+  double get preferredDefaultSpeed => throw _privateConstructorUsedError;
+  List<double> get speedOptions => throw _privateConstructorUsedError;
   Duration get sleepTimer => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -245,8 +246,9 @@ abstract class $PlayerSettingsCopyWith<$Res> {
   $Res call(
       {MinimizedPlayerSettings miniPlayerSettings,
       ExpandedPlayerSettings expandedPlayerSettings,
-      double preferredVolume,
-      double preferredSpeed,
+      double preferredDefaultVolume,
+      double preferredDefaultSpeed,
+      List<double> speedOptions,
       Duration sleepTimer});
 
   $MinimizedPlayerSettingsCopyWith<$Res> get miniPlayerSettings;
@@ -268,8 +270,9 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
   $Res call({
     Object? miniPlayerSettings = null,
     Object? expandedPlayerSettings = null,
-    Object? preferredVolume = null,
-    Object? preferredSpeed = null,
+    Object? preferredDefaultVolume = null,
+    Object? preferredDefaultSpeed = null,
+    Object? speedOptions = null,
     Object? sleepTimer = null,
   }) {
     return _then(_value.copyWith(
@@ -281,14 +284,18 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
           ? _value.expandedPlayerSettings
           : expandedPlayerSettings // ignore: cast_nullable_to_non_nullable
               as ExpandedPlayerSettings,
-      preferredVolume: null == preferredVolume
-          ? _value.preferredVolume
-          : preferredVolume // ignore: cast_nullable_to_non_nullable
+      preferredDefaultVolume: null == preferredDefaultVolume
+          ? _value.preferredDefaultVolume
+          : preferredDefaultVolume // ignore: cast_nullable_to_non_nullable
               as double,
-      preferredSpeed: null == preferredSpeed
-          ? _value.preferredSpeed
-          : preferredSpeed // ignore: cast_nullable_to_non_nullable
+      preferredDefaultSpeed: null == preferredDefaultSpeed
+          ? _value.preferredDefaultSpeed
+          : preferredDefaultSpeed // ignore: cast_nullable_to_non_nullable
               as double,
+      speedOptions: null == speedOptions
+          ? _value.speedOptions
+          : speedOptions // ignore: cast_nullable_to_non_nullable
+              as List<double>,
       sleepTimer: null == sleepTimer
           ? _value.sleepTimer
           : sleepTimer // ignore: cast_nullable_to_non_nullable
@@ -326,8 +333,9 @@ abstract class _$$PlayerSettingsImplCopyWith<$Res>
   $Res call(
       {MinimizedPlayerSettings miniPlayerSettings,
       ExpandedPlayerSettings expandedPlayerSettings,
-      double preferredVolume,
-      double preferredSpeed,
+      double preferredDefaultVolume,
+      double preferredDefaultSpeed,
+      List<double> speedOptions,
       Duration sleepTimer});
 
   @override
@@ -349,8 +357,9 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
   $Res call({
     Object? miniPlayerSettings = null,
     Object? expandedPlayerSettings = null,
-    Object? preferredVolume = null,
-    Object? preferredSpeed = null,
+    Object? preferredDefaultVolume = null,
+    Object? preferredDefaultSpeed = null,
+    Object? speedOptions = null,
     Object? sleepTimer = null,
   }) {
     return _then(_$PlayerSettingsImpl(
@@ -362,14 +371,18 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
           ? _value.expandedPlayerSettings
           : expandedPlayerSettings // ignore: cast_nullable_to_non_nullable
               as ExpandedPlayerSettings,
-      preferredVolume: null == preferredVolume
-          ? _value.preferredVolume
-          : preferredVolume // ignore: cast_nullable_to_non_nullable
+      preferredDefaultVolume: null == preferredDefaultVolume
+          ? _value.preferredDefaultVolume
+          : preferredDefaultVolume // ignore: cast_nullable_to_non_nullable
               as double,
-      preferredSpeed: null == preferredSpeed
-          ? _value.preferredSpeed
-          : preferredSpeed // ignore: cast_nullable_to_non_nullable
+      preferredDefaultSpeed: null == preferredDefaultSpeed
+          ? _value.preferredDefaultSpeed
+          : preferredDefaultSpeed // ignore: cast_nullable_to_non_nullable
               as double,
+      speedOptions: null == speedOptions
+          ? _value._speedOptions
+          : speedOptions // ignore: cast_nullable_to_non_nullable
+              as List<double>,
       sleepTimer: null == sleepTimer
           ? _value.sleepTimer
           : sleepTimer // ignore: cast_nullable_to_non_nullable
@@ -384,9 +397,11 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
   const _$PlayerSettingsImpl(
       {this.miniPlayerSettings = const MinimizedPlayerSettings(),
       this.expandedPlayerSettings = const ExpandedPlayerSettings(),
-      this.preferredVolume = 1,
-      this.preferredSpeed = 1,
-      this.sleepTimer = const Duration(minutes: 15)});
+      this.preferredDefaultVolume = 1,
+      this.preferredDefaultSpeed = 1,
+      final List<double> speedOptions = const [0.8, 1, 1.25, 1.5, 1.75, 2],
+      this.sleepTimer = const Duration(minutes: 15)})
+      : _speedOptions = speedOptions;
 
   factory _$PlayerSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$PlayerSettingsImplFromJson(json);
@@ -399,17 +414,26 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
   final ExpandedPlayerSettings expandedPlayerSettings;
   @override
   @JsonKey()
-  final double preferredVolume;
+  final double preferredDefaultVolume;
   @override
   @JsonKey()
-  final double preferredSpeed;
+  final double preferredDefaultSpeed;
+  final List<double> _speedOptions;
+  @override
+  @JsonKey()
+  List<double> get speedOptions {
+    if (_speedOptions is EqualUnmodifiableListView) return _speedOptions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_speedOptions);
+  }
+
   @override
   @JsonKey()
   final Duration sleepTimer;
 
   @override
   String toString() {
-    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredVolume: $preferredVolume, preferredSpeed: $preferredSpeed, sleepTimer: $sleepTimer)';
+    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredDefaultVolume: $preferredDefaultVolume, preferredDefaultSpeed: $preferredDefaultSpeed, speedOptions: $speedOptions, sleepTimer: $sleepTimer)';
   }
 
   @override
@@ -421,18 +445,26 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
                 other.miniPlayerSettings == miniPlayerSettings) &&
             (identical(other.expandedPlayerSettings, expandedPlayerSettings) ||
                 other.expandedPlayerSettings == expandedPlayerSettings) &&
-            (identical(other.preferredVolume, preferredVolume) ||
-                other.preferredVolume == preferredVolume) &&
-            (identical(other.preferredSpeed, preferredSpeed) ||
-                other.preferredSpeed == preferredSpeed) &&
+            (identical(other.preferredDefaultVolume, preferredDefaultVolume) ||
+                other.preferredDefaultVolume == preferredDefaultVolume) &&
+            (identical(other.preferredDefaultSpeed, preferredDefaultSpeed) ||
+                other.preferredDefaultSpeed == preferredDefaultSpeed) &&
+            const DeepCollectionEquality()
+                .equals(other._speedOptions, _speedOptions) &&
             (identical(other.sleepTimer, sleepTimer) ||
                 other.sleepTimer == sleepTimer));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, miniPlayerSettings,
-      expandedPlayerSettings, preferredVolume, preferredSpeed, sleepTimer);
+  int get hashCode => Object.hash(
+      runtimeType,
+      miniPlayerSettings,
+      expandedPlayerSettings,
+      preferredDefaultVolume,
+      preferredDefaultSpeed,
+      const DeepCollectionEquality().hash(_speedOptions),
+      sleepTimer);
 
   @JsonKey(ignore: true)
   @override
@@ -453,8 +485,9 @@ abstract class _PlayerSettings implements PlayerSettings {
   const factory _PlayerSettings(
       {final MinimizedPlayerSettings miniPlayerSettings,
       final ExpandedPlayerSettings expandedPlayerSettings,
-      final double preferredVolume,
-      final double preferredSpeed,
+      final double preferredDefaultVolume,
+      final double preferredDefaultSpeed,
+      final List<double> speedOptions,
       final Duration sleepTimer}) = _$PlayerSettingsImpl;
 
   factory _PlayerSettings.fromJson(Map<String, dynamic> json) =
@@ -465,9 +498,11 @@ abstract class _PlayerSettings implements PlayerSettings {
   @override
   ExpandedPlayerSettings get expandedPlayerSettings;
   @override
-  double get preferredVolume;
+  double get preferredDefaultVolume;
   @override
-  double get preferredSpeed;
+  double get preferredDefaultSpeed;
+  @override
+  List<double> get speedOptions;
   @override
   Duration get sleepTimer;
   @override

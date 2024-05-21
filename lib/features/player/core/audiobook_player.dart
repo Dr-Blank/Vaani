@@ -225,6 +225,10 @@ class AudiobookPlayer extends AudioPlayer {
     if (_book == null) {
       return null;
     }
+    // if the list is empty, return null
+    if (_book!.chapters.isEmpty) {
+      return null;
+    }
     return _book!.chapters.firstWhere(
       (element) {
         return element.start <= positionInBook && element.end >= positionInBook;

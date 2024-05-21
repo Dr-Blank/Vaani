@@ -34,8 +34,14 @@ _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
           ? const ExpandedPlayerSettings()
           : ExpandedPlayerSettings.fromJson(
               json['expandedPlayerSettings'] as Map<String, dynamic>),
-      preferredVolume: (json['preferredVolume'] as num?)?.toDouble() ?? 1,
-      preferredSpeed: (json['preferredSpeed'] as num?)?.toDouble() ?? 1,
+      preferredDefaultVolume:
+          (json['preferredDefaultVolume'] as num?)?.toDouble() ?? 1,
+      preferredDefaultSpeed:
+          (json['preferredDefaultSpeed'] as num?)?.toDouble() ?? 1,
+      speedOptions: (json['speedOptions'] as List<dynamic>?)
+              ?.map((e) => (e as num).toDouble())
+              .toList() ??
+          const [0.8, 1, 1.25, 1.5, 1.75, 2],
       sleepTimer: json['sleepTimer'] == null
           ? const Duration(minutes: 15)
           : Duration(microseconds: (json['sleepTimer'] as num).toInt()),
@@ -46,8 +52,9 @@ Map<String, dynamic> _$$PlayerSettingsImplToJson(
     <String, dynamic>{
       'miniPlayerSettings': instance.miniPlayerSettings,
       'expandedPlayerSettings': instance.expandedPlayerSettings,
-      'preferredVolume': instance.preferredVolume,
-      'preferredSpeed': instance.preferredSpeed,
+      'preferredDefaultVolume': instance.preferredDefaultVolume,
+      'preferredDefaultSpeed': instance.preferredDefaultSpeed,
+      'speedOptions': instance.speedOptions,
       'sleepTimer': instance.sleepTimer.inMicroseconds,
     };
 

@@ -72,7 +72,7 @@ class AudiobookPlayer extends HookConsumerWidget {
     // the image width when the player is expanded
     final maxImgSize = availWidth * 0.9;
 
-    final preferredVolume = appSettings.playerSettings.preferredVolume;
+    final preferredVolume = appSettings.playerSettings.preferredDefaultVolume;
     return Theme(
       data: ThemeData(
         colorScheme: imageTheme.valueOrNull ?? Theme.of(context).colorScheme,

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:whispering_pages/constants/sizes.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
 import 'package:whispering_pages/features/player/providers/currently_playing_provider.dart';
 import 'package:whispering_pages/features/player/providers/player_form.dart';
 import 'package:whispering_pages/features/player/view/audiobook_player.dart';
+import 'package:whispering_pages/settings/app_settings_provider.dart';
 import 'package:whispering_pages/shared/extensions/inverse_lerp.dart';
 
 class PlayerWhenExpanded extends HookConsumerWidget {
@@ -127,27 +129,27 @@ class PlayerWhenExpanded extends HookConsumerWidget {
         ),
 
         // the chapter title
-        currentChapter == null
-            ? const SizedBox()
-            : Opacity(
-                opacity: earlyPercentage,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: AppElementSizes.paddingRegular * 4 * earlyPercentage,
-                    // horizontal: 16.0,
-                  ),
-                  // child: SizedBox(
-                  // same as the image width
-                  // width: imageSize,
-                  child: Text(
+        Opacity(
+          opacity: earlyPercentage,
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: AppElementSizes.paddingRegular * 4 * earlyPercentage,
+              // horizontal: 16.0,
+            ),
+            // child: SizedBox(
+            // same as the image width
+            // width: imageSize,
+            child: currentChapter == null
+                ? const SizedBox()
+                : Text(
                     currentChapter.title,
                     style: Theme.of(context).textTheme.titleLarge,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  // ),
-                ),
-              ),
+            // ),
+          ),
+        ),
 
         // the book name and author
         Opacity(
@@ -232,10 +234,7 @@ class PlayerWhenExpanded extends HookConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // speed control
-                IconButton(
-                  icon: const Icon(Icons.speed),
-                  onPressed: () {},
-                ),
+                const PlayerSpeedAdjustButton(),
                 // sleep timer
                 IconButton(
                   icon: const Icon(Icons.timer),
@@ -256,6 +255,65 @@ class PlayerWhenExpanded extends HookConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class PlayerSpeedAdjustButton extends HookConsumerWidget {
+  const PlayerSpeedAdjustButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final player = ref.watch(audiobookPlayerProvider);
+    return TextButton(
+      child: Text('${player.speed}x'),
+      // icon: const Icon(Icons.speed),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return SpeedSelector(
+              onSpeedSelected: (speed) {
+                player.setSpeed(speed);
+                Navigator.of(context).pop();
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class SpeedSelector extends HookConsumerWidget {
+  const SpeedSelector({
+    super.key,
+    required this.onSpeedSelected,
+  });
+
+  final void Function(double speed) onSpeedSelected;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appSettings = ref.watch(appSettingsProvider);
+    final speeds = appSettings.playerSettings.speedOptions;
+    final currentSpeed = ref.watch(audiobookPlayerProvider).speed;
+    return SizedBox(
+      child: ListView.builder(
+        itemCount: speeds.length,
+        itemBuilder: (context, index) {
+          final speed = speeds[index];
+          return ListTile(
+            title: Text(speed.toString()),
+            onTap: () {
+              onSpeedSelected(speed);
+            },
+            trailing: currentSpeed == speed ? const Icon(Icons.check) : null,
+          );
+        },
+      ),
     );
   }
 }
@@ -301,6 +359,43 @@ class AudiobookPlayerSeekChapterButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(audiobookPlayerProvider);
 
+    // add a small offset so the display does not show the previous chapter for a split second
+    const offset = Duration(milliseconds: 10);
+
+    /// time into the current chapter to determine if we should go to the previous chapter or the start of the current chapter
+    const doNotSeekBackIfLessThan = Duration(seconds: 5);
+
+    /// seek forward to the next chapter
+    void seekForward() {
+      final index = player.book!.chapters.indexOf(player.currentChapter!);
+      if (index < player.book!.chapters.length - 1) {
+        player.seek(
+          player.book!.chapters[index + 1].start + offset,
+        );
+      } else {
+        player.seek(player.currentChapter!.end);
+      }
+    }
+
+    /// seek backward to the previous chapter or the start of the current chapter
+    void seekBackward() {
+      final currentPlayingChapterIndex =
+          player.book!.chapters.indexOf(player.currentChapter!);
+      final chapterPosition =
+          player.positionInBook - player.currentChapter!.start;
+      BookChapter chapterToSeekTo;
+      // if player position is less than 5 seconds into the chapter, go to the previous chapter
+      if (chapterPosition < doNotSeekBackIfLessThan &&
+          currentPlayingChapterIndex > 0) {
+        chapterToSeekTo = player.book!.chapters[currentPlayingChapterIndex - 1];
+      } else {
+        chapterToSeekTo = player.currentChapter!;
+      }
+      player.seek(
+        chapterToSeekTo.start + offset,
+      );
+    }
+
     return IconButton(
       icon: Icon(
         isForward ? Icons.skip_next : Icons.skip_previous,
@@ -310,37 +405,15 @@ class AudiobookPlayerSeekChapterButton extends HookConsumerWidget {
         if (player.book == null) {
           return;
         }
+        // if chapter does not exist, go to the start or end of the book
+        if (player.currentChapter == null) {
+          player.seek(isForward ? player.book!.duration : Duration.zero);
+          return;
+        }
         if (isForward) {
-          // instead of seeking to the end of the chapter, go to the next chapter start
-          // player.seek(player.currentChapter!.end);
-          final index = player.book!.chapters.indexOf(player.currentChapter!);
-          if (index < player.book!.chapters.length - 1) {
-            player.seek(
-              player.book!.chapters[index + 1].start +
-                  const Duration(
-                    milliseconds: 10,
-                  ), // add a small offset so the display does not show the previous chapter for a split second
-            );
-          } else {
-            player.seek(player.currentChapter!.end);
-          }
+          seekForward();
         } else {
-          // if player position is less than 5 seconds into the chapter, go to the previous chapter
-          final chapterPosition =
-              player.positionInBook - player.currentChapter!.start;
-          if (chapterPosition < const Duration(seconds: 5)) {
-            final index = player.book!.chapters.indexOf(player.currentChapter!);
-            if (index > 0) {
-              player.seek(
-                player.book!.chapters[index - 1].start +
-                    const Duration(milliseconds: 10),
-              );
-            }
-          } else {
-            player.seek(
-              player.currentChapter!.start + const Duration(milliseconds: 10),
-            );
-          }
+          seekBackward();
         }
       },
     );
