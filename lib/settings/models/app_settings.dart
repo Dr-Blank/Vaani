@@ -29,7 +29,7 @@ class PlayerSettings with _$PlayerSettings {
     ExpandedPlayerSettings expandedPlayerSettings,
     @Default(1) double preferredDefaultVolume,
     @Default(1) double preferredDefaultSpeed,
-    @Default([0.8, 1, 1.25, 1.5, 1.75, 2]) List<double> speedOptions,
+    @Default([0.75, 1, 1.25, 1.5, 1.75, 2]) List<double> speedOptions,
     @Default(Duration(minutes: 15)) Duration sleepTimer,
   }) = _PlayerSettings;
 

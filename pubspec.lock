@@ -720,6 +720,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  list_wheel_scroll_view_nls:
+    dependency: "direct main"
+    description:
+      name: list_wheel_scroll_view_nls
+      sha256: "47a6c27dac35768f2bcd0db05a31f04347ea116faf3529131d937cf130c36e91"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   logging:
     dependency: transitive
     description:

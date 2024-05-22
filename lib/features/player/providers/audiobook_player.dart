@@ -39,4 +39,9 @@ class AudiobookPlayer extends _$AudiobookPlayer {
   void notifyListeners() {
     ref.notifyListeners();
   }
+
+Future<void> setSpeed(double speed) async {
+    await state.setSpeed(speed);
+    notifyListeners();
+  }
 }

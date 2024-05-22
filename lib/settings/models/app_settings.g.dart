@@ -41,7 +41,7 @@ _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
       speedOptions: (json['speedOptions'] as List<dynamic>?)
               ?.map((e) => (e as num).toDouble())
               .toList() ??
-          const [0.8, 1, 1.25, 1.5, 1.75, 2],
+          const [0.75, 1, 1.25, 1.5, 1.75, 2],
       sleepTimer: json['sleepTimer'] == null
           ? const Duration(minutes: 15)
           : Duration(microseconds: (json['sleepTimer'] as num).toInt()),
