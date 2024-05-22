@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -28,7 +26,7 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
     var percentExpanded = (playerProgress - playerMinHeight) /
         (playerMaxHeight - playerMinHeight);
     // Clamp the value between 0 and 1
-    percentExpanded = max(0, min(1, percentExpanded));
+    percentExpanded = percentExpanded.clamp(0.0, 1.0);
 
     return Scaffold(
       body: Stack(

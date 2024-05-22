@@ -7,11 +7,11 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:whispering_pages/api/api_provider.dart';
 import 'package:whispering_pages/api/authenticated_user_provider.dart';
 import 'package:whispering_pages/api/server_provider.dart';
+import 'package:whispering_pages/features/onboarding/view/user_login.dart';
 import 'package:whispering_pages/router/router.dart';
 import 'package:whispering_pages/settings/api_settings_provider.dart';
 import 'package:whispering_pages/settings/models/models.dart' as model;
 import 'package:whispering_pages/shared/widgets/add_new_server.dart';
-import 'package:whispering_pages/features/onboarding/view/user_login.dart';
 
 class OnboardingSinglePage extends HookConsumerWidget {
   const OnboardingSinglePage({
@@ -90,7 +90,7 @@ class OnboardingSinglePage extends HookConsumerWidget {
             );
 
         // redirect to the library page
-        GoRouter.of(context).goNamed(Routes.home);
+        GoRouter.of(context).goNamed(Routes.home.name);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

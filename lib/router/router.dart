@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:whispering_pages/features/item_viewer/view/library_item_page.dart';
+import 'package:whispering_pages/features/onboarding/view/onboarding_single_page.dart';
 import 'package:whispering_pages/pages/app_settings.dart';
 import 'package:whispering_pages/pages/home_page.dart';
-import 'package:whispering_pages/features/item_viewer/view/library_item_page.dart';
-import 'package:whispering_pages/pages/library_page.dart';
-import 'package:whispering_pages/features/onboarding/view/onboarding_single_page.dart';
 
 import 'scaffold_with_nav_bar.dart';
 import 'transitions/slide.dart';
@@ -21,6 +20,7 @@ class MyAppRouter {
   const MyAppRouter();
 
   GoRouter get config => GoRouter(
+        initialLocation: Routes.home.path,
         routes: [
           // sign in page
           GoRoute(
@@ -47,19 +47,10 @@ class MyAppRouter {
                 navigatorKey: _sectionHomeNavigatorKey,
                 routes: <RouteBase>[
                   GoRoute(
-                    path: '/',
-                    name: Routes.home,
+                    path: Routes.home.path,
+                    name: Routes.home.name,
                     // builder: (context, state) => const HomePage(),
                     pageBuilder: defaultPageBuilder(const HomePage()),
-                  ),
-                  // /library/:libraryId
-                  GoRoute(
-                    path: Routes.library.path,
-                    name: Routes.library.name,
-                    builder: (context, state) => LibraryPage(
-                      libraryId:
-                          state.pathParameters[Routes.library.pathParamName]!,
-                    ),
                   ),
                   GoRoute(
                     path: Routes.libraryItem.path,

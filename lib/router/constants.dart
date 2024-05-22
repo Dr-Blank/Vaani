@@ -3,7 +3,10 @@
 part of 'router.dart';
 
 class Routes {
-  static const home = 'home';
+  static const home = _SimpleRoute(
+    pathName: '',
+    name: 'home',
+  );
   static const onboarding = _SimpleRoute(
     pathName: 'login',
     name: 'onboarding',
