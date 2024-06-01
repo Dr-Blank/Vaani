@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:list_wheel_scroll_view_nls/list_wheel_scroll_view_nls.dart';
-import 'package:miniplayer/miniplayer.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:whispering_pages/constants/sizes.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
 import 'package:whispering_pages/features/player/providers/currently_playing_provider.dart';
-import 'package:whispering_pages/features/player/providers/player_form.dart';
 import 'package:whispering_pages/features/player/view/audiobook_player.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 import 'package:whispering_pages/shared/extensions/inverse_lerp.dart';
@@ -45,60 +43,17 @@ class PlayerWhenExpanded extends HookConsumerWidget {
 
     return Column(
       children: [
-        // sized box for system status bar
-        SizedBox(
-          height: MediaQuery.of(context).padding.top * earlyPercentage,
-        ),
-        // a row with a down arrow to minimize the player, a pill shaped container to drag the player, and a cast button
-        ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: 100 * earlyPercentage,
-          ),
-          child: Opacity(
-            opacity: earlyPercentage,
-            child: Padding(
-              padding: EdgeInsets.only(top: 8.0 * earlyPercentage),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // the down arrow
-                  IconButton(
-                    iconSize: 30,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    onPressed: () {
-                      // minimize the player
-                      ref.read(miniplayerControllerProvider).animateToHeight(
-                            state: PanelState.MIN,
-                          );
-                    },
-                  ),
+        // sized box for system status bar; not needed as not full screen
+        // SizedBox(
+        //   height: MediaQuery.of(context).padding.top * earlyPercentage,
+        // ),
 
-                  // the pill shaped container
-                  // SizedBox(
-                  //   height: 6,
-                  //   width: 32,
-                  //   child: Container(
-                  //     decoration: BoxDecoration(
-                  //       color: Theme.of(context).colorScheme.secondary,
-                  //       borderRadius: BorderRadius.circular(32),
-                  //     ),
-                  //   ),
-                  // ),
-                  // the cast button
-                  IconButton(
-                    icon: const Icon(Icons.cast),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+        // a row with a down arrow to minimize the player, a pill shaped container to drag the player, and a cast button
         // the image
         Padding(
-          padding: EdgeInsets.only(top: 8.0 * earlyPercentage),
+          padding: EdgeInsets.only(
+            top: AppElementSizes.paddingLarge * earlyPercentage,
+          ),
           child: Align(
             alignment: Alignment.center,
             // add a shadow to the image elevation hovering effect

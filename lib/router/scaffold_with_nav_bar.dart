@@ -22,7 +22,8 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
     // final playerProgress =
     //     useValueListenable(ref.watch(playerExpandProgressNotifierProvider));
     final playerProgress = ref.watch(playerHeightProvider);
-    final playerMaxHeight = MediaQuery.of(context).size.height;
+    final playerMaxHeight =
+        MediaQuery.of(context).size.height * playerMaxHeightPercentOfScreen;
     var percentExpanded = (playerProgress - playerMinHeight) /
         (playerMaxHeight - playerMinHeight);
     // Clamp the value between 0 and 1

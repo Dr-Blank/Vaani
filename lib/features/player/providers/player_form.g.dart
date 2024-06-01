@@ -39,11 +39,12 @@ final playerHeightProvider = Provider<double>.internal(
 
 typedef PlayerHeightRef = ProviderRef<double>;
 String _$miniplayerControllerHash() =>
-    r'489579a18f4e08793de08a4828172bd924768301';
+    r'a3677e63a9823881f45a12855e74bf558322e0ec';
 
 /// See also [miniplayerController].
 @ProviderFor(miniplayerController)
-final miniplayerControllerProvider = Provider<MiniplayerController>.internal(
+final miniplayerControllerProvider =
+    Provider<Raw<MiniplayerController>>.internal(
   miniplayerController,
   name: r'miniplayerControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -53,6 +54,6 @@ final miniplayerControllerProvider = Provider<MiniplayerController>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef MiniplayerControllerRef = ProviderRef<MiniplayerController>;
+typedef MiniplayerControllerRef = ProviderRef<Raw<MiniplayerController>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -60,7 +60,7 @@ double playerHeight(
 
 // a final MiniplayerController controller = MiniplayerController();
 @Riverpod(keepAlive: true)
-MiniplayerController miniplayerController(
+Raw<MiniplayerController> miniplayerController(
   MiniplayerControllerRef ref,
 ) {
   return MiniplayerController();

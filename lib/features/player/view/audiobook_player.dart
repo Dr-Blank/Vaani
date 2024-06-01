@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -16,6 +18,8 @@ import 'package:whispering_pages/theme/theme_from_cover_provider.dart';
 
 import 'player_when_expanded.dart';
 import 'player_when_minimized.dart';
+
+const playerMaxHeightPercentOfScreen = 0.8;
 
 class AudiobookPlayer extends HookConsumerWidget {
   const AudiobookPlayer({super.key});
@@ -65,12 +69,13 @@ class AudiobookPlayer extends HookConsumerWidget {
     );
 
     // max height of the player is the height of the screen
-    final playerMaxHeight = MediaQuery.of(context).size.height;
+    final playerMaxHeight =
+        MediaQuery.of(context).size.height * playerMaxHeightPercentOfScreen;
 
     final availWidth = MediaQuery.of(context).size.width;
 
     // the image width when the player is expanded
-    final maxImgSize = availWidth * 0.9;
+    final maxImgSize = min(playerMaxHeight * 0.5, availWidth * 0.9);
 
     final preferredVolume = appSettings.playerSettings.preferredDefaultVolume;
     return Theme(
@@ -82,7 +87,8 @@ class AudiobookPlayer extends HookConsumerWidget {
         onDragDown: (percentage) async {
           // preferred volume
           // set volume to 0 when dragging down
-          await player.setVolume(preferredVolume * (1 - percentage));
+          await player
+              .setVolume(preferredVolume * (1 - percentage.clamp(0, .75)));
         },
         minHeight: playerMinHeight,
         // subtract the height of notches and other system UI
@@ -94,20 +100,14 @@ class AudiobookPlayer extends HookConsumerWidget {
         },
         curve: Curves.easeOut,
         builder: (height, percentage) {
-          // return SafeArea(
-          //   child: Text(
-          //     'percentage: ${percentage.toStringAsFixed(2)}, height: ${height.toStringAsFixed(2)} volume: ${player.volume.toStringAsFixed(2)}',
-          //   ),
-          // );
-
           // at what point should the player switch from miniplayer to expanded player
-          // at this point the image should be at its max size and in the center of the player
+          // also at this point the image should be at its max size and in the center of the player
           final miniplayerPercentageDeclaration =
               (maxImgSize - playerMinHeight) /
                   (playerMaxHeight - playerMinHeight);
           final bool isFormMiniplayer =
               percentage < miniplayerPercentageDeclaration;
-
+      
           if (!isFormMiniplayer) {
             // this calculation needs a refactor
             var percentageExpandedPlayer = percentage
@@ -116,7 +116,7 @@ class AudiobookPlayer extends HookConsumerWidget {
                   1,
                 )
                 .clamp(0.0, 1.0);
-
+      
             return PlayerWhenExpanded(
               imageSize: maxImgSize,
               img: imgWidget,
@@ -124,13 +124,13 @@ class AudiobookPlayer extends HookConsumerWidget {
               playPauseController: playPauseController,
             );
           }
-
+      
           //Miniplayer
           final percentageMiniplayer = percentage.inverseLerp(
             0,
             miniplayerPercentageDeclaration,
           );
-
+      
           return PlayerWhenMinimized(
             maxImgSize: maxImgSize,
             availWidth: availWidth,
