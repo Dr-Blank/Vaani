@@ -25,6 +25,15 @@ class Routes {
     pathName: 'config',
     name: 'settings',
   );
+  static const search = _SimpleRoute(
+    pathName: 'search',
+    name: 'search',
+    // parentRoute: library,
+  );
+  static const explore = _SimpleRoute(
+    pathName: 'explore',
+    name: 'explore',
+  );
 }
 
 // a class to store path
@@ -34,12 +43,17 @@ class _SimpleRoute {
     required this.pathName,
     this.pathParamName,
     required this.name,
+    this.parentRoute,
   });
 
   final String pathName;
   final String? pathParamName;
   final String name;
+  final _SimpleRoute? parentRoute;
 
   String get path =>
+      '${parentRoute?.path ?? ''}${parentRoute != null ? '/' : ''}$localPath';
+
+  String get localPath =>
       '/$pathName${pathParamName != null ? '/:$pathParamName' : ''}';
 }

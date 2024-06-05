@@ -17,7 +17,8 @@
     "mocktail",
     "riverpod",
     "shelfsdk",
-    "tapable"
+    "tapable",
+    "unfocus"
   ],
   "cmake.configureOnOpen": false
 }

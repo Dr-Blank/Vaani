@@ -96,7 +96,11 @@ class AudiobookPlayer extends HookConsumerWidget {
         controller: ref.watch(miniplayerControllerProvider),
         elevation: 4,
         onDismissed: () {
-          player.setSourceAudioBook(null);
+          // add a delay before closing the player
+          // to allow the user to see the player closing
+          Future.delayed(const Duration(milliseconds: 300), () {
+            player.setSourceAudioBook(null);
+          });
         },
         curve: Curves.easeOut,
         builder: (height, percentage) {
@@ -107,7 +111,7 @@ class AudiobookPlayer extends HookConsumerWidget {
                   (playerMaxHeight - playerMinHeight);
           final bool isFormMiniplayer =
               percentage < miniplayerPercentageDeclaration;
-      
+
           if (!isFormMiniplayer) {
             // this calculation needs a refactor
             var percentageExpandedPlayer = percentage
@@ -116,7 +120,7 @@ class AudiobookPlayer extends HookConsumerWidget {
                   1,
                 )
                 .clamp(0.0, 1.0);
-      
+
             return PlayerWhenExpanded(
               imageSize: maxImgSize,
               img: imgWidget,
@@ -124,13 +128,13 @@ class AudiobookPlayer extends HookConsumerWidget {
               playPauseController: playPauseController,
             );
           }
-      
+
           //Miniplayer
           final percentageMiniplayer = percentage.inverseLerp(
             0,
             miniplayerPercentageDeclaration,
           );
-      
+
           return PlayerWhenMinimized(
             maxImgSize: maxImgSize,
             availWidth: availWidth,

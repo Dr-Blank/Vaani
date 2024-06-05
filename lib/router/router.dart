@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:whispering_pages/features/explore/view/explore_page.dart';
+import 'package:whispering_pages/features/explore/view/search_result_page.dart';
 import 'package:whispering_pages/features/item_viewer/view/library_item_page.dart';
 import 'package:whispering_pages/features/onboarding/view/onboarding_single_page.dart';
 import 'package:whispering_pages/pages/app_settings.dart';
@@ -75,6 +77,49 @@ class MyAppRouter {
                   ),
                 ],
               ),
+              // search/explore page
+              StatefulShellBranch(
+                routes: <RouteBase>[
+                  GoRoute(
+                    path: Routes.explore.path,
+                    name: Routes.explore.name,
+                    // builder: (context, state) => const ExplorePage(),
+                    pageBuilder: defaultPageBuilder(const ExplorePage()),
+                  ),
+                  // search page
+                  GoRoute(
+                    path: Routes.search.path,
+                    name: Routes.search.name,
+                    // builder: (context, state) {
+                    //   final libraryId = state
+                    //       .pathParameters[Routes.library.pathParamName]!;
+                    //   return LibrarySearchPage(
+                    //     libraryId: libraryId,
+                    //     extra: state.extra,
+                    //   );
+                    // },
+                    pageBuilder: (context, state) {
+                      final queryParam = state.uri.queryParameters['q']!;
+                      final category = state.uri.queryParameters['category'];
+                      final child = SearchResultPage(
+                        extra: state.extra,
+                        query: queryParam,
+                        category: category != null
+                            ? SearchResultCategory.values.firstWhere(
+                                (e) => e.toString().split('.').last == category,
+                              )
+                            : null,
+                      );
+                      return buildPageWithDefaultTransition(
+                        context: context,
+                        state: state,
+                        child: child,
+                      );
+                    },
+                  ),
+                ],
+              ),
+              // settings page
               StatefulShellBranch(
                 routes: <RouteBase>[
                   GoRoute(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:whispering_pages/features/explore/providers/search_controller.dart';
 import 'package:whispering_pages/features/player/providers/player_form.dart';
 import 'package:whispering_pages/features/player/view/audiobook_player.dart';
 
@@ -29,6 +30,9 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
     // Clamp the value between 0 and 1
     percentExpanded = percentExpanded.clamp(0.0, 1.0);
 
+    final SearchController searchController =
+        ref.watch(globalSearchControllerProvider);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -51,27 +55,27 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
             unselectedFontSize:
                 Theme.of(context).textTheme.labelMedium!.fontSize!,
             showUnselectedLabels: false,
-            fixedColor: Theme.of(context).colorScheme.onBackground,
-            // type: BottomNavigationBarType.fixed,
+            fixedColor: Theme.of(context).colorScheme.onSurface,
+            enableFeedback: true,
+            type: BottomNavigationBarType.fixed,
 
             // Here, the items of BottomNavigationBar are hard coded. In a real
             // world scenario, the items would most likely be generated from the
             // branches of the shell route, which can be fetched using
             // `navigationShell.route.branches`.
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                label: 'Home',
-                icon: Icon(Icons.home_outlined),
-                activeIcon: Icon(Icons.home),
-              ),
-              BottomNavigationBarItem(
-                label: 'Settings',
-                icon: Icon(Icons.settings_outlined),
-                activeIcon: Icon(Icons.settings),
-              ),
-            ],
+            items: _navigationItems
+                .map(
+                  (item) => BottomNavigationBarItem(
+                    icon: Icon(item.icon),
+                    activeIcon: item.activeIcon != null
+                        ? Icon(item.activeIcon)
+                        : Icon(item.icon),
+                    label: item.name,
+                  ),
+                )
+                .toList(),
             currentIndex: navigationShell.currentIndex,
-            onTap: (int index) => _onTap(context, index),
+            onTap: (int index) => _onTap(context, index, ref),
           ),
         ),
       ),
@@ -80,7 +84,7 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
 
   /// Navigate to the current location of the branch at the provided index when
   /// tapping an item in the BottomNavigationBar.
-  void _onTap(BuildContext context, int index) {
+  void _onTap(BuildContext context, int index, WidgetRef ref) {
     // When navigating to a new branch, it's recommended to use the goBranch
     // method, as doing so makes sure the last navigation state of the
     // Navigator for the branch is restored.
@@ -92,5 +96,53 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
       // using the initialLocation parameter of goBranch.
       initialLocation: index == navigationShell.currentIndex,
     );
+
+    // Check if the current branch is the same as the branch that was tapped.
+    // If it is, debugPrint a message to the console.
+    if (index == navigationShell.currentIndex) {
+      // if current branch is explore, open the search view
+      if (index == 1) {
+        final searchController = ref.read(globalSearchControllerProvider);
+        // open the search view if not already open
+        if (!searchController.isOpen) {
+          searchController.openView();
+        } else {
+          searchController.closeView(null);
+        }
+      }
+      debugPrint('Tapped the current branch');
+    }
   }
+}
+
+// list of constants with names and icons so that they can be used in the bottom navigation bar
+// and reused for nav rail and other places
+const _navigationItems = [
+  _NavigationItem(
+    name: 'Home',
+    icon: Icons.home_outlined,
+    activeIcon: Icons.home,
+  ),
+  _NavigationItem(
+    name: 'Explore',
+    icon: Icons.search_outlined,
+    activeIcon: Icons.search,
+  ),
+  _NavigationItem(
+    name: 'Settings',
+    icon: Icons.settings_outlined,
+    activeIcon: Icons.settings,
+  ),
+];
+
+class _NavigationItem {
+  const _NavigationItem({
+    required this.name,
+    required this.icon,
+    this.activeIcon,
+  });
+
+  final String name;
+  final IconData icon;
+  final IconData? activeIcon;
 }
