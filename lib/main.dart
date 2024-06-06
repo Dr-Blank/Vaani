@@ -7,6 +7,8 @@ import 'package:just_audio_media_kit/just_audio_media_kit.dart'
     show JustAudioMediaKit;
 import 'package:whispering_pages/api/server_provider.dart';
 import 'package:whispering_pages/db/storage.dart';
+import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
+import 'package:whispering_pages/features/sleep_timer/providers/sleep_timer_provider.dart';
 import 'package:whispering_pages/router/router.dart';
 import 'package:whispering_pages/settings/api_settings_provider.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
@@ -56,14 +58,36 @@ class MyApp extends ConsumerWidget {
       routerConfig.goNamed(Routes.onboarding.name);
     }
 
-    return MaterialApp.router(
-      // debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ref.watch(appSettingsProvider).isDarkMode
-          ? ThemeMode.dark
-          : ThemeMode.light,
-      routerConfig: routerConfig,
+    return _EagerInitialization(
+      child: MaterialApp.router(
+        // debugShowCheckedModeBanner: false,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: ref.watch(appSettingsProvider).isDarkMode
+            ? ThemeMode.dark
+            : ThemeMode.light,
+        routerConfig: routerConfig,
+      ),
     );
+  }
+}
+
+// https://riverpod.dev/docs/essentials/eager_initialization
+// Eagerly initialize providers by watching them.
+class _EagerInitialization extends ConsumerWidget {
+  const _EagerInitialization({required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Eagerly initialize providers by watching them.
+    // By using "watch", the provider will stay alive and not be disposed.
+    try {
+      ref.watch(simpleAudiobookPlayerProvider);
+      ref.watch(sleepTimerProvider);
+    } catch (e) {
+      debugPrintStack(stackTrace: StackTrace.current, label: e.toString());
+    }
+    return child;
   }
 }

@@ -70,6 +70,7 @@ dependencies:
   riverpod_annotation: ^2.3.5
   rxdart: ^0.27.7
   scroll_loop_auto_scroll: ^0.0.5
+  # sensors_plus: ^5.0.1
   shelfsdk:
     path: ../../_dart/shelfsdk
   shimmer: ^3.0.0

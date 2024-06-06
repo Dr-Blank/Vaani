@@ -229,7 +229,8 @@ mixin _$PlayerSettings {
   double get preferredDefaultVolume => throw _privateConstructorUsedError;
   double get preferredDefaultSpeed => throw _privateConstructorUsedError;
   List<double> get speedOptions => throw _privateConstructorUsedError;
-  Duration get sleepTimer => throw _privateConstructorUsedError;
+  SleepTimerSettings get sleepTimerSettings =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -249,10 +250,11 @@ abstract class $PlayerSettingsCopyWith<$Res> {
       double preferredDefaultVolume,
       double preferredDefaultSpeed,
       List<double> speedOptions,
-      Duration sleepTimer});
+      SleepTimerSettings sleepTimerSettings});
 
   $MinimizedPlayerSettingsCopyWith<$Res> get miniPlayerSettings;
   $ExpandedPlayerSettingsCopyWith<$Res> get expandedPlayerSettings;
+  $SleepTimerSettingsCopyWith<$Res> get sleepTimerSettings;
 }
 
 /// @nodoc
@@ -273,7 +275,7 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
     Object? preferredDefaultVolume = null,
     Object? preferredDefaultSpeed = null,
     Object? speedOptions = null,
-    Object? sleepTimer = null,
+    Object? sleepTimerSettings = null,
   }) {
     return _then(_value.copyWith(
       miniPlayerSettings: null == miniPlayerSettings
@@ -296,10 +298,10 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
           ? _value.speedOptions
           : speedOptions // ignore: cast_nullable_to_non_nullable
               as List<double>,
-      sleepTimer: null == sleepTimer
-          ? _value.sleepTimer
-          : sleepTimer // ignore: cast_nullable_to_non_nullable
-              as Duration,
+      sleepTimerSettings: null == sleepTimerSettings
+          ? _value.sleepTimerSettings
+          : sleepTimerSettings // ignore: cast_nullable_to_non_nullable
+              as SleepTimerSettings,
     ) as $Val);
   }
 
@@ -320,6 +322,15 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
       return _then(_value.copyWith(expandedPlayerSettings: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $SleepTimerSettingsCopyWith<$Res> get sleepTimerSettings {
+    return $SleepTimerSettingsCopyWith<$Res>(_value.sleepTimerSettings,
+        (value) {
+      return _then(_value.copyWith(sleepTimerSettings: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -336,12 +347,14 @@ abstract class _$$PlayerSettingsImplCopyWith<$Res>
       double preferredDefaultVolume,
       double preferredDefaultSpeed,
       List<double> speedOptions,
-      Duration sleepTimer});
+      SleepTimerSettings sleepTimerSettings});
 
   @override
   $MinimizedPlayerSettingsCopyWith<$Res> get miniPlayerSettings;
   @override
   $ExpandedPlayerSettingsCopyWith<$Res> get expandedPlayerSettings;
+  @override
+  $SleepTimerSettingsCopyWith<$Res> get sleepTimerSettings;
 }
 
 /// @nodoc
@@ -360,7 +373,7 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
     Object? preferredDefaultVolume = null,
     Object? preferredDefaultSpeed = null,
     Object? speedOptions = null,
-    Object? sleepTimer = null,
+    Object? sleepTimerSettings = null,
   }) {
     return _then(_$PlayerSettingsImpl(
       miniPlayerSettings: null == miniPlayerSettings
@@ -383,10 +396,10 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
           ? _value._speedOptions
           : speedOptions // ignore: cast_nullable_to_non_nullable
               as List<double>,
-      sleepTimer: null == sleepTimer
-          ? _value.sleepTimer
-          : sleepTimer // ignore: cast_nullable_to_non_nullable
-              as Duration,
+      sleepTimerSettings: null == sleepTimerSettings
+          ? _value.sleepTimerSettings
+          : sleepTimerSettings // ignore: cast_nullable_to_non_nullable
+              as SleepTimerSettings,
     ));
   }
 }
@@ -400,7 +413,7 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
       this.preferredDefaultVolume = 1,
       this.preferredDefaultSpeed = 1,
       final List<double> speedOptions = const [0.75, 1, 1.25, 1.5, 1.75, 2],
-      this.sleepTimer = const Duration(minutes: 15)})
+      this.sleepTimerSettings = const SleepTimerSettings()})
       : _speedOptions = speedOptions;
 
   factory _$PlayerSettingsImpl.fromJson(Map<String, dynamic> json) =>
@@ -429,11 +442,11 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
 
   @override
   @JsonKey()
-  final Duration sleepTimer;
+  final SleepTimerSettings sleepTimerSettings;
 
   @override
   String toString() {
-    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredDefaultVolume: $preferredDefaultVolume, preferredDefaultSpeed: $preferredDefaultSpeed, speedOptions: $speedOptions, sleepTimer: $sleepTimer)';
+    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredDefaultVolume: $preferredDefaultVolume, preferredDefaultSpeed: $preferredDefaultSpeed, speedOptions: $speedOptions, sleepTimerSettings: $sleepTimerSettings)';
   }
 
   @override
@@ -451,8 +464,8 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
                 other.preferredDefaultSpeed == preferredDefaultSpeed) &&
             const DeepCollectionEquality()
                 .equals(other._speedOptions, _speedOptions) &&
-            (identical(other.sleepTimer, sleepTimer) ||
-                other.sleepTimer == sleepTimer));
+            (identical(other.sleepTimerSettings, sleepTimerSettings) ||
+                other.sleepTimerSettings == sleepTimerSettings));
   }
 
   @JsonKey(ignore: true)
@@ -464,7 +477,7 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
       preferredDefaultVolume,
       preferredDefaultSpeed,
       const DeepCollectionEquality().hash(_speedOptions),
-      sleepTimer);
+      sleepTimerSettings);
 
   @JsonKey(ignore: true)
   @override
@@ -488,7 +501,7 @@ abstract class _PlayerSettings implements PlayerSettings {
       final double preferredDefaultVolume,
       final double preferredDefaultSpeed,
       final List<double> speedOptions,
-      final Duration sleepTimer}) = _$PlayerSettingsImpl;
+      final SleepTimerSettings sleepTimerSettings}) = _$PlayerSettingsImpl;
 
   factory _PlayerSettings.fromJson(Map<String, dynamic> json) =
       _$PlayerSettingsImpl.fromJson;
@@ -504,7 +517,7 @@ abstract class _PlayerSettings implements PlayerSettings {
   @override
   List<double> get speedOptions;
   @override
-  Duration get sleepTimer;
+  SleepTimerSettings get sleepTimerSettings;
   @override
   @JsonKey(ignore: true)
   _$$PlayerSettingsImplCopyWith<_$PlayerSettingsImpl> get copyWith =>
@@ -820,4 +833,487 @@ abstract class _MinimizedPlayerSettings implements MinimizedPlayerSettings {
   @JsonKey(ignore: true)
   _$$MinimizedPlayerSettingsImplCopyWith<_$MinimizedPlayerSettingsImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+SleepTimerSettings _$SleepTimerSettingsFromJson(Map<String, dynamic> json) {
+  return _SleepTimerSettings.fromJson(json);
+}
+
+/// @nodoc
+mixin _$SleepTimerSettings {
+  Duration get defaultDuration => throw _privateConstructorUsedError;
+  SleepTimerShakeSenseMode get shakeSenseMode =>
+      throw _privateConstructorUsedError;
+
+  /// the duration in which the shake is detected before the end of the timer and after the timer ends
+  /// only used if [shakeSenseMode] is [SleepTimerShakeSenseMode.nearEnds]
+  Duration get shakeSenseDuration => throw _privateConstructorUsedError;
+  bool get vibrateWhenReset => throw _privateConstructorUsedError;
+  bool get beepWhenReset => throw _privateConstructorUsedError;
+  bool get fadeOutAudio => throw _privateConstructorUsedError;
+  double get shakeDetectThreshold => throw _privateConstructorUsedError;
+
+  /// if true, the player will automatically rewind the audio when the sleep timer is stopped
+  bool get autoRewindWhenStopped => throw _privateConstructorUsedError;
+
+  /// the key is the duration in minutes
+  Map<int, Duration> get autoRewindDurations =>
+      throw _privateConstructorUsedError;
+
+  /// auto turn on timer settings
+  bool get autoTurnOnTimer => throw _privateConstructorUsedError;
+
+  /// always auto turn on timer settings or during specific times
+  bool get alwaysAutoTurnOnTimer => throw _privateConstructorUsedError;
+
+  /// auto timer settings, only used if [alwaysAutoTurnOnTimer] is false
+  ///
+  /// duration is the time from 00:00
+  Duration get autoTurnOnTime => throw _privateConstructorUsedError;
+  Duration get autoTurnOffTime => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $SleepTimerSettingsCopyWith<SleepTimerSettings> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SleepTimerSettingsCopyWith<$Res> {
+  factory $SleepTimerSettingsCopyWith(
+          SleepTimerSettings value, $Res Function(SleepTimerSettings) then) =
+      _$SleepTimerSettingsCopyWithImpl<$Res, SleepTimerSettings>;
+  @useResult
+  $Res call(
+      {Duration defaultDuration,
+      SleepTimerShakeSenseMode shakeSenseMode,
+      Duration shakeSenseDuration,
+      bool vibrateWhenReset,
+      bool beepWhenReset,
+      bool fadeOutAudio,
+      double shakeDetectThreshold,
+      bool autoRewindWhenStopped,
+      Map<int, Duration> autoRewindDurations,
+      bool autoTurnOnTimer,
+      bool alwaysAutoTurnOnTimer,
+      Duration autoTurnOnTime,
+      Duration autoTurnOffTime});
+}
+
+/// @nodoc
+class _$SleepTimerSettingsCopyWithImpl<$Res, $Val extends SleepTimerSettings>
+    implements $SleepTimerSettingsCopyWith<$Res> {
+  _$SleepTimerSettingsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? defaultDuration = null,
+    Object? shakeSenseMode = null,
+    Object? shakeSenseDuration = null,
+    Object? vibrateWhenReset = null,
+    Object? beepWhenReset = null,
+    Object? fadeOutAudio = null,
+    Object? shakeDetectThreshold = null,
+    Object? autoRewindWhenStopped = null,
+    Object? autoRewindDurations = null,
+    Object? autoTurnOnTimer = null,
+    Object? alwaysAutoTurnOnTimer = null,
+    Object? autoTurnOnTime = null,
+    Object? autoTurnOffTime = null,
+  }) {
+    return _then(_value.copyWith(
+      defaultDuration: null == defaultDuration
+          ? _value.defaultDuration
+          : defaultDuration // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      shakeSenseMode: null == shakeSenseMode
+          ? _value.shakeSenseMode
+          : shakeSenseMode // ignore: cast_nullable_to_non_nullable
+              as SleepTimerShakeSenseMode,
+      shakeSenseDuration: null == shakeSenseDuration
+          ? _value.shakeSenseDuration
+          : shakeSenseDuration // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      vibrateWhenReset: null == vibrateWhenReset
+          ? _value.vibrateWhenReset
+          : vibrateWhenReset // ignore: cast_nullable_to_non_nullable
+              as bool,
+      beepWhenReset: null == beepWhenReset
+          ? _value.beepWhenReset
+          : beepWhenReset // ignore: cast_nullable_to_non_nullable
+              as bool,
+      fadeOutAudio: null == fadeOutAudio
+          ? _value.fadeOutAudio
+          : fadeOutAudio // ignore: cast_nullable_to_non_nullable
+              as bool,
+      shakeDetectThreshold: null == shakeDetectThreshold
+          ? _value.shakeDetectThreshold
+          : shakeDetectThreshold // ignore: cast_nullable_to_non_nullable
+              as double,
+      autoRewindWhenStopped: null == autoRewindWhenStopped
+          ? _value.autoRewindWhenStopped
+          : autoRewindWhenStopped // ignore: cast_nullable_to_non_nullable
+              as bool,
+      autoRewindDurations: null == autoRewindDurations
+          ? _value.autoRewindDurations
+          : autoRewindDurations // ignore: cast_nullable_to_non_nullable
+              as Map<int, Duration>,
+      autoTurnOnTimer: null == autoTurnOnTimer
+          ? _value.autoTurnOnTimer
+          : autoTurnOnTimer // ignore: cast_nullable_to_non_nullable
+              as bool,
+      alwaysAutoTurnOnTimer: null == alwaysAutoTurnOnTimer
+          ? _value.alwaysAutoTurnOnTimer
+          : alwaysAutoTurnOnTimer // ignore: cast_nullable_to_non_nullable
+              as bool,
+      autoTurnOnTime: null == autoTurnOnTime
+          ? _value.autoTurnOnTime
+          : autoTurnOnTime // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      autoTurnOffTime: null == autoTurnOffTime
+          ? _value.autoTurnOffTime
+          : autoTurnOffTime // ignore: cast_nullable_to_non_nullable
+              as Duration,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$SleepTimerSettingsImplCopyWith<$Res>
+    implements $SleepTimerSettingsCopyWith<$Res> {
+  factory _$$SleepTimerSettingsImplCopyWith(_$SleepTimerSettingsImpl value,
+          $Res Function(_$SleepTimerSettingsImpl) then) =
+      __$$SleepTimerSettingsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {Duration defaultDuration,
+      SleepTimerShakeSenseMode shakeSenseMode,
+      Duration shakeSenseDuration,
+      bool vibrateWhenReset,
+      bool beepWhenReset,
+      bool fadeOutAudio,
+      double shakeDetectThreshold,
+      bool autoRewindWhenStopped,
+      Map<int, Duration> autoRewindDurations,
+      bool autoTurnOnTimer,
+      bool alwaysAutoTurnOnTimer,
+      Duration autoTurnOnTime,
+      Duration autoTurnOffTime});
+}
+
+/// @nodoc
+class __$$SleepTimerSettingsImplCopyWithImpl<$Res>
+    extends _$SleepTimerSettingsCopyWithImpl<$Res, _$SleepTimerSettingsImpl>
+    implements _$$SleepTimerSettingsImplCopyWith<$Res> {
+  __$$SleepTimerSettingsImplCopyWithImpl(_$SleepTimerSettingsImpl _value,
+      $Res Function(_$SleepTimerSettingsImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? defaultDuration = null,
+    Object? shakeSenseMode = null,
+    Object? shakeSenseDuration = null,
+    Object? vibrateWhenReset = null,
+    Object? beepWhenReset = null,
+    Object? fadeOutAudio = null,
+    Object? shakeDetectThreshold = null,
+    Object? autoRewindWhenStopped = null,
+    Object? autoRewindDurations = null,
+    Object? autoTurnOnTimer = null,
+    Object? alwaysAutoTurnOnTimer = null,
+    Object? autoTurnOnTime = null,
+    Object? autoTurnOffTime = null,
+  }) {
+    return _then(_$SleepTimerSettingsImpl(
+      defaultDuration: null == defaultDuration
+          ? _value.defaultDuration
+          : defaultDuration // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      shakeSenseMode: null == shakeSenseMode
+          ? _value.shakeSenseMode
+          : shakeSenseMode // ignore: cast_nullable_to_non_nullable
+              as SleepTimerShakeSenseMode,
+      shakeSenseDuration: null == shakeSenseDuration
+          ? _value.shakeSenseDuration
+          : shakeSenseDuration // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      vibrateWhenReset: null == vibrateWhenReset
+          ? _value.vibrateWhenReset
+          : vibrateWhenReset // ignore: cast_nullable_to_non_nullable
+              as bool,
+      beepWhenReset: null == beepWhenReset
+          ? _value.beepWhenReset
+          : beepWhenReset // ignore: cast_nullable_to_non_nullable
+              as bool,
+      fadeOutAudio: null == fadeOutAudio
+          ? _value.fadeOutAudio
+          : fadeOutAudio // ignore: cast_nullable_to_non_nullable
+              as bool,
+      shakeDetectThreshold: null == shakeDetectThreshold
+          ? _value.shakeDetectThreshold
+          : shakeDetectThreshold // ignore: cast_nullable_to_non_nullable
+              as double,
+      autoRewindWhenStopped: null == autoRewindWhenStopped
+          ? _value.autoRewindWhenStopped
+          : autoRewindWhenStopped // ignore: cast_nullable_to_non_nullable
+              as bool,
+      autoRewindDurations: null == autoRewindDurations
+          ? _value._autoRewindDurations
+          : autoRewindDurations // ignore: cast_nullable_to_non_nullable
+              as Map<int, Duration>,
+      autoTurnOnTimer: null == autoTurnOnTimer
+          ? _value.autoTurnOnTimer
+          : autoTurnOnTimer // ignore: cast_nullable_to_non_nullable
+              as bool,
+      alwaysAutoTurnOnTimer: null == alwaysAutoTurnOnTimer
+          ? _value.alwaysAutoTurnOnTimer
+          : alwaysAutoTurnOnTimer // ignore: cast_nullable_to_non_nullable
+              as bool,
+      autoTurnOnTime: null == autoTurnOnTime
+          ? _value.autoTurnOnTime
+          : autoTurnOnTime // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      autoTurnOffTime: null == autoTurnOffTime
+          ? _value.autoTurnOffTime
+          : autoTurnOffTime // ignore: cast_nullable_to_non_nullable
+              as Duration,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$SleepTimerSettingsImpl implements _SleepTimerSettings {
+  const _$SleepTimerSettingsImpl(
+      {this.defaultDuration = const Duration(minutes: 15),
+      this.shakeSenseMode = SleepTimerShakeSenseMode.always,
+      this.shakeSenseDuration = const Duration(seconds: 30),
+      this.vibrateWhenReset = true,
+      this.beepWhenReset = false,
+      this.fadeOutAudio = false,
+      this.shakeDetectThreshold = 0.5,
+      this.autoRewindWhenStopped = false,
+      final Map<int, Duration> autoRewindDurations = const {
+        5: Duration(seconds: 10),
+        15: Duration(seconds: 30),
+        45: Duration(seconds: 45),
+        60: Duration(minutes: 1),
+        120: Duration(minutes: 2)
+      },
+      this.autoTurnOnTimer = false,
+      this.alwaysAutoTurnOnTimer = true,
+      this.autoTurnOnTime = const Duration(hours: 22, minutes: 0),
+      this.autoTurnOffTime = const Duration(hours: 6, minutes: 0)})
+      : _autoRewindDurations = autoRewindDurations;
+
+  factory _$SleepTimerSettingsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SleepTimerSettingsImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final Duration defaultDuration;
+  @override
+  @JsonKey()
+  final SleepTimerShakeSenseMode shakeSenseMode;
+
+  /// the duration in which the shake is detected before the end of the timer and after the timer ends
+  /// only used if [shakeSenseMode] is [SleepTimerShakeSenseMode.nearEnds]
+  @override
+  @JsonKey()
+  final Duration shakeSenseDuration;
+  @override
+  @JsonKey()
+  final bool vibrateWhenReset;
+  @override
+  @JsonKey()
+  final bool beepWhenReset;
+  @override
+  @JsonKey()
+  final bool fadeOutAudio;
+  @override
+  @JsonKey()
+  final double shakeDetectThreshold;
+
+  /// if true, the player will automatically rewind the audio when the sleep timer is stopped
+  @override
+  @JsonKey()
+  final bool autoRewindWhenStopped;
+
+  /// the key is the duration in minutes
+  final Map<int, Duration> _autoRewindDurations;
+
+  /// the key is the duration in minutes
+  @override
+  @JsonKey()
+  Map<int, Duration> get autoRewindDurations {
+    if (_autoRewindDurations is EqualUnmodifiableMapView)
+      return _autoRewindDurations;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_autoRewindDurations);
+  }
+
+  /// auto turn on timer settings
+  @override
+  @JsonKey()
+  final bool autoTurnOnTimer;
+
+  /// always auto turn on timer settings or during specific times
+  @override
+  @JsonKey()
+  final bool alwaysAutoTurnOnTimer;
+
+  /// auto timer settings, only used if [alwaysAutoTurnOnTimer] is false
+  ///
+  /// duration is the time from 00:00
+  @override
+  @JsonKey()
+  final Duration autoTurnOnTime;
+  @override
+  @JsonKey()
+  final Duration autoTurnOffTime;
+
+  @override
+  String toString() {
+    return 'SleepTimerSettings(defaultDuration: $defaultDuration, shakeSenseMode: $shakeSenseMode, shakeSenseDuration: $shakeSenseDuration, vibrateWhenReset: $vibrateWhenReset, beepWhenReset: $beepWhenReset, fadeOutAudio: $fadeOutAudio, shakeDetectThreshold: $shakeDetectThreshold, autoRewindWhenStopped: $autoRewindWhenStopped, autoRewindDurations: $autoRewindDurations, autoTurnOnTimer: $autoTurnOnTimer, alwaysAutoTurnOnTimer: $alwaysAutoTurnOnTimer, autoTurnOnTime: $autoTurnOnTime, autoTurnOffTime: $autoTurnOffTime)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SleepTimerSettingsImpl &&
+            (identical(other.defaultDuration, defaultDuration) ||
+                other.defaultDuration == defaultDuration) &&
+            (identical(other.shakeSenseMode, shakeSenseMode) ||
+                other.shakeSenseMode == shakeSenseMode) &&
+            (identical(other.shakeSenseDuration, shakeSenseDuration) ||
+                other.shakeSenseDuration == shakeSenseDuration) &&
+            (identical(other.vibrateWhenReset, vibrateWhenReset) ||
+                other.vibrateWhenReset == vibrateWhenReset) &&
+            (identical(other.beepWhenReset, beepWhenReset) ||
+                other.beepWhenReset == beepWhenReset) &&
+            (identical(other.fadeOutAudio, fadeOutAudio) ||
+                other.fadeOutAudio == fadeOutAudio) &&
+            (identical(other.shakeDetectThreshold, shakeDetectThreshold) ||
+                other.shakeDetectThreshold == shakeDetectThreshold) &&
+            (identical(other.autoRewindWhenStopped, autoRewindWhenStopped) ||
+                other.autoRewindWhenStopped == autoRewindWhenStopped) &&
+            const DeepCollectionEquality()
+                .equals(other._autoRewindDurations, _autoRewindDurations) &&
+            (identical(other.autoTurnOnTimer, autoTurnOnTimer) ||
+                other.autoTurnOnTimer == autoTurnOnTimer) &&
+            (identical(other.alwaysAutoTurnOnTimer, alwaysAutoTurnOnTimer) ||
+                other.alwaysAutoTurnOnTimer == alwaysAutoTurnOnTimer) &&
+            (identical(other.autoTurnOnTime, autoTurnOnTime) ||
+                other.autoTurnOnTime == autoTurnOnTime) &&
+            (identical(other.autoTurnOffTime, autoTurnOffTime) ||
+                other.autoTurnOffTime == autoTurnOffTime));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      defaultDuration,
+      shakeSenseMode,
+      shakeSenseDuration,
+      vibrateWhenReset,
+      beepWhenReset,
+      fadeOutAudio,
+      shakeDetectThreshold,
+      autoRewindWhenStopped,
+      const DeepCollectionEquality().hash(_autoRewindDurations),
+      autoTurnOnTimer,
+      alwaysAutoTurnOnTimer,
+      autoTurnOnTime,
+      autoTurnOffTime);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SleepTimerSettingsImplCopyWith<_$SleepTimerSettingsImpl> get copyWith =>
+      __$$SleepTimerSettingsImplCopyWithImpl<_$SleepTimerSettingsImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SleepTimerSettingsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _SleepTimerSettings implements SleepTimerSettings {
+  const factory _SleepTimerSettings(
+      {final Duration defaultDuration,
+      final SleepTimerShakeSenseMode shakeSenseMode,
+      final Duration shakeSenseDuration,
+      final bool vibrateWhenReset,
+      final bool beepWhenReset,
+      final bool fadeOutAudio,
+      final double shakeDetectThreshold,
+      final bool autoRewindWhenStopped,
+      final Map<int, Duration> autoRewindDurations,
+      final bool autoTurnOnTimer,
+      final bool alwaysAutoTurnOnTimer,
+      final Duration autoTurnOnTime,
+      final Duration autoTurnOffTime}) = _$SleepTimerSettingsImpl;
+
+  factory _SleepTimerSettings.fromJson(Map<String, dynamic> json) =
+      _$SleepTimerSettingsImpl.fromJson;
+
+  @override
+  Duration get defaultDuration;
+  @override
+  SleepTimerShakeSenseMode get shakeSenseMode;
+  @override
+
+  /// the duration in which the shake is detected before the end of the timer and after the timer ends
+  /// only used if [shakeSenseMode] is [SleepTimerShakeSenseMode.nearEnds]
+  Duration get shakeSenseDuration;
+  @override
+  bool get vibrateWhenReset;
+  @override
+  bool get beepWhenReset;
+  @override
+  bool get fadeOutAudio;
+  @override
+  double get shakeDetectThreshold;
+  @override
+
+  /// if true, the player will automatically rewind the audio when the sleep timer is stopped
+  bool get autoRewindWhenStopped;
+  @override
+
+  /// the key is the duration in minutes
+  Map<int, Duration> get autoRewindDurations;
+  @override
+
+  /// auto turn on timer settings
+  bool get autoTurnOnTimer;
+  @override
+
+  /// always auto turn on timer settings or during specific times
+  bool get alwaysAutoTurnOnTimer;
+  @override
+
+  /// auto timer settings, only used if [alwaysAutoTurnOnTimer] is false
+  ///
+  /// duration is the time from 00:00
+  Duration get autoTurnOnTime;
+  @override
+  Duration get autoTurnOffTime;
+  @override
+  @JsonKey(ignore: true)
+  _$$SleepTimerSettingsImplCopyWith<_$SleepTimerSettingsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

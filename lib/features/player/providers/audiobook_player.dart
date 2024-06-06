@@ -1,8 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:whispering_pages/api/api_provider.dart';
-import 'package:whispering_pages/features/player/core/audiobook_player.dart' as abp;
+import 'package:whispering_pages/features/player/core/audiobook_player.dart'
+    as abp;
 
-part 'audiobook_player_provider.g.dart';
+part 'audiobook_player.g.dart';
 
 // @Riverpod(keepAlive: true)
 // abp.AudiobookPlayer audiobookPlayer(
@@ -19,12 +20,23 @@ part 'audiobook_player_provider.g.dart';
 const playerId = 'audiobook_player';
 
 @Riverpod(keepAlive: true)
-class AudiobookPlayer extends _$AudiobookPlayer {
+class SimpleAudiobookPlayer extends _$SimpleAudiobookPlayer {
   @override
   abp.AudiobookPlayer build() {
     final api = ref.watch(authenticatedApiProvider);
-    final player =
-        abp.AudiobookPlayer(api.token!, api.baseUrl);
+    final player = abp.AudiobookPlayer(api.token!, api.baseUrl);
+
+    ref.onDispose(player.dispose);
+
+    return player;
+  }
+}
+
+@Riverpod(keepAlive: true)
+class AudiobookPlayer extends _$AudiobookPlayer {
+  @override
+  abp.AudiobookPlayer build() {
+    final player = ref.watch(simpleAudiobookPlayerProvider);
 
     ref.onDispose(player.dispose);
 
@@ -40,7 +52,7 @@ class AudiobookPlayer extends _$AudiobookPlayer {
     ref.notifyListeners();
   }
 
-Future<void> setSpeed(double speed) async {
+  Future<void> setSpeed(double speed) async {
     await state.setSpeed(speed);
     notifyListeners();
   }

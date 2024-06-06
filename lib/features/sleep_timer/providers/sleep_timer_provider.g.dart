@@ -1,25 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'app_settings_provider.dart';
+part of 'sleep_timer_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appSettingsHash() => r'6716bc568850ffd373fd8572c5781beefafbb9ee';
+String _$sleepTimerHash() => r'79646b12412f3300166db29328664a5e58e405bd';
 
-/// See also [AppSettings].
-@ProviderFor(AppSettings)
-final appSettingsProvider =
-    NotifierProvider<AppSettings, model.AppSettings>.internal(
-  AppSettings.new,
-  name: r'appSettingsProvider',
+/// See also [sleepTimer].
+@ProviderFor(sleepTimer)
+final sleepTimerProvider = Provider<SleepTimer?>.internal(
+  sleepTimer,
+  name: r'sleepTimerProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$appSettingsHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$sleepTimerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$AppSettings = Notifier<model.AppSettings>;
+typedef SleepTimerRef = ProviderRef<SleepTimer?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

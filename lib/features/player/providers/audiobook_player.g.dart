@@ -6,7 +6,24 @@ part of 'audiobook_player.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$audiobookPlayerHash() => r'a636d5e8e73dc6bbf7b3f47f83884bb3af3b9370';
+String _$simpleAudiobookPlayerHash() =>
+    r'b65e6d779476a2c1fa38f617771bf997acb4f5b8';
+
+/// See also [SimpleAudiobookPlayer].
+@ProviderFor(SimpleAudiobookPlayer)
+final simpleAudiobookPlayerProvider =
+    NotifierProvider<SimpleAudiobookPlayer, abp.AudiobookPlayer>.internal(
+  SimpleAudiobookPlayer.new,
+  name: r'simpleAudiobookPlayerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$simpleAudiobookPlayerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$SimpleAudiobookPlayer = Notifier<abp.AudiobookPlayer>;
+String _$audiobookPlayerHash() => r'38042d0c93034e6907677fdb614a9af1b9d636af';
 
 /// See also [AudiobookPlayer].
 @ProviderFor(AudiobookPlayer)

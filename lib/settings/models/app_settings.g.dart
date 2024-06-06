@@ -42,9 +42,10 @@ _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => (e as num).toDouble())
               .toList() ??
           const [0.75, 1, 1.25, 1.5, 1.75, 2],
-      sleepTimer: json['sleepTimer'] == null
-          ? const Duration(minutes: 15)
-          : Duration(microseconds: (json['sleepTimer'] as num).toInt()),
+      sleepTimerSettings: json['sleepTimerSettings'] == null
+          ? const SleepTimerSettings()
+          : SleepTimerSettings.fromJson(
+              json['sleepTimerSettings'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$PlayerSettingsImplToJson(
@@ -55,7 +56,7 @@ Map<String, dynamic> _$$PlayerSettingsImplToJson(
       'preferredDefaultVolume': instance.preferredDefaultVolume,
       'preferredDefaultSpeed': instance.preferredDefaultSpeed,
       'speedOptions': instance.speedOptions,
-      'sleepTimer': instance.sleepTimer.inMicroseconds,
+      'sleepTimerSettings': instance.sleepTimerSettings,
     };
 
 _$ExpandedPlayerSettingsImpl _$$ExpandedPlayerSettingsImplFromJson(
@@ -83,3 +84,69 @@ Map<String, dynamic> _$$MinimizedPlayerSettingsImplToJson(
     <String, dynamic>{
       'useChapterInfo': instance.useChapterInfo,
     };
+
+_$SleepTimerSettingsImpl _$$SleepTimerSettingsImplFromJson(
+        Map<String, dynamic> json) =>
+    _$SleepTimerSettingsImpl(
+      defaultDuration: json['defaultDuration'] == null
+          ? const Duration(minutes: 15)
+          : Duration(microseconds: (json['defaultDuration'] as num).toInt()),
+      shakeSenseMode: $enumDecodeNullable(
+              _$SleepTimerShakeSenseModeEnumMap, json['shakeSenseMode']) ??
+          SleepTimerShakeSenseMode.always,
+      shakeSenseDuration: json['shakeSenseDuration'] == null
+          ? const Duration(seconds: 30)
+          : Duration(microseconds: (json['shakeSenseDuration'] as num).toInt()),
+      vibrateWhenReset: json['vibrateWhenReset'] as bool? ?? true,
+      beepWhenReset: json['beepWhenReset'] as bool? ?? false,
+      fadeOutAudio: json['fadeOutAudio'] as bool? ?? false,
+      shakeDetectThreshold:
+          (json['shakeDetectThreshold'] as num?)?.toDouble() ?? 0.5,
+      autoRewindWhenStopped: json['autoRewindWhenStopped'] as bool? ?? false,
+      autoRewindDurations:
+          (json['autoRewindDurations'] as Map<String, dynamic>?)?.map(
+                (k, e) => MapEntry(
+                    int.parse(k), Duration(microseconds: (e as num).toInt())),
+              ) ??
+              const {
+                5: Duration(seconds: 10),
+                15: Duration(seconds: 30),
+                45: Duration(seconds: 45),
+                60: Duration(minutes: 1),
+                120: Duration(minutes: 2)
+              },
+      autoTurnOnTimer: json['autoTurnOnTimer'] as bool? ?? false,
+      alwaysAutoTurnOnTimer: json['alwaysAutoTurnOnTimer'] as bool? ?? true,
+      autoTurnOnTime: json['autoTurnOnTime'] == null
+          ? const Duration(hours: 22, minutes: 0)
+          : Duration(microseconds: (json['autoTurnOnTime'] as num).toInt()),
+      autoTurnOffTime: json['autoTurnOffTime'] == null
+          ? const Duration(hours: 6, minutes: 0)
+          : Duration(microseconds: (json['autoTurnOffTime'] as num).toInt()),
+    );
+
+Map<String, dynamic> _$$SleepTimerSettingsImplToJson(
+        _$SleepTimerSettingsImpl instance) =>
+    <String, dynamic>{
+      'defaultDuration': instance.defaultDuration.inMicroseconds,
+      'shakeSenseMode':
+          _$SleepTimerShakeSenseModeEnumMap[instance.shakeSenseMode]!,
+      'shakeSenseDuration': instance.shakeSenseDuration.inMicroseconds,
+      'vibrateWhenReset': instance.vibrateWhenReset,
+      'beepWhenReset': instance.beepWhenReset,
+      'fadeOutAudio': instance.fadeOutAudio,
+      'shakeDetectThreshold': instance.shakeDetectThreshold,
+      'autoRewindWhenStopped': instance.autoRewindWhenStopped,
+      'autoRewindDurations': instance.autoRewindDurations
+          .map((k, e) => MapEntry(k.toString(), e.inMicroseconds)),
+      'autoTurnOnTimer': instance.autoTurnOnTimer,
+      'alwaysAutoTurnOnTimer': instance.alwaysAutoTurnOnTimer,
+      'autoTurnOnTime': instance.autoTurnOnTime.inMicroseconds,
+      'autoTurnOffTime': instance.autoTurnOffTime.inMicroseconds,
+    };
+
+const _$SleepTimerShakeSenseModeEnumMap = {
+  SleepTimerShakeSenseMode.never: 'never',
+  SleepTimerShakeSenseMode.always: 'always',
+  SleepTimerShakeSenseMode.nearEnds: 'nearEnds',
+};
