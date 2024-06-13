@@ -11,7 +11,14 @@ import 'package:whispering_pages/features/player/core/audiobook_player.dart';
 /// timer is cancelled when the music player is paused or stopped
 class SleepTimer {
   /// The duration after which the music player will be paused
-  final Duration duration;
+  Duration _duration;
+
+  Duration get duration => _duration;
+
+  set duration(Duration value) {
+    _duration = value;
+    reset();
+  }
 
   /// The player to be paused
   final AudiobookPlayer player;
@@ -23,22 +30,30 @@ class SleepTimer {
   /// when the timer was started
   DateTime? startedAt;
 
-  SleepTimer({required this.duration, required this.player}) {
-    player.playbackEventStream.listen((event) {
-      if (event.processingState == ProcessingState.completed ||
-          event.processingState == ProcessingState.idle) {
-        reset();
-      }
-    });
+  /// subscriptions
+  final List<StreamSubscription> _subscriptions = [];
+
+  SleepTimer({required duration, required this.player}) : _duration = duration {
+    _subscriptions.add(
+      player.playbackEventStream.listen((event) {
+        if (event.processingState == ProcessingState.completed ||
+            event.processingState == ProcessingState.idle) {
+          reset();
+        }
+      }),
+    );
 
     /// pause the player when the timer is up
-    player.playerStateStream.listen((state) {
-      if (state.playing && timer == null) {
-        startTimer();
-      } else if (!state.playing) {
-        reset();
-      }
-    });
+    _subscriptions.add(
+      player.playerStateStream.listen((state) {
+        if (state.playing && timer == null) {
+          startTimer();
+        } else if (!state.playing) {
+          reset();
+        }
+      }),
+    );
+
     debugPrint('SleepTimer created with duration: $duration');
   }
 
@@ -53,9 +68,12 @@ class SleepTimer {
     }
   }
 
-  /// starts the timer
-  void startTimer() {
+  /// starts the timer with the given duration or the default duration
+  void startTimer([
+    Duration? forDuration,
+  ]) {
     reset();
+    duration = forDuration ?? duration;
     timer = Timer(duration, () {
       player.pause();
       reset();
@@ -84,6 +102,9 @@ class SleepTimer {
   /// dispose the timer
   void dispose() {
     reset();
+    for (var sub in _subscriptions) {
+      sub.cancel();
+    }
     debugPrint('SleepTimer disposed');
   }
 }

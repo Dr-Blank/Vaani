@@ -39,6 +39,7 @@ dependencies:
   coast: ^2.0.2
   collection: ^1.18.0
   cupertino_icons: ^1.0.6
+  duration_picker: ^1.2.0
   easy_stepper: ^0.8.4
   flutter:
     sdk: flutter

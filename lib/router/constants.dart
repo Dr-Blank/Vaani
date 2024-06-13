@@ -21,10 +21,19 @@ class Routes {
     pathParamName: 'itemId',
     name: 'libraryItem',
   );
+
+  // settings
   static const settings = _SimpleRoute(
     pathName: 'config',
     name: 'settings',
   );
+  static const autoSleepTimerSettings = _SimpleRoute(
+    pathName: 'autosleeptimer',
+    name: 'autoSleepTimerSettings',
+    // parentRoute: settings,
+  );
+
+  // search and explore
   static const search = _SimpleRoute(
     pathName: 'search',
     name: 'search',
@@ -51,9 +60,12 @@ class _SimpleRoute {
   final String name;
   final _SimpleRoute? parentRoute;
 
-  String get path =>
-      '${parentRoute?.path ?? ''}${parentRoute != null ? '/' : ''}$localPath';
+  /// the full path of the route
+  String get path {
+    return '${parentRoute?.path ?? ''}$localPath';
+  }
 
+  /// the local path of the route
   String get localPath =>
       '/$pathName${pathParamName != null ? '/:$pathParamName' : ''}';
 }

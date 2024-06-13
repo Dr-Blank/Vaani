@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:whispering_pages/api/authenticated_user_provider.dart';
 import 'package:whispering_pages/api/server_provider.dart';
+import 'package:whispering_pages/router/router.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 
 class AppSettingsPage extends HookConsumerWidget {
@@ -19,6 +21,7 @@ class AppSettingsPage extends HookConsumerWidget {
     final availableUsers = ref.watch(authenticatedUserProvider);
     final serverURIController = useTextEditingController();
     final formKey = GlobalKey<FormState>();
+    final sleepTimerSettings = appSettings.playerSettings.sleepTimerSettings;
 
     return Scaffold(
       appBar: AppBar(
@@ -26,6 +29,7 @@ class AppSettingsPage extends HookConsumerWidget {
       ),
       body: SettingsList(
         sections: [
+          // Appearance section
           SettingsSection(
             margin: const EdgeInsetsDirectional.symmetric(
               horizontal: 16.0,
@@ -55,7 +59,7 @@ class AppSettingsPage extends HookConsumerWidget {
                 ),
                 leading: appSettings.useMaterialThemeOnItemPage
                     ? const Icon(Icons.auto_fix_high)
-                    : const Icon(Icons.auto_fix_off), 
+                    : const Icon(Icons.auto_fix_off),
                 onToggle: (value) {
                   ref.read(appSettingsProvider.notifier).updateState(
                         appSettings.copyWith(
@@ -63,6 +67,60 @@ class AppSettingsPage extends HookConsumerWidget {
                         ),
                       );
                 },
+              ),
+            ],
+          ),
+
+          // Sleep Timer section
+          SettingsSection(
+            margin: const EdgeInsetsDirectional.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
+            title: Text(
+              'Sleep Timer',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            tiles: [
+              SettingsTile.navigation(
+                // initialValue: sleepTimerSettings.autoTurnOnTimer,
+                title: const Text('Auto Turn On Timer'),
+                description: const Text(
+                  'Automatically turn on the sleep timer based on the time of day',
+                ),
+                leading: sleepTimerSettings.autoTurnOnTimer
+                    ? const Icon(Icons.timer)
+                    : const Icon(Icons.timer_off),
+                onPressed: (context) {
+                  // push the sleep timer settings page
+                  context.pushNamed(Routes.autoSleepTimerSettings.name);
+                },
+                // a switch to enable or disable the auto turn off time
+                trailing: IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      VerticalDivider(
+                        color: Theme.of(context).dividerColor.withOpacity(0.5),
+                        indent: 8.0,
+                        endIndent: 8.0,
+                        // width: 8.0,
+                        // thickness: 2.0,
+                        // height: 24.0,
+                      ),
+                      Switch(
+                        value: sleepTimerSettings.autoTurnOnTimer,
+                        onChanged: (value) {
+                          ref.read(appSettingsProvider.notifier).updateState(
+                                appSettings.copyWith.playerSettings
+                                    .sleepTimerSettings(
+                                  autoTurnOnTimer: value,
+                                ),
+                              );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

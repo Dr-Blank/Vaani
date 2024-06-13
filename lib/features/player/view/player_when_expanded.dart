@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,7 +8,9 @@ import 'package:whispering_pages/constants/sizes.dart';
 import 'package:whispering_pages/features/player/providers/currently_playing_provider.dart';
 import 'package:whispering_pages/features/player/view/audiobook_player.dart';
 import 'package:whispering_pages/features/sleep_timer/core/sleep_timer.dart';
-import 'package:whispering_pages/features/sleep_timer/providers/sleep_timer_provider.dart';
+import 'package:whispering_pages/features/sleep_timer/providers/sleep_timer_provider.dart'
+    show sleepTimerProvider;
+import 'package:whispering_pages/settings/app_settings_provider.dart';
 import 'package:whispering_pages/shared/extensions/inverse_lerp.dart';
 
 import 'widgets/audiobook_player_seek_button.dart';
@@ -227,17 +230,84 @@ class SleepTimerButton extends HookConsumerWidget {
     final sleepTimer = ref.watch(sleepTimerProvider);
     // if sleep timer is not active, show the button with the sleep timer icon
     // if the sleep timer is active, show the remaining time in a pill shaped container
-    return sleepTimer == null
-        ? IconButton(
-            color: sleepTimer != null
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.onSurface,
-            icon: const Icon(Icons.timer_rounded),
-            onPressed: () {},
-          )
-        : RemainingSleepTimeDisplay(
-            timer: sleepTimer,
+    return Tooltip(
+      message: 'Sleep Timer',
+      child: InkWell(
+        onTap: () async {
+          // show the sleep timer dialog
+          final resultingDuration = await showDurationPicker(
+            context: context,
+            initialTime: ref
+                .watch(appSettingsProvider)
+                .playerSettings
+                .sleepTimerSettings
+                .defaultDuration,
           );
+          if (resultingDuration != null) {
+            // if 0 is selected, cancel the timer
+            if (resultingDuration.inSeconds == 0) {
+              ref.read(sleepTimerProvider.notifier).cancelTimer();
+            } else {
+              ref.read(sleepTimerProvider.notifier).setTimer(resultingDuration);
+            }
+          }
+        },
+        child: sleepTimer == null
+            ? Icon(
+                Icons.timer_rounded,
+                color: Theme.of(context).colorScheme.onSurface,
+              )
+            : RemainingSleepTimeDisplay(
+                timer: sleepTimer,
+              ),
+      ),
+    );
+  }
+}
+
+class SleepTimerDialog extends HookConsumerWidget {
+  const SleepTimerDialog({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sleepTimer = ref.watch(sleepTimerProvider);
+    final sleepTimerSettings =
+        ref.watch(appSettingsProvider).playerSettings.sleepTimerSettings;
+    final timerDurationController = useTextEditingController(
+      text: sleepTimerSettings.defaultDuration.inMinutes.toString(),
+    );
+
+    return AlertDialog(
+      title: const Text('Sleep Timer'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text('Set the duration for the sleep timer'),
+          TextField(
+            controller: timerDurationController,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              labelText: 'Duration in minutes',
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            // sleepTimer.setTimer(
+            //   Duration(
+            //     minutes: int.tryParse(timerDurationController.text) ?? 0,
+            //   ),
+            // );
+            Navigator.of(context).pop();
+          },
+          child: const Text('Set Timer'),
+        ),
+      ],
+    );
   }
 }
 
