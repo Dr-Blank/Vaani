@@ -46,6 +46,10 @@ _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
           ? const SleepTimerSettings()
           : SleepTimerSettings.fromJson(
               json['sleepTimerSettings'] as Map<String, dynamic>),
+      playbackReportInterval: json['playbackReportInterval'] == null
+          ? const Duration(seconds: 10)
+          : Duration(
+              microseconds: (json['playbackReportInterval'] as num).toInt()),
     );
 
 Map<String, dynamic> _$$PlayerSettingsImplToJson(
@@ -57,6 +61,7 @@ Map<String, dynamic> _$$PlayerSettingsImplToJson(
       'preferredDefaultSpeed': instance.preferredDefaultSpeed,
       'speedOptions': instance.speedOptions,
       'sleepTimerSettings': instance.sleepTimerSettings,
+      'playbackReportInterval': instance.playbackReportInterval.inMicroseconds,
     };
 
 _$ExpandedPlayerSettingsImpl _$$ExpandedPlayerSettingsImplFromJson(

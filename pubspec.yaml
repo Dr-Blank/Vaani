@@ -39,6 +39,7 @@ dependencies:
   coast: ^2.0.2
   collection: ^1.18.0
   cupertino_icons: ^1.0.6
+  device_info_plus: ^10.1.0
   duration_picker: ^1.2.0
   easy_stepper: ^0.8.4
   flutter:
@@ -66,12 +67,13 @@ dependencies:
   miniplayer:
     path: ../miniplayer
   numberpicker: ^2.1.2
+  package_info_plus: ^8.0.0
   path: ^1.9.0
   path_provider: ^2.1.0
   riverpod_annotation: ^2.3.5
   rxdart: ^0.27.7
   scroll_loop_auto_scroll: ^0.0.5
-  # sensors_plus: ^5.0.1
+  sensors_plus: ^5.0.1
   shelfsdk:
     path: ../../_dart/shelfsdk
   shimmer: ^3.0.0

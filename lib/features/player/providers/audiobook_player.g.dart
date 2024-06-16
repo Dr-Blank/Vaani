@@ -9,7 +9,10 @@ part of 'audiobook_player.dart';
 String _$simpleAudiobookPlayerHash() =>
     r'b65e6d779476a2c1fa38f617771bf997acb4f5b8';
 
-/// See also [SimpleAudiobookPlayer].
+/// Simple because it doesn't rebuild when the player state changes
+/// it only rebuilds when the token changes
+///
+/// Copied from [SimpleAudiobookPlayer].
 @ProviderFor(SimpleAudiobookPlayer)
 final simpleAudiobookPlayerProvider =
     NotifierProvider<SimpleAudiobookPlayer, abp.AudiobookPlayer>.internal(

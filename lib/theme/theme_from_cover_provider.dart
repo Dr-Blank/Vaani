@@ -12,7 +12,7 @@ Future<FutureOr<ColorScheme?>> themeFromCover(
   ImageProvider<Object> img, {
   Brightness brightness = Brightness.dark,
 }) async {
-  // ! add deliberate delay to simulate a long running task
+  // ! add deliberate delay to simulate a long running task as it interferes with other animations
   await Future.delayed(500.ms);
 
   debugPrint('Generating color scheme from cover image');

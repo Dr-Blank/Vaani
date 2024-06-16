@@ -19,6 +19,8 @@ part 'audiobook_player.g.dart';
 
 const playerId = 'audiobook_player';
 
+/// Simple because it doesn't rebuild when the player state changes
+/// it only rebuilds when the token changes
 @Riverpod(keepAlive: true)
 class SimpleAudiobookPlayer extends _$SimpleAudiobookPlayer {
   @override

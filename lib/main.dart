@@ -7,6 +7,7 @@ import 'package:just_audio_media_kit/just_audio_media_kit.dart'
     show JustAudioMediaKit;
 import 'package:whispering_pages/api/server_provider.dart';
 import 'package:whispering_pages/db/storage.dart';
+import 'package:whispering_pages/features/playback_reporting/providers/playback_reporter_provider.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
 import 'package:whispering_pages/features/sleep_timer/providers/sleep_timer_provider.dart';
 import 'package:whispering_pages/router/router.dart';
@@ -85,9 +86,11 @@ class _EagerInitialization extends ConsumerWidget {
     try {
       ref.watch(simpleAudiobookPlayerProvider);
       ref.watch(sleepTimerProvider);
+      ref.watch(playbackReporterProvider);
     } catch (e) {
       debugPrintStack(stackTrace: StackTrace.current, label: e.toString());
     }
+
     return child;
   }
 }
