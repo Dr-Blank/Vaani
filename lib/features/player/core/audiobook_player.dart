@@ -127,7 +127,7 @@ class AudiobookPlayer extends AudioPlayer {
         }).toList(),
       ),
     ).catchError((error) {
-      debugPrint('Error: $error');
+      debugPrint('AudiobookPlayer Error: $error');
     });
   }
 

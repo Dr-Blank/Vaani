@@ -6,7 +6,7 @@ part of 'library_item_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$libraryItemHash() => r'ce6222e417b43dceed9ea7e5a8b43782755fc117';
+String _$libraryItemHash() => r'6442db4e802e0a072689b8ff6c2b9aaa99cf0f17';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,10 +30,10 @@ class _SystemHash {
 }
 
 abstract class _$LibraryItem
-    extends BuildlessAutoDisposeStreamNotifier<shelfsdk.LibraryItem> {
+    extends BuildlessAutoDisposeStreamNotifier<shelfsdk.LibraryItemExpanded> {
   late final String id;
 
-  Stream<shelfsdk.LibraryItem> build(
+  Stream<shelfsdk.LibraryItemExpanded> build(
     String id,
   );
 }
@@ -47,7 +47,8 @@ const libraryItemProvider = LibraryItemFamily();
 /// provides the library item for the given id
 ///
 /// Copied from [LibraryItem].
-class LibraryItemFamily extends Family<AsyncValue<shelfsdk.LibraryItem>> {
+class LibraryItemFamily
+    extends Family<AsyncValue<shelfsdk.LibraryItemExpanded>> {
   /// provides the library item for the given id
   ///
   /// Copied from [LibraryItem].
@@ -92,7 +93,7 @@ class LibraryItemFamily extends Family<AsyncValue<shelfsdk.LibraryItem>> {
 ///
 /// Copied from [LibraryItem].
 class LibraryItemProvider extends AutoDisposeStreamNotifierProviderImpl<
-    LibraryItem, shelfsdk.LibraryItem> {
+    LibraryItem, shelfsdk.LibraryItemExpanded> {
   /// provides the library item for the given id
   ///
   /// Copied from [LibraryItem].
@@ -125,7 +126,7 @@ class LibraryItemProvider extends AutoDisposeStreamNotifierProviderImpl<
   final String id;
 
   @override
-  Stream<shelfsdk.LibraryItem> runNotifierBuild(
+  Stream<shelfsdk.LibraryItemExpanded> runNotifierBuild(
     covariant LibraryItem notifier,
   ) {
     return notifier.build(
@@ -150,8 +151,8 @@ class LibraryItemProvider extends AutoDisposeStreamNotifierProviderImpl<
   }
 
   @override
-  AutoDisposeStreamNotifierProviderElement<LibraryItem, shelfsdk.LibraryItem>
-      createElement() {
+  AutoDisposeStreamNotifierProviderElement<LibraryItem,
+      shelfsdk.LibraryItemExpanded> createElement() {
     return _LibraryItemProviderElement(this);
   }
 
@@ -170,14 +171,14 @@ class LibraryItemProvider extends AutoDisposeStreamNotifierProviderImpl<
 }
 
 mixin LibraryItemRef
-    on AutoDisposeStreamNotifierProviderRef<shelfsdk.LibraryItem> {
+    on AutoDisposeStreamNotifierProviderRef<shelfsdk.LibraryItemExpanded> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
 class _LibraryItemProviderElement
     extends AutoDisposeStreamNotifierProviderElement<LibraryItem,
-        shelfsdk.LibraryItem> with LibraryItemRef {
+        shelfsdk.LibraryItemExpanded> with LibraryItemRef {
   _LibraryItemProviderElement(super.provider);
 
   @override

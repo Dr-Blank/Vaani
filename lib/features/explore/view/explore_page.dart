@@ -14,6 +14,7 @@ import 'package:whispering_pages/features/explore/view/search_result_page.dart';
 import 'package:whispering_pages/router/router.dart';
 import 'package:whispering_pages/settings/api_settings_provider.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
+import 'package:whispering_pages/shared/extensions/model_conversions.dart';
 import 'package:whispering_pages/shared/widgets/shelves/book_shelf.dart';
 
 const Duration debounceDuration = Duration(milliseconds: 500);
@@ -192,11 +193,8 @@ List<Widget> buildBookSearchResult(
         options: options.book.map(
           (result) {
             // convert result to a book object
-            final book =
-                BookExpanded.fromJson(result.libraryItem.media.toJson());
-            final metadata = BookMetadataExpanded.fromJson(
-              book.metadata.toJson(),
-            );
+            final book = result.libraryItem.media.asBookExpanded;
+            final metadata = book.metadata.asBookMetadataExpanded;
             return BookSearchResultMini(book: book, metadata: metadata);
           },
         ),

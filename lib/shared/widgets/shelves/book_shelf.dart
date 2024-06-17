@@ -9,6 +9,7 @@ import 'package:whispering_pages/api/image_provider.dart';
 import 'package:whispering_pages/constants/hero_tag_conventions.dart';
 import 'package:whispering_pages/router/models/library_item_extras.dart';
 import 'package:whispering_pages/router/router.dart';
+import 'package:whispering_pages/shared/extensions/model_conversions.dart';
 import 'package:whispering_pages/shared/widgets/shelves/home_shelf.dart';
 
 /// A shelf that displays books on the home page
@@ -57,8 +58,8 @@ class BookOnShelf extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final book = BookMinified.fromJson(item.media.toJson());
-    final metadata = BookMetadataMinified.fromJson(book.metadata.toJson());
+    final book = item.media.asBookMinified;
+    final metadata = book.metadata.asBookMetadataMinified;
     final coverImage = ref.watch(coverImageProvider(item));
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -75,7 +76,6 @@ class BookOnShelf extends HookConsumerWidget {
                 child: Center(
                   child: Hero(
                     tag: HeroTagPrefixes.bookCover + item.id + heroTagSuffix,
-
                     child: InkWell(
                       onTap: () {
                         // open the book
@@ -91,7 +91,6 @@ class BookOnShelf extends HookConsumerWidget {
                           ),
                         );
                       },
-
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: coverImage.when(

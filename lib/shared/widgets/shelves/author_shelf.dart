@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/api/image_provider.dart';
+import 'package:whispering_pages/shared/extensions/model_conversions.dart';
 import 'package:whispering_pages/shared/widgets/shelves/home_shelf.dart';
 
 /// A shelf that displays Authors on the home page
@@ -39,7 +39,7 @@ class AuthorOnShelf extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final author = AuthorMinified.fromJson(item.toJson());
+    final author = item.asMinified;
     // final coverImage = ref.watch(coverImageProvider(item));
 
     return Container(

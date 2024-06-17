@@ -128,16 +128,17 @@ class PlaybackReporter {
 
   /// current sessionId
   /// this is used to report the playback
-  String? sessionId;
+  PlaybackSession? _session;
+  String? get sessionId => _session?.id;
 
-  Future<String?> startSession() async {
-    if (sessionId != null) {
-      return sessionId!;
+  Future<PlaybackSession?> startSession() async {
+    if (_session != null) {
+      return _session!;
     }
     if (player.book == null) {
       throw NoAudiobookPlayingError();
     }
-    final session = await authenticatedApi.items.play(
+    _session = await authenticatedApi.items.play(
       libraryItemId: player.book!.libraryItemId,
       parameters: PlayItemReqParams(
         deviceInfo: await _getDeviceInfo(),
@@ -146,23 +147,22 @@ class PlaybackReporter {
       ),
       responseErrorHandler: _responseErrorHandler,
     );
-    sessionId = session!.id;
     debugPrint('PlaybackReporter Started session: $sessionId');
-    return sessionId;
+    return _session;
   }
 
   Future<void> syncCurrentPosition() async {
     try {
-      sessionId ??= await startSession();
+      _session ??= await startSession();
     } on NoAudiobookPlayingError {
       debugPrint('PlaybackReporter No audiobook playing to sync position');
       return;
     }
-    final currentPosition = player.position;
+    final currentPosition = player.positionInBook;
 
     await authenticatedApi.sessions.syncOpen(
       sessionId: sessionId!,
-      parameters: _getSyncData(),
+      parameters: _getSyncData()!,
       responseErrorHandler: _responseErrorHandler,
     );
 
@@ -185,7 +185,7 @@ class PlaybackReporter {
       parameters: _getSyncData(),
       responseErrorHandler: _responseErrorHandler,
     );
-    sessionId = null;
+    _session = null;
     debugPrint('PlaybackReporter Closed session');
   }
 
@@ -209,9 +209,15 @@ class PlaybackReporter {
     }
   }
 
-  SyncSessionReqParams _getSyncData() {
+  SyncSessionReqParams? _getSyncData() {
+    if (player.book?.libraryItemId != _session?.libraryItemId) {
+      debugPrint(
+        'PlaybackReporter Book changed, not syncing position for session: $sessionId',
+      );
+      return null;
+    }
     return SyncSessionReqParams(
-      currentTime: player.position,
+      currentTime: player.positionInBook,
       timeListened: _stopwatch.elapsed,
       duration: player.book?.duration ?? Duration.zero,
     );

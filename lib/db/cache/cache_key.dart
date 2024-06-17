@@ -1,5 +1,5 @@
 class CacheKey {
-  static libraryItem(String id) {
+  static String libraryItem(String id) {
     return 'library_item_$id';
   }
 }

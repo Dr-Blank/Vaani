@@ -43,7 +43,7 @@ final currentPlayingChapterProvider =
 
 typedef CurrentPlayingChapterRef = AutoDisposeProviderRef<BookChapter?>;
 String _$currentBookMetadataHash() =>
-    r'02b462a051fce5bcbdad6fdb708b60256fbb588c';
+    r'9088debba151894b61f2dcba1bba12a89244b9b1';
 
 /// provides the book metadata of the currently playing book
 ///

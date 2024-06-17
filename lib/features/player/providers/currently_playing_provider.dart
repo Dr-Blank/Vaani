@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
+import 'package:whispering_pages/shared/extensions/model_conversions.dart';
 
 part 'currently_playing_provider.g.dart';
 
@@ -26,7 +27,7 @@ BookChapter? currentPlayingChapter(CurrentPlayingChapterRef ref) {
 BookMetadataExpanded? currentBookMetadata(CurrentBookMetadataRef ref) {
   final player = ref.watch(audiobookPlayerProvider);
   if (player.book == null) return null;
-  return BookMetadataExpanded.fromJson(player.book!.metadata.toJson());
+  return player.book!.metadata.asBookMetadataExpanded;
 }
 
 // /// volume of the player [0, 1]

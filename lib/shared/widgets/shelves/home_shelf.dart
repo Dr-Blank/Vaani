@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
+import 'package:whispering_pages/shared/extensions/model_conversions.dart';
 import 'package:whispering_pages/shared/widgets/shelves/author_shelf.dart';
 import 'package:whispering_pages/shared/widgets/shelves/book_shelf.dart';
 
@@ -24,11 +25,11 @@ class HomeShelf extends HookConsumerWidget {
     return switch (shelf.type) {
       ShelfType.book => BookHomeShelf(
           title: title,
-          shelf: LibraryItemShelf.fromJson(shelf.toJson()),
+          shelf: shelf.asLibraryItemShelf,
         ),
       ShelfType.authors => AuthorHomeShelf(
           title: title,
-          shelf: AuthorShelf.fromJson(shelf.toJson()),
+          shelf: shelf.asAuthorShelf,
         ),
       _ => Container(),
     };

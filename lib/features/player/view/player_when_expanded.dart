@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -355,17 +353,4 @@ extension DurationFormat on Duration {
       return '${inSeconds}s';
     }
   }
-}
-
-void useInterval(VoidCallback callback, Duration delay) {
-  final savedCallback = useRef(callback);
-  savedCallback.value = callback;
-
-  useEffect(
-    () {
-      final timer = Timer.periodic(delay, (_) => savedCallback.value());
-      return timer.cancel;
-    },
-    [delay],
-  );
 }

@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:whispering_pages/features/explore/providers/search_result_provider.dart';
 import 'package:whispering_pages/features/explore/view/explore_page.dart';
+import 'package:whispering_pages/shared/extensions/model_conversions.dart';
 
 enum SearchResultCategory {
   books,
@@ -52,12 +53,9 @@ class SearchResultPage extends HookConsumerWidget {
               SearchResultCategory.books => ListView.builder(
                   itemCount: options.book.length,
                   itemBuilder: (context, index) {
-                    final book = BookExpanded.fromJson(
-                      options.book[index].libraryItem.media.toJson(),
-                    );
-                    final metadata = BookMetadataExpanded.fromJson(
-                      book.metadata.toJson(),
-                    );
+                    final book =
+                        options.book[index].libraryItem.media.asBookExpanded;
+                    final metadata = book.metadata.asBookMetadataExpanded;
 
                     return BookSearchResultMini(
                       book: book,
