@@ -83,7 +83,7 @@ class SimpleHomeShelf extends HookConsumerWidget {
                   return const SizedBox();
                 }
 
-                return const SizedBox(width: 16);
+                return const SizedBox(width: 4);
               },
               itemCount: children.length +
                   2, // add some extra space at the start and end so that the first and last items are not at the edge

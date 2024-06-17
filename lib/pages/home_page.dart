@@ -12,9 +12,9 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // hooks for the dark mode
     final settings = ref.watch(appSettingsProvider);
     final api = ref.watch(authenticatedApiProvider);
+    final me = ref.watch(meProvider);
     final views = ref.watch(personalizedViewProvider);
     final scrollController = useScrollController();
     return Scaffold(

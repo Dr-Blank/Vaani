@@ -347,6 +347,20 @@ final fetchContinueListeningProvider =
 
 typedef FetchContinueListeningRef
     = AutoDisposeFutureProviderRef<GetUserSessionsResponse>;
+String _$meHash() => r'bdc664c4fd867ad13018fa769ce7a6913248c44f';
+
+/// See also [me].
+@ProviderFor(me)
+final meProvider = AutoDisposeFutureProvider<User>.internal(
+  me,
+  name: r'meProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$meHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef MeRef = AutoDisposeFutureProviderRef<User>;
 String _$personalizedViewHash() => r'2e70fe2bfc766a963f7a8e94211ad50d959fbaa2';
 
 /// fetch the personalized view

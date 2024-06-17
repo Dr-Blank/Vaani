@@ -1,11 +1,9 @@
 import 'package:shelfsdk/audiobookshelf_api.dart';
 
 extension LibraryItemConversion on LibraryItem {
-  LibraryItemExpanded get asExpanded =>
-      LibraryItemExpanded.fromJson(toJson());
+  LibraryItemExpanded get asExpanded => LibraryItemExpanded.fromJson(toJson());
 
-  LibraryItemMinified get asMinified =>
-      LibraryItemMinified.fromJson(toJson());
+  LibraryItemMinified get asMinified => LibraryItemMinified.fromJson(toJson());
 }
 
 extension MediaConversion on Media {
@@ -45,4 +43,11 @@ extension ShelfConversion on Shelf {
       LibraryItemShelf.fromJson(toJson());
   SeriesShelf get asSeriesShelf => SeriesShelf.fromJson(toJson());
   AuthorShelf get asAuthorShelf => AuthorShelf.fromJson(toJson());
+}
+
+extension UserConversion on User {
+  UserWithSessionAndMostRecentProgress
+      get asUserWithSessionAndMostRecentProgress =>
+          UserWithSessionAndMostRecentProgress.fromJson(toJson());
+  User get asUser => User.fromJson(toJson());
 }

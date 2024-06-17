@@ -142,3 +142,12 @@ FutureOr<GetUserSessionsResponse> fetchContinueListening(
   // );
   return res!;
 }
+
+@riverpod
+FutureOr<User> me(
+  MeRef ref,
+) async {
+  final api = ref.watch(authenticatedApiProvider);
+  final res = await api.me.getUser();
+  return res!;
+}

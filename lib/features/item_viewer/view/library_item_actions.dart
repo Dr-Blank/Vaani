@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
+import 'package:whispering_pages/constants/hero_tag_conventions.dart';
 import 'package:whispering_pages/features/item_viewer/view/library_item_page.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
@@ -120,39 +121,15 @@ class _LibraryItemPlayButton extends HookConsumerWidget {
     }
 
     return ElevatedButton.icon(
-      onPressed: () async {
-        debugPrint('Pressed play/resume button');
-        // set the book to the player if not already set
-        if (!isCurrentBookSetInPlayer) {
-          debugPrint('Setting the book ${book.libraryItemId}');
-          debugPrint('Initial position: ${userMediaProgress?.currentTime}');
-          await player.setSourceAudioBook(
-            book,
-            initialPosition: userMediaProgress?.currentTime,
-          );
-        } else {
-          debugPrint('Book was already set');
-          if (isPlayingThisBook) {
-            debugPrint('Pausing the book');
-            await player.pause();
-            return;
-          }
-        }
-        // toggle play/pause
-        await player.play();
-        // set the volume as this is the first time playing and dismissing causes the volume to go to 0
-        await player.setVolume(
-          ref.read(appSettingsProvider).playerSettings.preferredDefaultVolume,
-        );
-      },
-      icon: Icon(
-        isCurrentBookSetInPlayer
-            ? isPlayingThisBook
-                ? Icons.pause_rounded
-                : Icons.play_arrow_rounded
-            : isBookCompleted
-                ? Icons.replay_rounded
-                : Icons.play_arrow_rounded,
+      onPressed: () => libraryItemPlayButtonOnPressed(
+          ref: ref, book: book, userMediaProgress: userMediaProgress),
+      icon: Hero(
+        tag: HeroTagPrefixes.libraryItemPlayButton + book.libraryItemId,
+        child: DynamicItemPlayIcon(
+          isCurrentBookSetInPlayer: isCurrentBookSetInPlayer,
+          isPlayingThisBook: isPlayingThisBook,
+          isBookCompleted: isBookCompleted,
+        ),
       ),
       label: Text(getPlayDisplayText()),
       style: ElevatedButton.styleFrom(
@@ -162,4 +139,65 @@ class _LibraryItemPlayButton extends HookConsumerWidget {
       ),
     );
   }
+}
+
+class DynamicItemPlayIcon extends StatelessWidget {
+  const DynamicItemPlayIcon({
+    super.key,
+    required this.isCurrentBookSetInPlayer,
+    required this.isPlayingThisBook,
+    required this.isBookCompleted,
+  });
+
+  final bool isCurrentBookSetInPlayer;
+  final bool isPlayingThisBook;
+  final bool isBookCompleted;
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      isCurrentBookSetInPlayer
+          ? isPlayingThisBook
+              ? Icons.pause_rounded
+              : Icons.play_arrow_rounded
+          : isBookCompleted
+              ? Icons.replay_rounded
+              : Icons.play_arrow_rounded,
+    );
+  }
+}
+
+Future<void> libraryItemPlayButtonOnPressed({
+  required WidgetRef ref,
+  required shelfsdk.BookExpanded book,
+  shelfsdk.MediaProgress? userMediaProgress,
+}) async {
+  debugPrint('Pressed play/resume button');
+  final player = ref.watch(audiobookPlayerProvider);
+
+  final isCurrentBookSetInPlayer = player.book == book;
+  final isPlayingThisBook = player.playing && isCurrentBookSetInPlayer;
+
+  // set the book to the player if not already set
+  if (!isCurrentBookSetInPlayer) {
+    debugPrint('Setting the book ${book.libraryItemId}');
+    debugPrint('Initial position: ${userMediaProgress?.currentTime}');
+    await player.setSourceAudioBook(
+      book,
+      initialPosition: userMediaProgress?.currentTime,
+    );
+  } else {
+    debugPrint('Book was already set');
+    if (isPlayingThisBook) {
+      debugPrint('Pausing the book');
+      await player.pause();
+      return;
+    }
+  }
+  // toggle play/pause
+  await player.play();
+  // set the volume as this is the first time playing and dismissing causes the volume to go to 0
+  await player.setVolume(
+    ref.read(appSettingsProvider).playerSettings.preferredDefaultVolume,
+  );
 }
