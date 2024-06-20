@@ -93,7 +93,7 @@ class AudiobookPlayer extends HookConsumerWidget {
         minHeight: playerMinHeight,
         // subtract the height of notches and other system UI
         maxHeight: playerMaxHeight,
-        controller: ref.watch(miniplayerControllerProvider),
+        controller: audioBookMiniplayerController,
         elevation: 4,
         onDismissed: () {
           // add a delay before closing the player

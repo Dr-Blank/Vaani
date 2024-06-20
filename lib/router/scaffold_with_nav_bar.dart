@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:miniplayer/miniplayer.dart';
 import 'package:whispering_pages/features/explore/providers/search_controller.dart';
 import 'package:whispering_pages/features/player/providers/player_form.dart';
 import 'package:whispering_pages/features/player/view/audiobook_player.dart';
+
+// stack to track changes in navigationShell.currentIndex
+// home is always at index 0 and at the start and should be the last before popping
+// if stack is empty, push home, if already contains home, pop it
+final Set<int> navigationShellStack = {};
 
 /// Builds the "shell" for the app by building a Scaffold with a
 /// BottomNavigationBar, where [child] is placed in the body of the Scaffold.
@@ -30,52 +36,100 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
     // Clamp the value between 0 and 1
     percentExpanded = percentExpanded.clamp(0.0, 1.0);
 
-    final SearchController searchController =
-        ref.watch(globalSearchControllerProvider);
+    onBackButtonPressed() async {
+      final isPlayerExpanded = playerProgress != playerMinHeight;
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          navigationShell,
-          const AudiobookPlayer(),
-        ],
-      ),
-      bottomNavigationBar: Opacity(
-        // Opacity is interpolated from 1 to 0 when player is expanded
-        opacity: 1 - percentExpanded,
-        child: SizedBox(
-          // height is interpolated from 0 to 56 when player is expanded
-          height: 56 * (1 - percentExpanded),
+      debugPrint(
+        'BackButtonListener: Back button pressed, isPlayerExpanded: $isPlayerExpanded, stack: $navigationShellStack',
+      );
+      // close miniplayer if it is open
+      if (isPlayerExpanded) {
+        debugPrint(
+          'BackButtonListener: closing the player',
+        );
+        audioBookMiniplayerController.animateToHeight(state: PanelState.MIN);
+        return true;
+      }
 
-          child: BottomNavigationBar(
-            elevation: 0.0,
-            landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
-            selectedFontSize:
-                Theme.of(context).textTheme.labelMedium!.fontSize!,
-            unselectedFontSize:
-                Theme.of(context).textTheme.labelMedium!.fontSize!,
-            showUnselectedLabels: false,
-            fixedColor: Theme.of(context).colorScheme.onSurface,
-            enableFeedback: true,
-            type: BottomNavigationBarType.fixed,
+      // do the the following only if the current branch has nothing to pop
+      final canPop = GoRouter.of(context).canPop();
 
-            // Here, the items of BottomNavigationBar are hard coded. In a real
-            // world scenario, the items would most likely be generated from the
-            // branches of the shell route, which can be fetched using
-            // `navigationShell.route.branches`.
-            items: _navigationItems
-                .map(
-                  (item) => BottomNavigationBarItem(
-                    icon: Icon(item.icon),
-                    activeIcon: item.activeIcon != null
-                        ? Icon(item.activeIcon)
-                        : Icon(item.icon),
-                    label: item.name,
-                  ),
-                )
-                .toList(),
-            currentIndex: navigationShell.currentIndex,
-            onTap: (int index) => _onTap(context, index, ref),
+      if (canPop) {
+        debugPrint(
+          'BackButtonListener: passing it to the router as canPop is true',
+        );
+        return false;
+      }
+
+      if (navigationShellStack.isNotEmpty) {
+        // pop the last index from the stack and navigate to it
+        final index = navigationShellStack.last;
+        navigationShellStack.remove(index);
+        debugPrint('BackButtonListener: popping the stack, index: $index');
+
+        // if the stack is empty, navigate to home else navigate to the last index
+        if (navigationShellStack.isNotEmpty) {
+          navigationShell.goBranch(navigationShellStack.last);
+          return true;
+        }
+      }
+      if (navigationShell.currentIndex != 0) {
+        // if the stack is empty and the current branch is not home, navigate to home
+        debugPrint('BackButtonListener: navigating to home');
+        navigationShell.goBranch(0);
+        return true;
+      }
+
+      debugPrint('BackButtonListener: passing it to the router');
+      return false;
+    }
+
+    return BackButtonListener(
+      onBackButtonPressed: onBackButtonPressed,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            navigationShell,
+            const AudiobookPlayer(),
+          ],
+        ),
+        bottomNavigationBar: Opacity(
+          // Opacity is interpolated from 1 to 0 when player is expanded
+          opacity: 1 - percentExpanded,
+          child: SizedBox(
+            // height is interpolated from 0 to 56 when player is expanded
+            height: 56 * (1 - percentExpanded),
+
+            child: BottomNavigationBar(
+              elevation: 0.0,
+              landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
+              selectedFontSize:
+                  Theme.of(context).textTheme.labelMedium!.fontSize!,
+              unselectedFontSize:
+                  Theme.of(context).textTheme.labelMedium!.fontSize!,
+              showUnselectedLabels: false,
+              fixedColor: Theme.of(context).colorScheme.onSurface,
+              enableFeedback: true,
+              type: BottomNavigationBarType.fixed,
+
+              // Here, the items of BottomNavigationBar are hard coded. In a real
+              // world scenario, the items would most likely be generated from the
+              // branches of the shell route, which can be fetched using
+              // `navigationShell.route.branches`.
+              items: _navigationItems
+                  .map(
+                    (item) => BottomNavigationBarItem(
+                      icon: Icon(item.icon),
+                      activeIcon: item.activeIcon != null
+                          ? Icon(item.activeIcon)
+                          : Icon(item.icon),
+                      label: item.name,
+                    ),
+                  )
+                  .toList(),
+              currentIndex: navigationShell.currentIndex,
+              onTap: (int index) => _onTap(context, index, ref),
+            ),
           ),
         ),
       ),
@@ -96,6 +150,13 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
       // using the initialLocation parameter of goBranch.
       initialLocation: index == navigationShell.currentIndex,
     );
+
+    // add the index to the stack but remove it if it is already there
+    if (navigationShellStack.contains(index)) {
+      navigationShellStack.remove(index);
+    }
+    navigationShellStack.add(index);
+    debugPrint('Tapped index: $index, stack: $navigationShellStack');
 
     // Check if the current branch is the same as the branch that was tapped.
     // If it is, debugPrint a message to the console.

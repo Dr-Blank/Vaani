@@ -58,10 +58,4 @@ double playerHeight(
   return playerExpandProgress.value;
 }
 
-// a final MiniplayerController controller = MiniplayerController();
-@Riverpod(keepAlive: true)
-Raw<MiniplayerController> miniplayerController(
-  MiniplayerControllerRef ref,
-) {
-  return MiniplayerController();
-}
+final audioBookMiniplayerController = MiniplayerController();
