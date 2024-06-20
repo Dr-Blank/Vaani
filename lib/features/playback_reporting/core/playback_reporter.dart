@@ -152,6 +152,10 @@ class PlaybackReporter {
   }
 
   Future<void> syncCurrentPosition() async {
+    final data = _getSyncData();
+    if (data == null) {
+      await closeSession();
+    }
     try {
       _session ??= await startSession();
     } on NoAudiobookPlayingError {
