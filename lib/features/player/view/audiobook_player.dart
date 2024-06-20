@@ -69,8 +69,7 @@ class AudiobookPlayer extends HookConsumerWidget {
     );
 
     // max height of the player is the height of the screen
-    final playerMaxHeight =
-        MediaQuery.of(context).size.height * playerMaxHeightPercentOfScreen;
+    final playerMaxHeight = MediaQuery.of(context).size.height;
 
     final availWidth = MediaQuery.of(context).size.width;
 

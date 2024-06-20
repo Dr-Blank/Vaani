@@ -2,8 +2,10 @@ import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:miniplayer/miniplayer.dart';
 import 'package:whispering_pages/constants/sizes.dart';
 import 'package:whispering_pages/features/player/providers/currently_playing_provider.dart';
+import 'package:whispering_pages/features/player/providers/player_form.dart';
 import 'package:whispering_pages/features/player/view/audiobook_player.dart';
 import 'package:whispering_pages/features/sleep_timer/core/sleep_timer.dart';
 import 'package:whispering_pages/features/sleep_timer/providers/sleep_timer_provider.dart'
@@ -49,11 +51,47 @@ class PlayerWhenExpanded extends HookConsumerWidget {
     return Column(
       children: [
         // sized box for system status bar; not needed as not full screen
-        // SizedBox(
-        //   height: MediaQuery.of(context).padding.top * earlyPercentage,
-        // ),
+        SizedBox(
+          height: MediaQuery.of(context).padding.top * earlyPercentage,
+        ),
 
         // a row with a down arrow to minimize the player, a pill shaped container to drag the player, and a cast button
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: 100 * earlyPercentage,
+          ),
+          child: Opacity(
+            opacity: earlyPercentage,
+            child: Padding(
+              padding: EdgeInsets.only(top: 8.0 * earlyPercentage),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // the down arrow
+                  IconButton(
+                    iconSize: 30,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    onPressed: () {
+                      // minimize the player
+                      audioBookMiniplayerController.animateToHeight(
+                        state: PanelState.MIN,
+                      );
+                    },
+                  ),
+
+                  // the cast button
+                  IconButton(
+                    icon: const Icon(Icons.cast),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+
         // the image
         Padding(
           padding: EdgeInsets.only(
