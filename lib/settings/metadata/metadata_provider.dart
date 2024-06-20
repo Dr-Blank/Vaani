@@ -54,7 +54,7 @@ Future<String> deviceSdkVersion(DeviceSdkVersionRef ref) async {
   // try different keys to get the device sdk version
   return
       // android, eg: 30
-      data['version.sdkInt'] ??
+      data['version.sdkInt']?.toString() ??
           // ios, eg: 14.4
           data['systemVersion'] ??
           // linux, eg: 5.4.0-66-generic

@@ -34,7 +34,7 @@ final deviceModelProvider = FutureProvider<String>.internal(
 );
 
 typedef DeviceModelRef = FutureProviderRef<String>;
-String _$deviceSdkVersionHash() => r'0553db1a6c90a4db2841761ac2765eb1ba86a714';
+String _$deviceSdkVersionHash() => r'501b01ae679e02fc5082feabea81cea0fa74afd7';
 
 /// See also [deviceSdkVersion].
 @ProviderFor(deviceSdkVersion)
