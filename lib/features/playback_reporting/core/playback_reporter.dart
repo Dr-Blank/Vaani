@@ -1,8 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:whispering_pages/features/player/core/audiobook_player.dart';
+
+final _logger = Logger('PlaybackReporter');
 
 /// this playback reporter will watch the player and report to the server
 ///
@@ -29,7 +31,7 @@ class PlaybackReporter {
     _reportingInterval = value;
     _cancelReportTimer();
     _setReportTimer();
-    debugPrint('PlaybackReporter set interval: $value');
+    _logger.info('set interval: $value');
   }
 
   /// the minimum duration to report
@@ -62,9 +64,9 @@ class PlaybackReporter {
     if (player.playing) {
       _stopwatch.start();
       _setReportTimer();
-      debugPrint('PlaybackReporter starting stopwatch');
+      _logger.fine('starting stopwatch');
     } else {
-      debugPrint('PlaybackReporter not starting stopwatch');
+      _logger.fine('not starting stopwatch');
     }
 
     _subscriptions.add(
@@ -73,7 +75,7 @@ class PlaybackReporter {
         if (player.book != null && _reportTimer == null) {
           _setReportTimer();
         } else if (player.book == null && _reportTimer != null) {
-          debugPrint('PlaybackReporter book is null, closing session');
+          _logger.info('book is null, closing session');
           await closeSession();
           _cancelReportTimer();
         }
@@ -81,34 +83,34 @@ class PlaybackReporter {
         // start or stop the stopwatch based on the playing state
         if (state.playing) {
           _stopwatch.start();
-          debugPrint(
-            'PlaybackReporter player state observed, starting stopwatch at ${_stopwatch.elapsed}',
+          _logger.fine(
+            'player state observed, starting stopwatch at ${_stopwatch.elapsed}',
           );
         } else if (!state.playing) {
           _stopwatch.stop();
-          debugPrint(
-            'PlaybackReporter player state observed, stopping stopwatch at ${_stopwatch.elapsed}',
+          _logger.fine(
+            'player state observed, stopping stopwatch at ${_stopwatch.elapsed}',
           );
           await syncCurrentPosition();
         }
       }),
     );
 
-    debugPrint(
-      'PlaybackReporter initialized with interval: $reportingInterval, threshold: $reportingDurationThreshold',
+    _logger.fine(
+      'initialized with interval: $reportingInterval, threshold: $reportingDurationThreshold',
     );
-    debugPrint(
-      'PlaybackReporter initialized with deviceModel: $deviceModel, deviceSdkVersion: $deviceSdkVersion, deviceClientName: $deviceClientName, deviceClientVersion: $deviceClientVersion, deviceManufacturer: $deviceManufacturer',
+    _logger.fine(
+      'initialized with deviceModel: $deviceModel, deviceSdkVersion: $deviceSdkVersion, deviceClientName: $deviceClientName, deviceClientVersion: $deviceClientVersion, deviceManufacturer: $deviceManufacturer',
     );
   }
 
   void tryReportPlayback(_) async {
-    debugPrint(
-      'PlaybackReporter callback called when elapsed ${_stopwatch.elapsed}',
+    _logger.fine(
+      'callback called when elapsed ${_stopwatch.elapsed}',
     );
     if (_stopwatch.elapsed > reportingDurationThreshold) {
-      debugPrint(
-        'PlaybackReporter reporting now with elapsed ${_stopwatch.elapsed} > threshold $reportingDurationThreshold',
+      _logger.fine(
+        'reporting now with elapsed ${_stopwatch.elapsed} > threshold $reportingDurationThreshold',
       );
       await syncCurrentPosition();
     }
@@ -123,7 +125,7 @@ class PlaybackReporter {
     _stopwatch.stop();
     _reportTimer?.cancel();
 
-    debugPrint('PlaybackReporter disposed');
+    _logger.fine('disposed');
   }
 
   /// current sessionId
@@ -147,7 +149,7 @@ class PlaybackReporter {
       ),
       responseErrorHandler: _responseErrorHandler,
     );
-    debugPrint('PlaybackReporter Started session: $sessionId');
+    _logger.info('Started session: $sessionId');
     return _session;
   }
 
@@ -159,7 +161,7 @@ class PlaybackReporter {
     try {
       _session ??= await startSession();
     } on NoAudiobookPlayingError {
-      debugPrint('PlaybackReporter No audiobook playing to sync position');
+      _logger.warning('No audiobook playing to sync position');
       return;
     }
     final currentPosition = player.positionInBook;
@@ -170,8 +172,8 @@ class PlaybackReporter {
       responseErrorHandler: _responseErrorHandler,
     );
 
-    debugPrint(
-      'PlaybackReporter Synced position: $currentPosition with timeListened: ${_stopwatch.elapsed} for session: $sessionId',
+    _logger.fine(
+      'Synced position: $currentPosition with timeListened: ${_stopwatch.elapsed} for session: $sessionId',
     );
 
     // reset the stopwatch
@@ -180,7 +182,7 @@ class PlaybackReporter {
 
   Future<void> closeSession() async {
     if (sessionId == null) {
-      debugPrint('PlaybackReporter No session to close');
+      _logger.warning('No session to close');
       return;
     }
 
@@ -190,23 +192,23 @@ class PlaybackReporter {
       responseErrorHandler: _responseErrorHandler,
     );
     _session = null;
-    debugPrint('PlaybackReporter Closed session');
+    _logger.info('Closed session');
   }
 
   void _setReportTimer() {
     _reportTimer = Timer.periodic(_reportingInterval, tryReportPlayback);
-    debugPrint('PlaybackReporter set timer with interval: $_reportingInterval');
+    _logger.fine('set timer with interval: $_reportingInterval');
   }
 
   void _cancelReportTimer() {
     _reportTimer?.cancel();
     _reportTimer = null;
-    debugPrint('PlaybackReporter cancelled timer');
+    _logger.fine('cancelled timer');
   }
 
   void _responseErrorHandler(response, [error]) {
     if (response.statusCode != 200) {
-      debugPrint('PlaybackReporter Error with api: $response, $error');
+      _logger.shout('Error with api: $response, $error');
       throw PlaybackSyncError(
         'Error syncing position: ${response.body}, $error',
       );
@@ -215,8 +217,8 @@ class PlaybackReporter {
 
   SyncSessionReqParams? _getSyncData() {
     if (player.book?.libraryItemId != _session?.libraryItemId) {
-      debugPrint(
-        'PlaybackReporter Book changed, not syncing position for session: $sessionId',
+      _logger.info(
+        'Book changed, not syncing position for session: $sessionId',
       );
       return null;
     }

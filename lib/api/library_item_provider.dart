@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
 import 'package:whispering_pages/api/api_provider.dart';
@@ -10,6 +10,8 @@ import 'package:whispering_pages/shared/extensions/model_conversions.dart';
 
 part 'library_item_provider.g.dart';
 
+final _logger = Logger('LibraryItemProvider');
+
 /// provides the library item for the given id
 @riverpod
 class LibraryItem extends _$LibraryItem {
@@ -17,7 +19,7 @@ class LibraryItem extends _$LibraryItem {
   Stream<shelfsdk.LibraryItemExpanded> build(String id) async* {
     final api = ref.watch(authenticatedApiProvider);
 
-    debugPrint('LibraryItemProvider fetching library item: $id');
+    _logger.fine('LibraryItemProvider fetching library item: $id');
 
     // ! this is a mock delay
     // await Future.delayed(const Duration(seconds: 10));
@@ -27,14 +29,15 @@ class LibraryItem extends _$LibraryItem {
     final cachedFile = await apiResponseCacheManager.getFileFromMemory(key) ??
         await apiResponseCacheManager.getFileFromCache(key);
     if (cachedFile != null) {
-      debugPrint('LibraryItemProvider reading from cache for $id from ${cachedFile.file}');
+      _logger.fine(
+          'LibraryItemProvider reading from cache for $id from ${cachedFile.file}');
       // read file as json
       final cachedItem = shelfsdk.LibraryItemExpanded.fromJson(
         jsonDecode(await cachedFile.file.readAsString()),
       );
       yield cachedItem;
     } else {
-      debugPrint('LibraryItemProvider cache miss for $id');
+      _logger.fine('LibraryItemProvider cache miss for $id');
     }
 
     // ! this is a mock delay
@@ -60,7 +63,7 @@ class LibraryItem extends _$LibraryItem {
         fileExtension: 'json',
         key: key,
       );
-      debugPrint('writing to cache: $newFile');
+      _logger.fine('writing to cache: $newFile');
       yield item.asExpanded;
     }
   }

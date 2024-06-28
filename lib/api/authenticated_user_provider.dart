@@ -1,15 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:whispering_pages/api/server_provider.dart'
     show audiobookShelfServerProvider;
-import 'package:whispering_pages/settings/models/audiobookshelf_server.dart';
-import 'package:whispering_pages/settings/models/authenticated_user.dart' as model;
-import 'package:whispering_pages/settings/api_settings_provider.dart';
 import 'package:whispering_pages/db/storage.dart';
+import 'package:whispering_pages/settings/api_settings_provider.dart';
+import 'package:whispering_pages/settings/models/audiobookshelf_server.dart';
+import 'package:whispering_pages/settings/models/authenticated_user.dart'
+    as model;
 
 part 'authenticated_user_provider.g.dart';
 
 final _box = AvailableHiveBoxes.authenticatedUserBox;
+
+final _logger = Logger('authenticated_user_provider');
 
 /// provides with a set of authenticated users
 @riverpod
@@ -32,10 +35,10 @@ class AuthenticatedUser extends _$AuthenticatedUser {
   Set<model.AuthenticatedUser> readFromBoxOrCreate() {
     if (_box.isNotEmpty) {
       final foundData = _box.getRange(0, _box.length);
-      debugPrint('found users in box: $foundData');
+      _logger.fine('found users in box: $foundData');
       return foundData.toSet();
     } else {
-      debugPrint('no settings found in box');
+      _logger.fine('no settings found in box');
       return {};
     }
   }
@@ -46,7 +49,7 @@ class AuthenticatedUser extends _$AuthenticatedUser {
       return;
     }
     _box.addAll(state);
-    debugPrint('writing state to box: $state');
+    _logger.fine('writing state to box: $state');
   }
 
   void addUser(model.AuthenticatedUser user) {

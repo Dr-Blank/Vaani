@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:whispering_pages/api/image_provider.dart';
 
 part 'theme_from_cover_provider.g.dart';
+
+final _logger = Logger('ThemeFromCoverProvider');
 
 @Riverpod(keepAlive: true)
 Future<FutureOr<ColorScheme?>> themeFromCover(
@@ -15,7 +18,7 @@ Future<FutureOr<ColorScheme?>> themeFromCover(
   // ! add deliberate delay to simulate a long running task as it interferes with other animations
   await Future.delayed(500.ms);
 
-  debugPrint('Generating color scheme from cover image');
+  _logger.fine('Generating color scheme from cover image');
   return ColorScheme.fromImageProvider(
     provider: img,
     brightness: brightness,
@@ -26,7 +29,7 @@ Future<FutureOr<ColorScheme?>> themeFromCover(
   // RootIsolateToken? token = RootIsolateToken.instance;
   // final scheme = await Isolate.run(
   //   () async {
-  //     debugPrint('Isolate running ${Isolate.current.debugName}');
+  //     _logger.fine('Isolate running ${Isolate.current.debugName}');
   //     try {
   //       BackgroundIsolateBinaryMessenger.ensureInitialized(token!);
   //       WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +38,7 @@ Future<FutureOr<ColorScheme?>> themeFromCover(
   //         brightness: brightness,
   //       );
   //     } catch (e) {
-  //       debugPrint('Error in isolate: $e');
+  //       _logger.fine('Error in isolate: $e');
   //       return null;
   //     }
   //   },
@@ -60,9 +63,9 @@ FutureOr<ColorScheme?> themeOfLibraryItem(
   return val;
   // coverImage.when(
   //   data: (value) async {
-  //     debugPrint('CoverImage: $value');
+  //     _logger.fine('CoverImage: $value');
   //     final val = ref.watch(themeFromCoverProvider(MemoryImage(value)));
-  //     debugPrint('ColorScheme generated: $val');
+  //     _logger.fine('ColorScheme generated: $val');
   //     ref.invalidateSelf();
   //     return val;
   //   },

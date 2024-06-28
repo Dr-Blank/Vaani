@@ -5,6 +5,7 @@ import 'package:just_audio_background/just_audio_background.dart'
     show JustAudioBackground;
 import 'package:just_audio_media_kit/just_audio_media_kit.dart'
     show JustAudioMediaKit;
+import 'package:logging/logging.dart';
 import 'package:whispering_pages/api/server_provider.dart';
 import 'package:whispering_pages/db/storage.dart';
 import 'package:whispering_pages/features/playback_reporting/providers/playback_reporter_provider.dart';
@@ -13,10 +14,20 @@ import 'package:whispering_pages/features/sleep_timer/providers/sleep_timer_prov
 import 'package:whispering_pages/router/router.dart';
 import 'package:whispering_pages/settings/api_settings_provider.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
+import 'package:whispering_pages/shared/extensions/duration_format.dart';
 import 'package:whispering_pages/theme/theme.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Configure the root Logger
+  Logger.root.level = Level.ALL; // Capture all logs
+  Logger.root.onRecord.listen((record) {
+    // Print log records to the console
+    debugPrint(
+      '${record.loggerName}: ${record.level.name}: ${record.time.time}: ${record.message}',
+    );
+  });
 
   // for playing audio on windows, linux
   JustAudioMediaKit.ensureInitialized();

@@ -2,13 +2,15 @@
 
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:whispering_pages/db/cache_manager.dart';
 import 'package:whispering_pages/settings/api_settings_provider.dart';
 
 part 'api_provider.g.dart';
+
+final _logger = Logger('api_provider');
 
 Uri makeBaseUrl(String address) {
   if (!address.startsWith('http') && !address.startsWith('https')) {
@@ -103,7 +105,7 @@ class PersonalizedView extends _$PersonalizedView {
         for (final item in resJson)
           Shelf.fromJson(item as Map<String, dynamic>),
       ];
-      debugPrint('reading from cache: $cachedRes');
+      _logger.fine('reading from cache: $cachedRes');
       yield res;
     }
 
@@ -119,7 +121,7 @@ class PersonalizedView extends _$PersonalizedView {
       fileExtension: 'json',
       key: key,
     );
-    debugPrint('writing to cache: $newFile');
+    _logger.fine('writing to cache: $newFile');
     yield res!;
   }
 

@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:logging/logging.dart';
 import 'package:whispering_pages/features/player/core/audiobook_player.dart';
 
 /// this timer pauses the music player after a certain duration
@@ -10,6 +10,8 @@ import 'package:whispering_pages/features/player/core/audiobook_player.dart';
 /// watches the state of the music player and pauses it when the timer is up
 /// timer is cancelled when the music player is paused or stopped
 class SleepTimer {
+  final _logger = Logger('SleepTimer');
+
   /// The duration after which the music player will be paused
   Duration _duration;
 
@@ -54,15 +56,15 @@ class SleepTimer {
       }),
     );
 
-    debugPrint('SleepTimer created with duration: $duration');
+    _logger.fine('created with duration: $duration');
   }
 
   /// resets the timer
   void reset() {
     if (timer != null) {
       timer!.cancel();
-      debugPrint(
-        'SleepTimer cancelled timer, remaining time: $remainingTime, duration: $duration',
+      _logger.fine(
+        'cancelled timer, remaining time: $remainingTime, duration: $duration',
       );
       timer = null;
     }
@@ -77,10 +79,10 @@ class SleepTimer {
     timer = Timer(duration, () {
       player.pause();
       reset();
-      debugPrint('SleepTimer paused player after $duration');
+      _logger.fine('paused player after $duration');
     });
     startedAt = DateTime.now();
-    debugPrint('SleepTimer started for $duration at $startedAt');
+    _logger.fine('started for $duration at $startedAt');
   }
 
   Duration get remainingTime {
@@ -105,6 +107,6 @@ class SleepTimer {
     for (var sub in _subscriptions) {
       sub.cancel();
     }
-    debugPrint('SleepTimer disposed');
+    _logger.fine('disposed');
   }
 }

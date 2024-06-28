@@ -1,6 +1,6 @@
 // this provider is used to provide the Api settings to the app
 
-import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:whispering_pages/db/available_boxes.dart';
 import 'package:whispering_pages/settings/models/api_settings.dart' as model;
@@ -8,6 +8,8 @@ import 'package:whispering_pages/settings/models/api_settings.dart' as model;
 part 'api_settings_provider.g.dart';
 
 final _box = AvailableHiveBoxes.apiSettingsBox;
+
+final _logger = Logger('ApiSettingsProvider');
 
 @Riverpod(keepAlive: true)
 class ApiSettings extends _$ApiSettings {
@@ -31,12 +33,12 @@ class ApiSettings extends _$ApiSettings {
           activeServer: foundSettings.activeUser?.server,
         );
       }
-      debugPrint('found api settings in box: $foundSettings');
+      _logger.fine('found api settings in box: $foundSettings');
       return foundSettings;
     } else {
       // create a new settings object
       const settings = model.ApiSettings();
-      debugPrint('created new api settings: $settings');
+      _logger.fine('created new api settings: $settings');
       return settings;
     }
   }
@@ -45,7 +47,7 @@ class ApiSettings extends _$ApiSettings {
   void writeToBox() {
     _box.clear();
     _box.add(state);
-    debugPrint('wrote api settings to box: $state');
+    _logger.fine('wrote api settings to box: $state');
   }
 
   void updateState(model.ApiSettings newSettings, {bool force = false}) {

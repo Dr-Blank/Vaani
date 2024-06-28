@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:whispering_pages/api/api_provider.dart';
@@ -13,6 +13,8 @@ import 'package:whispering_pages/db/cache_manager.dart';
 /// if the image is not found in the server it will throw an error
 
 part 'image_provider.g.dart';
+
+final _logger = Logger('cover_image_provider');
 
 @Riverpod(keepAlive: true)
 class CoverImage extends _$CoverImage {
@@ -29,23 +31,23 @@ class CoverImage extends _$CoverImage {
 
     if (file != null) {
       // if the image is in the cache, yield it
-      debugPrint(
+      _logger.fine(
         'cover image found in cache for ${libraryItem.id} at ${file.file.path}',
       );
       yield await file.file.readAsBytes();
       // return if no need to fetch from the server
       if (libraryItem.updatedAt.isBefore(await file.file.lastModified())) {
-        debugPrint(
+        _logger.fine(
           'cover image is up to date for ${libraryItem.id}, no need to fetch from the server',
         );
         return;
       } else {
-        debugPrint(
+        _logger.fine(
           'cover image stale for ${libraryItem.id}, fetching from the server',
         );
       }
     } else {
-      debugPrint('cover image not found in cache for ${libraryItem.id}');
+      _logger.fine('cover image not found in cache for ${libraryItem.id}');
     }
 
     // check if the image is in the cache
@@ -61,7 +63,7 @@ class CoverImage extends _$CoverImage {
         key: libraryItem.id,
         fileExtension: 'jpg',
       );
-      debugPrint(
+      _logger.fine(
         'cover image fetched for for ${libraryItem.id}, file time: ${await newFile.lastModified()}',
       );
     }

@@ -9,3 +9,10 @@ extension DurationFormat on Duration {
     return '${hours}h ${minutes}m';
   }
 }
+
+extension OnlyTime on DateTime {
+  // in format HH:MM:ss
+  // padding with 0
+  String get time =>
+      '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}:${second.toString().padLeft(2, '0')}';
+}
