@@ -108,7 +108,7 @@ class OnboardingSinglePage extends HookConsumerWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Welcome to Whispering Pages',
+              'Welcome to Vaani',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),

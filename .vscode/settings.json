@@ -18,7 +18,8 @@
     "riverpod",
     "shelfsdk",
     "tapable",
-    "unfocus"
+    "unfocus",
+    "Vaani"
   ],
   "cmake.configureOnOpen": false
 }

@@ -16,7 +16,7 @@ class MyDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             child: Text(
-              'Whispering Pages',
+              'Vaani',
               style: TextStyle(
                 fontStyle: FontStyle.italic,
                 fontSize: 30,

@@ -20,7 +20,7 @@ class HomePage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          child: const Text('Whispering Pages'),
+          child: const Text('Vaani'),
           onTap: () {
             // scroll to the top of the page
             scrollController.animateTo(
