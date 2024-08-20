@@ -185,7 +185,7 @@ class _LibraryItemProgressIndicator extends HookConsumerWidget {
 
           // progress indicator
           LinearProgressIndicator(
-            value: progress.clamp(0.05, 0.95),
+            value: progress.clamp(0.03, 1),
             borderRadius: BorderRadius.circular(8),
           ),
           const SizedBox.square(
