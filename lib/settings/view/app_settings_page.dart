@@ -44,10 +44,10 @@ class AppSettingsPage extends HookConsumerWidget {
             ),
             tiles: [
               SettingsTile.switchTile(
-                initialValue: appSettings.isDarkMode,
+                initialValue: appSettings.themeSettings.isDarkMode,
                 title: const Text('Dark Mode'),
                 description: const Text('we all know dark mode is better'),
-                leading: appSettings.isDarkMode
+                leading: appSettings.themeSettings.isDarkMode
                     ? const Icon(Icons.dark_mode)
                     : const Icon(Icons.light_mode),
                 onToggle: (value) {
@@ -55,17 +55,18 @@ class AppSettingsPage extends HookConsumerWidget {
                 },
               ),
               SettingsTile.switchTile(
-                initialValue: appSettings.useMaterialThemeOnItemPage,
+                initialValue:
+                    appSettings.themeSettings.useMaterialThemeOnItemPage,
                 title: const Text('Adaptive Theme on Item Page'),
                 description: const Text(
                   'get fancy with the colors on the item page at the cost of some performance',
                 ),
-                leading: appSettings.useMaterialThemeOnItemPage
+                leading: appSettings.themeSettings.useMaterialThemeOnItemPage
                     ? const Icon(Icons.auto_fix_high)
                     : const Icon(Icons.auto_fix_off),
                 onToggle: (value) {
                   ref.read(appSettingsProvider.notifier).updateState(
-                        appSettings.copyWith(
+                        appSettings.copyWith.themeSettings(
                           useMaterialThemeOnItemPage: value,
                         ),
                       );

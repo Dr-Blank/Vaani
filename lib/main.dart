@@ -81,7 +81,7 @@ class MyApp extends ConsumerWidget {
         // debugShowCheckedModeBanner: false,
         theme: lightTheme,
         darkTheme: darkTheme,
-        themeMode: ref.watch(appSettingsProvider).isDarkMode
+        themeMode: ref.watch(appSettingsProvider).themeSettings.isDarkMode
             ? ThemeMode.dark
             : ThemeMode.light,
         routerConfig: routerConfig,

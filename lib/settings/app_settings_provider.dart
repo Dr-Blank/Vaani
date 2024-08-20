@@ -44,7 +44,8 @@ class AppSettings extends _$AppSettings {
   }
 
   void toggleDarkMode() {
-    state = state.copyWith(isDarkMode: !state.isDarkMode);
+    state = state.copyWith
+        .themeSettings(isDarkMode: !state.themeSettings.isDarkMode);
   }
 
   void updateState(model.AppSettings newSettings) {

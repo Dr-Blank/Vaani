@@ -20,8 +20,7 @@ AppSettings _$AppSettingsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AppSettings {
-  bool get isDarkMode => throw _privateConstructorUsedError;
-  bool get useMaterialThemeOnItemPage => throw _privateConstructorUsedError;
+  ThemeSettings get themeSettings => throw _privateConstructorUsedError;
   PlayerSettings get playerSettings => throw _privateConstructorUsedError;
   DownloadSettings get downloadSettings => throw _privateConstructorUsedError;
 
@@ -38,11 +37,11 @@ abstract class $AppSettingsCopyWith<$Res> {
       _$AppSettingsCopyWithImpl<$Res, AppSettings>;
   @useResult
   $Res call(
-      {bool isDarkMode,
-      bool useMaterialThemeOnItemPage,
+      {ThemeSettings themeSettings,
       PlayerSettings playerSettings,
       DownloadSettings downloadSettings});
 
+  $ThemeSettingsCopyWith<$Res> get themeSettings;
   $PlayerSettingsCopyWith<$Res> get playerSettings;
   $DownloadSettingsCopyWith<$Res> get downloadSettings;
 }
@@ -60,20 +59,15 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isDarkMode = null,
-    Object? useMaterialThemeOnItemPage = null,
+    Object? themeSettings = null,
     Object? playerSettings = null,
     Object? downloadSettings = null,
   }) {
     return _then(_value.copyWith(
-      isDarkMode: null == isDarkMode
-          ? _value.isDarkMode
-          : isDarkMode // ignore: cast_nullable_to_non_nullable
-              as bool,
-      useMaterialThemeOnItemPage: null == useMaterialThemeOnItemPage
-          ? _value.useMaterialThemeOnItemPage
-          : useMaterialThemeOnItemPage // ignore: cast_nullable_to_non_nullable
-              as bool,
+      themeSettings: null == themeSettings
+          ? _value.themeSettings
+          : themeSettings // ignore: cast_nullable_to_non_nullable
+              as ThemeSettings,
       playerSettings: null == playerSettings
           ? _value.playerSettings
           : playerSettings // ignore: cast_nullable_to_non_nullable
@@ -83,6 +77,14 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
           : downloadSettings // ignore: cast_nullable_to_non_nullable
               as DownloadSettings,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ThemeSettingsCopyWith<$Res> get themeSettings {
+    return $ThemeSettingsCopyWith<$Res>(_value.themeSettings, (value) {
+      return _then(_value.copyWith(themeSettings: value) as $Val);
+    });
   }
 
   @override
@@ -111,11 +113,12 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {bool isDarkMode,
-      bool useMaterialThemeOnItemPage,
+      {ThemeSettings themeSettings,
       PlayerSettings playerSettings,
       DownloadSettings downloadSettings});
 
+  @override
+  $ThemeSettingsCopyWith<$Res> get themeSettings;
   @override
   $PlayerSettingsCopyWith<$Res> get playerSettings;
   @override
@@ -133,20 +136,15 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isDarkMode = null,
-    Object? useMaterialThemeOnItemPage = null,
+    Object? themeSettings = null,
     Object? playerSettings = null,
     Object? downloadSettings = null,
   }) {
     return _then(_$AppSettingsImpl(
-      isDarkMode: null == isDarkMode
-          ? _value.isDarkMode
-          : isDarkMode // ignore: cast_nullable_to_non_nullable
-              as bool,
-      useMaterialThemeOnItemPage: null == useMaterialThemeOnItemPage
-          ? _value.useMaterialThemeOnItemPage
-          : useMaterialThemeOnItemPage // ignore: cast_nullable_to_non_nullable
-              as bool,
+      themeSettings: null == themeSettings
+          ? _value.themeSettings
+          : themeSettings // ignore: cast_nullable_to_non_nullable
+              as ThemeSettings,
       playerSettings: null == playerSettings
           ? _value.playerSettings
           : playerSettings // ignore: cast_nullable_to_non_nullable
@@ -163,8 +161,7 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AppSettingsImpl implements _AppSettings {
   const _$AppSettingsImpl(
-      {this.isDarkMode = true,
-      this.useMaterialThemeOnItemPage = true,
+      {this.themeSettings = const ThemeSettings(),
       this.playerSettings = const PlayerSettings(),
       this.downloadSettings = const DownloadSettings()});
 
@@ -173,10 +170,7 @@ class _$AppSettingsImpl implements _AppSettings {
 
   @override
   @JsonKey()
-  final bool isDarkMode;
-  @override
-  @JsonKey()
-  final bool useMaterialThemeOnItemPage;
+  final ThemeSettings themeSettings;
   @override
   @JsonKey()
   final PlayerSettings playerSettings;
@@ -186,7 +180,7 @@ class _$AppSettingsImpl implements _AppSettings {
 
   @override
   String toString() {
-    return 'AppSettings(isDarkMode: $isDarkMode, useMaterialThemeOnItemPage: $useMaterialThemeOnItemPage, playerSettings: $playerSettings, downloadSettings: $downloadSettings)';
+    return 'AppSettings(themeSettings: $themeSettings, playerSettings: $playerSettings, downloadSettings: $downloadSettings)';
   }
 
   @override
@@ -194,12 +188,8 @@ class _$AppSettingsImpl implements _AppSettings {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AppSettingsImpl &&
-            (identical(other.isDarkMode, isDarkMode) ||
-                other.isDarkMode == isDarkMode) &&
-            (identical(other.useMaterialThemeOnItemPage,
-                    useMaterialThemeOnItemPage) ||
-                other.useMaterialThemeOnItemPage ==
-                    useMaterialThemeOnItemPage) &&
+            (identical(other.themeSettings, themeSettings) ||
+                other.themeSettings == themeSettings) &&
             (identical(other.playerSettings, playerSettings) ||
                 other.playerSettings == playerSettings) &&
             (identical(other.downloadSettings, downloadSettings) ||
@@ -208,8 +198,8 @@ class _$AppSettingsImpl implements _AppSettings {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, isDarkMode,
-      useMaterialThemeOnItemPage, playerSettings, downloadSettings);
+  int get hashCode =>
+      Object.hash(runtimeType, themeSettings, playerSettings, downloadSettings);
 
   @JsonKey(ignore: true)
   @override
@@ -227,8 +217,7 @@ class _$AppSettingsImpl implements _AppSettings {
 
 abstract class _AppSettings implements AppSettings {
   const factory _AppSettings(
-      {final bool isDarkMode,
-      final bool useMaterialThemeOnItemPage,
+      {final ThemeSettings themeSettings,
       final PlayerSettings playerSettings,
       final DownloadSettings downloadSettings}) = _$AppSettingsImpl;
 
@@ -236,9 +225,7 @@ abstract class _AppSettings implements AppSettings {
       _$AppSettingsImpl.fromJson;
 
   @override
-  bool get isDarkMode;
-  @override
-  bool get useMaterialThemeOnItemPage;
+  ThemeSettings get themeSettings;
   @override
   PlayerSettings get playerSettings;
   @override
@@ -246,6 +233,168 @@ abstract class _AppSettings implements AppSettings {
   @override
   @JsonKey(ignore: true)
   _$$AppSettingsImplCopyWith<_$AppSettingsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+ThemeSettings _$ThemeSettingsFromJson(Map<String, dynamic> json) {
+  return _ThemeSettings.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ThemeSettings {
+  bool get isDarkMode => throw _privateConstructorUsedError;
+  bool get useMaterialThemeOnItemPage => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ThemeSettingsCopyWith<ThemeSettings> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ThemeSettingsCopyWith<$Res> {
+  factory $ThemeSettingsCopyWith(
+          ThemeSettings value, $Res Function(ThemeSettings) then) =
+      _$ThemeSettingsCopyWithImpl<$Res, ThemeSettings>;
+  @useResult
+  $Res call({bool isDarkMode, bool useMaterialThemeOnItemPage});
+}
+
+/// @nodoc
+class _$ThemeSettingsCopyWithImpl<$Res, $Val extends ThemeSettings>
+    implements $ThemeSettingsCopyWith<$Res> {
+  _$ThemeSettingsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isDarkMode = null,
+    Object? useMaterialThemeOnItemPage = null,
+  }) {
+    return _then(_value.copyWith(
+      isDarkMode: null == isDarkMode
+          ? _value.isDarkMode
+          : isDarkMode // ignore: cast_nullable_to_non_nullable
+              as bool,
+      useMaterialThemeOnItemPage: null == useMaterialThemeOnItemPage
+          ? _value.useMaterialThemeOnItemPage
+          : useMaterialThemeOnItemPage // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ThemeSettingsImplCopyWith<$Res>
+    implements $ThemeSettingsCopyWith<$Res> {
+  factory _$$ThemeSettingsImplCopyWith(
+          _$ThemeSettingsImpl value, $Res Function(_$ThemeSettingsImpl) then) =
+      __$$ThemeSettingsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({bool isDarkMode, bool useMaterialThemeOnItemPage});
+}
+
+/// @nodoc
+class __$$ThemeSettingsImplCopyWithImpl<$Res>
+    extends _$ThemeSettingsCopyWithImpl<$Res, _$ThemeSettingsImpl>
+    implements _$$ThemeSettingsImplCopyWith<$Res> {
+  __$$ThemeSettingsImplCopyWithImpl(
+      _$ThemeSettingsImpl _value, $Res Function(_$ThemeSettingsImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isDarkMode = null,
+    Object? useMaterialThemeOnItemPage = null,
+  }) {
+    return _then(_$ThemeSettingsImpl(
+      isDarkMode: null == isDarkMode
+          ? _value.isDarkMode
+          : isDarkMode // ignore: cast_nullable_to_non_nullable
+              as bool,
+      useMaterialThemeOnItemPage: null == useMaterialThemeOnItemPage
+          ? _value.useMaterialThemeOnItemPage
+          : useMaterialThemeOnItemPage // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ThemeSettingsImpl implements _ThemeSettings {
+  const _$ThemeSettingsImpl(
+      {this.isDarkMode = true, this.useMaterialThemeOnItemPage = true});
+
+  factory _$ThemeSettingsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ThemeSettingsImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final bool isDarkMode;
+  @override
+  @JsonKey()
+  final bool useMaterialThemeOnItemPage;
+
+  @override
+  String toString() {
+    return 'ThemeSettings(isDarkMode: $isDarkMode, useMaterialThemeOnItemPage: $useMaterialThemeOnItemPage)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ThemeSettingsImpl &&
+            (identical(other.isDarkMode, isDarkMode) ||
+                other.isDarkMode == isDarkMode) &&
+            (identical(other.useMaterialThemeOnItemPage,
+                    useMaterialThemeOnItemPage) ||
+                other.useMaterialThemeOnItemPage ==
+                    useMaterialThemeOnItemPage));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, isDarkMode, useMaterialThemeOnItemPage);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ThemeSettingsImplCopyWith<_$ThemeSettingsImpl> get copyWith =>
+      __$$ThemeSettingsImplCopyWithImpl<_$ThemeSettingsImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ThemeSettingsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ThemeSettings implements ThemeSettings {
+  const factory _ThemeSettings(
+      {final bool isDarkMode,
+      final bool useMaterialThemeOnItemPage}) = _$ThemeSettingsImpl;
+
+  factory _ThemeSettings.fromJson(Map<String, dynamic> json) =
+      _$ThemeSettingsImpl.fromJson;
+
+  @override
+  bool get isDarkMode;
+  @override
+  bool get useMaterialThemeOnItemPage;
+  @override
+  @JsonKey(ignore: true)
+  _$$ThemeSettingsImplCopyWith<_$ThemeSettingsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

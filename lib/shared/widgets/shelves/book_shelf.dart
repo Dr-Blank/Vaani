@@ -224,7 +224,7 @@ class _BookOnShelfPlayButton extends HookConsumerWidget {
     var strokeWidth = size / 8;
 
     final useMaterialThemeOnItemPage =
-        ref.watch(appSettingsProvider).useMaterialThemeOnItemPage;
+        ref.watch(appSettingsProvider).themeSettings.useMaterialThemeOnItemPage;
 
     AsyncValue<ColorScheme?> coverColorScheme = const AsyncValue.loading();
     if (useMaterialThemeOnItemPage && isCurrentBookSetInPlayer) {

@@ -8,9 +8,10 @@ part of 'app_settings.dart';
 
 _$AppSettingsImpl _$$AppSettingsImplFromJson(Map<String, dynamic> json) =>
     _$AppSettingsImpl(
-      isDarkMode: json['isDarkMode'] as bool? ?? true,
-      useMaterialThemeOnItemPage:
-          json['useMaterialThemeOnItemPage'] as bool? ?? true,
+      themeSettings: json['themeSettings'] == null
+          ? const ThemeSettings()
+          : ThemeSettings.fromJson(
+              json['themeSettings'] as Map<String, dynamic>),
       playerSettings: json['playerSettings'] == null
           ? const PlayerSettings()
           : PlayerSettings.fromJson(
@@ -23,10 +24,22 @@ _$AppSettingsImpl _$$AppSettingsImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
     <String, dynamic>{
-      'isDarkMode': instance.isDarkMode,
-      'useMaterialThemeOnItemPage': instance.useMaterialThemeOnItemPage,
+      'themeSettings': instance.themeSettings,
       'playerSettings': instance.playerSettings,
       'downloadSettings': instance.downloadSettings,
+    };
+
+_$ThemeSettingsImpl _$$ThemeSettingsImplFromJson(Map<String, dynamic> json) =>
+    _$ThemeSettingsImpl(
+      isDarkMode: json['isDarkMode'] as bool? ?? true,
+      useMaterialThemeOnItemPage:
+          json['useMaterialThemeOnItemPage'] as bool? ?? true,
+    );
+
+Map<String, dynamic> _$$ThemeSettingsImplToJson(_$ThemeSettingsImpl instance) =>
+    <String, dynamic>{
+      'isDarkMode': instance.isDarkMode,
+      'useMaterialThemeOnItemPage': instance.useMaterialThemeOnItemPage,
     };
 
 _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>

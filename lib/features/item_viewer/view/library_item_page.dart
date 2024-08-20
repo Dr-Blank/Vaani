@@ -41,7 +41,7 @@ class LibraryItemPage extends HookConsumerWidget {
         itemFromApi.valueOrNull?.media.metadata.asBookMetadataExpanded;
 
     final useMaterialThemeOnItemPage =
-        ref.watch(appSettingsProvider).useMaterialThemeOnItemPage;
+        ref.watch(appSettingsProvider).themeSettings.useMaterialThemeOnItemPage;
     AsyncValue<ColorScheme?> coverColorScheme = const AsyncValue.loading();
     if (useMaterialThemeOnItemPage) {
       coverColorScheme = ref.watch(

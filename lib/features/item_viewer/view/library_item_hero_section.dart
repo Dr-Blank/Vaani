@@ -223,7 +223,7 @@ class _HeroSectionSubLabelWithIcon extends HookConsumerWidget {
     final useFontAwesome =
         icon.runtimeType == FontAwesomeIcons.book.runtimeType;
     final useMaterialThemeOnItemPage =
-        ref.watch(appSettingsProvider).useMaterialThemeOnItemPage;
+        ref.watch(appSettingsProvider).themeSettings.useMaterialThemeOnItemPage;
     final color = useMaterialThemeOnItemPage
         ? themeData.colorScheme.primary
         : themeData.colorScheme.onSurface.withOpacity(0.75);
@@ -356,7 +356,7 @@ class _BookCover extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeData = Theme.of(context);
     final useMaterialThemeOnItemPage =
-        ref.watch(appSettingsProvider).useMaterialThemeOnItemPage;
+        ref.watch(appSettingsProvider).themeSettings.useMaterialThemeOnItemPage;
 
     return ThemeSwitcher(
       builder: (context) {

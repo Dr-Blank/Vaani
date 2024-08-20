@@ -11,14 +11,24 @@ part 'app_settings.g.dart';
 @freezed
 class AppSettings with _$AppSettings {
   const factory AppSettings({
-    @Default(true) bool isDarkMode,
-    @Default(true) bool useMaterialThemeOnItemPage,
+    @Default(ThemeSettings()) ThemeSettings themeSettings,
     @Default(PlayerSettings()) PlayerSettings playerSettings,
     @Default(DownloadSettings()) DownloadSettings downloadSettings,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>
       _$AppSettingsFromJson(json);
+}
+
+@freezed
+class ThemeSettings with _$ThemeSettings {
+  const factory ThemeSettings({
+    @Default(true) bool isDarkMode,
+    @Default(true) bool useMaterialThemeOnItemPage,
+  }) = _ThemeSettings;
+
+  factory ThemeSettings.fromJson(Map<String, dynamic> json) =>
+      _$ThemeSettingsFromJson(json);
 }
 
 @freezed
