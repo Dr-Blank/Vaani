@@ -18,9 +18,11 @@ class PlaybackReporter {
   final AudiobookshelfApi authenticatedApi;
 
   /// The stopwatch to keep track of the time since the last report
+  ///
+  /// this should only run when media is playing
   final _stopwatch = Stopwatch();
 
-  /// subscriptions
+  /// subscriptions to listen and then cancel when disposing
   final List<StreamSubscription> _subscriptions = [];
 
   Duration _reportingInterval;
@@ -30,7 +32,7 @@ class PlaybackReporter {
   set reportingInterval(Duration value) {
     _reportingInterval = value;
     _cancelReportTimer();
-    _setReportTimer();
+    _setReportTimerIfNotAlready();
     _logger.info('set interval: $value');
   }
 
@@ -63,7 +65,7 @@ class PlaybackReporter {
     // initial conditions
     if (player.playing) {
       _stopwatch.start();
-      _setReportTimer();
+      _setReportTimerIfNotAlready();
       _logger.fine('starting stopwatch');
     } else {
       _logger.fine('not starting stopwatch');
@@ -72,8 +74,12 @@ class PlaybackReporter {
     _subscriptions.add(
       player.playerStateStream.listen((state) async {
         // set timer if any book is playing and cancel if not
-        if (player.book != null && _reportTimer == null) {
-          _setReportTimer();
+        if (player.book != null) {
+          if (state.playing) {
+            _setReportTimerIfNotAlready();
+          } else {
+            _cancelReportTimer();
+          }
         } else if (player.book == null && _reportTimer != null) {
           _logger.info('book is null, closing session');
           await closeSession();
@@ -195,7 +201,8 @@ class PlaybackReporter {
     _logger.info('Closed session');
   }
 
-  void _setReportTimer() {
+  void _setReportTimerIfNotAlready() {
+    if (_reportTimer != null) return;
     _reportTimer = Timer.periodic(_reportingInterval, tryReportPlayback);
     _logger.fine('set timer with interval: $_reportingInterval');
   }
