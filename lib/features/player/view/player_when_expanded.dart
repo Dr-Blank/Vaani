@@ -12,9 +12,11 @@ import 'package:whispering_pages/features/sleep_timer/providers/sleep_timer_prov
     show sleepTimerProvider;
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 import 'package:whispering_pages/shared/extensions/inverse_lerp.dart';
+import 'package:whispering_pages/shared/widgets/not_implemented.dart';
 
 import 'widgets/audiobook_player_seek_button.dart';
 import 'widgets/audiobook_player_seek_chapter_button.dart';
+import 'widgets/chapter_selection_button.dart';
 import 'widgets/player_speed_adjust_button.dart';
 
 var pendingPlayerModals = 0;
@@ -46,7 +48,6 @@ class PlayerWhenExpanded extends HookConsumerWidget {
           earlyEnd,
         )
         .clamp(0.0, 1.0);
-    final currentBook = ref.watch(currentlyPlayingBookProvider);
     final currentChapter = ref.watch(currentPlayingChapterProvider);
     final currentBookMetadata = ref.watch(currentBookMetadataProvider);
 
@@ -86,7 +87,9 @@ class PlayerWhenExpanded extends HookConsumerWidget {
                   // the cast button
                   IconButton(
                     icon: const Icon(Icons.cast),
-                    onPressed: () {},
+                    onPressed: () {
+                      showNotImplementedToast(context);
+                    },
                   ),
                 ],
               ),
@@ -240,14 +243,14 @@ class PlayerWhenExpanded extends HookConsumerWidget {
                 // sleep timer
                 const SleepTimerButton(),
                 // chapter list
-                IconButton(
-                  icon: const Icon(Icons.menu_book_rounded),
-                  onPressed: () {},
-                ),
+                const ChapterSelectionButton(),
                 // settings
                 IconButton(
                   icon: const Icon(Icons.more_horiz),
-                  onPressed: () {},
+                  onPressed: () {
+                    // show toast
+                    showNotImplementedToast(context);
+                  },
                 ),
               ],
             ),

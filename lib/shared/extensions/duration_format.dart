@@ -1,12 +1,20 @@
 extension DurationFormat on Duration {
-  /// formats the duration of the book as `10h 30m`
+  /// formats the duration using only 2 units
   ///
-  /// will add up all the durations of the audio files first
-  /// then convert them to the given format
-  String get formattedBinary {
+  /// if the duration is more than 1 hour, it will return `10h 30m`
+  /// if the duration is less than 1 hour, it will return `30m 20s`
+  /// if the duration is less than 1 minute, it will return `20s`
+  String get smartBinaryFormat {
     final hours = inHours;
     final minutes = inMinutes.remainder(60);
-    return '${hours}h ${minutes}m';
+    final seconds = inSeconds.remainder(60);
+    if (hours > 0) {
+      return '${hours}h ${minutes}m';
+    } else if (minutes > 0) {
+      return '${minutes}m ${seconds}s';
+    } else {
+      return '${seconds}s';
+    }
   }
 }
 

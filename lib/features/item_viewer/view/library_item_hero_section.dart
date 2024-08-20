@@ -1,7 +1,6 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
@@ -195,7 +194,7 @@ class _LibraryItemProgressIndicator extends HookConsumerWidget {
           // time remaining
           Text(
             // only show 2 decimal places
-            '${remainingTime.formattedBinary} left',
+            '${remainingTime.smartBinaryFormat} left',
 
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color:
