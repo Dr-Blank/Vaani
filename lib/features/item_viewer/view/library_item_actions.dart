@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
+import 'package:url_launcher/url_launcher.dart';
 import 'package:whispering_pages/api/library_item_provider.dart';
 import 'package:whispering_pages/constants/hero_tag_conventions.dart';
 import 'package:whispering_pages/features/downloads/providers/download_manager.dart'
@@ -12,7 +13,10 @@ import 'package:whispering_pages/features/downloads/providers/download_manager.d
         simpleDownloadManagerProvider;
 import 'package:whispering_pages/features/item_viewer/view/library_item_page.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
+import 'package:whispering_pages/features/player/providers/player_form.dart';
 import 'package:whispering_pages/main.dart';
+import 'package:whispering_pages/router/router.dart';
+import 'package:whispering_pages/settings/api_settings_provider.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 import 'package:whispering_pages/shared/extensions/model_conversions.dart';
 
@@ -31,6 +35,8 @@ class LibraryItemActions extends HookConsumerWidget {
     final manager = ref.read(simpleDownloadManagerProvider);
     final downloadHistory = ref.watch(downloadHistoryProvider(group: item.id));
     final isItemDownloaded = ref.watch(downloadStatusProvider(item));
+    final isBookPlaying = ref.watch(audiobookPlayerProvider).book != null;
+    final apiSettings = ref.watch(apiSettingsProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
@@ -64,7 +70,26 @@ class LibraryItemActions extends HookConsumerWidget {
                       ),
                       // share button
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          appLogger.fine('Sharing');
+                          var currentServerUrl =
+                              apiSettings.activeServer!.serverUrl;
+                          if (!currentServerUrl.hasScheme) {
+                            currentServerUrl =
+                                Uri.https(currentServerUrl.toString());
+                          }
+                          _launchUrl(
+                            Uri.parse(
+                              currentServerUrl.toString() +
+                                  (Routes.libraryItem.pathParamName != null
+                                      ? Routes.libraryItem.path.replaceAll(
+                                          ':${Routes.libraryItem.pathParamName!}',
+                                          item.id,
+                                        )
+                                      : Routes.libraryItem.path),
+                            ),
+                          );
+                        },
                         icon: const Icon(Icons.share_rounded),
                       ),
                       // check if the book is downloaded using manager.isItemDownloaded
@@ -79,12 +104,16 @@ class LibraryItemActions extends HookConsumerWidget {
                                 // manager.openDownloadedFile(item);
                                 // open popup menu to open or delete the file
                                 showModalBottomSheet(
-                                  // useRootNavigator: true,
+                                  useRootNavigator: false,
                                   context: context,
                                   builder: (context) {
                                     return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0,
+                                      padding: EdgeInsets.only(
+                                        top: 8.0,
+                                        bottom: (isBookPlaying
+                                                ? playerMinHeight
+                                                : 0) +
+                                            8,
                                       ),
                                       child: DownloadSheet(
                                         item: item,
@@ -432,4 +461,15 @@ Future<void> libraryItemPlayButtonOnPressed({
   await player.setVolume(
     ref.read(appSettingsProvider).playerSettings.preferredDefaultVolume,
   );
+}
+
+Future<void> _launchUrl(Uri url) async {
+  if (!await launchUrl(
+    url,
+    mode: LaunchMode.platformDefault,
+    webOnlyWindowName: '_blank',
+  )) {
+    // throw Exception('Could not launch $url');
+    debugPrint('Could not launch $url');
+  }
 }
