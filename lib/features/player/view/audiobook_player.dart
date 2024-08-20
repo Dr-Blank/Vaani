@@ -98,7 +98,7 @@ class AudiobookPlayer extends HookConsumerWidget {
           // add a delay before closing the player
           // to allow the user to see the player closing
           Future.delayed(const Duration(milliseconds: 300), () {
-            player.setSourceAudioBook(null);
+            player.setSourceAudiobook(null);
           });
         },
         curve: Curves.easeOut,

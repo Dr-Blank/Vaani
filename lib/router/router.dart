@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:whispering_pages/features/downloads/view/downloads_page.dart';
 import 'package:whispering_pages/features/explore/view/explore_page.dart';
 import 'package:whispering_pages/features/explore/view/search_result_page.dart';
 import 'package:whispering_pages/features/item_viewer/view/library_item_page.dart';
+import 'package:whispering_pages/features/library_browser/view/library_browser_page.dart';
 import 'package:whispering_pages/features/onboarding/view/onboarding_single_page.dart';
 import 'package:whispering_pages/pages/home_page.dart';
 import 'package:whispering_pages/settings/view/app_settings_page.dart';
@@ -13,9 +15,9 @@ import 'transitions/slide.dart';
 
 part 'constants.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey =
+final GlobalKey<NavigatorState> rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
-final GlobalKey<NavigatorState> _sectionHomeNavigatorKey =
+final GlobalKey<NavigatorState> sectionHomeNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'HomeNavigator');
 
 // GoRouter configuration
@@ -47,7 +49,7 @@ class MyAppRouter {
             branches: <StatefulShellBranch>[
               // The route branch for the first tab of the bottom navigation bar.
               StatefulShellBranch(
-                navigatorKey: _sectionHomeNavigatorKey,
+                navigatorKey: sectionHomeNavigatorKey,
                 routes: <RouteBase>[
                   GoRoute(
                     path: Routes.home.path,
@@ -75,6 +77,23 @@ class MyAppRouter {
                         child: child,
                       );
                     },
+                  ),
+                  // downloads page
+                  GoRoute(
+                    path: Routes.downloads.path,
+                    name: Routes.downloads.name,
+                    pageBuilder: defaultPageBuilder(const DownloadsPage()),
+                  ),
+                ],
+              ),
+
+              // Library page
+              StatefulShellBranch(
+                routes: <RouteBase>[
+                  GoRoute(
+                    path: Routes.libraryBrowser.path,
+                    name: Routes.libraryBrowser.name,
+                    pageBuilder: defaultPageBuilder(const LibraryBrowserPage()),
                   ),
                 ],
               ),

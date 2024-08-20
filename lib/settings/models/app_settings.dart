@@ -12,8 +12,9 @@ part 'app_settings.g.dart';
 class AppSettings with _$AppSettings {
   const factory AppSettings({
     @Default(true) bool isDarkMode,
-    @Default(false) bool useMaterialThemeOnItemPage,
+    @Default(true) bool useMaterialThemeOnItemPage,
     @Default(PlayerSettings()) PlayerSettings playerSettings,
+    @Default(DownloadSettings()) DownloadSettings downloadSettings,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>
@@ -104,4 +105,19 @@ class SleepTimerSettings with _$SleepTimerSettings {
 
   factory SleepTimerSettings.fromJson(Map<String, dynamic> json) =>
       _$SleepTimerSettingsFromJson(json);
+}
+
+@freezed
+class DownloadSettings with _$DownloadSettings {
+  const factory DownloadSettings({
+    @Default(true) bool requiresWiFi,
+    @Default(3) int retries,
+    @Default(true) bool allowPause,
+    @Default(3) int maxConcurrent,
+    @Default(3) int maxConcurrentByHost,
+    @Default(3) int maxConcurrentByGroup,
+  }) = _DownloadSettings;
+
+  factory DownloadSettings.fromJson(Map<String, dynamic> json) =>
+      _$DownloadSettingsFromJson(json);
 }

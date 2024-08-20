@@ -1,16 +1,16 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:whispering_pages/api/api_provider.dart';
 import 'package:whispering_pages/features/player/core/audiobook_player.dart'
-    as abp;
+    as core;
 
 part 'audiobook_player.g.dart';
 
 // @Riverpod(keepAlive: true)
-// abp.AudiobookPlayer audiobookPlayer(
+// core.AudiobookPlayer audiobookPlayer(
 //   AudiobookPlayerRef ref,
 // ) {
 //   final api = ref.watch(authenticatedApiProvider);
-//   final player = abp.AudiobookPlayer(api.token!, api.baseUrl);
+//   final player = core.AudiobookPlayer(api.token!, api.baseUrl);
 
 //   ref.onDispose(player.dispose);
 
@@ -24,9 +24,12 @@ const playerId = 'audiobook_player';
 @Riverpod(keepAlive: true)
 class SimpleAudiobookPlayer extends _$SimpleAudiobookPlayer {
   @override
-  abp.AudiobookPlayer build() {
+  core.AudiobookPlayer build() {
     final api = ref.watch(authenticatedApiProvider);
-    final player = abp.AudiobookPlayer(api.token!, api.baseUrl);
+    final player = core.AudiobookPlayer(
+      api.token!,
+      api.baseUrl,
+    );
 
     ref.onDispose(player.dispose);
 
@@ -37,7 +40,7 @@ class SimpleAudiobookPlayer extends _$SimpleAudiobookPlayer {
 @Riverpod(keepAlive: true)
 class AudiobookPlayer extends _$AudiobookPlayer {
   @override
-  abp.AudiobookPlayer build() {
+  core.AudiobookPlayer build() {
     final player = ref.watch(simpleAudiobookPlayerProvider);
 
     ref.onDispose(player.dispose);

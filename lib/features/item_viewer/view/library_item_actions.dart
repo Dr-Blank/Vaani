@@ -1,9 +1,18 @@
+import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
+import 'package:whispering_pages/api/library_item_provider.dart';
 import 'package:whispering_pages/constants/hero_tag_conventions.dart';
+import 'package:whispering_pages/features/downloads/providers/download_manager.dart'
+    show
+        downloadHistoryProvider,
+        downloadStatusProvider,
+        simpleDownloadManagerProvider;
 import 'package:whispering_pages/features/item_viewer/view/library_item_page.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
+import 'package:whispering_pages/main.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 import 'package:whispering_pages/shared/extensions/model_conversions.dart';
 
@@ -19,7 +28,10 @@ class LibraryItemActions extends HookConsumerWidget {
   late final shelfsdk.BookExpanded book;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final player = ref.read(audiobookPlayerProvider);
+    final manager = ref.read(simpleDownloadManagerProvider);
+    final downloadHistory = ref.watch(downloadHistoryProvider(group: item.id));
+    final isItemDownloaded = ref.watch(downloadStatusProvider(item));
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       child: Row(
@@ -55,16 +67,150 @@ class LibraryItemActions extends HookConsumerWidget {
                         onPressed: () {},
                         icon: const Icon(Icons.share_rounded),
                       ),
-                      // download button
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.download_rounded,
-                        ),
+                      // check if the book is downloaded using manager.isItemDownloaded
+                      isItemDownloaded.when(
+                        data: (isDownloaded) {
+                          if (isDownloaded) {
+                            // already downloaded button
+                            return IconButton(
+                              onPressed: () {
+                                appLogger
+                                    .fine('Pressed already downloaded button');
+                                // manager.openDownloadedFile(item);
+                                // open popup menu to open or delete the file
+                                showModalBottomSheet(
+                                  // useRootNavigator: true,
+                                  context: context,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0,
+                                      ),
+                                      child: DownloadSheet(
+                                        item: item,
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.download_done_rounded,
+                              ),
+                            );
+                          }
+                          // download button
+                          return IconButton(
+                            onPressed: () {
+                              appLogger.fine('Pressed download button');
+                              manager.queueAudioBookDownload(item);
+                            },
+                            icon: const Icon(
+                              Icons.download_rounded,
+                            ),
+                          );
+                        },
+                        loading: () => const CircularProgressIndicator(),
+                        error: (error, stackTrace) {
+                          return IconButton(
+                            onPressed: () {
+                              appLogger.warning(
+                                'Error checking download status: $error',
+                              );
+                            },
+                            icon: const Icon(Icons.error_rounded),
+                          );
+                        },
                       ),
                       // more button
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // show the bottom sheet with download history
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return downloadHistory.when(
+                                data: (downloadHistory) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ListView.builder(
+                                      itemCount: downloadHistory.length,
+                                      itemBuilder: (context, index) {
+                                        final record = downloadHistory[index];
+                                        return ListTile(
+                                          title: Text(record.task.filename),
+                                          subtitle: Text(
+                                            '${record.task.directory}/${record.task.baseDirectory}',
+                                          ),
+                                          trailing: const Icon(
+                                            Icons.open_in_new_rounded,
+                                          ),
+                                          onLongPress: () {
+                                            // show the delete dialog
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: const Text('Delete'),
+                                                  content: Text(
+                                                    'Are you sure you want to delete ${record.task.filename}?',
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        // delete the file
+                                                        FileDownloader()
+                                                            .database
+                                                            .deleteRecordWithId(
+                                                              record
+                                                                  .task.taskId,
+                                                            );
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: const Text('Yes'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: const Text('No'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                          onTap: () async {
+                                            // open the file location
+                                            final didOpen =
+                                                await FileDownloader().openFile(
+                                              task: record.task,
+                                            );
+
+                                            if (!didOpen) {
+                                              appLogger.warning(
+                                                'Failed to open file: ${record.task.filename} at ${record.task.directory}',
+                                              );
+                                              return;
+                                            }
+                                            appLogger.fine(
+                                              'Opened file: ${record.task.filename} at ${record.task.directory}',
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                loading: () => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                error: (error, stackTrace) => Center(
+                                  child: Text('Error: $error'),
+                                ),
+                              );
+                            },
+                          );
+                        },
                         icon: const Icon(
                           Icons.more_vert_rounded,
                         ),
@@ -77,6 +223,84 @@ class LibraryItemActions extends HookConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class DownloadSheet extends HookConsumerWidget {
+  const DownloadSheet({
+    super.key,
+    required this.item,
+  });
+
+  final shelfsdk.LibraryItemExpanded item;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final manager = ref.read(simpleDownloadManagerProvider);
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // ListTile(
+        //   title: const Text('Open'),
+        //   onTap: () async {
+        //     final didOpen =
+        //         await FileDownloader().openFile(
+        //       task: manager.getTaskForItem(item),
+        //     );
+
+        //     if (!didOpen) {
+        //       appLogger.warning(
+        //         'Failed to open file: ${item.title}',
+        //       );
+        //       return;
+        //     }
+        //     appLogger.fine(
+        //       'Opened file: ${item.title}',
+        //     );
+        //   },
+        // ),
+        ListTile(
+          title: const Text('Delete'),
+          leading: const Icon(
+            Icons.delete_rounded,
+          ),
+          onTap: () {
+            // show the delete dialog
+            showDialog(
+              useRootNavigator: false,
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Delete'),
+                  content: Text(
+                    'Are you sure you want to delete ${item.media.metadata.title}?',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        // delete the file
+                        manager.deleteDownloadedItem(
+                          item,
+                        );
+                        GoRouter.of(context).pop();
+                      },
+                      child: const Text('Yes'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        GoRouter.of(context).pop();
+                      },
+                      child: const Text('No'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 }
@@ -122,7 +346,10 @@ class _LibraryItemPlayButton extends HookConsumerWidget {
 
     return ElevatedButton.icon(
       onPressed: () => libraryItemPlayButtonOnPressed(
-          ref: ref, book: book, userMediaProgress: userMediaProgress),
+        ref: ref,
+        book: book,
+        userMediaProgress: userMediaProgress,
+      ),
       icon: Hero(
         tag: HeroTagPrefixes.libraryItemPlayButton + book.libraryItemId,
         child: DynamicItemPlayIcon(
@@ -182,9 +409,14 @@ Future<void> libraryItemPlayButtonOnPressed({
   if (!isCurrentBookSetInPlayer) {
     debugPrint('Setting the book ${book.libraryItemId}');
     debugPrint('Initial position: ${userMediaProgress?.currentTime}');
-    await player.setSourceAudioBook(
+    final downloadManager = ref.watch(simpleDownloadManagerProvider);
+    final libItem =
+        await ref.read(libraryItemProvider(book.libraryItemId).future);
+    final downloadedUris = await downloadManager.getDownloadedFiles(libItem);
+    await player.setSourceAudiobook(
       book,
       initialPosition: userMediaProgress?.currentTime,
+      downloadedUris: downloadedUris,
     );
   } else {
     debugPrint('Book was already set');

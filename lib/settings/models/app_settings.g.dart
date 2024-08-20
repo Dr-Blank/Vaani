@@ -10,11 +10,15 @@ _$AppSettingsImpl _$$AppSettingsImplFromJson(Map<String, dynamic> json) =>
     _$AppSettingsImpl(
       isDarkMode: json['isDarkMode'] as bool? ?? true,
       useMaterialThemeOnItemPage:
-          json['useMaterialThemeOnItemPage'] as bool? ?? false,
+          json['useMaterialThemeOnItemPage'] as bool? ?? true,
       playerSettings: json['playerSettings'] == null
           ? const PlayerSettings()
           : PlayerSettings.fromJson(
               json['playerSettings'] as Map<String, dynamic>),
+      downloadSettings: json['downloadSettings'] == null
+          ? const DownloadSettings()
+          : DownloadSettings.fromJson(
+              json['downloadSettings'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
@@ -22,6 +26,7 @@ Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
       'isDarkMode': instance.isDarkMode,
       'useMaterialThemeOnItemPage': instance.useMaterialThemeOnItemPage,
       'playerSettings': instance.playerSettings,
+      'downloadSettings': instance.downloadSettings,
     };
 
 _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
@@ -155,3 +160,26 @@ const _$SleepTimerShakeSenseModeEnumMap = {
   SleepTimerShakeSenseMode.always: 'always',
   SleepTimerShakeSenseMode.nearEnds: 'nearEnds',
 };
+
+_$DownloadSettingsImpl _$$DownloadSettingsImplFromJson(
+        Map<String, dynamic> json) =>
+    _$DownloadSettingsImpl(
+      requiresWiFi: json['requiresWiFi'] as bool? ?? true,
+      retries: (json['retries'] as num?)?.toInt() ?? 3,
+      allowPause: json['allowPause'] as bool? ?? true,
+      maxConcurrent: (json['maxConcurrent'] as num?)?.toInt() ?? 3,
+      maxConcurrentByHost: (json['maxConcurrentByHost'] as num?)?.toInt() ?? 3,
+      maxConcurrentByGroup:
+          (json['maxConcurrentByGroup'] as num?)?.toInt() ?? 3,
+    );
+
+Map<String, dynamic> _$$DownloadSettingsImplToJson(
+        _$DownloadSettingsImpl instance) =>
+    <String, dynamic>{
+      'requiresWiFi': instance.requiresWiFi,
+      'retries': instance.retries,
+      'allowPause': instance.allowPause,
+      'maxConcurrent': instance.maxConcurrent,
+      'maxConcurrentByHost': instance.maxConcurrentByHost,
+      'maxConcurrentByGroup': instance.maxConcurrentByGroup,
+    };

@@ -17,6 +17,8 @@ import 'widgets/audiobook_player_seek_button.dart';
 import 'widgets/audiobook_player_seek_chapter_button.dart';
 import 'widgets/player_speed_adjust_button.dart';
 
+var pendingPlayerModals = 0;
+
 class PlayerWhenExpanded extends HookConsumerWidget {
   const PlayerWhenExpanded({
     super.key,
@@ -270,6 +272,7 @@ class SleepTimerButton extends HookConsumerWidget {
       message: 'Sleep Timer',
       child: InkWell(
         onTap: () async {
+          pendingPlayerModals++;
           // show the sleep timer dialog
           final resultingDuration = await showDurationPicker(
             context: context,
@@ -279,6 +282,7 @@ class SleepTimerButton extends HookConsumerWidget {
                 .sleepTimerSettings
                 .defaultDuration,
           );
+          pendingPlayerModals--;
           if (resultingDuration != null) {
             // if 0 is selected, cancel the timer
             if (resultingDuration.inSeconds == 0) {

@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +10,7 @@ import 'package:whispering_pages/api/authenticated_user_provider.dart';
 import 'package:whispering_pages/api/server_provider.dart';
 import 'package:whispering_pages/router/router.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
+import 'package:whispering_pages/settings/models/app_settings.dart' as model;
 
 class AppSettingsPage extends HookConsumerWidget {
   const AppSettingsPage({
@@ -20,7 +24,6 @@ class AppSettingsPage extends HookConsumerWidget {
     final registeredServersAsList = registeredServers.toList();
     final availableUsers = ref.watch(authenticatedUserProvider);
     final serverURIController = useTextEditingController();
-    final formKey = GlobalKey<FormState>();
     final sleepTimerSettings = appSettings.playerSettings.sleepTimerSettings;
 
     return Scaffold(
@@ -121,6 +124,149 @@ class AppSettingsPage extends HookConsumerWidget {
                     ],
                   ),
                 ),
+              ),
+            ],
+          ),
+
+          // Backup and Restore section
+          SettingsSection(
+            margin: const EdgeInsetsDirectional.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
+            title: Text(
+              'Backup and Restore',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            tiles: [
+              SettingsTile(
+                title: const Text('Copy to Clipboard'),
+                leading: const Icon(Icons.copy),
+                description: const Text(
+                  'Copy the app settings to the clipboard',
+                ),
+                onPressed: (context) async {
+                  // copy to clipboard
+                  await Clipboard.setData(
+                    ClipboardData(
+                      text: jsonEncode(appSettings.toJson()),
+                    ),
+                  );
+                  // show toast
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Settings copied to clipboard'),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile(
+                title: const Text('Restore'),
+                leading: const Icon(Icons.restore),
+                description: const Text(
+                  'Restore the app settings from the backup',
+                ),
+                onPressed: (context) {
+                  final formKey = GlobalKey<FormState>();
+                  // show a dialog to get the backup
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Restore Backup'),
+                        content: Form(
+                          key: formKey,
+                          child: TextFormField(
+                            controller: serverURIController,
+                            decoration: const InputDecoration(
+                              labelText: 'Backup',
+                              hintText: 'Paste the backup here',
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please paste the backup here';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                final backup = serverURIController.text;
+                                final newSettings = model.AppSettings.fromJson(
+                                  // decode the backup as json
+                                  jsonDecode(backup),
+                                );
+                                ref
+                                    .read(appSettingsProvider.notifier)
+                                    .updateState(newSettings);
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Settings restored'),
+                                  ),
+                                );
+                                // clear the backup
+                                serverURIController.clear();
+                              }
+                            },
+                            child: const Text('Restore'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+
+              // a button to reset the app settings
+              SettingsTile(
+                title: const Text('Reset App Settings'),
+                leading: const Icon(Icons.settings_backup_restore),
+                description: const Text(
+                  'Reset the app settings to the default values',
+                ),
+                onPressed: (context) async {
+                  // confirm the reset
+                  final res = await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Reset App Settings'),
+                        content: const Text(
+                          'Are you sure you want to reset the app settings?',
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(true);
+                            },
+                            child: const Text('Reset'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
+                  // if the user confirms the reset
+                  if (res == true) {
+                    ref.read(appSettingsProvider.notifier).reset();
+                  }
+                },
               ),
             ],
           ),

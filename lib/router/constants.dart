@@ -43,6 +43,19 @@ class Routes {
     pathName: 'explore',
     name: 'explore',
   );
+
+  // downloads
+  static const downloads = _SimpleRoute(
+    pathName: 'downloads',
+    name: 'downloads',
+  );
+
+  // library browser to browse the library using author, genre, etc.
+  static const libraryBrowser = _SimpleRoute(
+    pathName: 'browser',
+    name: 'libraryBrowser',
+    // parentRoute: library,
+  );
 }
 
 // a class to store path

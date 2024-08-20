@@ -9,6 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'player_form.g.dart';
 
+/// The height of the player when it is minimized
 const double playerMinHeight = 70;
 // const miniplayerPercentageDeclaration = 0.2;
 

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logging/logging.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
+import 'package:whispering_pages/features/player/view/player_when_expanded.dart';
 import 'package:whispering_pages/features/player/view/widgets/speed_selector.dart';
+
+final _logger = Logger('PlayerSpeedAdjustButton');
 
 class PlayerSpeedAdjustButton extends HookConsumerWidget {
   const PlayerSpeedAdjustButton({
@@ -14,8 +18,10 @@ class PlayerSpeedAdjustButton extends HookConsumerWidget {
     final notifier = ref.watch(audiobookPlayerProvider.notifier);
     return TextButton(
       child: Text('${player.speed}x'),
-      onPressed: () {
-        showModalBottomSheet(
+      onPressed: () async {
+        pendingPlayerModals++;
+        _logger.fine('opening speed selector');
+        await showModalBottomSheet<bool>(
           context: context,
           barrierLabel: 'Select Speed',
           constraints: const BoxConstraints(
@@ -29,6 +35,8 @@ class PlayerSpeedAdjustButton extends HookConsumerWidget {
             );
           },
         );
+        pendingPlayerModals--;
+        _logger.fine('Closing speed selector');
       },
     );
   }

@@ -361,7 +361,7 @@ final meProvider = AutoDisposeFutureProvider<User>.internal(
 );
 
 typedef MeRef = AutoDisposeFutureProviderRef<User>;
-String _$personalizedViewHash() => r'2e70fe2bfc766a963f7a8e94211ad50d959fbaa2';
+String _$personalizedViewHash() => r'dada8d72845ffd516f731f88193941f7ebdd47ed';
 
 /// fetch the personalized view
 ///

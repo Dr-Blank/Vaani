@@ -30,8 +30,7 @@ class SleepTimer extends _$SleepTimer {
     }
 
     var sleepTimer = core.SleepTimer(
-      // duration: sleepTimerSettings.defaultDuration,
-      duration: const Duration(seconds: 5),
+      duration: sleepTimerSettings.defaultDuration,
       player: ref.watch(simpleAudiobookPlayerProvider),
     );
     ref.onDispose(sleepTimer.dispose);

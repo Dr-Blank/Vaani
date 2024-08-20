@@ -5,6 +5,7 @@ import 'package:miniplayer/miniplayer.dart';
 import 'package:whispering_pages/features/explore/providers/search_controller.dart';
 import 'package:whispering_pages/features/player/providers/player_form.dart';
 import 'package:whispering_pages/features/player/view/audiobook_player.dart';
+import 'package:whispering_pages/features/player/view/player_when_expanded.dart';
 
 // stack to track changes in navigationShell.currentIndex
 // home is always at index 0 and at the start and should be the last before popping
@@ -39,10 +40,11 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
       final isPlayerExpanded = playerProgress != playerMinHeight;
 
       debugPrint(
-        'BackButtonListener: Back button pressed, isPlayerExpanded: $isPlayerExpanded, stack: $navigationShellStack',
+        'BackButtonListener: Back button pressed, isPlayerExpanded: $isPlayerExpanded, stack: $navigationShellStack, pendingPlayerModals: $pendingPlayerModals',
       );
+
       // close miniplayer if it is open
-      if (isPlayerExpanded) {
+      if (isPlayerExpanded && pendingPlayerModals == 0) {
         debugPrint(
           'BackButtonListener: closing the player',
         );
@@ -83,6 +85,7 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
       return false;
     }
 
+    // TODO: Implement a better way to handle back button presses to minimize player
     return BackButtonListener(
       onBackButtonPressed: onBackButtonPressed,
       child: Scaffold(
@@ -161,7 +164,7 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
     // If it is, debugPrint a message to the console.
     if (index == navigationShell.currentIndex) {
       // if current branch is explore, open the search view
-      if (index == 1) {
+      if (index == 2) {
         final searchController = ref.read(globalSearchControllerProvider);
         // open the search view if not already open
         if (!searchController.isOpen) {
@@ -182,6 +185,12 @@ const _navigationItems = [
     name: 'Home',
     icon: Icons.home_outlined,
     activeIcon: Icons.home,
+  ),
+  // Library
+  _NavigationItem(
+    name: 'Library',
+    icon: Icons.book_outlined,
+    activeIcon: Icons.book,
   ),
   _NavigationItem(
     name: 'Explore',

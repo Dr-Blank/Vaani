@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:whispering_pages/api/library_item_provider.dart';
 import 'package:whispering_pages/features/item_viewer/view/library_item_sliver_app_bar.dart';
+import 'package:whispering_pages/features/player/providers/player_form.dart';
 import 'package:whispering_pages/router/models/library_item_extras.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 import 'package:whispering_pages/shared/extensions/model_conversions.dart';
@@ -100,6 +101,10 @@ class LibraryItemPage extends HookConsumerWidget {
                                 .valueOrNull!.media.metadata.description!,
                           )
                         : const SizedBox.shrink(),
+              ),
+              // a padding at the bottom to make sure the last item is not hidden by mini player
+              const SliverToBoxAdapter(
+                child: SizedBox(height: playerMinHeight),
               ),
             ],
           ),

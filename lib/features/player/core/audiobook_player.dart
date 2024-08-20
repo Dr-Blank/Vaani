@@ -3,10 +3,13 @@
 /// this is needed as audiobook can be a list of audio files instead of a single file
 library;
 
-import 'package:flutter/foundation.dart';
+import 'package:collection/collection.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:logging/logging.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
+
+final _logger = Logger('AudiobookPlayer');
 
 /// returns the sum of the duration of all the previous tracks before the [index]
 Duration sumOfTracks(BookExpanded book, int? index) {
@@ -54,7 +57,7 @@ class AudiobookPlayer extends AudioPlayer {
 
   /// the [BookExpanded] being played
   ///
-  /// to set the book, use [setSourceAudioBook]
+  /// to set the book, use [setSourceAudiobook]
   BookExpanded? get book => _book;
 
   /// the authentication token to access the [AudioTrack.contentUrl]
@@ -70,21 +73,24 @@ class AudiobookPlayer extends AudioPlayer {
   int? get availableTracks => _book?.tracks.length;
 
   /// sets the current [AudioTrack] as the source of the player
-  Future<void> setSourceAudioBook(
+  Future<void> setSourceAudiobook(
     BookExpanded? book, {
     bool preload = true,
     // int? initialIndex,
     Duration? initialPosition,
+    List<Uri>? downloadedUris,
+    Uri? artworkUri,
   }) async {
     // if the book is null, stop the player
     if (book == null) {
       _book = null;
+      _logger.info('Book is null, stopping player');
       return stop();
     }
 
     // see if the book is the same as the current book
     if (_book == book) {
-      // if the book is the same, do nothing
+      _logger.info('Book is the same, doing nothing');
       return;
     }
     // first stop the player and clear the source
@@ -111,23 +117,29 @@ class AudiobookPlayer extends AudioPlayer {
       ConcatenatingAudioSource(
         useLazyPreparation: true,
         children: book.tracks.map((track) {
+          final retrievedUri =
+              _getUri(track, downloadedUris, baseUrl: baseUrl, token: token);
+          _logger.fine(
+            'Setting source for track: ${track.title}, URI: $retrievedUri',
+          );
           return AudioSource.uri(
-            Uri.parse('$baseUrl${track.contentUrl}?token=$token'),
+            retrievedUri,
             tag: MediaItem(
               // Specify a unique ID for each media item:
               id: book.libraryItemId + track.index.toString(),
               // Metadata to display in the notification:
               album: book.metadata.title,
               title: book.metadata.title ?? track.title,
-              artUri: Uri.parse(
-                '$baseUrl/api/items/${book.libraryItemId}/cover?token=$token&width=800',
-              ),
+              artUri: artworkUri ??
+                  Uri.parse(
+                    '$baseUrl/api/items/${book.libraryItemId}/cover?token=$token&width=800',
+                  ),
             ),
           );
         }).toList(),
       ),
     ).catchError((error) {
-      debugPrint('AudiobookPlayer Error: $error');
+      _logger.shout('Error: $error');
     });
   }
 
@@ -176,7 +188,8 @@ class AudiobookPlayer extends AudioPlayer {
     if (_book == null) {
       return Duration.zero;
     }
-    return bufferedPosition + _book!.tracks[sequenceState!.currentIndex].startOffset;
+    return bufferedPosition +
+        _book!.tracks[sequenceState!.currentIndex].startOffset;
   }
 
   /// streams to override to suit the book instead of the current track
@@ -236,4 +249,21 @@ class AudiobookPlayer extends AudioPlayer {
       orElse: () => _book!.chapters.first,
     );
   }
+}
+
+Uri _getUri(
+  AudioTrack track,
+  List<Uri>? downloadedUris, {
+  required Uri baseUrl,
+  required String token,
+}) {
+  // check if the track is in the downloadedUris
+  final uri = downloadedUris?.firstWhereOrNull(
+    (element) {
+      return element.pathSegments.last == track.metadata?.filename;
+    },
+  );
+
+  return uri ??
+      Uri.parse('${baseUrl.toString()}${track.contentUrl}?token=$token');
 }

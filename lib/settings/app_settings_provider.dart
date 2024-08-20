@@ -11,6 +11,20 @@ final _box = AvailableHiveBoxes.userPrefsBox;
 
 final _logger = Logger('AppSettingsProvider');
 
+model.AppSettings readFromBoxOrCreate() {
+  // see if the settings are already in the box
+  if (_box.isNotEmpty) {
+    final foundSettings = _box.getAt(0);
+    _logger.fine('found settings in box: $foundSettings');
+    return foundSettings;
+  } else {
+    // create a new settings object
+    const settings = model.AppSettings();
+    _logger.fine('created new settings: $settings');
+    return settings;
+  }
+}
+
 @Riverpod(keepAlive: true)
 class AppSettings extends _$AppSettings {
   @override
@@ -20,20 +34,6 @@ class AppSettings extends _$AppSettings {
       writeToBox();
     });
     return state;
-  }
-
-  model.AppSettings readFromBoxOrCreate() {
-    // see if the settings are already in the box
-    if (_box.isNotEmpty) {
-      final foundSettings = _box.getAt(0);
-      _logger.fine('found settings in box: $foundSettings');
-      return foundSettings;
-    } else {
-      // create a new settings object
-      const settings = model.AppSettings();
-      _logger.fine('created new settings: $settings');
-      return settings;
-    }
   }
 
   // write the settings to the box
@@ -49,5 +49,9 @@ class AppSettings extends _$AppSettings {
 
   void updateState(model.AppSettings newSettings) {
     state = newSettings;
+  }
+
+  void reset() {
+    state = const model.AppSettings();
   }
 }

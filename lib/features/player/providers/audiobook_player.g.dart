@@ -7,7 +7,7 @@ part of 'audiobook_player.dart';
 // **************************************************************************
 
 String _$simpleAudiobookPlayerHash() =>
-    r'b65e6d779476a2c1fa38f617771bf997acb4f5b8';
+    r'9e11ed2791d35e308f8cbe61a79a45cf51466ebb';
 
 /// Simple because it doesn't rebuild when the player state changes
 /// it only rebuilds when the token changes
@@ -15,7 +15,7 @@ String _$simpleAudiobookPlayerHash() =>
 /// Copied from [SimpleAudiobookPlayer].
 @ProviderFor(SimpleAudiobookPlayer)
 final simpleAudiobookPlayerProvider =
-    NotifierProvider<SimpleAudiobookPlayer, abp.AudiobookPlayer>.internal(
+    NotifierProvider<SimpleAudiobookPlayer, core.AudiobookPlayer>.internal(
   SimpleAudiobookPlayer.new,
   name: r'simpleAudiobookPlayerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -25,13 +25,13 @@ final simpleAudiobookPlayerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$SimpleAudiobookPlayer = Notifier<abp.AudiobookPlayer>;
-String _$audiobookPlayerHash() => r'38042d0c93034e6907677fdb614a9af1b9d636af';
+typedef _$SimpleAudiobookPlayer = Notifier<core.AudiobookPlayer>;
+String _$audiobookPlayerHash() => r'44394b1dbbf85eb19ef1f693717e8cbc15b768e5';
 
 /// See also [AudiobookPlayer].
 @ProviderFor(AudiobookPlayer)
 final audiobookPlayerProvider =
-    NotifierProvider<AudiobookPlayer, abp.AudiobookPlayer>.internal(
+    NotifierProvider<AudiobookPlayer, core.AudiobookPlayer>.internal(
   AudiobookPlayer.new,
   name: r'audiobookPlayerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -41,6 +41,6 @@ final audiobookPlayerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$AudiobookPlayer = Notifier<abp.AudiobookPlayer>;
+typedef _$AudiobookPlayer = Notifier<core.AudiobookPlayer>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

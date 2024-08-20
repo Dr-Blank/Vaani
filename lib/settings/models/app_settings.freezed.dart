@@ -23,6 +23,7 @@ mixin _$AppSettings {
   bool get isDarkMode => throw _privateConstructorUsedError;
   bool get useMaterialThemeOnItemPage => throw _privateConstructorUsedError;
   PlayerSettings get playerSettings => throw _privateConstructorUsedError;
+  DownloadSettings get downloadSettings => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,9 +40,11 @@ abstract class $AppSettingsCopyWith<$Res> {
   $Res call(
       {bool isDarkMode,
       bool useMaterialThemeOnItemPage,
-      PlayerSettings playerSettings});
+      PlayerSettings playerSettings,
+      DownloadSettings downloadSettings});
 
   $PlayerSettingsCopyWith<$Res> get playerSettings;
+  $DownloadSettingsCopyWith<$Res> get downloadSettings;
 }
 
 /// @nodoc
@@ -60,6 +63,7 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
     Object? isDarkMode = null,
     Object? useMaterialThemeOnItemPage = null,
     Object? playerSettings = null,
+    Object? downloadSettings = null,
   }) {
     return _then(_value.copyWith(
       isDarkMode: null == isDarkMode
@@ -74,6 +78,10 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
           ? _value.playerSettings
           : playerSettings // ignore: cast_nullable_to_non_nullable
               as PlayerSettings,
+      downloadSettings: null == downloadSettings
+          ? _value.downloadSettings
+          : downloadSettings // ignore: cast_nullable_to_non_nullable
+              as DownloadSettings,
     ) as $Val);
   }
 
@@ -82,6 +90,14 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
   $PlayerSettingsCopyWith<$Res> get playerSettings {
     return $PlayerSettingsCopyWith<$Res>(_value.playerSettings, (value) {
       return _then(_value.copyWith(playerSettings: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $DownloadSettingsCopyWith<$Res> get downloadSettings {
+    return $DownloadSettingsCopyWith<$Res>(_value.downloadSettings, (value) {
+      return _then(_value.copyWith(downloadSettings: value) as $Val);
     });
   }
 }
@@ -97,10 +113,13 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
   $Res call(
       {bool isDarkMode,
       bool useMaterialThemeOnItemPage,
-      PlayerSettings playerSettings});
+      PlayerSettings playerSettings,
+      DownloadSettings downloadSettings});
 
   @override
   $PlayerSettingsCopyWith<$Res> get playerSettings;
+  @override
+  $DownloadSettingsCopyWith<$Res> get downloadSettings;
 }
 
 /// @nodoc
@@ -117,6 +136,7 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
     Object? isDarkMode = null,
     Object? useMaterialThemeOnItemPage = null,
     Object? playerSettings = null,
+    Object? downloadSettings = null,
   }) {
     return _then(_$AppSettingsImpl(
       isDarkMode: null == isDarkMode
@@ -131,6 +151,10 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
           ? _value.playerSettings
           : playerSettings // ignore: cast_nullable_to_non_nullable
               as PlayerSettings,
+      downloadSettings: null == downloadSettings
+          ? _value.downloadSettings
+          : downloadSettings // ignore: cast_nullable_to_non_nullable
+              as DownloadSettings,
     ));
   }
 }
@@ -140,8 +164,9 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
 class _$AppSettingsImpl implements _AppSettings {
   const _$AppSettingsImpl(
       {this.isDarkMode = true,
-      this.useMaterialThemeOnItemPage = false,
-      this.playerSettings = const PlayerSettings()});
+      this.useMaterialThemeOnItemPage = true,
+      this.playerSettings = const PlayerSettings(),
+      this.downloadSettings = const DownloadSettings()});
 
   factory _$AppSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppSettingsImplFromJson(json);
@@ -155,10 +180,13 @@ class _$AppSettingsImpl implements _AppSettings {
   @override
   @JsonKey()
   final PlayerSettings playerSettings;
+  @override
+  @JsonKey()
+  final DownloadSettings downloadSettings;
 
   @override
   String toString() {
-    return 'AppSettings(isDarkMode: $isDarkMode, useMaterialThemeOnItemPage: $useMaterialThemeOnItemPage, playerSettings: $playerSettings)';
+    return 'AppSettings(isDarkMode: $isDarkMode, useMaterialThemeOnItemPage: $useMaterialThemeOnItemPage, playerSettings: $playerSettings, downloadSettings: $downloadSettings)';
   }
 
   @override
@@ -173,13 +201,15 @@ class _$AppSettingsImpl implements _AppSettings {
                 other.useMaterialThemeOnItemPage ==
                     useMaterialThemeOnItemPage) &&
             (identical(other.playerSettings, playerSettings) ||
-                other.playerSettings == playerSettings));
+                other.playerSettings == playerSettings) &&
+            (identical(other.downloadSettings, downloadSettings) ||
+                other.downloadSettings == downloadSettings));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, isDarkMode, useMaterialThemeOnItemPage, playerSettings);
+  int get hashCode => Object.hash(runtimeType, isDarkMode,
+      useMaterialThemeOnItemPage, playerSettings, downloadSettings);
 
   @JsonKey(ignore: true)
   @override
@@ -199,7 +229,8 @@ abstract class _AppSettings implements AppSettings {
   const factory _AppSettings(
       {final bool isDarkMode,
       final bool useMaterialThemeOnItemPage,
-      final PlayerSettings playerSettings}) = _$AppSettingsImpl;
+      final PlayerSettings playerSettings,
+      final DownloadSettings downloadSettings}) = _$AppSettingsImpl;
 
   factory _AppSettings.fromJson(Map<String, dynamic> json) =
       _$AppSettingsImpl.fromJson;
@@ -210,6 +241,8 @@ abstract class _AppSettings implements AppSettings {
   bool get useMaterialThemeOnItemPage;
   @override
   PlayerSettings get playerSettings;
+  @override
+  DownloadSettings get downloadSettings;
   @override
   @JsonKey(ignore: true)
   _$$AppSettingsImplCopyWith<_$AppSettingsImpl> get copyWith =>
@@ -1338,5 +1371,258 @@ abstract class _SleepTimerSettings implements SleepTimerSettings {
   @override
   @JsonKey(ignore: true)
   _$$SleepTimerSettingsImplCopyWith<_$SleepTimerSettingsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+DownloadSettings _$DownloadSettingsFromJson(Map<String, dynamic> json) {
+  return _DownloadSettings.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DownloadSettings {
+  bool get requiresWiFi => throw _privateConstructorUsedError;
+  int get retries => throw _privateConstructorUsedError;
+  bool get allowPause => throw _privateConstructorUsedError;
+  int get maxConcurrent => throw _privateConstructorUsedError;
+  int get maxConcurrentByHost => throw _privateConstructorUsedError;
+  int get maxConcurrentByGroup => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DownloadSettingsCopyWith<DownloadSettings> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DownloadSettingsCopyWith<$Res> {
+  factory $DownloadSettingsCopyWith(
+          DownloadSettings value, $Res Function(DownloadSettings) then) =
+      _$DownloadSettingsCopyWithImpl<$Res, DownloadSettings>;
+  @useResult
+  $Res call(
+      {bool requiresWiFi,
+      int retries,
+      bool allowPause,
+      int maxConcurrent,
+      int maxConcurrentByHost,
+      int maxConcurrentByGroup});
+}
+
+/// @nodoc
+class _$DownloadSettingsCopyWithImpl<$Res, $Val extends DownloadSettings>
+    implements $DownloadSettingsCopyWith<$Res> {
+  _$DownloadSettingsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? requiresWiFi = null,
+    Object? retries = null,
+    Object? allowPause = null,
+    Object? maxConcurrent = null,
+    Object? maxConcurrentByHost = null,
+    Object? maxConcurrentByGroup = null,
+  }) {
+    return _then(_value.copyWith(
+      requiresWiFi: null == requiresWiFi
+          ? _value.requiresWiFi
+          : requiresWiFi // ignore: cast_nullable_to_non_nullable
+              as bool,
+      retries: null == retries
+          ? _value.retries
+          : retries // ignore: cast_nullable_to_non_nullable
+              as int,
+      allowPause: null == allowPause
+          ? _value.allowPause
+          : allowPause // ignore: cast_nullable_to_non_nullable
+              as bool,
+      maxConcurrent: null == maxConcurrent
+          ? _value.maxConcurrent
+          : maxConcurrent // ignore: cast_nullable_to_non_nullable
+              as int,
+      maxConcurrentByHost: null == maxConcurrentByHost
+          ? _value.maxConcurrentByHost
+          : maxConcurrentByHost // ignore: cast_nullable_to_non_nullable
+              as int,
+      maxConcurrentByGroup: null == maxConcurrentByGroup
+          ? _value.maxConcurrentByGroup
+          : maxConcurrentByGroup // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$DownloadSettingsImplCopyWith<$Res>
+    implements $DownloadSettingsCopyWith<$Res> {
+  factory _$$DownloadSettingsImplCopyWith(_$DownloadSettingsImpl value,
+          $Res Function(_$DownloadSettingsImpl) then) =
+      __$$DownloadSettingsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {bool requiresWiFi,
+      int retries,
+      bool allowPause,
+      int maxConcurrent,
+      int maxConcurrentByHost,
+      int maxConcurrentByGroup});
+}
+
+/// @nodoc
+class __$$DownloadSettingsImplCopyWithImpl<$Res>
+    extends _$DownloadSettingsCopyWithImpl<$Res, _$DownloadSettingsImpl>
+    implements _$$DownloadSettingsImplCopyWith<$Res> {
+  __$$DownloadSettingsImplCopyWithImpl(_$DownloadSettingsImpl _value,
+      $Res Function(_$DownloadSettingsImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? requiresWiFi = null,
+    Object? retries = null,
+    Object? allowPause = null,
+    Object? maxConcurrent = null,
+    Object? maxConcurrentByHost = null,
+    Object? maxConcurrentByGroup = null,
+  }) {
+    return _then(_$DownloadSettingsImpl(
+      requiresWiFi: null == requiresWiFi
+          ? _value.requiresWiFi
+          : requiresWiFi // ignore: cast_nullable_to_non_nullable
+              as bool,
+      retries: null == retries
+          ? _value.retries
+          : retries // ignore: cast_nullable_to_non_nullable
+              as int,
+      allowPause: null == allowPause
+          ? _value.allowPause
+          : allowPause // ignore: cast_nullable_to_non_nullable
+              as bool,
+      maxConcurrent: null == maxConcurrent
+          ? _value.maxConcurrent
+          : maxConcurrent // ignore: cast_nullable_to_non_nullable
+              as int,
+      maxConcurrentByHost: null == maxConcurrentByHost
+          ? _value.maxConcurrentByHost
+          : maxConcurrentByHost // ignore: cast_nullable_to_non_nullable
+              as int,
+      maxConcurrentByGroup: null == maxConcurrentByGroup
+          ? _value.maxConcurrentByGroup
+          : maxConcurrentByGroup // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$DownloadSettingsImpl implements _DownloadSettings {
+  const _$DownloadSettingsImpl(
+      {this.requiresWiFi = true,
+      this.retries = 3,
+      this.allowPause = true,
+      this.maxConcurrent = 3,
+      this.maxConcurrentByHost = 3,
+      this.maxConcurrentByGroup = 3});
+
+  factory _$DownloadSettingsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DownloadSettingsImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final bool requiresWiFi;
+  @override
+  @JsonKey()
+  final int retries;
+  @override
+  @JsonKey()
+  final bool allowPause;
+  @override
+  @JsonKey()
+  final int maxConcurrent;
+  @override
+  @JsonKey()
+  final int maxConcurrentByHost;
+  @override
+  @JsonKey()
+  final int maxConcurrentByGroup;
+
+  @override
+  String toString() {
+    return 'DownloadSettings(requiresWiFi: $requiresWiFi, retries: $retries, allowPause: $allowPause, maxConcurrent: $maxConcurrent, maxConcurrentByHost: $maxConcurrentByHost, maxConcurrentByGroup: $maxConcurrentByGroup)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DownloadSettingsImpl &&
+            (identical(other.requiresWiFi, requiresWiFi) ||
+                other.requiresWiFi == requiresWiFi) &&
+            (identical(other.retries, retries) || other.retries == retries) &&
+            (identical(other.allowPause, allowPause) ||
+                other.allowPause == allowPause) &&
+            (identical(other.maxConcurrent, maxConcurrent) ||
+                other.maxConcurrent == maxConcurrent) &&
+            (identical(other.maxConcurrentByHost, maxConcurrentByHost) ||
+                other.maxConcurrentByHost == maxConcurrentByHost) &&
+            (identical(other.maxConcurrentByGroup, maxConcurrentByGroup) ||
+                other.maxConcurrentByGroup == maxConcurrentByGroup));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, requiresWiFi, retries,
+      allowPause, maxConcurrent, maxConcurrentByHost, maxConcurrentByGroup);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DownloadSettingsImplCopyWith<_$DownloadSettingsImpl> get copyWith =>
+      __$$DownloadSettingsImplCopyWithImpl<_$DownloadSettingsImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DownloadSettingsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DownloadSettings implements DownloadSettings {
+  const factory _DownloadSettings(
+      {final bool requiresWiFi,
+      final int retries,
+      final bool allowPause,
+      final int maxConcurrent,
+      final int maxConcurrentByHost,
+      final int maxConcurrentByGroup}) = _$DownloadSettingsImpl;
+
+  factory _DownloadSettings.fromJson(Map<String, dynamic> json) =
+      _$DownloadSettingsImpl.fromJson;
+
+  @override
+  bool get requiresWiFi;
+  @override
+  int get retries;
+  @override
+  bool get allowPause;
+  @override
+  int get maxConcurrent;
+  @override
+  int get maxConcurrentByHost;
+  @override
+  int get maxConcurrentByGroup;
+  @override
+  @JsonKey(ignore: true)
+  _$$DownloadSettingsImplCopyWith<_$DownloadSettingsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

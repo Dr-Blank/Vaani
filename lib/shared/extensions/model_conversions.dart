@@ -51,3 +51,31 @@ extension UserConversion on User {
           UserWithSessionAndMostRecentProgress.fromJson(toJson());
   User get asUser => User.fromJson(toJson());
 }
+
+extension ContentUrl on LibraryFile {
+  Uri url(String baseUrl, String itemId, String token) {
+    // /api/items/{itemId}/file/{ino}?{token}
+    // return Uri.parse('$baseUrl/api/items/$itemId/file/$ino?token=$token');
+    var baseUri = Uri.parse(baseUrl);
+    return Uri(
+      scheme: baseUri.scheme,
+      host: baseUri.host,
+      path: '/api/items/$itemId/file/$ino',
+      queryParameters: {'token': token},
+    );
+  }
+
+  Uri downloadUrl(String baseUrl, String itemId, String token) {
+    // /api/items/{itemId}/file/{ino}/download?{token}
+    // return Uri.parse(
+    //   '$baseUrl/api/items/$itemId/file/$ino/download?token=$token',
+    // );
+    var baseUri = Uri.parse(baseUrl);
+    return Uri(
+      scheme: baseUri.scheme,
+      host: baseUri.host,
+      path: '/api/items/$itemId/file/$ino/download',
+      queryParameters: {'token': token},
+    );
+  }
+}
