@@ -244,6 +244,8 @@ ThemeSettings _$ThemeSettingsFromJson(Map<String, dynamic> json) {
 mixin _$ThemeSettings {
   bool get isDarkMode => throw _privateConstructorUsedError;
   bool get useMaterialThemeOnItemPage => throw _privateConstructorUsedError;
+  bool get useCurrentPlayerThemeThroughoutApp =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -257,7 +259,10 @@ abstract class $ThemeSettingsCopyWith<$Res> {
           ThemeSettings value, $Res Function(ThemeSettings) then) =
       _$ThemeSettingsCopyWithImpl<$Res, ThemeSettings>;
   @useResult
-  $Res call({bool isDarkMode, bool useMaterialThemeOnItemPage});
+  $Res call(
+      {bool isDarkMode,
+      bool useMaterialThemeOnItemPage,
+      bool useCurrentPlayerThemeThroughoutApp});
 }
 
 /// @nodoc
@@ -275,6 +280,7 @@ class _$ThemeSettingsCopyWithImpl<$Res, $Val extends ThemeSettings>
   $Res call({
     Object? isDarkMode = null,
     Object? useMaterialThemeOnItemPage = null,
+    Object? useCurrentPlayerThemeThroughoutApp = null,
   }) {
     return _then(_value.copyWith(
       isDarkMode: null == isDarkMode
@@ -284,6 +290,11 @@ class _$ThemeSettingsCopyWithImpl<$Res, $Val extends ThemeSettings>
       useMaterialThemeOnItemPage: null == useMaterialThemeOnItemPage
           ? _value.useMaterialThemeOnItemPage
           : useMaterialThemeOnItemPage // ignore: cast_nullable_to_non_nullable
+              as bool,
+      useCurrentPlayerThemeThroughoutApp: null ==
+              useCurrentPlayerThemeThroughoutApp
+          ? _value.useCurrentPlayerThemeThroughoutApp
+          : useCurrentPlayerThemeThroughoutApp // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -297,7 +308,10 @@ abstract class _$$ThemeSettingsImplCopyWith<$Res>
       __$$ThemeSettingsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isDarkMode, bool useMaterialThemeOnItemPage});
+  $Res call(
+      {bool isDarkMode,
+      bool useMaterialThemeOnItemPage,
+      bool useCurrentPlayerThemeThroughoutApp});
 }
 
 /// @nodoc
@@ -313,6 +327,7 @@ class __$$ThemeSettingsImplCopyWithImpl<$Res>
   $Res call({
     Object? isDarkMode = null,
     Object? useMaterialThemeOnItemPage = null,
+    Object? useCurrentPlayerThemeThroughoutApp = null,
   }) {
     return _then(_$ThemeSettingsImpl(
       isDarkMode: null == isDarkMode
@@ -323,6 +338,11 @@ class __$$ThemeSettingsImplCopyWithImpl<$Res>
           ? _value.useMaterialThemeOnItemPage
           : useMaterialThemeOnItemPage // ignore: cast_nullable_to_non_nullable
               as bool,
+      useCurrentPlayerThemeThroughoutApp: null ==
+              useCurrentPlayerThemeThroughoutApp
+          ? _value.useCurrentPlayerThemeThroughoutApp
+          : useCurrentPlayerThemeThroughoutApp // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -331,7 +351,9 @@ class __$$ThemeSettingsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ThemeSettingsImpl implements _ThemeSettings {
   const _$ThemeSettingsImpl(
-      {this.isDarkMode = true, this.useMaterialThemeOnItemPage = true});
+      {this.isDarkMode = true,
+      this.useMaterialThemeOnItemPage = true,
+      this.useCurrentPlayerThemeThroughoutApp = true});
 
   factory _$ThemeSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$ThemeSettingsImplFromJson(json);
@@ -342,10 +364,13 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
   @override
   @JsonKey()
   final bool useMaterialThemeOnItemPage;
+  @override
+  @JsonKey()
+  final bool useCurrentPlayerThemeThroughoutApp;
 
   @override
   String toString() {
-    return 'ThemeSettings(isDarkMode: $isDarkMode, useMaterialThemeOnItemPage: $useMaterialThemeOnItemPage)';
+    return 'ThemeSettings(isDarkMode: $isDarkMode, useMaterialThemeOnItemPage: $useMaterialThemeOnItemPage, useCurrentPlayerThemeThroughoutApp: $useCurrentPlayerThemeThroughoutApp)';
   }
 
   @override
@@ -358,13 +383,17 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
             (identical(other.useMaterialThemeOnItemPage,
                     useMaterialThemeOnItemPage) ||
                 other.useMaterialThemeOnItemPage ==
-                    useMaterialThemeOnItemPage));
+                    useMaterialThemeOnItemPage) &&
+            (identical(other.useCurrentPlayerThemeThroughoutApp,
+                    useCurrentPlayerThemeThroughoutApp) ||
+                other.useCurrentPlayerThemeThroughoutApp ==
+                    useCurrentPlayerThemeThroughoutApp));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, isDarkMode, useMaterialThemeOnItemPage);
+  int get hashCode => Object.hash(runtimeType, isDarkMode,
+      useMaterialThemeOnItemPage, useCurrentPlayerThemeThroughoutApp);
 
   @JsonKey(ignore: true)
   @override
@@ -383,7 +412,8 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
 abstract class _ThemeSettings implements ThemeSettings {
   const factory _ThemeSettings(
       {final bool isDarkMode,
-      final bool useMaterialThemeOnItemPage}) = _$ThemeSettingsImpl;
+      final bool useMaterialThemeOnItemPage,
+      final bool useCurrentPlayerThemeThroughoutApp}) = _$ThemeSettingsImpl;
 
   factory _ThemeSettings.fromJson(Map<String, dynamic> json) =
       _$ThemeSettingsImpl.fromJson;
@@ -392,6 +422,8 @@ abstract class _ThemeSettings implements ThemeSettings {
   bool get isDarkMode;
   @override
   bool get useMaterialThemeOnItemPage;
+  @override
+  bool get useCurrentPlayerThemeThroughoutApp;
   @override
   @JsonKey(ignore: true)
   _$$ThemeSettingsImplCopyWith<_$ThemeSettingsImpl> get copyWith =>

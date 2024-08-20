@@ -34,12 +34,16 @@ _$ThemeSettingsImpl _$$ThemeSettingsImplFromJson(Map<String, dynamic> json) =>
       isDarkMode: json['isDarkMode'] as bool? ?? true,
       useMaterialThemeOnItemPage:
           json['useMaterialThemeOnItemPage'] as bool? ?? true,
+      useCurrentPlayerThemeThroughoutApp:
+          json['useCurrentPlayerThemeThroughoutApp'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$ThemeSettingsImplToJson(_$ThemeSettingsImpl instance) =>
     <String, dynamic>{
       'isDarkMode': instance.isDarkMode,
       'useMaterialThemeOnItemPage': instance.useMaterialThemeOnItemPage,
+      'useCurrentPlayerThemeThroughoutApp':
+          instance.useCurrentPlayerThemeThroughoutApp,
     };
 
 _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>

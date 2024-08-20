@@ -25,6 +25,7 @@ class ThemeSettings with _$ThemeSettings {
   const factory ThemeSettings({
     @Default(true) bool isDarkMode,
     @Default(true) bool useMaterialThemeOnItemPage,
+    @Default(true) bool useCurrentPlayerThemeThroughoutApp,
   }) = _ThemeSettings;
 
   factory ThemeSettings.fromJson(Map<String, dynamic> json) =>

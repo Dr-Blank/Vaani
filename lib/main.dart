@@ -55,7 +55,7 @@ void main() async {
   // run the app
   runApp(
     const ProviderScope(
-      child: MyApp(),
+      child: _EagerInitialization(child: MyApp()),
     ),
   );
 }
@@ -76,16 +76,14 @@ class MyApp extends ConsumerWidget {
       routerConfig.goNamed(Routes.onboarding.name);
     }
 
-    return _EagerInitialization(
-      child: MaterialApp.router(
-        // debugShowCheckedModeBanner: false,
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: ref.watch(appSettingsProvider).themeSettings.isDarkMode
-            ? ThemeMode.dark
-            : ThemeMode.light,
-        routerConfig: routerConfig,
-      ),
+    return MaterialApp.router(
+      // debugShowCheckedModeBanner: false,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: ref.watch(appSettingsProvider).themeSettings.isDarkMode
+          ? ThemeMode.dark
+          : ThemeMode.light,
+      routerConfig: routerConfig,
     );
   }
 }
