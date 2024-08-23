@@ -75,9 +75,9 @@ dependencies:
   path: ^1.9.0
   path_provider: ^2.1.0
   riverpod_annotation: ^2.3.5
-  rxdart: ^0.27.7
+  rxdart: ^0.28.0
   scroll_loop_auto_scroll: ^0.0.5
-  sensors_plus: ^5.0.1
+  sensors_plus: ^6.0.1
   shelfsdk:
     git:
       url: https://github.com/Dr-Blank/shelfsdk
