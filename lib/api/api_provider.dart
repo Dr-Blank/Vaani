@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/db/cache_manager.dart';
-import 'package:whispering_pages/settings/api_settings_provider.dart';
+import 'package:vaani/db/cache_manager.dart';
+import 'package:vaani/settings/api_settings_provider.dart';
 
 part 'api_provider.g.dart';
 
@@ -28,9 +28,6 @@ AudiobookshelfApi audiobookshelfApi(AudiobookshelfApiRef ref, Uri? baseUrl) {
   // try to get the base url from app settings
   final apiSettings = ref.watch(apiSettingsProvider);
   baseUrl ??= apiSettings.activeServer?.serverUrl;
-  if (baseUrl == null) {
-    throw ArgumentError.notNull('baseUrl');
-  }
   return AudiobookshelfApi(
     baseUrl: makeBaseUrl(baseUrl.toString()),
   );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:whispering_pages/features/downloads/providers/download_manager.dart';
+import 'package:vaani/features/downloads/providers/download_manager.dart';
 
 class DownloadsPage extends HookConsumerWidget {
   const DownloadsPage({super.key});

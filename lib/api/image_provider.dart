@@ -3,8 +3,8 @@ import 'dart:typed_data';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/api/api_provider.dart';
-import 'package:whispering_pages/db/cache_manager.dart';
+import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/db/cache_manager.dart';
 
 /// provides cover images for the audiobooks
 ///

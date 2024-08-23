@@ -5,17 +5,17 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/api/api_provider.dart';
-import 'package:whispering_pages/api/image_provider.dart';
-import 'package:whispering_pages/api/library_item_provider.dart';
-import 'package:whispering_pages/constants/hero_tag_conventions.dart';
-import 'package:whispering_pages/features/explore/providers/search_controller.dart';
-import 'package:whispering_pages/features/explore/view/search_result_page.dart';
-import 'package:whispering_pages/router/router.dart';
-import 'package:whispering_pages/settings/api_settings_provider.dart';
-import 'package:whispering_pages/settings/app_settings_provider.dart';
-import 'package:whispering_pages/shared/extensions/model_conversions.dart';
-import 'package:whispering_pages/shared/widgets/shelves/book_shelf.dart';
+import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/api/image_provider.dart';
+import 'package:vaani/api/library_item_provider.dart';
+import 'package:vaani/constants/hero_tag_conventions.dart';
+import 'package:vaani/features/explore/providers/search_controller.dart';
+import 'package:vaani/features/explore/view/search_result_page.dart';
+import 'package:vaani/router/router.dart';
+import 'package:vaani/settings/api_settings_provider.dart';
+import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/shared/extensions/model_conversions.dart';
+import 'package:vaani/shared/widgets/shelves/book_shelf.dart';
 
 const Duration debounceDuration = Duration(milliseconds: 500);
 

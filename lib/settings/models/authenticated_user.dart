@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:whispering_pages/settings/models/audiobookshelf_server.dart';
+import 'package:vaani/settings/models/audiobookshelf_server.dart';
 
 part 'authenticated_user.freezed.dart';
 part 'authenticated_user.g.dart';

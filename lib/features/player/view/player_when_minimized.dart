@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:whispering_pages/constants/sizes.dart';
-import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
-import 'package:whispering_pages/features/player/providers/currently_playing_provider.dart';
-import 'package:whispering_pages/features/player/view/audiobook_player.dart';
-import 'package:whispering_pages/router/router.dart';
+import 'package:vaani/constants/sizes.dart';
+import 'package:vaani/features/player/providers/audiobook_player.dart';
+import 'package:vaani/features/player/providers/currently_playing_provider.dart';
+import 'package:vaani/features/player/view/audiobook_player.dart';
+import 'package:vaani/router/router.dart';
 
 class PlayerWhenMinimized extends HookConsumerWidget {
   const PlayerWhenMinimized({
@@ -92,7 +92,7 @@ class PlayerWhenMinimized extends HookConsumerWidget {
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: Theme.of(context)
                                 .colorScheme
-                                .onBackground
+                                .onSurface
                                 .withOpacity(0.7),
                           ),
                     ),

@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:miniplayer/miniplayer.dart';
-import 'package:whispering_pages/constants/sizes.dart';
-import 'package:whispering_pages/features/player/providers/currently_playing_provider.dart';
-import 'package:whispering_pages/features/player/providers/player_form.dart';
-import 'package:whispering_pages/features/player/view/audiobook_player.dart';
-import 'package:whispering_pages/features/sleep_timer/core/sleep_timer.dart';
-import 'package:whispering_pages/features/sleep_timer/providers/sleep_timer_provider.dart'
+import 'package:vaani/constants/sizes.dart';
+import 'package:vaani/features/player/providers/currently_playing_provider.dart';
+import 'package:vaani/features/player/providers/player_form.dart';
+import 'package:vaani/features/player/view/audiobook_player.dart';
+import 'package:vaani/features/sleep_timer/core/sleep_timer.dart';
+import 'package:vaani/features/sleep_timer/providers/sleep_timer_provider.dart'
     show sleepTimerProvider;
-import 'package:whispering_pages/settings/app_settings_provider.dart';
-import 'package:whispering_pages/shared/extensions/inverse_lerp.dart';
-import 'package:whispering_pages/shared/widgets/not_implemented.dart';
+import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/shared/extensions/inverse_lerp.dart';
+import 'package:vaani/shared/widgets/not_implemented.dart';
 
 import 'widgets/audiobook_player_seek_button.dart';
 import 'widgets/audiobook_player_seek_chapter_button.dart';

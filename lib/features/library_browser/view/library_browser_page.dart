@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:whispering_pages/router/router.dart';
+import 'package:vaani/router/router.dart';
 
 class LibraryBrowserPage extends HookConsumerWidget {
   const LibraryBrowserPage({super.key});

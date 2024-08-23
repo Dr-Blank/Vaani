@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
-import 'package:whispering_pages/shared/extensions/model_conversions.dart';
+import 'package:vaani/features/player/providers/audiobook_player.dart';
+import 'package:vaani/shared/extensions/model_conversions.dart';
 
 part 'currently_playing_provider.g.dart';
 

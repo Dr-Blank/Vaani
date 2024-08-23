@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:miniplayer/miniplayer.dart';
-import 'package:whispering_pages/features/explore/providers/search_controller.dart';
-import 'package:whispering_pages/features/player/providers/player_form.dart';
-import 'package:whispering_pages/features/player/view/audiobook_player.dart';
-import 'package:whispering_pages/features/player/view/player_when_expanded.dart';
+import 'package:vaani/features/explore/providers/search_controller.dart';
+import 'package:vaani/features/player/providers/player_form.dart';
+import 'package:vaani/features/player/view/audiobook_player.dart';
+import 'package:vaani/features/player/view/player_when_expanded.dart';
 
 // stack to track changes in navigationShell.currentIndex
 // home is always at index 0 and at the start and should be the last before popping

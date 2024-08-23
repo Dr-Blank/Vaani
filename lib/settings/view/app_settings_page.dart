@@ -6,11 +6,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:whispering_pages/api/authenticated_user_provider.dart';
-import 'package:whispering_pages/api/server_provider.dart';
-import 'package:whispering_pages/router/router.dart';
-import 'package:whispering_pages/settings/app_settings_provider.dart';
-import 'package:whispering_pages/settings/models/app_settings.dart' as model;
+import 'package:vaani/api/authenticated_user_provider.dart';
+import 'package:vaani/api/server_provider.dart';
+import 'package:vaani/router/router.dart';
+import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/settings/models/app_settings.dart' as model;
 
 class AppSettingsPage extends HookConsumerWidget {
   const AppSettingsPage({

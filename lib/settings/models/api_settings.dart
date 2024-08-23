@@ -1,8 +1,8 @@
 // a freezed class to store the settings of the app
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:whispering_pages/settings/models/audiobookshelf_server.dart';
-import 'package:whispering_pages/settings/models/authenticated_user.dart';
+import 'package:vaani/settings/models/audiobookshelf_server.dart';
+import 'package:vaani/settings/models/authenticated_user.dart';
 
 part 'api_settings.freezed.dart';
 part 'api_settings.g.dart';

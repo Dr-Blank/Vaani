@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
-import 'package:whispering_pages/api/api_provider.dart';
-import 'package:whispering_pages/db/cache/cache_key.dart';
-import 'package:whispering_pages/db/cache_manager.dart';
-import 'package:whispering_pages/shared/extensions/model_conversions.dart';
+import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/db/cache/cache_key.dart';
+import 'package:vaani/db/cache_manager.dart';
+import 'package:vaani/shared/extensions/model_conversions.dart';
 
 part 'library_item_provider.g.dart';
 
@@ -30,7 +30,8 @@ class LibraryItem extends _$LibraryItem {
         await apiResponseCacheManager.getFileFromCache(key);
     if (cachedFile != null) {
       _logger.fine(
-          'LibraryItemProvider reading from cache for $id from ${cachedFile.file}');
+        'LibraryItemProvider reading from cache for $id from ${cachedFile.file}',
+      );
       // read file as json
       final cachedItem = shelfsdk.LibraryItemExpanded.fromJson(
         jsonDecode(await cachedFile.file.readAsString()),

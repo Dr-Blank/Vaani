@@ -6,7 +6,7 @@ part of 'api_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$audiobookshelfApiHash() => r'de9cbf9ec0647ac84366e0dc0a175f069d112c0a';
+String _$audiobookshelfApiHash() => r'2c310ea77fea9918ccf96180a92075acd037bd95';
 
 /// Copied from Dart SDK
 class _SystemHash {

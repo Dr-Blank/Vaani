@@ -6,19 +6,19 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:shimmer/shimmer.dart' show Shimmer;
-import 'package:whispering_pages/api/api_provider.dart';
-import 'package:whispering_pages/api/image_provider.dart';
-import 'package:whispering_pages/api/library_item_provider.dart'
+import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/api/image_provider.dart';
+import 'package:vaani/api/library_item_provider.dart'
     show libraryItemProvider;
-import 'package:whispering_pages/constants/hero_tag_conventions.dart';
-import 'package:whispering_pages/features/item_viewer/view/library_item_actions.dart';
-import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
-import 'package:whispering_pages/router/models/library_item_extras.dart';
-import 'package:whispering_pages/router/router.dart';
-import 'package:whispering_pages/settings/app_settings_provider.dart';
-import 'package:whispering_pages/shared/extensions/model_conversions.dart';
-import 'package:whispering_pages/shared/widgets/shelves/home_shelf.dart';
-import 'package:whispering_pages/theme/theme_from_cover_provider.dart';
+import 'package:vaani/constants/hero_tag_conventions.dart';
+import 'package:vaani/features/item_viewer/view/library_item_actions.dart';
+import 'package:vaani/features/player/providers/audiobook_player.dart';
+import 'package:vaani/router/models/library_item_extras.dart';
+import 'package:vaani/router/router.dart';
+import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/shared/extensions/model_conversions.dart';
+import 'package:vaani/shared/widgets/shelves/home_shelf.dart';
+import 'package:vaani/theme/theme_from_cover_provider.dart';
 
 /// A shelf that displays books on the home page
 class BookHomeShelf extends HookConsumerWidget {

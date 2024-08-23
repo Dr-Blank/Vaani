@@ -6,20 +6,20 @@ import 'package:just_audio_background/just_audio_background.dart'
 import 'package:just_audio_media_kit/just_audio_media_kit.dart'
     show JustAudioMediaKit;
 import 'package:logging/logging.dart';
-import 'package:whispering_pages/api/server_provider.dart';
-import 'package:whispering_pages/db/storage.dart';
-import 'package:whispering_pages/features/downloads/core/download_manager.dart';
-import 'package:whispering_pages/features/downloads/providers/download_manager.dart';
-import 'package:whispering_pages/features/playback_reporting/providers/playback_reporter_provider.dart';
-import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
-import 'package:whispering_pages/features/sleep_timer/providers/sleep_timer_provider.dart';
-import 'package:whispering_pages/router/router.dart';
-import 'package:whispering_pages/settings/api_settings_provider.dart';
-import 'package:whispering_pages/settings/app_settings_provider.dart';
-import 'package:whispering_pages/shared/extensions/duration_format.dart';
-import 'package:whispering_pages/theme/theme.dart';
+import 'package:vaani/api/server_provider.dart';
+import 'package:vaani/db/storage.dart';
+import 'package:vaani/features/downloads/core/download_manager.dart';
+import 'package:vaani/features/downloads/providers/download_manager.dart';
+import 'package:vaani/features/playback_reporting/providers/playback_reporter_provider.dart';
+import 'package:vaani/features/player/providers/audiobook_player.dart';
+import 'package:vaani/features/sleep_timer/providers/sleep_timer_provider.dart';
+import 'package:vaani/router/router.dart';
+import 'package:vaani/settings/api_settings_provider.dart';
+import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/shared/extensions/duration_format.dart';
+import 'package:vaani/theme/theme.dart';
 
-final appLogger = Logger('whispering_pages');
+final appLogger = Logger('vaani');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +44,7 @@ void main() async {
 
   // for playing audio in the background
   await JustAudioBackground.init(
-    androidNotificationChannelId: 'com.whispering_pages.bg_demo.channel.audio',
+    androidNotificationChannelId: 'com.vaani.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
   );

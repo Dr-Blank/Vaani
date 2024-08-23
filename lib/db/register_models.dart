@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:whispering_pages/settings/models/models.dart';
+import 'package:vaani/settings/models/models.dart';
 
 // register all models to Hive for serialization
 Future registerModels() async {

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:whispering_pages/api/api_provider.dart';
-import 'package:whispering_pages/api/authenticated_user_provider.dart';
-import 'package:whispering_pages/api/server_provider.dart';
-import 'package:whispering_pages/router/router.dart';
-import 'package:whispering_pages/settings/api_settings_provider.dart';
-import 'package:whispering_pages/settings/models/models.dart' as model;
-import 'package:whispering_pages/shared/widgets/add_new_server.dart';
+import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/api/authenticated_user_provider.dart';
+import 'package:vaani/api/server_provider.dart';
+import 'package:vaani/router/router.dart';
+import 'package:vaani/settings/api_settings_provider.dart';
+import 'package:vaani/settings/models/models.dart' as model;
+import 'package:vaani/shared/widgets/add_new_server.dart';
 
 class ServerManagerPage extends HookConsumerWidget {
   const ServerManagerPage({

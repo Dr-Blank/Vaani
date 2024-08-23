@@ -6,7 +6,7 @@ import 'package:background_downloader/background_downloader.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/shared/extensions/model_conversions.dart';
+import 'package:vaani/shared/extensions/model_conversions.dart';
 
 final _logger = Logger('AudiobookDownloadManager');
 final tq = MemoryTaskQueue();

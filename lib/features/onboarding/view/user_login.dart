@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:whispering_pages/hacks/fix_autofill_losing_focus.dart';
+import 'package:vaani/hacks/fix_autofill_losing_focus.dart';
 
 class UserLogin extends HookConsumerWidget {
   UserLogin({
@@ -57,7 +57,7 @@ class UserLogin extends HookConsumerWidget {
                     labelStyle: TextStyle(
                       color: Theme.of(context)
                           .colorScheme
-                          .onBackground
+                          .onSurface
                           .withOpacity(0.8),
                     ),
                     border: const OutlineInputBorder(),
@@ -79,7 +79,7 @@ class UserLogin extends HookConsumerWidget {
                     labelStyle: TextStyle(
                       color: Theme.of(context)
                           .colorScheme
-                          .onBackground
+                          .onSurface
                           .withOpacity(0.8),
                     ),
                     border: const OutlineInputBorder(),

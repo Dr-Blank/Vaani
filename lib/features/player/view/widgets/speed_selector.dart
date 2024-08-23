@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:list_wheel_scroll_view_nls/list_wheel_scroll_view_nls.dart';
-import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
-import 'package:whispering_pages/settings/app_settings_provider.dart';
+import 'package:vaani/features/player/providers/audiobook_player.dart';
+import 'package:vaani/settings/app_settings_provider.dart';
 
 class SpeedSelector extends HookConsumerWidget {
   const SpeedSelector({
@@ -106,7 +106,7 @@ class SpeedSelector extends HookConsumerWidget {
                                         ? 2
                                         : 0.5,
                                 color:
-                                    Theme.of(context).colorScheme.onBackground,
+                                    Theme.of(context).colorScheme.onSurface,
                               ),
                               // the speed text but only at .5 increments of speed
                               if (speed % 0.25 == 0)
@@ -115,7 +115,7 @@ class SpeedSelector extends HookConsumerWidget {
                                   style: TextStyle(
                                     color: Theme.of(context)
                                         .colorScheme
-                                        .onBackground,
+                                        .onSurface,
                                   ),
                                 ),
                             ],

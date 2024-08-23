@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:whispering_pages/api/api_provider.dart';
-import 'package:whispering_pages/features/player/core/audiobook_player.dart'
+import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/features/player/core/audiobook_player.dart'
     as core;
 
 part 'audiobook_player.g.dart';

@@ -2,8 +2,8 @@
 
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:whispering_pages/db/available_boxes.dart';
-import 'package:whispering_pages/settings/models/app_settings.dart' as model;
+import 'package:vaani/db/available_boxes.dart';
+import 'package:vaani/settings/models/app_settings.dart' as model;
 
 part 'app_settings_provider.g.dart';
 

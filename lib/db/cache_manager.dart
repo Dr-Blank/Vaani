@@ -1,5 +1,5 @@
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:whispering_pages/settings/constants.dart';
+import 'package:vaani/settings/constants.dart';
 
 final imageCacheManager = CacheManager(
   Config(

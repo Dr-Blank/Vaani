@@ -1,10 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:whispering_pages/api/authenticated_user_provider.dart';
-import 'package:whispering_pages/db/storage.dart';
-import 'package:whispering_pages/settings/api_settings_provider.dart';
-import 'package:whispering_pages/settings/models/audiobookshelf_server.dart'
+import 'package:vaani/api/authenticated_user_provider.dart';
+import 'package:vaani/db/storage.dart';
+import 'package:vaani/settings/api_settings_provider.dart';
+import 'package:vaani/settings/models/audiobookshelf_server.dart'
     as model;
 
 part 'server_provider.g.dart';

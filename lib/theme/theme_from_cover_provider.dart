@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/api/image_provider.dart';
+import 'package:vaani/api/image_provider.dart';
 
 part 'theme_from_cover_provider.g.dart';
 

@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/features/player/playlist.dart';
+import 'package:vaani/features/player/playlist.dart';
 
 part 'playlist_provider.g.dart';
 

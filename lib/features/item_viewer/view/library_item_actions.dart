@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
-import 'package:whispering_pages/api/library_item_provider.dart';
-import 'package:whispering_pages/constants/hero_tag_conventions.dart';
-import 'package:whispering_pages/features/downloads/providers/download_manager.dart'
+import 'package:vaani/api/library_item_provider.dart';
+import 'package:vaani/constants/hero_tag_conventions.dart';
+import 'package:vaani/features/downloads/providers/download_manager.dart'
     show
         downloadHistoryProvider,
         downloadStatusProvider,
         simpleDownloadManagerProvider;
-import 'package:whispering_pages/features/item_viewer/view/library_item_page.dart';
-import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
-import 'package:whispering_pages/features/player/providers/player_form.dart';
-import 'package:whispering_pages/main.dart';
-import 'package:whispering_pages/router/router.dart';
-import 'package:whispering_pages/settings/api_settings_provider.dart';
-import 'package:whispering_pages/settings/app_settings_provider.dart';
-import 'package:whispering_pages/shared/extensions/model_conversions.dart';
-import 'package:whispering_pages/shared/utils.dart';
+import 'package:vaani/features/item_viewer/view/library_item_page.dart';
+import 'package:vaani/features/player/providers/audiobook_player.dart';
+import 'package:vaani/features/player/providers/player_form.dart';
+import 'package:vaani/main.dart';
+import 'package:vaani/router/router.dart';
+import 'package:vaani/settings/api_settings_provider.dart';
+import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/shared/extensions/model_conversions.dart';
+import 'package:vaani/shared/utils.dart';
 
 class LibraryItemActions extends HookConsumerWidget {
   LibraryItemActions({

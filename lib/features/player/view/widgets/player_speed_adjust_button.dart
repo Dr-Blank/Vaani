@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
-import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
-import 'package:whispering_pages/features/player/view/player_when_expanded.dart';
-import 'package:whispering_pages/features/player/view/widgets/speed_selector.dart';
+import 'package:vaani/features/player/providers/audiobook_player.dart';
+import 'package:vaani/features/player/view/player_when_expanded.dart';
+import 'package:vaani/features/player/view/widgets/speed_selector.dart';
 
 final _logger = Logger('PlayerSpeedAdjustButton');
 

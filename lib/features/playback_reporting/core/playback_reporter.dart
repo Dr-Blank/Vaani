@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:logging/logging.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/features/player/core/audiobook_player.dart';
+import 'package:vaani/features/player/core/audiobook_player.dart';
 
 final _logger = Logger('PlaybackReporter');
 

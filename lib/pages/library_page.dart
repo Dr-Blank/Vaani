@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:whispering_pages/api/api_provider.dart';
-import 'package:whispering_pages/settings/api_settings_provider.dart';
+import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/settings/api_settings_provider.dart';
 
 import '../shared/widgets/drawer.dart';
 import '../shared/widgets/shelves/home_shelf.dart';

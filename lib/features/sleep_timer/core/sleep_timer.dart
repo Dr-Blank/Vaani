@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:logging/logging.dart';
-import 'package:whispering_pages/features/player/core/audiobook_player.dart';
+import 'package:vaani/features/player/core/audiobook_player.dart';
 
 /// this timer pauses the music player after a certain duration
 ///

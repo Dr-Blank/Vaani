@@ -1,11 +1,11 @@
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:whispering_pages/api/server_provider.dart'
+import 'package:vaani/api/server_provider.dart'
     show audiobookShelfServerProvider;
-import 'package:whispering_pages/db/storage.dart';
-import 'package:whispering_pages/settings/api_settings_provider.dart';
-import 'package:whispering_pages/settings/models/audiobookshelf_server.dart';
-import 'package:whispering_pages/settings/models/authenticated_user.dart'
+import 'package:vaani/db/storage.dart';
+import 'package:vaani/settings/api_settings_provider.dart';
+import 'package:vaani/settings/models/audiobookshelf_server.dart';
+import 'package:vaani/settings/models/authenticated_user.dart'
     as model;
 
 part 'authenticated_user_provider.g.dart';

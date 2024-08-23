@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/features/explore/providers/search_result_provider.dart';
-import 'package:whispering_pages/features/explore/view/explore_page.dart';
-import 'package:whispering_pages/shared/extensions/model_conversions.dart';
+import 'package:vaani/features/explore/providers/search_result_provider.dart';
+import 'package:vaani/features/explore/view/explore_page.dart';
+import 'package:vaani/shared/extensions/model_conversions.dart';
 
 enum SearchResultCategory {
   books,

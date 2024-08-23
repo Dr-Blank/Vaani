@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
-import 'package:whispering_pages/features/player/providers/currently_playing_provider.dart';
-import 'package:whispering_pages/features/player/view/player_when_expanded.dart';
-import 'package:whispering_pages/shared/extensions/chapter.dart';
-import 'package:whispering_pages/shared/extensions/duration_format.dart';
-import 'package:whispering_pages/shared/hooks.dart';
+import 'package:vaani/features/player/providers/audiobook_player.dart';
+import 'package:vaani/features/player/providers/currently_playing_provider.dart';
+import 'package:vaani/features/player/view/player_when_expanded.dart';
+import 'package:vaani/shared/extensions/chapter.dart';
+import 'package:vaani/shared/extensions/duration_format.dart';
+import 'package:vaani/shared/hooks.dart';
 
 class ChapterSelectionButton extends HookConsumerWidget {
   const ChapterSelectionButton({

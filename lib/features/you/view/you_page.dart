@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/api/api_provider.dart';
-import 'package:whispering_pages/router/router.dart';
-import 'package:whispering_pages/shared/utils.dart';
-import 'package:whispering_pages/shared/widgets/not_implemented.dart';
+import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/router/router.dart';
+import 'package:vaani/shared/utils.dart';
+import 'package:vaani/shared/widgets/not_implemented.dart';
 
 class YouPage extends HookConsumerWidget {
   const YouPage({

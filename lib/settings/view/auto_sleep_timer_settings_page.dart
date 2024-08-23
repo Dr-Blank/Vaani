@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:whispering_pages/settings/app_settings_provider.dart';
-import 'package:whispering_pages/shared/extensions/time_of_day.dart';
+import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/shared/extensions/time_of_day.dart';
 
 class AutoSleepTimerSettingsPage extends HookConsumerWidget {
   const AutoSleepTimerSettingsPage({

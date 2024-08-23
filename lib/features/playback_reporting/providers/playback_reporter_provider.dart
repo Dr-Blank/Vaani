@@ -1,11 +1,11 @@
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:whispering_pages/api/api_provider.dart';
-import 'package:whispering_pages/features/playback_reporting/core/playback_reporter.dart'
+import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/features/playback_reporting/core/playback_reporter.dart'
     as core;
-import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
-import 'package:whispering_pages/settings/app_settings_provider.dart';
-import 'package:whispering_pages/settings/metadata/metadata_provider.dart';
+import 'package:vaani/features/player/providers/audiobook_player.dart';
+import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/settings/metadata/metadata_provider.dart';
 
 part 'playback_reporter_provider.g.dart';
 

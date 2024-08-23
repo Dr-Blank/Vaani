@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/shared/extensions/model_conversions.dart';
-import 'package:whispering_pages/shared/widgets/shelves/home_shelf.dart';
+import 'package:vaani/shared/extensions/model_conversions.dart';
+import 'package:vaani/shared/widgets/shelves/home_shelf.dart';
 
 /// A shelf that displays Authors on the home page
 class AuthorHomeShelf extends HookConsumerWidget {

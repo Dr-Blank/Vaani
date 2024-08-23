@@ -1,10 +1,10 @@
 import 'package:background_downloader/background_downloader.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:whispering_pages/api/api_provider.dart';
-import 'package:whispering_pages/features/downloads/core/download_manager.dart'
+import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/features/downloads/core/download_manager.dart'
     as core;
-import 'package:whispering_pages/settings/app_settings_provider.dart';
+import 'package:vaani/settings/app_settings_provider.dart';
 
 part 'download_manager.g.dart';
 

@@ -843,9 +843,11 @@ packages:
   miniplayer:
     dependency: "direct main"
     description:
-      path: "../miniplayer"
-      relative: true
-    source: path
+      path: "."
+      ref: feat-notifier-for-percent-dismissed
+      resolved-ref: "480f7933deaf0225ceb3a97162efca53610ba840"
+      url: "https://github.com/Dr-Blank/miniplayer.git"
+    source: git
     version: "1.0.3"
   numberpicker:
     dependency: "direct main"
@@ -1090,9 +1092,11 @@ packages:
   shelfsdk:
     dependency: "direct main"
     description:
-      path: "../../_dart/shelfsdk"
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: de1ca8c4b1ec83ceafa285558244922959fe447a
+      url: "https://github.com/Dr-Blank/shelfsdk"
+    source: git
     version: "1.0.0"
   shimmer:
     dependency: "direct main"

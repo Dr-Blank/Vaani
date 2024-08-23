@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:whispering_pages/features/downloads/view/downloads_page.dart';
-import 'package:whispering_pages/features/explore/view/explore_page.dart';
-import 'package:whispering_pages/features/explore/view/search_result_page.dart';
-import 'package:whispering_pages/features/item_viewer/view/library_item_page.dart';
-import 'package:whispering_pages/features/library_browser/view/library_browser_page.dart';
-import 'package:whispering_pages/features/onboarding/view/onboarding_single_page.dart';
-import 'package:whispering_pages/features/you/view/server_manager.dart';
-import 'package:whispering_pages/features/you/view/you_page.dart';
-import 'package:whispering_pages/pages/home_page.dart';
-import 'package:whispering_pages/settings/view/app_settings_page.dart';
-import 'package:whispering_pages/settings/view/auto_sleep_timer_settings_page.dart';
+import 'package:vaani/features/downloads/view/downloads_page.dart';
+import 'package:vaani/features/explore/view/explore_page.dart';
+import 'package:vaani/features/explore/view/search_result_page.dart';
+import 'package:vaani/features/item_viewer/view/library_item_page.dart';
+import 'package:vaani/features/library_browser/view/library_browser_page.dart';
+import 'package:vaani/features/onboarding/view/onboarding_single_page.dart';
+import 'package:vaani/features/you/view/server_manager.dart';
+import 'package:vaani/features/you/view/you_page.dart';
+import 'package:vaani/pages/home_page.dart';
+import 'package:vaani/settings/view/app_settings_page.dart';
+import 'package:vaani/settings/view/auto_sleep_timer_settings_page.dart';
 
 import 'scaffold_with_nav_bar.dart';
 import 'transitions/slide.dart';
