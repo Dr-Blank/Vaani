@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.whispering_pages"
+    namespace "dr.blank.vaani"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 

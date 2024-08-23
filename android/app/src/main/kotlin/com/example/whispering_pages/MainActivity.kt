@@ -1,4 +1,4 @@
-package com.example.whispering_pages
+package dr.blank.vaani
 
 import io.flutter.embedding.android.FlutterActivity
 
