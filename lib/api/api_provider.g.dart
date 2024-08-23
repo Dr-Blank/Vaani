@@ -6,7 +6,7 @@ part of 'api_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$audiobookshelfApiHash() => r'5eb091c6b18c0bf5a0eec079fdb872a84c4f00d9';
+String _$audiobookshelfApiHash() => r'de9cbf9ec0647ac84366e0dc0a175f069d112c0a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -168,7 +168,7 @@ class _AudiobookshelfApiProviderElement
   Uri? get baseUrl => (origin as AudiobookshelfApiProvider).baseUrl;
 }
 
-String _$authenticatedApiHash() => r'd99ea87b21dfb63b5f6fed8f79e835af42f2296f';
+String _$authenticatedApiHash() => r'f555efb6eede590b5a8d60cad2e6bfc2847e2d14';
 
 /// get the api instance for the authenticated user
 ///

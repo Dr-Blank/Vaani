@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
-import 'package:url_launcher/url_launcher.dart';
 import 'package:whispering_pages/api/library_item_provider.dart';
 import 'package:whispering_pages/constants/hero_tag_conventions.dart';
 import 'package:whispering_pages/features/downloads/providers/download_manager.dart'
@@ -19,6 +18,7 @@ import 'package:whispering_pages/router/router.dart';
 import 'package:whispering_pages/settings/api_settings_provider.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 import 'package:whispering_pages/shared/extensions/model_conversions.dart';
+import 'package:whispering_pages/shared/utils.dart';
 
 class LibraryItemActions extends HookConsumerWidget {
   LibraryItemActions({
@@ -78,7 +78,7 @@ class LibraryItemActions extends HookConsumerWidget {
                             currentServerUrl =
                                 Uri.https(currentServerUrl.toString());
                           }
-                          _launchUrl(
+                          handleLaunchUrl(
                             Uri.parse(
                               currentServerUrl.toString() +
                                   (Routes.libraryItem.pathParamName != null
@@ -461,15 +461,4 @@ Future<void> libraryItemPlayButtonOnPressed({
   await player.setVolume(
     ref.read(appSettingsProvider).playerSettings.preferredDefaultVolume,
   );
-}
-
-Future<void> _launchUrl(Uri url) async {
-  if (!await launchUrl(
-    url,
-    mode: LaunchMode.platformDefault,
-    webOnlyWindowName: '_blank',
-  )) {
-    // throw Exception('Could not launch $url');
-    debugPrint('Could not launch $url');
-  }
 }

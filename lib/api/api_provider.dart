@@ -32,7 +32,7 @@ AudiobookshelfApi audiobookshelfApi(AudiobookshelfApiRef ref, Uri? baseUrl) {
     throw ArgumentError.notNull('baseUrl');
   }
   return AudiobookshelfApi(
-    baseUrl: baseUrl,
+    baseUrl: makeBaseUrl(baseUrl.toString()),
   );
 }
 
@@ -47,7 +47,7 @@ AudiobookshelfApi authenticatedApi(AuthenticatedApiRef ref) {
     throw StateError('No active user');
   }
   return AudiobookshelfApi(
-    baseUrl: Uri.https(user.server.serverUrl.toString()),
+    baseUrl: makeBaseUrl(user.server.serverUrl.toString()),
     token: user.authToken,
   );
 }

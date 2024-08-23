@@ -198,9 +198,9 @@ const _navigationItems = [
     activeIcon: Icons.search,
   ),
   _NavigationItem(
-    name: 'Settings',
-    icon: Icons.settings_outlined,
-    activeIcon: Icons.settings,
+    name: 'You',
+    icon: Icons.account_circle_outlined,
+    activeIcon: Icons.account_circle,
   ),
 ];
 

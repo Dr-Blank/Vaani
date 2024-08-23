@@ -63,7 +63,7 @@ class SimpleHomeShelf extends HookConsumerWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
-            child: Text(title, style: Theme.of(context).textTheme.titleLarge),
+            child: Text(title, style: Theme.of(context).textTheme.titleMedium),
           ),
           // fix the height of the shelf as a percentage of the screen height
           SizedBox(

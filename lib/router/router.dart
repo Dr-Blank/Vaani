@@ -6,6 +6,8 @@ import 'package:whispering_pages/features/explore/view/search_result_page.dart';
 import 'package:whispering_pages/features/item_viewer/view/library_item_page.dart';
 import 'package:whispering_pages/features/library_browser/view/library_browser_page.dart';
 import 'package:whispering_pages/features/onboarding/view/onboarding_single_page.dart';
+import 'package:whispering_pages/features/you/view/server_manager.dart';
+import 'package:whispering_pages/features/you/view/you_page.dart';
 import 'package:whispering_pages/pages/home_page.dart';
 import 'package:whispering_pages/settings/view/app_settings_page.dart';
 import 'package:whispering_pages/settings/view/auto_sleep_timer_settings_page.dart';
@@ -139,9 +141,14 @@ class MyAppRouter {
                   ),
                 ],
               ),
-              // settings page
+              // you page
               StatefulShellBranch(
                 routes: <RouteBase>[
+                  GoRoute(
+                    path: Routes.you.path,
+                    name: Routes.you.name,
+                    pageBuilder: defaultPageBuilder(const YouPage()),
+                  ),
                   GoRoute(
                     path: Routes.settings.path,
                     name: Routes.settings.name,
@@ -156,6 +163,12 @@ class MyAppRouter {
                     pageBuilder: defaultPageBuilder(
                       const AutoSleepTimerSettingsPage(),
                     ),
+                  ),
+                  GoRoute(
+                    path: Routes.userManagement.path,
+                    name: Routes.userManagement.name,
+                    // builder: (context, state) => const UserManagementPage(),
+                    pageBuilder: defaultPageBuilder(const ServerManagerPage()),
                   ),
                 ],
               ),

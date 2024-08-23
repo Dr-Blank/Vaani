@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:whispering_pages/pages/server_manager.dart';
+import 'package:whispering_pages/features/you/view/server_manager.dart';
 import 'package:whispering_pages/router/router.dart';
 
 

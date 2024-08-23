@@ -8,6 +8,7 @@ import 'package:whispering_pages/api/image_provider.dart';
 import 'package:whispering_pages/constants/hero_tag_conventions.dart';
 import 'package:whispering_pages/features/item_viewer/view/library_item_page.dart';
 import 'package:whispering_pages/features/player/providers/audiobook_player.dart';
+import 'package:whispering_pages/main.dart';
 import 'package:whispering_pages/router/models/library_item_extras.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 import 'package:whispering_pages/shared/extensions/duration_format.dart';
@@ -373,7 +374,7 @@ class _BookCover extends HookConsumerWidget {
                     : themeData,
               );
             } catch (e) {
-              debugPrint('Error changing theme: $e');
+              appLogger.shout('Error changing theme: $e');
             }
           });
         }

@@ -32,37 +32,6 @@
           "message": 4
         }
       }
-    },
-    // flutter build apk --release
-    {
-      "icon": { "id": "package", "color": "terminal.ansiGreen" },
-      "label": "flutter build release APK",
-      "type": "shell",
-      "command": "flutter build apk --release",
-      "group": {
-        "kind": "none",
-        "isDefault": false
-      },
-      "detail": "Building APK in release mode",
-      "presentation": {
-        "revealProblems": "onProblem",
-        "reveal": "always",
-        "panel": "dedicated"
-      },
-      "runOptions": {
-        "instanceLimit": 1
-      },
-      "problemMatcher": {
-        "owner": "dart",
-        "fileLocation": ["relative", "${workspaceFolder}"],
-        "pattern": {
-          "regexp": "^(.*):(\\d+):(\\d+):\\s+(.*)$",
-          "file": 1,
-          "line": 2,
-          "column": 3,
-          "message": 4
-        }
-      }
     }
   ]
 }

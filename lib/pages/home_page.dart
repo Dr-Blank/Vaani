@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:whispering_pages/api/api_provider.dart';
 import 'package:whispering_pages/settings/app_settings_provider.dart';
 
-import '../shared/widgets/drawer.dart';
 import '../shared/widgets/shelves/home_shelf.dart';
 
 class HomePage extends HookConsumerWidget {
@@ -19,8 +18,12 @@ class HomePage extends HookConsumerWidget {
     final scrollController = useScrollController();
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: GestureDetector(
-          child: const Text('Vaani'),
+          child: Text(
+            'Vaani',
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
           onTap: () {
             // scroll to the top of the page
             scrollController.animateTo(
@@ -33,7 +36,6 @@ class HomePage extends HookConsumerWidget {
           },
         ),
       ),
-      drawer: const MyDrawer(),
       body: Container(
         child: views.when(
           data: (data) {
@@ -71,7 +73,6 @@ class HomePage extends HookConsumerWidget {
     );
   }
 }
-
 
 class HomePageSkeleton extends StatelessWidget {
   const HomePageSkeleton({super.key});

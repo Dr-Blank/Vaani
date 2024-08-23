@@ -43,7 +43,7 @@ class AddNewServer extends HookConsumerWidget {
       decoration: InputDecoration(
         labelText: 'Server URI',
         labelStyle: TextStyle(
-          color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
         ),
         border: const OutlineInputBorder(),
         prefixText: 'https://',
@@ -56,7 +56,7 @@ class AddNewServer extends HookConsumerWidget {
           child: newServerURI.text.isEmpty
               ? Icon(
                   Icons.cloud_outlined,
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                 )
               : isServerAlive.when(
                   data: (value) {
@@ -90,7 +90,7 @@ class AddNewServer extends HookConsumerWidget {
                   icon: const Icon(Icons.add),
                   tooltip: 'Add new server',
                   color: Theme.of(context).colorScheme.inversePrimary,
-                  focusColor: Theme.of(context).colorScheme.onBackground,
+                  focusColor: Theme.of(context).colorScheme.onSurface,
 
                   // should be enabled when
                   onPressed: !readOnly &&

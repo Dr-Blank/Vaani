@@ -3,7 +3,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:whispering_pages/api/api_provider.dart';
 import 'package:whispering_pages/api/authenticated_user_provider.dart';
 import 'package:whispering_pages/api/server_provider.dart';
@@ -11,6 +10,7 @@ import 'package:whispering_pages/features/onboarding/view/user_login.dart';
 import 'package:whispering_pages/router/router.dart';
 import 'package:whispering_pages/settings/api_settings_provider.dart';
 import 'package:whispering_pages/settings/models/models.dart' as model;
+import 'package:whispering_pages/shared/utils.dart';
 import 'package:whispering_pages/shared/widgets/add_new_server.dart';
 
 class OnboardingSinglePage extends HookConsumerWidget {
@@ -24,8 +24,9 @@ class OnboardingSinglePage extends HookConsumerWidget {
     final serverUriController = useTextEditingController(
       text: apiSettings.activeServer?.serverUrl.toString() ?? '',
     );
-    final api = ref
-        .watch(audiobookshelfApiProvider(Uri.https(serverUriController.text)));
+    var audiobookshelfUri = makeBaseUrl(serverUriController.text);
+
+    final api = ref.watch(audiobookshelfApiProvider(audiobookshelfUri));
 
     final isUserLoginAvailable = useState(apiSettings.activeServer != null);
 
@@ -183,8 +184,8 @@ class RedirectToABS extends StatelessWidget {
             autofocus: false,
             isSemanticButton: false,
             style: ButtonStyle(
-              elevation: MaterialStateProperty.all(0),
-              padding: MaterialStateProperty.all(
+              elevation: WidgetStateProperty.all(0),
+              padding: WidgetStateProperty.all(
                 const EdgeInsets.all(0),
               ),
             ),
@@ -192,7 +193,7 @@ class RedirectToABS extends StatelessWidget {
               // open the github page
               // ignore: avoid_print
               print('Opening the github page');
-              await _launchUrl(
+              await handleLaunchUrl(
                 Uri.parse(
                   'https://www.audiobookshelf.org',
                 ),
@@ -204,16 +205,5 @@ class RedirectToABS extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-Future<void> _launchUrl(Uri url) async {
-  if (!await launchUrl(
-    url,
-    mode: LaunchMode.platformDefault,
-    webOnlyWindowName: '_blank',
-  )) {
-    // throw Exception('Could not launch $url');
-    debugPrint('Could not launch $url');
   }
 }

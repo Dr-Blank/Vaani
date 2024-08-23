@@ -22,7 +22,7 @@ class Routes {
     name: 'libraryItem',
   );
 
-  // settings
+  // Local settings
   static const settings = _SimpleRoute(
     pathName: 'config',
     name: 'settings',
@@ -55,6 +55,18 @@ class Routes {
     pathName: 'browser',
     name: 'libraryBrowser',
     // parentRoute: library,
+  );
+
+  // you page for the user
+  static const you = _SimpleRoute(
+    pathName: 'you',
+    name: 'you',
+  );
+
+  // user management
+  static const userManagement = _SimpleRoute(
+    pathName: 'users',
+    name: 'userManagement',
   );
 }
 
