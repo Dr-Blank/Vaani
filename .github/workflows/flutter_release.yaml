@@ -53,6 +53,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: build/app/outputs/flutter-apk/app-release.apk
-          name: Release ${{ github.ref }}
+          name: ${{ github.ref_name }}
           tag: ${{ github.ref }}
           # body: ${{ steps.generate_release_notes.outputs.notes }}
