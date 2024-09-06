@@ -39,6 +39,23 @@ class HomePage extends HookConsumerWidget {
       body: Container(
         child: views.when(
           data: (data) {
+            if (data.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('No shelves to display'),
+                    // try again button
+                    ElevatedButton(
+                      onPressed: () {
+                        ref.invalidate(personalizedViewProvider);
+                      },
+                      child: const Text('Try again'),
+                    ),
+                  ],
+                ),
+              );
+            }
             final shelvesToDisplay = data
                 // .where((element) => !element.id.contains('discover'))
                 .map((shelf) {

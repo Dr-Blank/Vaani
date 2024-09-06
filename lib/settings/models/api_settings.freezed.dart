@@ -24,8 +24,12 @@ mixin _$ApiSettings {
   AuthenticatedUser? get activeUser => throw _privateConstructorUsedError;
   String? get activeLibraryId => throw _privateConstructorUsedError;
 
+  /// Serializes this ApiSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ApiSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ApiSettingsCopyWith<ApiSettings> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -55,6 +59,8 @@ class _$ApiSettingsCopyWithImpl<$Res, $Val extends ApiSettings>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ApiSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -78,6 +84,8 @@ class _$ApiSettingsCopyWithImpl<$Res, $Val extends ApiSettings>
     ) as $Val);
   }
 
+  /// Create a copy of ApiSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AudiobookShelfServerCopyWith<$Res>? get activeServer {
@@ -90,6 +98,8 @@ class _$ApiSettingsCopyWithImpl<$Res, $Val extends ApiSettings>
     });
   }
 
+  /// Create a copy of ApiSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AuthenticatedUserCopyWith<$Res>? get activeUser {
@@ -130,6 +140,8 @@ class __$$ApiSettingsImplCopyWithImpl<$Res>
       _$ApiSettingsImpl _value, $Res Function(_$ApiSettingsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ApiSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -188,12 +200,14 @@ class _$ApiSettingsImpl implements _ApiSettings {
                 other.activeLibraryId == activeLibraryId));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, activeServer, activeUser, activeLibraryId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ApiSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ApiSettingsImplCopyWith<_$ApiSettingsImpl> get copyWith =>
@@ -222,8 +236,11 @@ abstract class _ApiSettings implements ApiSettings {
   AuthenticatedUser? get activeUser;
   @override
   String? get activeLibraryId;
+
+  /// Create a copy of ApiSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ApiSettingsImplCopyWith<_$ApiSettingsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

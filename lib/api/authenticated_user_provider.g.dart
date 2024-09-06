@@ -6,7 +6,7 @@ part of 'authenticated_user_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authenticatedUserHash() => r'8578d7fda1755ecacce6853076da4149e4ebe3e7';
+String _$authenticatedUserHash() => r'308f19b33ae04af6340fb83167fa64aa23400a09';
 
 /// provides with a set of authenticated users
 ///

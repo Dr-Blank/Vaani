@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
@@ -9,6 +10,12 @@ import 'package:vaani/db/cache_manager.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
 
 part 'api_provider.g.dart';
+
+// TODO: workaround for https://github.com/rrousselGit/riverpod/issues/3718
+typedef ResponseErrorHandler = void Function(
+  Response response, [
+  Object? error,
+]);
 
 final _logger = Logger('api_provider');
 
@@ -52,25 +59,33 @@ AudiobookshelfApi authenticatedApi(AuthenticatedApiRef ref) {
 /// ping the server to check if it is reachable
 @riverpod
 FutureOr<bool> isServerAlive(IsServerAliveRef ref, String address) async {
-  // return (await ref.watch(audiobookshelfApiProvider).server.ping()) ?? false;
-  // if address not starts with http or https, add https
-
-  // !remove this line
-  // return true;
-
   if (address.isEmpty) {
     return false;
   }
-  if (!address.startsWith('http') && !address.startsWith('https')) {
-    address = 'https://$address';
-  }
 
-  // check url is valid
-  if (!Uri.parse(address).isAbsolute) {
+  try {
+    return await AudiobookshelfApi(baseUrl: makeBaseUrl(address))
+            .server
+            .ping() ??
+        false;
+  } catch (e) {
     return false;
   }
-  return await AudiobookshelfApi(baseUrl: Uri.parse(address)).server.ping() ??
-      false;
+}
+
+/// fetch status of server
+@riverpod
+FutureOr<ServerStatusResponse?> serverStatus(
+  ServerStatusRef ref,
+  Uri baseUrl, [
+  ResponseErrorHandler? responseErrorHandler,
+]) async {
+  _logger.fine('fetching server status: $baseUrl');
+  final api = ref.watch(audiobookshelfApiProvider(baseUrl));
+  final res =
+      await api.server.status(responseErrorHandler: responseErrorHandler);
+  _logger.fine('server status: $res');
+  return res;
 }
 
 /// fetch the personalized view
@@ -97,13 +112,18 @@ class PersonalizedView extends _$PersonalizedView {
         ) ??
         await apiResponseCacheManager.getFileFromCache(key);
     if (cachedRes != null) {
-      final resJson = jsonDecode(await cachedRes.file.readAsString()) as List;
-      final res = [
-        for (final item in resJson)
-          Shelf.fromJson(item as Map<String, dynamic>),
-      ];
-      _logger.fine('reading from cache: $cachedRes');
-      yield res;
+      _logger.fine('reading from cache: $cachedRes for key: $key');
+      try {
+        final resJson = jsonDecode(await cachedRes.file.readAsString()) as List;
+        final res = [
+          for (final item in resJson)
+            Shelf.fromJson(item as Map<String, dynamic>),
+        ];
+        _logger.fine('successfully read from cache key: $key');
+        yield res;
+      } catch (e) {
+        _logger.warning('error reading from cache: $e\n$cachedRes');
+      }
     }
 
     // ! exagerated delay
@@ -112,14 +132,20 @@ class PersonalizedView extends _$PersonalizedView {
         .getPersonalized(libraryId: apiSettings.activeLibraryId!);
     // debugPrint('personalizedView: ${res!.map((e) => e).toSet()}');
     // save to cache
-    final newFile = await apiResponseCacheManager.putFile(
-      key,
-      utf8.encode(jsonEncode(res)),
-      fileExtension: 'json',
-      key: key,
-    );
-    _logger.fine('writing to cache: $newFile');
-    yield res!;
+    if (res != null) {
+      final newFile = await apiResponseCacheManager.putFile(
+        key,
+        utf8.encode(jsonEncode(res)),
+        fileExtension: 'json',
+        key: key,
+      );
+      _logger.fine('writing to cache: $newFile');
+      yield res;
+    } else {
+      _logger.warning('failed to fetch personalized view');
+      yield [];
+    }
+    
   }
 
   // method to force refresh the view and ignore the cache

@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/api/api_provider.dart';
 import 'package:vaani/api/authenticated_user_provider.dart';
 import 'package:vaani/api/server_provider.dart';
+import 'package:vaani/models/error_response.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
 import 'package:vaani/settings/models/models.dart' as model;
@@ -227,7 +228,7 @@ class ServerManagerPage extends HookConsumerWidget {
                     if (formKey.currentState!.validate()) {
                       try {
                         final newServer = model.AudiobookShelfServer(
-                          serverUrl: Uri.parse(serverURIController.text),
+                          serverUrl: makeBaseUrl(serverURIController.text),
                         );
                         ref
                             .read(audiobookShelfServerProvider.notifier)
@@ -285,12 +286,16 @@ class _AddUserDialog extends HookConsumerWidget {
 
     final formKey = GlobalKey<FormState>();
 
+    final serverErrorResponse = ErrorResponse();
+
     /// Login to the server and save the user
     Future<model.AuthenticatedUser?> loginAndSave() async {
       model.AuthenticatedUser? authenticatedUser;
       if (isMethodAuth.value) {
         api.token = authTokensController.text;
-        final success = await api.misc.authorize();
+        final success = await api.misc.authorize(
+          responseErrorHandler: serverErrorResponse.storeError,
+        );
         if (success != null) {
           authenticatedUser = model.AuthenticatedUser(
             server: server,
@@ -302,7 +307,11 @@ class _AddUserDialog extends HookConsumerWidget {
       } else {
         final username = usernameController.text;
         final password = passwordController.text;
-        final success = await api.login(username: username, password: password);
+        final success = await api.login(
+          username: username,
+          password: password,
+          responseErrorHandler: serverErrorResponse.storeError,
+        );
         if (success != null) {
           authenticatedUser = model.AuthenticatedUser(
             server: server,
@@ -317,8 +326,10 @@ class _AddUserDialog extends HookConsumerWidget {
         ref.read(authenticatedUserProvider.notifier).addUser(authenticatedUser);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Login failed. Please check your credentials.'),
+          SnackBar(
+            content: Text(
+              'Login failed. Got response: ${serverErrorResponse.response.body} (${serverErrorResponse.response.statusCode})',
+            ),
           ),
         );
       }
@@ -326,7 +337,23 @@ class _AddUserDialog extends HookConsumerWidget {
     }
 
     return AlertDialog(
-      title: const Text('Add User'),
+      // title: Text('Add User for ${server.serverUrl}'),
+      title: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(
+              text: 'Add User for ',
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            TextSpan(
+              text: server.serverUrl.toString(),
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
+          ],
+        ),
+      ),
       content: Form(
         key: formKey,
         child: Column(

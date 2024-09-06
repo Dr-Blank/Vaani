@@ -22,8 +22,12 @@ AudiobookShelfServer _$AudiobookShelfServerFromJson(Map<String, dynamic> json) {
 mixin _$AudiobookShelfServer {
   Uri get serverUrl => throw _privateConstructorUsedError;
 
+  /// Serializes this AudiobookShelfServer to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AudiobookShelfServer
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AudiobookShelfServerCopyWith<AudiobookShelfServer> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -48,6 +52,8 @@ class _$AudiobookShelfServerCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AudiobookShelfServer
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -81,6 +87,8 @@ class __$$AudiobookShelfServerImplCopyWithImpl<$Res>
       $Res Function(_$AudiobookShelfServerImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AudiobookShelfServer
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -120,11 +128,13 @@ class _$AudiobookShelfServerImpl implements _AudiobookShelfServer {
                 other.serverUrl == serverUrl));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, serverUrl);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AudiobookShelfServer
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AudiobookShelfServerImplCopyWith<_$AudiobookShelfServerImpl>
@@ -149,8 +159,11 @@ abstract class _AudiobookShelfServer implements AudiobookShelfServer {
 
   @override
   Uri get serverUrl;
+
+  /// Create a copy of AudiobookShelfServer
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AudiobookShelfServerImplCopyWith<_$AudiobookShelfServerImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

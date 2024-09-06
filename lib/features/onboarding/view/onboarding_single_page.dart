@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/api/api_provider.dart';
-import 'package:vaani/api/authenticated_user_provider.dart';
-import 'package:vaani/api/server_provider.dart';
 import 'package:vaani/features/onboarding/view/user_login.dart';
-import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
-import 'package:vaani/settings/models/models.dart' as model;
 import 'package:vaani/shared/utils.dart';
 import 'package:vaani/shared/widgets/add_new_server.dart';
 
@@ -26,80 +21,22 @@ class OnboardingSinglePage extends HookConsumerWidget {
     );
     var audiobookshelfUri = makeBaseUrl(serverUriController.text);
 
-    final api = ref.watch(audiobookshelfApiProvider(audiobookshelfUri));
+    final canUserLogin = useState(apiSettings.activeServer != null);
 
-    final isUserLoginAvailable = useState(apiSettings.activeServer != null);
-
-    final usernameController = useTextEditingController();
-    final passwordController = useTextEditingController();
-
-    void addServer() {
-      var newServer = serverUriController.text.isEmpty
-          ? null
-          : model.AudiobookShelfServer(
-              serverUrl: Uri.parse(serverUriController.text),
-            );
-      try {
-        // add the server to the list of servers
-        if (newServer != null) {
-          ref.read(audiobookShelfServerProvider.notifier).addServer(
-                newServer,
-              );
-        }
-        // else remove the server from the list of servers
-        else if (apiSettings.activeServer != null) {
-          ref
-              .read(audiobookShelfServerProvider.notifier)
-              .removeServer(apiSettings.activeServer!);
-        }
-      } on ServerAlreadyExistsException catch (e) {
-        newServer = e.server;
-      } finally {
-        ref.read(apiSettingsProvider.notifier).updateState(
-              apiSettings.copyWith(
-                activeServer: newServer,
-              ),
-            );
-      }
-    }
-
-    /// Login to the server and save the user
-    Future<void> loginAndSave() async {
-      final username = usernameController.text;
-      final password = passwordController.text;
-      final success = await api.login(username: username, password: password);
-      if (success != null) {
-        // save the server
-        addServer();
-        var authenticatedUser = model.AuthenticatedUser(
-          server: model.AudiobookShelfServer(
-            serverUrl: Uri.parse(serverUriController.text),
-          ),
-          id: success.user.id,
-          password: password,
-          username: username,
-          authToken: api.token!,
-        );
-        // add the user to the list of users
-        ref.read(authenticatedUserProvider.notifier).addUser(authenticatedUser);
-
-        // set the active user
-        ref.read(apiSettingsProvider.notifier).updateState(
-              apiSettings.copyWith(
-                activeUser: authenticatedUser,
-              ),
-            );
-
-        // redirect to the library page
-        GoRouter.of(context).goNamed(Routes.home.name);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Login failed. Please check your credentials.'),
-          ),
-        );
-        // give focus back to the username field
-      }
+    fadeSlideTransitionBuilder(
+      Widget child,
+      Animation<double> animation,
+    ) {
+      return FadeTransition(
+        opacity: animation,
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, 0.3),
+            end: const Offset(0, 0),
+          ).animate(animation),
+          child: child,
+        ),
+      );
     }
 
     return Scaffold(
@@ -118,9 +55,20 @@ class OnboardingSinglePage extends HookConsumerWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Please enter the URL of your AudiobookShelf Server',
-              style: Theme.of(context).textTheme.bodyMedium,
+            child: AnimatedSwitcher(
+              duration: 500.ms,
+              transitionBuilder: fadeSlideTransitionBuilder,
+              child: canUserLogin.value
+                  ? Text(
+                      'Server connected, please login',
+                      key: const ValueKey('connected'),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )
+                  : Text(
+                      'Please enter the URL of your AudiobookShelf Server',
+                      key: const ValueKey('not_connected'),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
             ),
           ),
           Padding(
@@ -129,30 +77,16 @@ class OnboardingSinglePage extends HookConsumerWidget {
               controller: serverUriController,
               allowEmpty: true,
               onPressed: () {
-                isUserLoginAvailable.value =
-                    serverUriController.text.isNotEmpty;
+                canUserLogin.value = serverUriController.text.isNotEmpty;
               },
             ),
           ),
           AnimatedSwitcher(
             duration: 500.ms,
-            transitionBuilder: (child, animation) {
-              return FadeTransition(
-                opacity: animation,
-                child: SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(0, 0.3),
-                    end: const Offset(0, 0),
-                  ).animate(animation),
-                  child: child,
-                ),
-              );
-            },
-            child: isUserLoginAvailable.value
-                ? UserLogin(
-                    passwordController: passwordController,
-                    usernameController: usernameController,
-                    onPressed: loginAndSave,
+            transitionBuilder: fadeSlideTransitionBuilder,
+            child: canUserLogin.value
+                ? UserLoginWidget(
+                    server: audiobookshelfUri,
                   )
                 // ).animate().fade(duration: 600.ms).slideY(begin: 0.3, end: 0)
                 : const RedirectToABS().animate().fadeIn().slideY(

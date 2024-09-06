@@ -47,39 +47,7 @@ class AddNewServer extends HookConsumerWidget {
         ),
         border: const OutlineInputBorder(),
         prefixText: 'https://',
-        prefixIcon: Tooltip(
-          message: newServerURI.text.isEmpty
-              ? 'Server Status'
-              : isServerAliveValue
-                  ? 'Server connected'
-                  : 'Cannot connect to server',
-          child: newServerURI.text.isEmpty
-              ? Icon(
-                  Icons.cloud_outlined,
-                  color: Theme.of(context).colorScheme.onSurface,
-                )
-              : isServerAlive.when(
-                  data: (value) {
-                    return value
-                        ? Icon(
-                            Icons.cloud_done_outlined,
-                            color: Theme.of(context).colorScheme.primary,
-                          )
-                        : Icon(
-                            Icons.cloud_off_outlined,
-                            color: Theme.of(context).colorScheme.error,
-                          );
-                  },
-                  loading: () => Transform.scale(
-                    scale: 0.5,
-                    child: const CircularProgressIndicator(),
-                  ),
-                  error: (error, _) => Icon(
-                    Icons.cloud_off_outlined,
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                ),
-        ),
+        prefixIcon: ServerAliveIcon(server: Uri.parse(newServerURI.text)),
 
         // add server button
         suffixIcon: onPressed == null
@@ -103,5 +71,58 @@ class AddNewServer extends HookConsumerWidget {
       ),
     );
     // add to add to existing servers
+  }
+}
+
+class ServerAliveIcon extends HookConsumerWidget {
+  const ServerAliveIcon({
+    super.key,
+    required this.server,
+  });
+
+  final Uri server;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isServerAlive = ref.watch(isServerAliveProvider(server.toString()));
+    bool isServerAliveValue = isServerAlive.when(
+      data: (value) => value,
+      loading: () => false,
+      error: (error, _) => false,
+    );
+
+    return Tooltip(
+      message: server.toString().isEmpty
+          ? 'Server Status'
+          : isServerAliveValue
+              ? 'Server connected'
+              : 'Cannot connect to server',
+      child: server.toString().isEmpty
+          ? Icon(
+              Icons.cloud_outlined,
+              color: Theme.of(context).colorScheme.onSurface,
+            )
+          : isServerAlive.when(
+              data: (value) {
+                return value
+                    ? Icon(
+                        Icons.cloud_done_outlined,
+                        color: Theme.of(context).colorScheme.primary,
+                      )
+                    : Icon(
+                        Icons.cloud_off_outlined,
+                        color: Theme.of(context).colorScheme.error,
+                      );
+              },
+              loading: () => Transform.scale(
+                scale: 0.5,
+                child: const CircularProgressIndicator(),
+              ),
+              error: (error, _) => Icon(
+                Icons.cloud_off_outlined,
+                color: Theme.of(context).colorScheme.error,
+              ),
+            ),
+    );
   }
 }

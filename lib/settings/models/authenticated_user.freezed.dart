@@ -26,8 +26,12 @@ mixin _$AuthenticatedUser {
   String? get username => throw _privateConstructorUsedError;
   String? get password => throw _privateConstructorUsedError;
 
+  /// Serializes this AuthenticatedUser to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AuthenticatedUser
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AuthenticatedUserCopyWith<AuthenticatedUser> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -58,6 +62,8 @@ class _$AuthenticatedUserCopyWithImpl<$Res, $Val extends AuthenticatedUser>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AuthenticatedUser
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -91,6 +97,8 @@ class _$AuthenticatedUserCopyWithImpl<$Res, $Val extends AuthenticatedUser>
     ) as $Val);
   }
 
+  /// Create a copy of AuthenticatedUser
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AudiobookShelfServerCopyWith<$Res> get server {
@@ -127,6 +135,8 @@ class __$$AuthenticatedUserImplCopyWithImpl<$Res>
       $Res Function(_$AuthenticatedUserImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AuthenticatedUser
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -205,12 +215,14 @@ class _$AuthenticatedUserImpl implements _AuthenticatedUser {
                 other.password == password));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, server, authToken, id, username, password);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AuthenticatedUser
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthenticatedUserImplCopyWith<_$AuthenticatedUserImpl> get copyWith =>
@@ -246,8 +258,11 @@ abstract class _AuthenticatedUser implements AuthenticatedUser {
   String? get username;
   @override
   String? get password;
+
+  /// Create a copy of AuthenticatedUser
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AuthenticatedUserImplCopyWith<_$AuthenticatedUserImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

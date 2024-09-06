@@ -52,8 +52,16 @@ class AuthenticatedUser extends _$AuthenticatedUser {
     _logger.fine('writing state to box: $state');
   }
 
-  void addUser(model.AuthenticatedUser user) {
+  void addUser(model.AuthenticatedUser user, {bool setActive = false}) {
     state = state..add(user);
+    if (setActive) {
+      final apiSettings = ref.read(apiSettingsProvider);
+      ref.read(apiSettingsProvider.notifier).updateState(
+            apiSettings.copyWith(
+              activeUser: user,
+            ),
+          );
+    }
   }
 
   void removeUsersOfServer(AudiobookShelfServer registeredServer) {

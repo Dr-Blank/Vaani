@@ -24,8 +24,12 @@ mixin _$AppSettings {
   PlayerSettings get playerSettings => throw _privateConstructorUsedError;
   DownloadSettings get downloadSettings => throw _privateConstructorUsedError;
 
+  /// Serializes this AppSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AppSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AppSettingsCopyWith<AppSettings> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -56,6 +60,8 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AppSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -79,6 +85,8 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
     ) as $Val);
   }
 
+  /// Create a copy of AppSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ThemeSettingsCopyWith<$Res> get themeSettings {
@@ -87,6 +95,8 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
     });
   }
 
+  /// Create a copy of AppSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PlayerSettingsCopyWith<$Res> get playerSettings {
@@ -95,6 +105,8 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
     });
   }
 
+  /// Create a copy of AppSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DownloadSettingsCopyWith<$Res> get downloadSettings {
@@ -133,6 +145,8 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
       _$AppSettingsImpl _value, $Res Function(_$AppSettingsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AppSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -196,12 +210,14 @@ class _$AppSettingsImpl implements _AppSettings {
                 other.downloadSettings == downloadSettings));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, themeSettings, playerSettings, downloadSettings);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AppSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AppSettingsImplCopyWith<_$AppSettingsImpl> get copyWith =>
@@ -230,8 +246,11 @@ abstract class _AppSettings implements AppSettings {
   PlayerSettings get playerSettings;
   @override
   DownloadSettings get downloadSettings;
+
+  /// Create a copy of AppSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AppSettingsImplCopyWith<_$AppSettingsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -247,8 +266,12 @@ mixin _$ThemeSettings {
   bool get useCurrentPlayerThemeThroughoutApp =>
       throw _privateConstructorUsedError;
 
+  /// Serializes this ThemeSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ThemeSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ThemeSettingsCopyWith<ThemeSettings> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -275,6 +298,8 @@ class _$ThemeSettingsCopyWithImpl<$Res, $Val extends ThemeSettings>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ThemeSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -322,6 +347,8 @@ class __$$ThemeSettingsImplCopyWithImpl<$Res>
       _$ThemeSettingsImpl _value, $Res Function(_$ThemeSettingsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ThemeSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -390,12 +417,14 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
                     useCurrentPlayerThemeThroughoutApp));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, isDarkMode,
       useMaterialThemeOnItemPage, useCurrentPlayerThemeThroughoutApp);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ThemeSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ThemeSettingsImplCopyWith<_$ThemeSettingsImpl> get copyWith =>
@@ -424,8 +453,11 @@ abstract class _ThemeSettings implements ThemeSettings {
   bool get useMaterialThemeOnItemPage;
   @override
   bool get useCurrentPlayerThemeThroughoutApp;
+
+  /// Create a copy of ThemeSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ThemeSettingsImplCopyWith<_$ThemeSettingsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -447,8 +479,12 @@ mixin _$PlayerSettings {
       throw _privateConstructorUsedError;
   Duration get playbackReportInterval => throw _privateConstructorUsedError;
 
+  /// Serializes this PlayerSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PlayerSettingsCopyWith<PlayerSettings> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -483,6 +519,8 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -526,6 +564,8 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
     ) as $Val);
   }
 
+  /// Create a copy of PlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MinimizedPlayerSettingsCopyWith<$Res> get miniPlayerSettings {
@@ -535,6 +575,8 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
     });
   }
 
+  /// Create a copy of PlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ExpandedPlayerSettingsCopyWith<$Res> get expandedPlayerSettings {
@@ -544,6 +586,8 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
     });
   }
 
+  /// Create a copy of PlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $SleepTimerSettingsCopyWith<$Res> get sleepTimerSettings {
@@ -587,6 +631,8 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
       _$PlayerSettingsImpl _value, $Res Function(_$PlayerSettingsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -701,7 +747,7 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
                 other.playbackReportInterval == playbackReportInterval));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -713,7 +759,9 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
       sleepTimerSettings,
       playbackReportInterval);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PlayerSettingsImplCopyWith<_$PlayerSettingsImpl> get copyWith =>
@@ -755,8 +803,11 @@ abstract class _PlayerSettings implements PlayerSettings {
   SleepTimerSettings get sleepTimerSettings;
   @override
   Duration get playbackReportInterval;
+
+  /// Create a copy of PlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PlayerSettingsImplCopyWith<_$PlayerSettingsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -771,8 +822,12 @@ mixin _$ExpandedPlayerSettings {
   bool get showTotalProgress => throw _privateConstructorUsedError;
   bool get showChapterProgress => throw _privateConstructorUsedError;
 
+  /// Serializes this ExpandedPlayerSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ExpandedPlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ExpandedPlayerSettingsCopyWith<ExpandedPlayerSettings> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -797,6 +852,8 @@ class _$ExpandedPlayerSettingsCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ExpandedPlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -838,6 +895,8 @@ class __$$ExpandedPlayerSettingsImplCopyWithImpl<$Res>
       $Res Function(_$ExpandedPlayerSettingsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ExpandedPlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -889,12 +948,14 @@ class _$ExpandedPlayerSettingsImpl implements _ExpandedPlayerSettings {
                 other.showChapterProgress == showChapterProgress));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, showTotalProgress, showChapterProgress);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ExpandedPlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ExpandedPlayerSettingsImplCopyWith<_$ExpandedPlayerSettingsImpl>
@@ -921,8 +982,11 @@ abstract class _ExpandedPlayerSettings implements ExpandedPlayerSettings {
   bool get showTotalProgress;
   @override
   bool get showChapterProgress;
+
+  /// Create a copy of ExpandedPlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ExpandedPlayerSettingsImplCopyWith<_$ExpandedPlayerSettingsImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -936,8 +1000,12 @@ MinimizedPlayerSettings _$MinimizedPlayerSettingsFromJson(
 mixin _$MinimizedPlayerSettings {
   bool get useChapterInfo => throw _privateConstructorUsedError;
 
+  /// Serializes this MinimizedPlayerSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MinimizedPlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MinimizedPlayerSettingsCopyWith<MinimizedPlayerSettings> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -962,6 +1030,8 @@ class _$MinimizedPlayerSettingsCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MinimizedPlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -998,6 +1068,8 @@ class __$$MinimizedPlayerSettingsImplCopyWithImpl<$Res>
       $Res Function(_$MinimizedPlayerSettingsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MinimizedPlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1038,11 +1110,13 @@ class _$MinimizedPlayerSettingsImpl implements _MinimizedPlayerSettings {
                 other.useChapterInfo == useChapterInfo));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, useChapterInfo);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MinimizedPlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MinimizedPlayerSettingsImplCopyWith<_$MinimizedPlayerSettingsImpl>
@@ -1066,8 +1140,11 @@ abstract class _MinimizedPlayerSettings implements MinimizedPlayerSettings {
 
   @override
   bool get useChapterInfo;
+
+  /// Create a copy of MinimizedPlayerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MinimizedPlayerSettingsImplCopyWith<_$MinimizedPlayerSettingsImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1109,8 +1186,12 @@ mixin _$SleepTimerSettings {
   Duration get autoTurnOnTime => throw _privateConstructorUsedError;
   Duration get autoTurnOffTime => throw _privateConstructorUsedError;
 
+  /// Serializes this SleepTimerSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SleepTimerSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SleepTimerSettingsCopyWith<SleepTimerSettings> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1147,6 +1228,8 @@ class _$SleepTimerSettingsCopyWithImpl<$Res, $Val extends SleepTimerSettings>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SleepTimerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1253,6 +1336,8 @@ class __$$SleepTimerSettingsImplCopyWithImpl<$Res>
       $Res Function(_$SleepTimerSettingsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SleepTimerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1456,7 +1541,7 @@ class _$SleepTimerSettingsImpl implements _SleepTimerSettings {
                 other.autoTurnOffTime == autoTurnOffTime));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -1474,7 +1559,9 @@ class _$SleepTimerSettingsImpl implements _SleepTimerSettings {
       autoTurnOnTime,
       autoTurnOffTime);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SleepTimerSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SleepTimerSettingsImplCopyWith<_$SleepTimerSettingsImpl> get copyWith =>
@@ -1512,10 +1599,10 @@ abstract class _SleepTimerSettings implements SleepTimerSettings {
   Duration get defaultDuration;
   @override
   SleepTimerShakeSenseMode get shakeSenseMode;
-  @override
 
   /// the duration in which the shake is detected before the end of the timer and after the timer ends
   /// only used if [shakeSenseMode] is [SleepTimerShakeSenseMode.nearEnds]
+  @override
   Duration get shakeSenseDuration;
   @override
   bool get vibrateWhenReset;
@@ -1525,32 +1612,35 @@ abstract class _SleepTimerSettings implements SleepTimerSettings {
   bool get fadeOutAudio;
   @override
   double get shakeDetectThreshold;
-  @override
 
   /// if true, the player will automatically rewind the audio when the sleep timer is stopped
-  bool get autoRewindWhenStopped;
   @override
+  bool get autoRewindWhenStopped;
 
   /// the key is the duration in minutes
-  Map<int, Duration> get autoRewindDurations;
   @override
+  Map<int, Duration> get autoRewindDurations;
 
   /// auto turn on timer settings
-  bool get autoTurnOnTimer;
   @override
+  bool get autoTurnOnTimer;
 
   /// always auto turn on timer settings or during specific times
-  bool get alwaysAutoTurnOnTimer;
   @override
+  bool get alwaysAutoTurnOnTimer;
 
   /// auto timer settings, only used if [alwaysAutoTurnOnTimer] is false
   ///
   /// duration is the time from 00:00
+  @override
   Duration get autoTurnOnTime;
   @override
   Duration get autoTurnOffTime;
+
+  /// Create a copy of SleepTimerSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SleepTimerSettingsImplCopyWith<_$SleepTimerSettingsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1568,8 +1658,12 @@ mixin _$DownloadSettings {
   int get maxConcurrentByHost => throw _privateConstructorUsedError;
   int get maxConcurrentByGroup => throw _privateConstructorUsedError;
 
+  /// Serializes this DownloadSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DownloadSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DownloadSettingsCopyWith<DownloadSettings> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1599,6 +1693,8 @@ class _$DownloadSettingsCopyWithImpl<$Res, $Val extends DownloadSettings>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DownloadSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1663,6 +1759,8 @@ class __$$DownloadSettingsImplCopyWithImpl<$Res>
       $Res Function(_$DownloadSettingsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DownloadSettings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1758,12 +1856,14 @@ class _$DownloadSettingsImpl implements _DownloadSettings {
                 other.maxConcurrentByGroup == maxConcurrentByGroup));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, requiresWiFi, retries,
       allowPause, maxConcurrent, maxConcurrentByHost, maxConcurrentByGroup);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DownloadSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DownloadSettingsImplCopyWith<_$DownloadSettingsImpl> get copyWith =>
@@ -1802,8 +1902,11 @@ abstract class _DownloadSettings implements DownloadSettings {
   int get maxConcurrentByHost;
   @override
   int get maxConcurrentByGroup;
+
+  /// Create a copy of DownloadSettings
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DownloadSettingsImplCopyWith<_$DownloadSettingsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

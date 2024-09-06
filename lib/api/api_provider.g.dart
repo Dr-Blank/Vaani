@@ -187,7 +187,7 @@ final authenticatedApiProvider = Provider<AudiobookshelfApi>.internal(
 );
 
 typedef AuthenticatedApiRef = ProviderRef<AudiobookshelfApi>;
-String _$isServerAliveHash() => r'f839350795fbdeb0ca1d5f0c84a9065cac4dd40a';
+String _$isServerAliveHash() => r'6ff90b6e0febd2cd4a4d3a5209a59afc778cd3b6';
 
 /// ping the server to check if it is reachable
 ///
@@ -327,6 +327,166 @@ class _IsServerAliveProviderElement
   String get address => (origin as IsServerAliveProvider).address;
 }
 
+String _$serverStatusHash() => r'2739906a1862d09b098588ebd16749a09032ee99';
+
+/// fetch status of server
+///
+/// Copied from [serverStatus].
+@ProviderFor(serverStatus)
+const serverStatusProvider = ServerStatusFamily();
+
+/// fetch status of server
+///
+/// Copied from [serverStatus].
+class ServerStatusFamily extends Family<AsyncValue<ServerStatusResponse?>> {
+  /// fetch status of server
+  ///
+  /// Copied from [serverStatus].
+  const ServerStatusFamily();
+
+  /// fetch status of server
+  ///
+  /// Copied from [serverStatus].
+  ServerStatusProvider call(
+    Uri baseUrl, [
+    void Function(Response, [Object?])? responseErrorHandler,
+  ]) {
+    return ServerStatusProvider(
+      baseUrl,
+      responseErrorHandler,
+    );
+  }
+
+  @override
+  ServerStatusProvider getProviderOverride(
+    covariant ServerStatusProvider provider,
+  ) {
+    return call(
+      provider.baseUrl,
+      provider.responseErrorHandler,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'serverStatusProvider';
+}
+
+/// fetch status of server
+///
+/// Copied from [serverStatus].
+class ServerStatusProvider
+    extends AutoDisposeFutureProvider<ServerStatusResponse?> {
+  /// fetch status of server
+  ///
+  /// Copied from [serverStatus].
+  ServerStatusProvider(
+    Uri baseUrl, [
+    void Function(Response, [Object?])? responseErrorHandler,
+  ]) : this._internal(
+          (ref) => serverStatus(
+            ref as ServerStatusRef,
+            baseUrl,
+            responseErrorHandler,
+          ),
+          from: serverStatusProvider,
+          name: r'serverStatusProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$serverStatusHash,
+          dependencies: ServerStatusFamily._dependencies,
+          allTransitiveDependencies:
+              ServerStatusFamily._allTransitiveDependencies,
+          baseUrl: baseUrl,
+          responseErrorHandler: responseErrorHandler,
+        );
+
+  ServerStatusProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.baseUrl,
+    required this.responseErrorHandler,
+  }) : super.internal();
+
+  final Uri baseUrl;
+  final void Function(Response, [Object?])? responseErrorHandler;
+
+  @override
+  Override overrideWith(
+    FutureOr<ServerStatusResponse?> Function(ServerStatusRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ServerStatusProvider._internal(
+        (ref) => create(ref as ServerStatusRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        baseUrl: baseUrl,
+        responseErrorHandler: responseErrorHandler,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<ServerStatusResponse?> createElement() {
+    return _ServerStatusProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ServerStatusProvider &&
+        other.baseUrl == baseUrl &&
+        other.responseErrorHandler == responseErrorHandler;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, baseUrl.hashCode);
+    hash = _SystemHash.combine(hash, responseErrorHandler.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ServerStatusRef on AutoDisposeFutureProviderRef<ServerStatusResponse?> {
+  /// The parameter `baseUrl` of this provider.
+  Uri get baseUrl;
+
+  /// The parameter `responseErrorHandler` of this provider.
+  void Function(Response, [Object?])? get responseErrorHandler;
+}
+
+class _ServerStatusProviderElement
+    extends AutoDisposeFutureProviderElement<ServerStatusResponse?>
+    with ServerStatusRef {
+  _ServerStatusProviderElement(super.provider);
+
+  @override
+  Uri get baseUrl => (origin as ServerStatusProvider).baseUrl;
+  @override
+  void Function(Response, [Object?])? get responseErrorHandler =>
+      (origin as ServerStatusProvider).responseErrorHandler;
+}
+
 String _$fetchContinueListeningHash() =>
     r'f65fe3ac3a31b8ac074330525c5d2cc4b526802d';
 
@@ -361,7 +521,7 @@ final meProvider = AutoDisposeFutureProvider<User>.internal(
 );
 
 typedef MeRef = AutoDisposeFutureProviderRef<User>;
-String _$personalizedViewHash() => r'dada8d72845ffd516f731f88193941f7ebdd47ed';
+String _$personalizedViewHash() => r'4c392ece4650bdc36d7195a0ddb8810e8fe4caa9';
 
 /// fetch the personalized view
 ///

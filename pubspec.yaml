@@ -92,7 +92,7 @@ dev_dependencies:
     sdk: flutter
   freezed: ^2.5.2
   json_serializable: ^6.8.0
-  riverpod_generator: ^2.4.0
+  riverpod_generator: ^2.4.2
   riverpod_lint: ^2.3.10
 
 # For information on the generic Dart part of this file, see the

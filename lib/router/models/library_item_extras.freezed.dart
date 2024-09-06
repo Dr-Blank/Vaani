@@ -20,7 +20,9 @@ mixin _$LibraryItemExtras {
   String get heroTagSuffix => throw _privateConstructorUsedError;
   Uint8List? get coverImage => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LibraryItemExtras
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $LibraryItemExtrasCopyWith<LibraryItemExtras> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -44,6 +46,8 @@ class _$LibraryItemExtrasCopyWithImpl<$Res, $Val extends LibraryItemExtras>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of LibraryItemExtras
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -87,6 +91,8 @@ class __$$LibraryItemExtrasImplCopyWithImpl<$Res>
       $Res Function(_$LibraryItemExtrasImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LibraryItemExtras
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -146,7 +152,9 @@ class _$LibraryItemExtrasImpl implements _LibraryItemExtras {
   int get hashCode => Object.hash(runtimeType, book, heroTagSuffix,
       const DeepCollectionEquality().hash(coverImage));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LibraryItemExtras
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LibraryItemExtrasImplCopyWith<_$LibraryItemExtrasImpl> get copyWith =>
@@ -166,8 +174,11 @@ abstract class _LibraryItemExtras implements LibraryItemExtras {
   String get heroTagSuffix;
   @override
   Uint8List? get coverImage;
+
+  /// Create a copy of LibraryItemExtras
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LibraryItemExtrasImplCopyWith<_$LibraryItemExtrasImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
