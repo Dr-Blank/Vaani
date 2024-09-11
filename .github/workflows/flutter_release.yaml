@@ -16,6 +16,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Checkout shelfsdk
+        uses: actions/checkout@v3
+        with:
+          repository: Dr-Blank/shelfsdk
+          path: ./shelfsdk
+
       - name: Set Up Java
         uses: actions/setup-java@v3.12.0
         with:

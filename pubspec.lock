@@ -1105,11 +1105,9 @@ packages:
   shelfsdk:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: f5e7db74c2aa367179f5b369407f88848a020c24
-      url: "https://github.com/Dr-Blank/shelfsdk"
-    source: git
+      path: "../shelfsdk"
+      relative: true
+    source: path
     version: "1.0.0"
   shimmer:
     dependency: "direct main"
