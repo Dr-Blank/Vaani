@@ -199,7 +199,6 @@ class MyAppRouter {
     BuildContext context,
     GoRouterState state,
   ) {
-    // TODO: handle the open id callback
     // extract the code and state from the uri
     final code = state.uri.queryParameters['code'];
     final stateParam = state.uri.queryParameters['state'];

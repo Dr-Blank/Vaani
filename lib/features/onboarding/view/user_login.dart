@@ -101,8 +101,7 @@ class UserLoginMultipleAuth extends HookConsumerWidget {
     // will show choice chips for the available authentication methods
     // authToken method is always available
     final methodChoice = useState<AuthMethodChoice>(
-      // ! TODO revert to local when openID debugging is done
-      localAvailable ? AuthMethodChoice.openid : AuthMethodChoice.authToken,
+      localAvailable ? AuthMethodChoice.local : AuthMethodChoice.authToken,
     );
 
     final apiSettings = ref.watch(apiSettingsProvider);
