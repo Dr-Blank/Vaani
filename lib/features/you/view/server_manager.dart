@@ -286,7 +286,7 @@ class _AddUserDialog extends HookConsumerWidget {
 
     final formKey = GlobalKey<FormState>();
 
-    final serverErrorResponse = ErrorResponse();
+    final serverErrorResponse = ErrorResponseHandler();
 
     /// Login to the server and save the user
     Future<model.AuthenticatedUser?> loginAndSave() async {

@@ -46,7 +46,8 @@ class AddNewServer extends HookConsumerWidget {
           color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
         ),
         border: const OutlineInputBorder(),
-        prefixText: 'https://',
+        prefixText:
+            myController.text.startsWith(RegExp('https?://')) ? '' : 'https://',
         prefixIcon: ServerAliveIcon(server: Uri.parse(newServerURI.text)),
 
         // add server button

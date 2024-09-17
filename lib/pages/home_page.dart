@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/api/api_provider.dart';
-import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/router/router.dart';
+import 'package:vaani/settings/api_settings_provider.dart';
 
 import '../shared/widgets/shelves/home_shelf.dart';
 
@@ -11,10 +13,8 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(appSettingsProvider);
-    final api = ref.watch(authenticatedApiProvider);
-    final me = ref.watch(meProvider);
     final views = ref.watch(personalizedViewProvider);
+    final apiSettings = ref.watch(apiSettingsProvider);
     final scrollController = useScrollController();
     return Scaffold(
       appBar: AppBar(
@@ -83,6 +83,23 @@ class HomePage extends HookConsumerWidget {
           },
           loading: () => const HomePageSkeleton(),
           error: (error, stack) {
+            if (apiSettings.activeUser == null ||
+                apiSettings.activeServer == null) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Error: $error'),
+                    ElevatedButton(
+                      onPressed: () {
+                        GoRouter.of(context).goNamed(Routes.onboarding.name);
+                      },
+                      child: const Text('Go to login'),
+                    ),
+                  ],
+                ),
+              );
+            }
             return Text('Error: $error');
           },
         ),

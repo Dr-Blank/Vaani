@@ -7,8 +7,12 @@ part 'currently_playing_provider.g.dart';
 
 @riverpod
 BookExpanded? currentlyPlayingBook(CurrentlyPlayingBookRef ref) {
-  final player = ref.watch(audiobookPlayerProvider);
-  return player.book;
+  try {
+    final player = ref.watch(audiobookPlayerProvider);
+    return player.book;
+  } catch (e) {
+    return null;
+  }
 }
 
 /// provided the current chapter of the book being played

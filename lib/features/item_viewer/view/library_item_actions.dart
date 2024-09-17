@@ -82,11 +82,11 @@ class LibraryItemActions extends HookConsumerWidget {
                             Uri.parse(
                               currentServerUrl.toString() +
                                   (Routes.libraryItem.pathParamName != null
-                                      ? Routes.libraryItem.path.replaceAll(
+                                      ? Routes.libraryItem.fullPath.replaceAll(
                                           ':${Routes.libraryItem.pathParamName!}',
                                           item.id,
                                         )
-                                      : Routes.libraryItem.path),
+                                      : Routes.libraryItem.fullPath),
                             ),
                           );
                         },

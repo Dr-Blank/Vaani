@@ -76,15 +76,23 @@ class MyApp extends ConsumerWidget {
       routerConfig.goNamed(Routes.onboarding.name);
     }
 
-    return MaterialApp.router(
-      // debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ref.watch(appSettingsProvider).themeSettings.isDarkMode
-          ? ThemeMode.dark
-          : ThemeMode.light,
-      routerConfig: routerConfig,
-    );
+    try {
+      return MaterialApp.router(
+        // debugShowCheckedModeBanner: false,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: ref.watch(appSettingsProvider).themeSettings.isDarkMode
+            ? ThemeMode.dark
+            : ThemeMode.light,
+        routerConfig: routerConfig,
+      );
+    } catch (e) {
+      debugPrintStack(stackTrace: StackTrace.current, label: e.toString());
+      if (needOnboarding) {
+        routerConfig.goNamed(Routes.onboarding.name);
+      }
+      return const SizedBox.shrink();
+    }
   }
 }
 

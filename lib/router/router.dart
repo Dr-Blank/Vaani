@@ -5,6 +5,7 @@ import 'package:vaani/features/explore/view/explore_page.dart';
 import 'package:vaani/features/explore/view/search_result_page.dart';
 import 'package:vaani/features/item_viewer/view/library_item_page.dart';
 import 'package:vaani/features/library_browser/view/library_browser_page.dart';
+import 'package:vaani/features/onboarding/view/callback_page.dart';
 import 'package:vaani/features/onboarding/view/onboarding_single_page.dart';
 import 'package:vaani/features/you/view/server_manager.dart';
 import 'package:vaani/features/you/view/you_page.dart';
@@ -27,13 +28,30 @@ class MyAppRouter {
   const MyAppRouter();
 
   GoRouter get config => GoRouter(
-        initialLocation: Routes.home.path,
+        initialLocation: Routes.home.localPath,
+        debugLogDiagnostics: true,
         routes: [
           // sign in page
           GoRoute(
-            path: Routes.onboarding.path,
+            path: Routes.onboarding.localPath,
             name: Routes.onboarding.name,
             builder: (context, state) => const OnboardingSinglePage(),
+            routes: [
+              // open id callback
+              GoRoute(
+                path: Routes.openIDCallback.pathName,
+                name: Routes.openIDCallback.name,
+                pageBuilder: handleCallback,
+              ),
+            ],
+          ),
+          // callback for open id
+          // need to duplicate  because of https://github.com/flutter/flutter/issues/100624
+          GoRoute(
+            path: Routes.openIDCallback.localPath,
+            // name: Routes.openIDCallback.name,
+            // builder: handleCallback,
+            pageBuilder: handleCallback,
           ),
           // The main app shell
           StatefulShellRoute.indexedStack(
@@ -54,13 +72,13 @@ class MyAppRouter {
                 navigatorKey: sectionHomeNavigatorKey,
                 routes: <RouteBase>[
                   GoRoute(
-                    path: Routes.home.path,
+                    path: Routes.home.localPath,
                     name: Routes.home.name,
                     // builder: (context, state) => const HomePage(),
                     pageBuilder: defaultPageBuilder(const HomePage()),
                   ),
                   GoRoute(
-                    path: Routes.libraryItem.path,
+                    path: Routes.libraryItem.localPath,
                     name: Routes.libraryItem.name,
                     // builder: (context, state) {
                     //   final itemId = state
@@ -82,7 +100,7 @@ class MyAppRouter {
                   ),
                   // downloads page
                   GoRoute(
-                    path: Routes.downloads.path,
+                    path: Routes.downloads.localPath,
                     name: Routes.downloads.name,
                     pageBuilder: defaultPageBuilder(const DownloadsPage()),
                   ),
@@ -93,7 +111,7 @@ class MyAppRouter {
               StatefulShellBranch(
                 routes: <RouteBase>[
                   GoRoute(
-                    path: Routes.libraryBrowser.path,
+                    path: Routes.libraryBrowser.localPath,
                     name: Routes.libraryBrowser.name,
                     pageBuilder: defaultPageBuilder(const LibraryBrowserPage()),
                   ),
@@ -103,14 +121,14 @@ class MyAppRouter {
               StatefulShellBranch(
                 routes: <RouteBase>[
                   GoRoute(
-                    path: Routes.explore.path,
+                    path: Routes.explore.localPath,
                     name: Routes.explore.name,
                     // builder: (context, state) => const ExplorePage(),
                     pageBuilder: defaultPageBuilder(const ExplorePage()),
                   ),
                   // search page
                   GoRoute(
-                    path: Routes.search.path,
+                    path: Routes.search.localPath,
                     name: Routes.search.name,
                     // builder: (context, state) {
                     //   final libraryId = state
@@ -145,18 +163,18 @@ class MyAppRouter {
               StatefulShellBranch(
                 routes: <RouteBase>[
                   GoRoute(
-                    path: Routes.you.path,
+                    path: Routes.you.localPath,
                     name: Routes.you.name,
                     pageBuilder: defaultPageBuilder(const YouPage()),
                   ),
                   GoRoute(
-                    path: Routes.settings.path,
+                    path: Routes.settings.localPath,
                     name: Routes.settings.name,
                     // builder: (context, state) => const AppSettingsPage(),
                     pageBuilder: defaultPageBuilder(const AppSettingsPage()),
                   ),
                   GoRoute(
-                    path: Routes.autoSleepTimerSettings.path,
+                    path: Routes.autoSleepTimerSettings.localPath,
                     name: Routes.autoSleepTimerSettings.name,
                     // builder: (context, state) =>
                     //     const AutoSleepTimerSettingsPage(),
@@ -165,7 +183,7 @@ class MyAppRouter {
                     ),
                   ),
                   GoRoute(
-                    path: Routes.userManagement.path,
+                    path: Routes.userManagement.localPath,
                     name: Routes.userManagement.name,
                     // builder: (context, state) => const UserManagementPage(),
                     pageBuilder: defaultPageBuilder(const ServerManagerPage()),
@@ -176,4 +194,23 @@ class MyAppRouter {
           ),
         ],
       );
+
+  Page handleCallback(
+    BuildContext context,
+    GoRouterState state,
+  ) {
+    // TODO: handle the open id callback
+    // extract the code and state from the uri
+    final code = state.uri.queryParameters['code'];
+    final stateParam = state.uri.queryParameters['state'];
+    debugPrint('deep linking callback: code: $code, state: $stateParam');
+
+    var callbackPage =
+        CallbackPage(code: code, state: stateParam, key: ValueKey(stateParam));
+    return buildPageWithDefaultTransition(
+      context: context,
+      state: state,
+      child: callbackPage,
+    );
+  }
 }

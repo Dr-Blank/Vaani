@@ -68,6 +68,13 @@ class Routes {
     pathName: 'users',
     name: 'userManagement',
   );
+
+  // openID callback
+  static const openIDCallback = _SimpleRoute(
+    pathName: 'callback',
+    name: 'openIDCallback',
+    parentRoute: onboarding,
+  );
 }
 
 // a class to store path
@@ -86,8 +93,8 @@ class _SimpleRoute {
   final _SimpleRoute? parentRoute;
 
   /// the full path of the route
-  String get path {
-    return '${parentRoute?.path ?? ''}$localPath';
+  String get fullPath {
+    return '${parentRoute?.fullPath ?? ''}$localPath';
   }
 
   /// the local path of the route
