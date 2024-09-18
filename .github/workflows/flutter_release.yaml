@@ -49,6 +49,16 @@ jobs:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
+      - name: version
+        id: version
+        run: |
+          tag=${GITHUB_REF/refs\/tags\//}
+          version=${tag#v}
+          major=${version%%.*}
+          echo "tag=${tag}" >> $GITHUB_OUTPUT
+          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "major=${major}" >> $GITHUB_OUTPUT
+
       - name: Generate Release Notes
         id: generate_release_notes
         uses: release-drafter/release-drafter@v5
@@ -59,6 +69,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: build/app/outputs/flutter-apk/app-release.apk
-          name: ${{ github.ref_name }}
+          name: Release ${{ steps.version.outputs.version }}
           tag: ${{ github.ref }}
-          # body: ${{ steps.generate_release_notes.outputs.notes }}
+          body: ${{ steps.generate_release_notes.outputs.body }}
