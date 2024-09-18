@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:hive/hive.dart';
+import 'package:vaani/features/per_book_settings/models/book_settings.dart';
 import 'package:vaani/settings/models/models.dart';
 
 @immutable
@@ -19,4 +20,8 @@ class AvailableHiveBoxes {
   /// stores the a list of [AuthenticatedUser]
   static final authenticatedUserBox =
       Hive.box<AuthenticatedUser>(name: 'authenticatedUser');
+
+  /// stores the a list of [BookSettings]
+  static final individualBookSettingsBox =
+      Hive.box<BookSettings>(name: 'bookSettings');
 }
