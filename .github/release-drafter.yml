@@ -33,4 +33,24 @@ template: |
 
   $CHANGES
 
-  # **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...$NEW_TAG
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...$NEW_TAG
+
+exclude-labels:
+  - "skip-changelog"
+
+exclude-contributors:
+  - "Dr-Blank"
+
+autolabeler:
+  - label: "bug"
+    branch:
+      - '/fix\/.+/'
+    title:
+      - "/fix/i"
+  - label: "enhancement"
+    branch:
+      - '/feature\/.+/'
+    title:
+      - "/feat(ure)?/i"
+    body:
+      - "/JIRA-[0-9]{1,4}/"
