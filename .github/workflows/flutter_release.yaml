@@ -62,7 +62,7 @@ jobs:
 
       - name: Generate Release Notes
         id: generate_release_notes
-        uses: release-drafter/release-drafter@v5
+        uses: release-drafter/release-drafter@v6
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
@@ -70,6 +70,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: build/app/outputs/flutter-apk/app-release.apk
-          name: Release ${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
           tag: ${{ github.ref }}
           body: ${{ steps.generate_release_notes.outputs.body }}
