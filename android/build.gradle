@@ -9,7 +9,18 @@ rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
-
+// TODO: remove when https://github.com/livekit/client-sdk-flutter/issues/569#issuecomment-2275686786 is fixed
+subprojects {
+    afterEvaluate { project ->
+        if (project.plugins.hasPlugin("com.android.application") ||
+                project.plugins.hasPlugin("com.android.library")) {
+            project.android {
+                compileSdkVersion 34
+                buildToolsVersion "34.0.0"
+            }
+        }
+    }
+}
 subprojects {
     project.evaluationDependsOn(':app')
 }
