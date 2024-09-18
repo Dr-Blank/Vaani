@@ -44,6 +44,7 @@ class PlayerSettings with _$PlayerSettings {
     @Default([0.75, 1, 1.25, 1.5, 1.75, 2]) List<double> speedOptions,
     @Default(SleepTimerSettings()) SleepTimerSettings sleepTimerSettings,
     @Default(Duration(seconds: 10)) Duration playbackReportInterval,
+    @Default(true) bool configurePlayerForEveryBook,
   }) = _PlayerSettings;
 
   factory PlayerSettings.fromJson(Map<String, dynamic> json) =>

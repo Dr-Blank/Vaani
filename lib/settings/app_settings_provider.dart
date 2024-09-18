@@ -48,7 +48,7 @@ class AppSettings extends _$AppSettings {
         .themeSettings(isDarkMode: !state.themeSettings.isDarkMode);
   }
 
-  void updateState(model.AppSettings newSettings) {
+  void update(model.AppSettings newSettings) {
     state = newSettings;
   }
 

@@ -478,6 +478,7 @@ mixin _$PlayerSettings {
   SleepTimerSettings get sleepTimerSettings =>
       throw _privateConstructorUsedError;
   Duration get playbackReportInterval => throw _privateConstructorUsedError;
+  bool get configurePlayerForEveryBook => throw _privateConstructorUsedError;
 
   /// Serializes this PlayerSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -502,7 +503,8 @@ abstract class $PlayerSettingsCopyWith<$Res> {
       double preferredDefaultSpeed,
       List<double> speedOptions,
       SleepTimerSettings sleepTimerSettings,
-      Duration playbackReportInterval});
+      Duration playbackReportInterval,
+      bool configurePlayerForEveryBook});
 
   $MinimizedPlayerSettingsCopyWith<$Res> get miniPlayerSettings;
   $ExpandedPlayerSettingsCopyWith<$Res> get expandedPlayerSettings;
@@ -531,6 +533,7 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
     Object? speedOptions = null,
     Object? sleepTimerSettings = null,
     Object? playbackReportInterval = null,
+    Object? configurePlayerForEveryBook = null,
   }) {
     return _then(_value.copyWith(
       miniPlayerSettings: null == miniPlayerSettings
@@ -561,6 +564,10 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
           ? _value.playbackReportInterval
           : playbackReportInterval // ignore: cast_nullable_to_non_nullable
               as Duration,
+      configurePlayerForEveryBook: null == configurePlayerForEveryBook
+          ? _value.configurePlayerForEveryBook
+          : configurePlayerForEveryBook // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -613,7 +620,8 @@ abstract class _$$PlayerSettingsImplCopyWith<$Res>
       double preferredDefaultSpeed,
       List<double> speedOptions,
       SleepTimerSettings sleepTimerSettings,
-      Duration playbackReportInterval});
+      Duration playbackReportInterval,
+      bool configurePlayerForEveryBook});
 
   @override
   $MinimizedPlayerSettingsCopyWith<$Res> get miniPlayerSettings;
@@ -643,6 +651,7 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
     Object? speedOptions = null,
     Object? sleepTimerSettings = null,
     Object? playbackReportInterval = null,
+    Object? configurePlayerForEveryBook = null,
   }) {
     return _then(_$PlayerSettingsImpl(
       miniPlayerSettings: null == miniPlayerSettings
@@ -673,6 +682,10 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
           ? _value.playbackReportInterval
           : playbackReportInterval // ignore: cast_nullable_to_non_nullable
               as Duration,
+      configurePlayerForEveryBook: null == configurePlayerForEveryBook
+          ? _value.configurePlayerForEveryBook
+          : configurePlayerForEveryBook // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -687,7 +700,8 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
       this.preferredDefaultSpeed = 1,
       final List<double> speedOptions = const [0.75, 1, 1.25, 1.5, 1.75, 2],
       this.sleepTimerSettings = const SleepTimerSettings(),
-      this.playbackReportInterval = const Duration(seconds: 10)})
+      this.playbackReportInterval = const Duration(seconds: 10),
+      this.configurePlayerForEveryBook = true})
       : _speedOptions = speedOptions;
 
   factory _$PlayerSettingsImpl.fromJson(Map<String, dynamic> json) =>
@@ -720,10 +734,13 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
   @override
   @JsonKey()
   final Duration playbackReportInterval;
+  @override
+  @JsonKey()
+  final bool configurePlayerForEveryBook;
 
   @override
   String toString() {
-    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredDefaultVolume: $preferredDefaultVolume, preferredDefaultSpeed: $preferredDefaultSpeed, speedOptions: $speedOptions, sleepTimerSettings: $sleepTimerSettings, playbackReportInterval: $playbackReportInterval)';
+    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredDefaultVolume: $preferredDefaultVolume, preferredDefaultSpeed: $preferredDefaultSpeed, speedOptions: $speedOptions, sleepTimerSettings: $sleepTimerSettings, playbackReportInterval: $playbackReportInterval, configurePlayerForEveryBook: $configurePlayerForEveryBook)';
   }
 
   @override
@@ -744,7 +761,11 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
             (identical(other.sleepTimerSettings, sleepTimerSettings) ||
                 other.sleepTimerSettings == sleepTimerSettings) &&
             (identical(other.playbackReportInterval, playbackReportInterval) ||
-                other.playbackReportInterval == playbackReportInterval));
+                other.playbackReportInterval == playbackReportInterval) &&
+            (identical(other.configurePlayerForEveryBook,
+                    configurePlayerForEveryBook) ||
+                other.configurePlayerForEveryBook ==
+                    configurePlayerForEveryBook));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -757,7 +778,8 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
       preferredDefaultSpeed,
       const DeepCollectionEquality().hash(_speedOptions),
       sleepTimerSettings,
-      playbackReportInterval);
+      playbackReportInterval,
+      configurePlayerForEveryBook);
 
   /// Create a copy of PlayerSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -784,7 +806,8 @@ abstract class _PlayerSettings implements PlayerSettings {
       final double preferredDefaultSpeed,
       final List<double> speedOptions,
       final SleepTimerSettings sleepTimerSettings,
-      final Duration playbackReportInterval}) = _$PlayerSettingsImpl;
+      final Duration playbackReportInterval,
+      final bool configurePlayerForEveryBook}) = _$PlayerSettingsImpl;
 
   factory _PlayerSettings.fromJson(Map<String, dynamic> json) =
       _$PlayerSettingsImpl.fromJson;
@@ -803,6 +826,8 @@ abstract class _PlayerSettings implements PlayerSettings {
   SleepTimerSettings get sleepTimerSettings;
   @override
   Duration get playbackReportInterval;
+  @override
+  bool get configurePlayerForEveryBook;
 
   /// Create a copy of PlayerSettings
   /// with the given fields replaced by the non-null parameter values.
