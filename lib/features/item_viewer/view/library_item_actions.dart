@@ -11,6 +11,7 @@ import 'package:vaani/features/downloads/providers/download_manager.dart'
         downloadStatusProvider,
         simpleDownloadManagerProvider;
 import 'package:vaani/features/item_viewer/view/library_item_page.dart';
+import 'package:vaani/features/per_book_settings/providers/book_settings_provider.dart';
 import 'package:vaani/features/player/providers/audiobook_player.dart';
 import 'package:vaani/features/player/providers/player_form.dart';
 import 'package:vaani/main.dart';
@@ -423,6 +424,7 @@ class DynamicItemPlayIcon extends StatelessWidget {
   }
 }
 
+/// Handles the play button pressed on the library item
 Future<void> libraryItemPlayButtonOnPressed({
   required WidgetRef ref,
   required shelfsdk.BookExpanded book,
@@ -434,6 +436,7 @@ Future<void> libraryItemPlayButtonOnPressed({
   final isCurrentBookSetInPlayer = player.book == book;
   final isPlayingThisBook = player.playing && isCurrentBookSetInPlayer;
 
+  Future<void>? setSourceFuture;
   // set the book to the player if not already set
   if (!isCurrentBookSetInPlayer) {
     debugPrint('Setting the book ${book.libraryItemId}');
@@ -442,7 +445,7 @@ Future<void> libraryItemPlayButtonOnPressed({
     final libItem =
         await ref.read(libraryItemProvider(book.libraryItemId).future);
     final downloadedUris = await downloadManager.getDownloadedFiles(libItem);
-    await player.setSourceAudiobook(
+    setSourceFuture = player.setSourceAudiobook(
       book,
       initialPosition: userMediaProgress?.currentTime,
       downloadedUris: downloadedUris,
@@ -455,10 +458,32 @@ Future<void> libraryItemPlayButtonOnPressed({
       return;
     }
   }
+  // set the volume as this is the first time playing and dismissing causes the volume to go to 0
+  var bookPlayerSettings =
+      ref.read(bookSettingsProvider(book.libraryItemId)).playerSettings;
+  var appPlayerSettings = ref.read(appSettingsProvider).playerSettings;
+
+  var configurePlayerForEveryBook =
+      appPlayerSettings.configurePlayerForEveryBook;
+
+  await Future.wait([
+    setSourceFuture ?? Future.value(),
+    // set the volume
+    player.setVolume(
+      configurePlayerForEveryBook
+          ? bookPlayerSettings.preferredDefaultVolume ??
+              appPlayerSettings.preferredDefaultVolume
+          : appPlayerSettings.preferredDefaultVolume,
+    ),
+    // set the speed
+    player.setSpeed(
+      configurePlayerForEveryBook
+          ? bookPlayerSettings.preferredDefaultSpeed ??
+              appPlayerSettings.preferredDefaultSpeed
+          : appPlayerSettings.preferredDefaultSpeed,
+    ),
+  ]);
+
   // toggle play/pause
   await player.play();
-  // set the volume as this is the first time playing and dismissing causes the volume to go to 0
-  await player.setVolume(
-    ref.read(appSettingsProvider).playerSettings.preferredDefaultVolume,
-  );
 }

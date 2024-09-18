@@ -72,6 +72,8 @@ _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
           ? const Duration(seconds: 10)
           : Duration(
               microseconds: (json['playbackReportInterval'] as num).toInt()),
+      configurePlayerForEveryBook:
+          json['configurePlayerForEveryBook'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$PlayerSettingsImplToJson(
@@ -84,6 +86,7 @@ Map<String, dynamic> _$$PlayerSettingsImplToJson(
       'speedOptions': instance.speedOptions,
       'sleepTimerSettings': instance.sleepTimerSettings,
       'playbackReportInterval': instance.playbackReportInterval.inMicroseconds,
+      'configurePlayerForEveryBook': instance.configurePlayerForEveryBook,
     };
 
 _$ExpandedPlayerSettingsImpl _$$ExpandedPlayerSettingsImplFromJson(

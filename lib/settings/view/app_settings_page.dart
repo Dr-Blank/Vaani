@@ -65,7 +65,7 @@ class AppSettingsPage extends HookConsumerWidget {
                     ? const Icon(Icons.auto_fix_high)
                     : const Icon(Icons.auto_fix_off),
                 onToggle: (value) {
-                  ref.read(appSettingsProvider.notifier).updateState(
+                  ref.read(appSettingsProvider.notifier).update(
                         appSettings.copyWith.themeSettings(
                           useMaterialThemeOnItemPage: value,
                         ),
@@ -114,7 +114,7 @@ class AppSettingsPage extends HookConsumerWidget {
                       Switch(
                         value: sleepTimerSettings.autoTurnOnTimer,
                         onChanged: (value) {
-                          ref.read(appSettingsProvider.notifier).updateState(
+                          ref.read(appSettingsProvider.notifier).update(
                                 appSettings.copyWith.playerSettings
                                     .sleepTimerSettings(
                                   autoTurnOnTimer: value,
@@ -208,7 +208,7 @@ class AppSettingsPage extends HookConsumerWidget {
                                 );
                                 ref
                                     .read(appSettingsProvider.notifier)
-                                    .updateState(newSettings);
+                                    .update(newSettings);
                                 Navigator.of(context).pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
