@@ -12,6 +12,8 @@ import 'package:vaani/features/player/view/player_when_expanded.dart';
 // if stack is empty, push home, if already contains home, pop it
 final Set<int> navigationShellStack = {};
 
+const bottomBarHeight = 64;
+
 /// Builds the "shell" for the app by building a Scaffold with a
 /// BottomNavigationBar, where [child] is placed in the body of the Scaffold.
 class ScaffoldWithNavBar extends HookConsumerWidget {
@@ -31,10 +33,10 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
     //     useValueListenable(ref.watch(playerExpandProgressNotifierProvider));
     final playerProgress = ref.watch(playerHeightProvider);
     final playerMaxHeight = MediaQuery.of(context).size.height;
-    var percentExpanded = (playerProgress - playerMinHeight) /
+    var percentExpandedMiniPlayer = (playerProgress - playerMinHeight) /
         (playerMaxHeight - playerMinHeight);
     // Clamp the value between 0 and 1
-    percentExpanded = percentExpanded.clamp(0.0, 1.0);
+    percentExpandedMiniPlayer = percentExpandedMiniPlayer.clamp(0.0, 1.0);
 
     onBackButtonPressed() async {
       final isPlayerExpanded = playerProgress != playerMinHeight;
@@ -97,41 +99,29 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
         ),
         bottomNavigationBar: Opacity(
           // Opacity is interpolated from 1 to 0 when player is expanded
-          opacity: 1 - percentExpanded,
-          child: SizedBox(
-            // height is interpolated from 0 to 56 when player is expanded
-            height: 56 * (1 - percentExpanded),
+          opacity: 1 - percentExpandedMiniPlayer,
+          child: NavigationBar(
+            elevation: 0.0,
+            height: bottomBarHeight * (1 - percentExpandedMiniPlayer),
 
-            child: BottomNavigationBar(
-              elevation: 0.0,
-              landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
-              selectedFontSize:
-                  Theme.of(context).textTheme.labelMedium!.fontSize!,
-              unselectedFontSize:
-                  Theme.of(context).textTheme.labelMedium!.fontSize!,
-              showUnselectedLabels: false,
-              fixedColor: Theme.of(context).colorScheme.onSurface,
-              enableFeedback: true,
-              type: BottomNavigationBarType.fixed,
-
-              // Here, the items of BottomNavigationBar are hard coded. In a real
-              // world scenario, the items would most likely be generated from the
-              // branches of the shell route, which can be fetched using
-              // `navigationShell.route.branches`.
-              items: _navigationItems
-                  .map(
-                    (item) => BottomNavigationBarItem(
-                      icon: Icon(item.icon),
-                      activeIcon: item.activeIcon != null
-                          ? Icon(item.activeIcon)
-                          : Icon(item.icon),
-                      label: item.name,
-                    ),
-                  )
-                  .toList(),
-              currentIndex: navigationShell.currentIndex,
-              onTap: (int index) => _onTap(context, index, ref),
-            ),
+            // TODO: get destinations from the navigationShell
+            // Here, the items of BottomNavigationBar are hard coded. In a real
+            // world scenario, the items would most likely be generated from the
+            // branches of the shell route, which can be fetched using
+            // `navigationShell.route.branches`.
+            destinations: _navigationItems
+                .map(
+                  (item) => NavigationDestination(
+                    icon: Icon(item.icon),
+                    selectedIcon: item.activeIcon != null
+                        ? Icon(item.activeIcon)
+                        : Icon(item.icon),
+                    label: item.name,
+                  ),
+                )
+                .toList(),
+            selectedIndex: navigationShell.currentIndex,
+            onDestinationSelected: (int index) => _onTap(context, index, ref),
           ),
         ),
       ),
