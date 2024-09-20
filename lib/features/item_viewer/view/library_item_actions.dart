@@ -1,5 +1,7 @@
 import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
@@ -8,7 +10,10 @@ import 'package:vaani/constants/hero_tag_conventions.dart';
 import 'package:vaani/features/downloads/providers/download_manager.dart'
     show
         downloadHistoryProvider,
+        downloadManagerProvider,
+        downloadProgressProvider,
         downloadStatusProvider,
+        isItemDownloadingProvider,
         simpleDownloadManagerProvider;
 import 'package:vaani/features/item_viewer/view/library_item_page.dart';
 import 'package:vaani/features/per_book_settings/providers/book_settings_provider.dart';
@@ -33,10 +38,7 @@ class LibraryItemActions extends HookConsumerWidget {
   late final shelfsdk.BookExpanded book;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final manager = ref.read(simpleDownloadManagerProvider);
     final downloadHistory = ref.watch(downloadHistoryProvider(group: item.id));
-    final isItemDownloaded = ref.watch(downloadStatusProvider(item));
-    final isBookPlaying = ref.watch(audiobookPlayerProvider).book != null;
     final apiSettings = ref.watch(apiSettingsProvider);
 
     return Padding(
@@ -93,64 +95,9 @@ class LibraryItemActions extends HookConsumerWidget {
                         },
                         icon: const Icon(Icons.share_rounded),
                       ),
-                      // check if the book is downloaded using manager.isItemDownloaded
-                      isItemDownloaded.when(
-                        data: (isDownloaded) {
-                          if (isDownloaded) {
-                            // already downloaded button
-                            return IconButton(
-                              onPressed: () {
-                                appLogger
-                                    .fine('Pressed already downloaded button');
-                                // manager.openDownloadedFile(item);
-                                // open popup menu to open or delete the file
-                                showModalBottomSheet(
-                                  useRootNavigator: false,
-                                  context: context,
-                                  builder: (context) {
-                                    return Padding(
-                                      padding: EdgeInsets.only(
-                                        top: 8.0,
-                                        bottom: (isBookPlaying
-                                                ? playerMinHeight
-                                                : 0) +
-                                            8,
-                                      ),
-                                      child: DownloadSheet(
-                                        item: item,
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.download_done_rounded,
-                              ),
-                            );
-                          }
-                          // download button
-                          return IconButton(
-                            onPressed: () {
-                              appLogger.fine('Pressed download button');
-                              manager.queueAudioBookDownload(item);
-                            },
-                            icon: const Icon(
-                              Icons.download_rounded,
-                            ),
-                          );
-                        },
-                        loading: () => const CircularProgressIndicator(),
-                        error: (error, stackTrace) {
-                          return IconButton(
-                            onPressed: () {
-                              appLogger.warning(
-                                'Error checking download status: $error',
-                              );
-                            },
-                            icon: const Icon(Icons.error_rounded),
-                          );
-                        },
-                      ),
+                      // download button
+                      LibItemDownloadButton(item: item),
+
                       // more button
                       IconButton(
                         onPressed: () {
@@ -257,6 +204,121 @@ class LibraryItemActions extends HookConsumerWidget {
   }
 }
 
+class LibItemDownloadButton extends HookConsumerWidget {
+  const LibItemDownloadButton({
+    super.key,
+    required this.item,
+  });
+
+  final shelfsdk.LibraryItemExpanded item;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isItemDownloaded = ref.watch(downloadStatusProvider(item));
+    final isItemDownloading = ref.watch(isItemDownloadingProvider(item.id));
+
+    return isItemDownloaded.valueOrNull ?? false
+        ? AlreadyItemDownloadedButton(item: item)
+        : isItemDownloading
+            ? ItemCurrentlyInDownloadQueue(
+                item: item,
+              )
+            : IconButton(
+                onPressed: () {
+                  appLogger.fine('Pressed download button');
+
+                  ref
+                      .read(downloadManagerProvider.notifier)
+                      .queueAudioBookDownload(item);
+                },
+                icon: const Icon(
+                  Icons.download_rounded,
+                ),
+              );
+  }
+}
+
+class ItemCurrentlyInDownloadQueue extends HookConsumerWidget {
+  const ItemCurrentlyInDownloadQueue({
+    super.key,
+    required this.item,
+  });
+
+  final shelfsdk.LibraryItemExpanded item;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final progress = ref.watch(downloadProgressProvider(item.id));
+    final updatesStream = useStream(ref.watch(downloadManagerProvider).taskUpdateStream);
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        CircularProgressIndicator(
+          value: progress,
+          strokeWidth: 2,
+        ),
+        const Icon(
+          Icons.download,
+        )
+            .animate(
+              onPlay: (controller) => controller.repeat(),
+            )
+            .fade(
+              begin: 0.5,
+              end: 1,
+              duration: 1.seconds,
+            )
+            .fade(
+              begin: 1,
+              end: 0.5,
+              duration: 1.seconds,
+            ),
+      ],
+    );
+  }
+}
+
+class AlreadyItemDownloadedButton extends HookConsumerWidget {
+  const AlreadyItemDownloadedButton({
+    super.key,
+    required this.item,
+  });
+
+  final shelfsdk.LibraryItemExpanded item;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isBookPlaying = ref.watch(audiobookPlayerProvider).book != null;
+
+    return IconButton(
+      onPressed: () {
+        appLogger.fine('Pressed already downloaded button');
+        // manager.openDownloadedFile(item);
+        // open popup menu to open or delete the file
+        showModalBottomSheet(
+          useRootNavigator: false,
+          context: context,
+          builder: (context) {
+            return Padding(
+              padding: EdgeInsets.only(
+                top: 8.0,
+                bottom: (isBookPlaying ? playerMinHeight : 0) + 8,
+              ),
+              child: DownloadSheet(
+                item: item,
+              ),
+            );
+          },
+        );
+      },
+      icon: const Icon(
+        Icons.download_done_rounded,
+      ),
+    );
+  }
+}
+
 class DownloadSheet extends HookConsumerWidget {
   const DownloadSheet({
     super.key,
@@ -267,7 +329,7 @@ class DownloadSheet extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final manager = ref.read(simpleDownloadManagerProvider);
+    final manager = ref.watch(downloadManagerProvider);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -296,9 +358,9 @@ class DownloadSheet extends HookConsumerWidget {
           leading: const Icon(
             Icons.delete_rounded,
           ),
-          onTap: () {
+          onTap: () async {
             // show the delete dialog
-            showDialog(
+            final wasDeleted = await showDialog<bool>(
               useRootNavigator: false,
               context: context,
               builder: (context) {
@@ -311,16 +373,18 @@ class DownloadSheet extends HookConsumerWidget {
                     TextButton(
                       onPressed: () {
                         // delete the file
-                        manager.deleteDownloadedItem(
-                          item,
-                        );
-                        GoRouter.of(context).pop();
+                        ref
+                            .read(downloadManagerProvider.notifier)
+                            .deleteDownloadedItem(
+                              item,
+                            );
+                        GoRouter.of(context).pop(true);
                       },
                       child: const Text('Yes'),
                     ),
                     TextButton(
                       onPressed: () {
-                        GoRouter.of(context).pop();
+                        GoRouter.of(context).pop(false);
                       },
                       child: const Text('No'),
                     ),
@@ -328,6 +392,18 @@ class DownloadSheet extends HookConsumerWidget {
                 );
               },
             );
+
+            if (wasDeleted ?? false) {
+              appLogger.fine('Deleted ${item.media.metadata.title}');
+              GoRouter.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Deleted ${item.media.metadata.title}',
+                  ),
+                ),
+              );
+            }
           },
         ),
       ],

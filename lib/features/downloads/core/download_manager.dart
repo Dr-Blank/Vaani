@@ -1,5 +1,6 @@
 // download manager to handle download tasks of files
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:background_downloader/background_downloader.dart';
@@ -38,6 +39,7 @@ class AudiobookDownloadManager {
     _logger.fine(
       'requiresWiFi: $requiresWiFi, retries: $retries, allowPause: $allowPause',
     );
+    initDownloadManager();
   }
 
   // the base url for the audio files
@@ -55,10 +57,20 @@ class AudiobookDownloadManager {
   // whether to allow pausing of downloads
   final bool allowPause;
 
-  // final List<DownloadTask> _downloadTasks = [];
+  final StreamController<TaskUpdate> _taskStatusController =
+      StreamController.broadcast();
 
-  Future<void> queueAudioBookDownload(LibraryItemExpanded item) async {
-    _logger.info('queuing download for item: ${item.toJson()}');
+  Stream<TaskUpdate> get taskUpdateStream => _taskStatusController.stream;
+
+  late StreamSubscription<TaskUpdate> _updatesSubscription;
+
+  Future<void> queueAudioBookDownload(
+    LibraryItemExpanded item, {
+    void Function(TaskStatusUpdate)? taskStatusCallback,
+    void Function(TaskProgressUpdate)? taskProgressCallback,
+    void Function(Task, NotificationType)? taskNotificationTapCallback,
+  }) async {
+    _logger.info('queuing download for item: ${item.id}');
     // create a download task for each file in the item
     final directory = await getApplicationSupportDirectory();
     for (final file in item.libraryFiles) {
@@ -84,15 +96,25 @@ class AudiobookDownloadManager {
       );
       // _downloadTasks.add(task);
       tq.add(task);
-      _logger.info('queued task: ${task.toJson()}');
+      _logger.info('queued task: ${task.taskId}');
     }
 
     FileDownloader().registerCallbacks(
       group: item.id,
       taskProgressCallback: (update) {
+        try {
+          taskProgressCallback?.call(update);
+        } catch (e) {
+          _logger.warning('Error in taskProgressCallback: $e');
+        }
         _logger.info('Group: ${item.id}, Progress Update: ${update.progress}');
       },
       taskStatusCallback: (update) {
+        try {
+          taskStatusCallback?.call(update);
+        } catch (e) {
+          _logger.warning('Error in taskStatusCallback: $e');
+        }
         switch (update.status) {
           case TaskStatus.complete:
             _logger.info('Group: ${item.id}, Download Complete');
@@ -106,7 +128,12 @@ class AudiobookDownloadManager {
         }
       },
       taskNotificationTapCallback: (task, notificationType) {
-        _logger.info('Group: ${item.id}, Task: ${task.toJson()}');
+        try {
+          taskNotificationTapCallback?.call(task, notificationType);
+        } catch (e) {
+          _logger.warning('Error in taskNotificationTapCallback: $e');
+        }
+        _logger.info('Group: ${item.id}, Task: ${task.taskId}');
       },
     );
   }
@@ -118,22 +145,22 @@ class AudiobookDownloadManager {
   ) =>
       '${directory.path}/${item.relPath}/${file.metadata.filename}';
 
-  // void startDownload() {
-  //   for (final task in _downloadTasks) {
-  //     _logger.fine('enqueuing task: $task');
-  //     FileDownloader().enqueue(task);
-  //   }
-  // }
-
   void dispose() {
-    // tq.removeAll();
-    _logger.fine('disposed');
+    _updatesSubscription.cancel();
+    FileDownloader().destroy();
+    _logger.fine('Destroyed download manager');
+  }
+
+  bool isItemDownloading(String id) {
+    if (tq.isEmpty) {
+      return false;
+    }
+
+    return tq.enqueued.any((task) => task.group == id);
   }
 
   bool isFileDownloaded(String filePath) {
-    // Check if the file exists
     final fileExists = File(filePath).existsSync();
-
     return fileExists;
   }
 
@@ -145,11 +172,12 @@ class AudiobookDownloadManager {
         return false;
       }
     }
-
+    _logger.info('all files downloaded for item id: ${item.id}');
     return true;
   }
 
   Future<void> deleteDownloadedItem(LibraryItemExpanded item) async {
+    _logger.info('deleting downloaded item id: ${item.id}');
     final directory = await getApplicationSupportDirectory();
     for (final file in item.libraryFiles) {
       final filePath = constructFilePath(directory, item, file);
@@ -172,14 +200,28 @@ class AudiobookDownloadManager {
 
     return files;
   }
-}
 
-Future<void> initDownloadManager() async {
-  // initialize the download manager
-  var fileDownloader = FileDownloader();
-  fileDownloader.configureNotification(
-    running: const TaskNotification('Downloading', 'file: {filename}'),
-    progressBar: true,
-  );
-  await fileDownloader.trackTasks();
+  Future<void> initDownloadManager() async {
+    // initialize the download manager
+    _logger.info('Initializing download manager');
+    final fileDownloader = FileDownloader();
+
+    _logger.info('Configuring Notification');
+    fileDownloader.configureNotification(
+      running: const TaskNotification('Downloading', 'file: {filename}'),
+      progressBar: true,
+    );
+
+    await fileDownloader.trackTasks();
+
+    _logger.info('Listening to download manager updates');
+    try {
+     _updatesSubscription = fileDownloader.updates.listen((event) {
+        _logger.info('Got event: $event');
+        _taskStatusController.add(event);
+      });
+    } catch (e) {
+      _logger.warning('Error when listening to download manager updates: $e');
+    }
+  }
 }
