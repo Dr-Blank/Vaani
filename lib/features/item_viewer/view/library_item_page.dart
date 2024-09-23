@@ -8,10 +8,7 @@ import 'package:vaani/api/library_item_provider.dart';
 import 'package:vaani/features/item_viewer/view/library_item_sliver_app_bar.dart';
 import 'package:vaani/features/player/providers/player_form.dart';
 import 'package:vaani/router/models/library_item_extras.dart';
-import 'package:vaani/settings/app_settings_provider.dart';
-import 'package:vaani/shared/extensions/model_conversions.dart';
 import 'package:vaani/shared/widgets/expandable_description.dart';
-import 'package:vaani/theme/theme_from_cover_provider.dart';
 
 import 'library_item_actions.dart';
 import 'library_item_hero_section.dart';
@@ -28,33 +25,9 @@ class LibraryItemPage extends HookConsumerWidget {
   final Object? extra;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final extraMap =
+    final additionalItemData =
         extra is LibraryItemExtras ? extra as LibraryItemExtras : null;
-    final bookDetailsCached = extraMap?.book;
-    final providedCacheImage = extraMap?.coverImage != null
-        ? Image.memory(extraMap!.coverImage!)
-        : null;
 
-    final itemFromApi = ref.watch(libraryItemProvider(itemId));
-
-    var itemBookMetadata =
-        itemFromApi.valueOrNull?.media.metadata.asBookMetadataExpanded;
-
-    final useMaterialThemeOnItemPage =
-        ref.watch(appSettingsProvider).themeSettings.useMaterialThemeOnItemPage;
-    AsyncValue<ColorScheme?> coverColorScheme = const AsyncValue.loading();
-    if (useMaterialThemeOnItemPage) {
-      coverColorScheme = ref.watch(
-        themeOfLibraryItemProvider(
-          itemFromApi.valueOrNull,
-          brightness: Theme.of(context).brightness,
-        ),
-      );
-      debugPrint('ColorScheme: ${coverColorScheme.valueOrNull}');
-    } else {
-      debugPrint('useMaterialThemeOnItemPage is false');
-      // AsyncValue<ColorScheme?> coverColorScheme = const AsyncValue.loading();
-    }
     return ThemeProvider(
       initTheme: Theme.of(context),
       duration: 200.ms,
@@ -67,40 +40,20 @@ class LibraryItemPage extends HookConsumerWidget {
                 padding: const EdgeInsets.all(8),
                 sliver: LibraryItemHeroSection(
                   itemId: itemId,
-                  extraMap: extraMap,
-                  providedCacheImage: providedCacheImage,
-                  item: itemFromApi,
-                  itemBookMetadata: itemBookMetadata,
-                  bookDetailsCached: bookDetailsCached,
-                  coverColorScheme: coverColorScheme,
+                  extraMap: additionalItemData,
                 ),
               ),
               // a horizontal display with dividers of metadata
               SliverToBoxAdapter(
-                child: itemFromApi.valueOrNull != null
-                    ? LibraryItemMetadata(
-                        item: itemFromApi.valueOrNull!,
-                        itemBookMetadata: itemBookMetadata,
-                        bookDetailsCached: bookDetailsCached,
-                      )
-                    : const SizedBox.shrink(),
+                child: LibraryItemMetadata(id: itemId),
               ),
               // a row of actions like play, download, share, etc
               SliverToBoxAdapter(
-                child: itemFromApi.valueOrNull != null
-                    ? LibraryItemActions(item: itemFromApi.valueOrNull!)
-                    : const SizedBox.shrink(),
+                child: LibraryItemActions(id: itemId),
               ),
               // a expandable section for book description
               SliverToBoxAdapter(
-                child:
-                    itemFromApi.valueOrNull?.media.metadata.description != null
-                        ? ExpandableDescription(
-                            title: 'About the Book',
-                            content: itemFromApi
-                                .valueOrNull!.media.metadata.description!,
-                          )
-                        : const SizedBox.shrink(),
+                child: LibraryItemDescription(id: itemId),
               ),
               // a padding at the bottom to make sure the last item is not hidden by mini player
               const SliverToBoxAdapter(
@@ -110,6 +63,26 @@ class LibraryItemPage extends HookConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class LibraryItemDescription extends HookConsumerWidget {
+  const LibraryItemDescription({
+    super.key,
+    required this.id,
+  });
+
+  final String id;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final item = ref.watch(libraryItemProvider(id)).valueOrNull;
+    if (item == null) {
+      return const SizedBox();
+    }
+    return ExpandableDescription(
+      title: 'About the Book',
+      content: item.media.metadata.description ?? 'Sorry, no description found',
     );
   }
 }

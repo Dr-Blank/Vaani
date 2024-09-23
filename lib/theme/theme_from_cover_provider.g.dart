@@ -175,7 +175,7 @@ class _ThemeFromCoverProviderElement
 }
 
 String _$themeOfLibraryItemHash() =>
-    r'575a390a0ab0e66cf54cb090a358c08847270798';
+    r'a1d0e5d81f4debe88d5a6ce46c3af28623ad4273';
 
 /// See also [themeOfLibraryItem].
 @ProviderFor(themeOfLibraryItem)
@@ -188,11 +188,11 @@ class ThemeOfLibraryItemFamily extends Family<AsyncValue<ColorScheme?>> {
 
   /// See also [themeOfLibraryItem].
   ThemeOfLibraryItemProvider call(
-    LibraryItem? item, {
+    String? itemId, {
     Brightness brightness = Brightness.dark,
   }) {
     return ThemeOfLibraryItemProvider(
-      item,
+      itemId,
       brightness: brightness,
     );
   }
@@ -202,7 +202,7 @@ class ThemeOfLibraryItemFamily extends Family<AsyncValue<ColorScheme?>> {
     covariant ThemeOfLibraryItemProvider provider,
   ) {
     return call(
-      provider.item,
+      provider.itemId,
       brightness: provider.brightness,
     );
   }
@@ -226,12 +226,12 @@ class ThemeOfLibraryItemFamily extends Family<AsyncValue<ColorScheme?>> {
 class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
   /// See also [themeOfLibraryItem].
   ThemeOfLibraryItemProvider(
-    LibraryItem? item, {
+    String? itemId, {
     Brightness brightness = Brightness.dark,
   }) : this._internal(
           (ref) => themeOfLibraryItem(
             ref as ThemeOfLibraryItemRef,
-            item,
+            itemId,
             brightness: brightness,
           ),
           from: themeOfLibraryItemProvider,
@@ -243,7 +243,7 @@ class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
           dependencies: ThemeOfLibraryItemFamily._dependencies,
           allTransitiveDependencies:
               ThemeOfLibraryItemFamily._allTransitiveDependencies,
-          item: item,
+          itemId: itemId,
           brightness: brightness,
         );
 
@@ -254,11 +254,11 @@ class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.item,
+    required this.itemId,
     required this.brightness,
   }) : super.internal();
 
-  final LibraryItem? item;
+  final String? itemId;
   final Brightness brightness;
 
   @override
@@ -274,7 +274,7 @@ class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        item: item,
+        itemId: itemId,
         brightness: brightness,
       ),
     );
@@ -288,14 +288,14 @@ class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
   @override
   bool operator ==(Object other) {
     return other is ThemeOfLibraryItemProvider &&
-        other.item == item &&
+        other.itemId == itemId &&
         other.brightness == brightness;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, item.hashCode);
+    hash = _SystemHash.combine(hash, itemId.hashCode);
     hash = _SystemHash.combine(hash, brightness.hashCode);
 
     return _SystemHash.finish(hash);
@@ -303,8 +303,8 @@ class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
 }
 
 mixin ThemeOfLibraryItemRef on FutureProviderRef<ColorScheme?> {
-  /// The parameter `item` of this provider.
-  LibraryItem? get item;
+  /// The parameter `itemId` of this provider.
+  String? get itemId;
 
   /// The parameter `brightness` of this provider.
   Brightness get brightness;
@@ -315,7 +315,7 @@ class _ThemeOfLibraryItemProviderElement
   _ThemeOfLibraryItemProviderElement(super.provider);
 
   @override
-  LibraryItem? get item => (origin as ThemeOfLibraryItemProvider).item;
+  String? get itemId => (origin as ThemeOfLibraryItemProvider).itemId;
   @override
   Brightness get brightness =>
       (origin as ThemeOfLibraryItemProvider).brightness;

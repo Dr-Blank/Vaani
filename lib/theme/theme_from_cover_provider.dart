@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/image_provider.dart';
 
 part 'theme_from_cover_provider.g.dart';
@@ -49,13 +48,13 @@ Future<FutureOr<ColorScheme?>> themeFromCover(
 @Riverpod(keepAlive: true)
 FutureOr<ColorScheme?> themeOfLibraryItem(
   ThemeOfLibraryItemRef ref,
-  LibraryItem? item, {
+  String? itemId, {
   Brightness brightness = Brightness.dark,
 }) async {
-  if (item == null) {
+  if (itemId == null) {
     return null;
   }
-  final coverImage = await ref.watch(coverImageProvider(item).future);
+  final coverImage = await ref.watch(coverImageProvider(itemId).future);
   final val = await ref.watch(
     themeFromCoverProvider(MemoryImage(coverImage), brightness: brightness)
         .future,

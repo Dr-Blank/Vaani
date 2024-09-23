@@ -4,6 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/api/library_item_provider.dart';
 import 'package:vaani/db/cache_manager.dart';
 
 /// provides cover images for the audiobooks
@@ -19,52 +20,53 @@ final _logger = Logger('cover_image_provider');
 @Riverpod(keepAlive: true)
 class CoverImage extends _$CoverImage {
   @override
-  Stream<Uint8List> build(LibraryItem libraryItem) async* {
+  Stream<Uint8List> build(String itemId) async* {
     final api = ref.watch(authenticatedApiProvider);
 
     // ! artifical delay for testing
     // await Future.delayed(const Duration(seconds: 2));
 
     // try to get the image from the cache
-    final file = await imageCacheManager.getFileFromMemory(libraryItem.id) ??
-        await imageCacheManager.getFileFromCache(libraryItem.id);
+    final file = await imageCacheManager.getFileFromMemory(itemId) ??
+        await imageCacheManager.getFileFromCache(itemId);
 
     if (file != null) {
       // if the image is in the cache, yield it
       _logger.fine(
-        'cover image found in cache for ${libraryItem.id} at ${file.file.path}',
+        'cover image found in cache for $itemId at ${file.file.path}',
       );
       yield await file.file.readAsBytes();
+      final libraryItem = await ref.watch(libraryItemProvider(itemId).future);
       // return if no need to fetch from the server
       if (libraryItem.updatedAt.isBefore(await file.file.lastModified())) {
         _logger.fine(
-          'cover image is up to date for ${libraryItem.id}, no need to fetch from the server',
+          'cover image is up to date for $itemId, no need to fetch from the server',
         );
         return;
       } else {
         _logger.fine(
-          'cover image stale for ${libraryItem.id}, fetching from the server',
+          'cover image stale for $itemId, fetching from the server',
         );
       }
     } else {
-      _logger.fine('cover image not found in cache for ${libraryItem.id}');
+      _logger.fine('cover image not found in cache for $itemId');
     }
 
     // check if the image is in the cache
     final coverImage = await api.items.getCover(
-      libraryItemId: libraryItem.id,
+      libraryItemId: itemId,
       parameters: const GetImageReqParams(width: 1200),
     );
     // save the image to the cache
     if (coverImage != null) {
       final newFile = await imageCacheManager.putFile(
-        libraryItem.id,
+        itemId,
         coverImage,
-        key: libraryItem.id,
+        key: itemId,
         fileExtension: 'jpg',
       );
       _logger.fine(
-        'cover image fetched for for ${libraryItem.id}, file time: ${await newFile.lastModified()}',
+        'cover image fetched for for $itemId, file time: ${await newFile.lastModified()}',
       );
     }
 

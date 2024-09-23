@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
 import 'package:vaani/api/image_provider.dart';
+import 'package:vaani/api/library_item_provider.dart';
 import 'package:vaani/constants/hero_tag_conventions.dart';
 import 'package:vaani/features/item_viewer/view/library_item_page.dart';
 import 'package:vaani/features/player/providers/audiobook_player.dart';
@@ -14,125 +15,120 @@ import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/shared/extensions/duration_format.dart';
 import 'package:vaani/shared/extensions/model_conversions.dart';
 import 'package:vaani/shared/widgets/shelves/book_shelf.dart';
+import 'package:vaani/theme/theme_from_cover_provider.dart';
 
 class LibraryItemHeroSection extends HookConsumerWidget {
   const LibraryItemHeroSection({
     super.key,
     required this.itemId,
     required this.extraMap,
-    required this.providedCacheImage,
-    required this.item,
-    required this.itemBookMetadata,
-    required this.bookDetailsCached,
-    required this.coverColorScheme,
   });
 
   final String itemId;
   final LibraryItemExtras? extraMap;
-  final Image? providedCacheImage;
-  final AsyncValue<shelfsdk.LibraryItemExpanded> item;
-  final shelfsdk.BookMetadataExpanded? itemBookMetadata;
-  final shelfsdk.BookMinified? bookDetailsCached;
-  final AsyncValue<ColorScheme?> coverColorScheme;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SliverToBoxAdapter(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Container(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // book cover
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    return SizedBox(
-                      width: calculateWidth(context, constraints),
-                      child: Column(
-                        children: [
-                          Hero(
-                            tag: HeroTagPrefixes.bookCover +
-                                itemId +
-                                (extraMap?.heroTagSuffix ?? ''),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: _BookCover(
-                                itemId: itemId,
-                                extraMap: extraMap,
-                                providedCacheImage: providedCacheImage,
-                                coverColorScheme: coverColorScheme.valueOrNull,
-                                item: item,
-                              ),
-                            ),
-                          ),
-                          // a progress bar if available
-                          item.when(
-                            data: (libraryItem) {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 8.0,
-                                  right: 8.0,
-                                  left: 8.0,
-                                ),
-                                child: _LibraryItemProgressIndicator(
-                                  libraryItem: libraryItem,
-                                ),
-                              );
-                            },
-                            loading: () => const SizedBox.shrink(),
-                            error: (error, stack) => const SizedBox.shrink(),
-                          ),
-                        ],
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          // book cover
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return SizedBox(
+                width: calculateWidth(context, constraints),
+                child: Column(
+                  children: [
+                    Hero(
+                      tag: HeroTagPrefixes.bookCover +
+                          itemId +
+                          (extraMap?.heroTagSuffix ?? ''),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: _BookCover(
+                          itemId: itemId,
+                        ),
                       ),
-                    );
-                  },
-                ),
-                // book details
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        _BookTitle(
-                          extraMap: extraMap,
-                          itemBookMetadata: itemBookMetadata,
-                          bookDetailsCached: bookDetailsCached,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 16),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              // authors info if available
-                              _BookAuthors(
-                                itemBookMetadata: itemBookMetadata,
-                                bookDetailsCached: bookDetailsCached,
-                              ),
-                              // narrators info if available
-                              _BookNarrators(
-                                itemBookMetadata: itemBookMetadata,
-                                bookDetailsCached: bookDetailsCached,
-                              ),
-                              // series info if available
-                              _BookSeries(
-                                itemBookMetadata: itemBookMetadata,
-                                bookDetailsCached: bookDetailsCached,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
                     ),
-                  ),
+                    // a progress bar
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 8.0,
+                        right: 8.0,
+                        left: 8.0,
+                      ),
+                      child: _LibraryItemProgressIndicator(
+                        id: itemId,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              );
+            },
+          ),
+          // book details
+          _BookDetails(id: itemId, extraMap: extraMap),
+        ],
+      ),
+    );
+  }
+}
+
+class _BookDetails extends HookConsumerWidget {
+  const _BookDetails({
+    super.key,
+    required this.id,
+    this.extraMap,
+  });
+
+  final String id;
+  final LibraryItemExtras? extraMap;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final itemFromApi = ref.watch(libraryItemProvider(id));
+
+    final itemBookMetadata =
+        itemFromApi.valueOrNull?.media.metadata.asBookMetadataExpanded;
+
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            _BookTitle(
+              extraMap: extraMap,
+              itemBookMetadata: itemBookMetadata,
             ),
-          );
-        },
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // authors info if available
+                  _BookAuthors(
+                    itemBookMetadata: itemBookMetadata,
+                    bookDetailsCached: extraMap?.book,
+                  ),
+                  // narrators info if available
+                  _BookNarrators(
+                    itemBookMetadata: itemBookMetadata,
+                    bookDetailsCached: extraMap?.book,
+                  ),
+                  // series info if available
+                  _BookSeries(
+                    itemBookMetadata: itemBookMetadata,
+                    bookDetailsCached: extraMap?.book,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -141,14 +137,19 @@ class LibraryItemHeroSection extends HookConsumerWidget {
 class _LibraryItemProgressIndicator extends HookConsumerWidget {
   const _LibraryItemProgressIndicator({
     super.key,
-    required this.libraryItem,
+    required this.id,
   });
 
-  final shelfsdk.LibraryItemExpanded libraryItem;
+  final String id;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(audiobookPlayerProvider);
+    final libraryItem = ref.watch(libraryItemProvider(id)).valueOrNull;
+    if (libraryItem == null) {
+      return const SizedBox.shrink();
+    }
+
     final mediaProgress = libraryItem.userMediaProgress;
     if (mediaProgress == null && player.book?.libraryItemId != libraryItem.id) {
       return const SizedBox.shrink();
@@ -188,6 +189,8 @@ class _LibraryItemProgressIndicator extends HookConsumerWidget {
           LinearProgressIndicator(
             value: progress.clamp(0.03, 1),
             borderRadius: BorderRadius.circular(8),
+            semanticsLabel: 'Book progress',
+            semanticsValue: '${progressInPercent.toStringAsFixed(2)}%',
           ),
           const SizedBox.square(
             dimension: 4.0,
@@ -341,23 +344,29 @@ class _BookCover extends HookConsumerWidget {
   const _BookCover({
     super.key,
     required this.itemId,
-    required this.extraMap,
-    required this.providedCacheImage,
-    required this.item,
-    this.coverColorScheme,
   });
 
   final String itemId;
-  final LibraryItemExtras? extraMap;
-  final Image? providedCacheImage;
-  final AsyncValue<shelfsdk.LibraryItemExpanded> item;
-  final ColorScheme? coverColorScheme;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final coverImage = ref.watch(coverImageProvider(itemId));
     final themeData = Theme.of(context);
+    // final item = ref.watch(libraryItemProvider(itemId));
     final useMaterialThemeOnItemPage =
         ref.watch(appSettingsProvider).themeSettings.useMaterialThemeOnItemPage;
+
+    ColorScheme? coverColorScheme;
+    if (useMaterialThemeOnItemPage) {
+      coverColorScheme = ref
+          .watch(
+            themeOfLibraryItemProvider(
+              itemId,
+              brightness: Theme.of(context).brightness,
+            ),
+          )
+          .valueOrNull;
+    }
 
     return ThemeSwitcher(
       builder: (context) {
@@ -368,7 +377,7 @@ class _BookCover extends HookConsumerWidget {
               ThemeSwitcher.of(context).changeTheme(
                 theme: coverColorScheme != null
                     ? ThemeData.from(
-                        colorScheme: coverColorScheme!,
+                        colorScheme: coverColorScheme,
                         textTheme: themeData.textTheme,
                       )
                     : themeData,
@@ -378,42 +387,27 @@ class _BookCover extends HookConsumerWidget {
             }
           });
         }
-        return providedCacheImage ??
-            item.when(
-              data: (libraryItem) {
-                final coverImage = ref.watch(coverImageProvider(libraryItem));
-                return Stack(
-                  children: [
-                    coverImage.when(
-                      data: (image) {
-                        // return const BookCoverSkeleton();
-                        if (image.isEmpty) {
-                          return const Icon(Icons.error);
-                        }
-                        // cover 80% of parent height
-                        return Image.memory(
-                          image,
-                          fit: BoxFit.cover,
-                          // cacheWidth: (height *
-                          //         MediaQuery.of(context).devicePixelRatio)
-                          //     .round(),
-                        );
-                      },
-                      loading: () {
-                        return const Center(
-                          child: BookCoverSkeleton(),
-                        );
-                      },
-                      error: (error, stack) {
-                        return const Icon(Icons.error);
-                      },
-                    ),
-                  ],
-                );
-              },
-              error: (error, stack) => const Icon(Icons.error),
-              loading: () => const Center(child: BookCoverSkeleton()),
+        return coverImage.when(
+          data: (image) {
+            // return const BookCoverSkeleton();
+            if (image.isEmpty) {
+              return const Icon(Icons.error);
+            }
+
+            return Image.memory(
+              image,
+              fit: BoxFit.cover,
             );
+          },
+          loading: () {
+            return const Center(
+              child: BookCoverSkeleton(),
+            );
+          },
+          error: (error, stack) {
+            return const Center(child: Icon(Icons.error));
+          },
+        );
       },
     );
   }
@@ -424,12 +418,10 @@ class _BookTitle extends StatelessWidget {
     super.key,
     required this.extraMap,
     required this.itemBookMetadata,
-    required this.bookDetailsCached,
   });
 
   final LibraryItemExtras? extraMap;
   final shelfsdk.BookMetadataExpanded? itemBookMetadata;
-  final shelfsdk.BookMinified? bookDetailsCached;
 
   @override
   Widget build(BuildContext context) {
@@ -449,7 +441,7 @@ class _BookTitle extends StatelessWidget {
             // pauseBetween: 150.ms,
             // numberOfReps: 3,
             style: themeData.textTheme.headlineLarge,
-            itemBookMetadata?.title ?? bookDetailsCached?.metadata.title ?? '',
+            itemBookMetadata?.title ?? extraMap?.book?.metadata.title ?? '',
           ),
         ),
         // subtitle if available
@@ -482,7 +474,7 @@ class _BookAuthors extends StatelessWidget {
     String generateAuthorsString() {
       final authors = (itemBookMetadata)?.authors ?? [];
       if (authors.isEmpty) {
-        return (bookDetailsCached?.metadata as shelfsdk.BookMetadataMinified?)
+        return (bookDetailsCached?.metadata.asBookMetadataMinified)
                 ?.authorName ??
             '';
       }

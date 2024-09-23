@@ -8,8 +8,7 @@ import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:shimmer/shimmer.dart' show Shimmer;
 import 'package:vaani/api/api_provider.dart';
 import 'package:vaani/api/image_provider.dart';
-import 'package:vaani/api/library_item_provider.dart'
-    show libraryItemProvider;
+import 'package:vaani/api/library_item_provider.dart' show libraryItemProvider;
 import 'package:vaani/constants/hero_tag_conventions.dart';
 import 'package:vaani/features/item_viewer/view/library_item_actions.dart';
 import 'package:vaani/features/player/providers/audiobook_player.dart';
@@ -72,7 +71,7 @@ class BookOnShelf extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final book = item.media.asBookMinified;
     final metadata = book.metadata.asBookMetadataMinified;
-    final coverImage = ref.watch(coverImageProvider(item));
+    final coverImage = ref.watch(coverImageProvider(item.id));
     return LayoutBuilder(
       builder: (context, constraints) {
         final height = min(constraints.maxHeight, 500);
@@ -87,7 +86,6 @@ class BookOnShelf extends HookConsumerWidget {
             extra: LibraryItemExtras(
               book: book,
               heroTagSuffix: heroTagSuffix,
-              coverImage: coverImage.valueOrNull,
             ),
           );
         }
@@ -228,10 +226,9 @@ class _BookOnShelfPlayButton extends HookConsumerWidget {
 
     AsyncValue<ColorScheme?> coverColorScheme = const AsyncValue.loading();
     if (useMaterialThemeOnItemPage && isCurrentBookSetInPlayer) {
-      final itemFromApi = ref.watch(libraryItemProvider(libraryItemId));
       coverColorScheme = ref.watch(
         themeOfLibraryItemProvider(
-          itemFromApi.valueOrNull,
+          libraryItemId,
           brightness: Theme.of(context).brightness,
         ),
       );

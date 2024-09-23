@@ -6,7 +6,7 @@ part of 'image_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$coverImageHash() => r'702afafa217dfcbb290837caf21cc1ef54defd55';
+String _$coverImageHash() => r'89cc4783cbc76bb41beae34384d92fb277135c75';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,10 +30,10 @@ class _SystemHash {
 }
 
 abstract class _$CoverImage extends BuildlessStreamNotifier<Uint8List> {
-  late final LibraryItem libraryItem;
+  late final String itemId;
 
   Stream<Uint8List> build(
-    LibraryItem libraryItem,
+    String itemId,
   );
 }
 
@@ -48,10 +48,10 @@ class CoverImageFamily extends Family<AsyncValue<Uint8List>> {
 
   /// See also [CoverImage].
   CoverImageProvider call(
-    LibraryItem libraryItem,
+    String itemId,
   ) {
     return CoverImageProvider(
-      libraryItem,
+      itemId,
     );
   }
 
@@ -60,7 +60,7 @@ class CoverImageFamily extends Family<AsyncValue<Uint8List>> {
     covariant CoverImageProvider provider,
   ) {
     return call(
-      provider.libraryItem,
+      provider.itemId,
     );
   }
 
@@ -84,9 +84,9 @@ class CoverImageProvider
     extends StreamNotifierProviderImpl<CoverImage, Uint8List> {
   /// See also [CoverImage].
   CoverImageProvider(
-    LibraryItem libraryItem,
+    String itemId,
   ) : this._internal(
-          () => CoverImage()..libraryItem = libraryItem,
+          () => CoverImage()..itemId = itemId,
           from: coverImageProvider,
           name: r'coverImageProvider',
           debugGetCreateSourceHash:
@@ -96,7 +96,7 @@ class CoverImageProvider
           dependencies: CoverImageFamily._dependencies,
           allTransitiveDependencies:
               CoverImageFamily._allTransitiveDependencies,
-          libraryItem: libraryItem,
+          itemId: itemId,
         );
 
   CoverImageProvider._internal(
@@ -106,17 +106,17 @@ class CoverImageProvider
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.libraryItem,
+    required this.itemId,
   }) : super.internal();
 
-  final LibraryItem libraryItem;
+  final String itemId;
 
   @override
   Stream<Uint8List> runNotifierBuild(
     covariant CoverImage notifier,
   ) {
     return notifier.build(
-      libraryItem,
+      itemId,
     );
   }
 
@@ -125,13 +125,13 @@ class CoverImageProvider
     return ProviderOverride(
       origin: this,
       override: CoverImageProvider._internal(
-        () => create()..libraryItem = libraryItem,
+        () => create()..itemId = itemId,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        libraryItem: libraryItem,
+        itemId: itemId,
       ),
     );
   }
@@ -143,21 +143,21 @@ class CoverImageProvider
 
   @override
   bool operator ==(Object other) {
-    return other is CoverImageProvider && other.libraryItem == libraryItem;
+    return other is CoverImageProvider && other.itemId == itemId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, libraryItem.hashCode);
+    hash = _SystemHash.combine(hash, itemId.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin CoverImageRef on StreamNotifierProviderRef<Uint8List> {
-  /// The parameter `libraryItem` of this provider.
-  LibraryItem get libraryItem;
+  /// The parameter `itemId` of this provider.
+  String get itemId;
 }
 
 class _CoverImageProviderElement
@@ -166,7 +166,7 @@ class _CoverImageProviderElement
   _CoverImageProviderElement(super.provider);
 
   @override
-  LibraryItem get libraryItem => (origin as CoverImageProvider).libraryItem;
+  String get itemId => (origin as CoverImageProvider).itemId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -26,17 +26,19 @@ import 'package:vaani/shared/extensions/model_conversions.dart';
 import 'package:vaani/shared/utils.dart';
 
 class LibraryItemActions extends HookConsumerWidget {
-  LibraryItemActions({
+  const LibraryItemActions({
     super.key,
-    required this.item,
-  }) {
-    book = item.media.asBookExpanded;
-  }
+    required this.id,
+  });
 
-  final shelfsdk.LibraryItemExpanded item;
-  late final shelfsdk.BookExpanded book;
+  final String id;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final item = ref.watch(libraryItemProvider(id)).valueOrNull;
+    if (item == null) {
+      return const SizedBox.shrink();
+    }
     final downloadHistory = ref.watch(downloadHistoryProvider(group: item.id));
     final apiSettings = ref.watch(apiSettingsProvider);
 

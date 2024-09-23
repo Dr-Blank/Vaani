@@ -6,7 +6,7 @@ part of 'library_item_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$libraryItemHash() => r'fa3f8309349c5b1b777f1bc919616e51c3f5b520';
+String _$libraryItemHash() => r'a3cfa7f912e9498a70b5782899018b6964d6445c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,7 +30,7 @@ class _SystemHash {
 }
 
 abstract class _$LibraryItem
-    extends BuildlessAutoDisposeStreamNotifier<shelfsdk.LibraryItemExpanded> {
+    extends BuildlessStreamNotifier<shelfsdk.LibraryItemExpanded> {
   late final String id;
 
   Stream<shelfsdk.LibraryItemExpanded> build(
@@ -92,8 +92,8 @@ class LibraryItemFamily
 /// provides the library item for the given id
 ///
 /// Copied from [LibraryItem].
-class LibraryItemProvider extends AutoDisposeStreamNotifierProviderImpl<
-    LibraryItem, shelfsdk.LibraryItemExpanded> {
+class LibraryItemProvider extends StreamNotifierProviderImpl<LibraryItem,
+    shelfsdk.LibraryItemExpanded> {
   /// provides the library item for the given id
   ///
   /// Copied from [LibraryItem].
@@ -151,8 +151,8 @@ class LibraryItemProvider extends AutoDisposeStreamNotifierProviderImpl<
   }
 
   @override
-  AutoDisposeStreamNotifierProviderElement<LibraryItem,
-      shelfsdk.LibraryItemExpanded> createElement() {
+  StreamNotifierProviderElement<LibraryItem, shelfsdk.LibraryItemExpanded>
+      createElement() {
     return _LibraryItemProviderElement(this);
   }
 
@@ -171,14 +171,13 @@ class LibraryItemProvider extends AutoDisposeStreamNotifierProviderImpl<
 }
 
 mixin LibraryItemRef
-    on AutoDisposeStreamNotifierProviderRef<shelfsdk.LibraryItemExpanded> {
+    on StreamNotifierProviderRef<shelfsdk.LibraryItemExpanded> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
-class _LibraryItemProviderElement
-    extends AutoDisposeStreamNotifierProviderElement<LibraryItem,
-        shelfsdk.LibraryItemExpanded> with LibraryItemRef {
+class _LibraryItemProviderElement extends StreamNotifierProviderElement<
+    LibraryItem, shelfsdk.LibraryItemExpanded> with LibraryItemRef {
   _LibraryItemProviderElement(super.provider);
 
   @override

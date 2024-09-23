@@ -1,20 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vaani/api/library_item_provider.dart';
+import 'package:vaani/shared/extensions/model_conversions.dart';
 
-class LibraryItemMetadata extends StatelessWidget {
+class LibraryItemMetadata extends HookConsumerWidget {
   const LibraryItemMetadata({
     super.key,
-    required this.item,
-    this.itemBookMetadata,
-    this.bookDetailsCached,
+    required this.id,
   });
 
-  final shelfsdk.LibraryItemExpanded item;
-  final shelfsdk.BookMetadataExpanded? itemBookMetadata;
-  final shelfsdk.BookMinified? bookDetailsCached;
+  final String id;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final item = ref.watch(libraryItemProvider(id)).valueOrNull;
+
+    /// formats the duration of the book as `10h 30m`
+    ///
+    /// will add up all the durations of the audio files first
+    /// then convert them to the given format
+    String? getDurationFormatted() {
+      final book = (item?.media.asBookExpanded);
+      if (book == null) {
+        return null;
+      }
+      final duration = book.audioFiles
+          .map((e) => e.duration)
+          .reduce((value, element) => value + element);
+      final hours = duration.inHours;
+      final minutes = duration.inMinutes.remainder(60);
+      return '${hours}h ${minutes}m';
+    }
+
+    /// will return the size of the book in MB
+    ///
+    /// will add up all the sizes of the audio files first
+    /// then convert them to MB
+    String? getSizeFormatted() {
+      final book = (item?.media.asBookExpanded);
+      if (book == null) {
+        return null;
+      }
+      final size = book.audioFiles
+          .map((e) => e.metadata.size)
+          .reduce((value, element) => value + element);
+      return '${size / 1024 ~/ 1024} MB';
+    }
+
+    /// will return the codec and bitrate of the book
+    String? getCodecAndBitrate() {
+      final book = (item?.media.asBookExpanded);
+      if (book == null) {
+        return null;
+      }
+      final codec = book.audioFiles.first.codec.toUpperCase();
+      // final bitrate = book.audioFiles.first.bitRate;
+      return codec;
+    }
+
+    final itemBookMetadata = item?.media.metadata.asBookMetadataExpanded;
+
     final children = [
       // duration of the book
       _MetadataItem(
@@ -58,49 +103,6 @@ class LibraryItemMetadata extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  /// formats the duration of the book as `10h 30m`
-  ///
-  /// will add up all the durations of the audio files first
-  /// then convert them to the given format
-  String? getDurationFormatted() {
-    final book = (item.media as shelfsdk.BookExpanded?);
-    if (book == null) {
-      return null;
-    }
-    final duration = book.audioFiles
-        .map((e) => e.duration)
-        .reduce((value, element) => value + element);
-    final hours = duration.inHours;
-    final minutes = duration.inMinutes.remainder(60);
-    return '${hours}h ${minutes}m';
-  }
-
-  /// will return the size of the book in MB
-  ///
-  /// will add up all the sizes of the audio files first
-  /// then convert them to MB
-  String? getSizeFormatted() {
-    final book = (item.media as shelfsdk.BookExpanded?);
-    if (book == null) {
-      return null;
-    }
-    final size = book.audioFiles
-        .map((e) => e.metadata.size)
-        .reduce((value, element) => value + element);
-    return '${size / 1024 ~/ 1024} MB';
-  }
-
-  /// will return the codec and bitrate of the book
-  String? getCodecAndBitrate() {
-    final book = (item.media as shelfsdk.BookExpanded?);
-    if (book == null) {
-      return null;
-    }
-    final codec = book.audioFiles.first.codec.toUpperCase();
-    // final bitrate = book.audioFiles.first.bitRate;
-    return codec;
   }
 }
 

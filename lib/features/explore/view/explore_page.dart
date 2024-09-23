@@ -234,7 +234,7 @@ class BookSearchResultMini extends HookConsumerWidget {
     final item = ref.watch(libraryItemProvider(book.libraryItemId)).valueOrNull;
     final image = item == null
         ? const AsyncValue.loading()
-        : ref.watch(coverImageProvider(item));
+        : ref.watch(coverImageProvider(item.id));
     return ListTile(
       leading: SizedBox(
         width: 50,

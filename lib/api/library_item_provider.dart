@@ -13,7 +13,7 @@ part 'library_item_provider.g.dart';
 final _logger = Logger('LibraryItemProvider');
 
 /// provides the library item for the given id
-@riverpod
+@Riverpod(keepAlive: true)
 class LibraryItem extends _$LibraryItem {
   @override
   Stream<shelfsdk.LibraryItemExpanded> build(String id) async* {
@@ -22,7 +22,7 @@ class LibraryItem extends _$LibraryItem {
     _logger.fine('LibraryItemProvider fetching library item: $id');
 
     // ! this is a mock delay
-    // await Future.delayed(const Duration(seconds: 10));
+    // await Future.delayed(const Duration(seconds: 150));
 
     // look for the item in the cache
     final key = CacheKey.libraryItem(id);

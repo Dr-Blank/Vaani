@@ -18,7 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$LibraryItemExtras {
   BookMinified? get book => throw _privateConstructorUsedError;
   String get heroTagSuffix => throw _privateConstructorUsedError;
-  Uint8List? get coverImage => throw _privateConstructorUsedError;
 
   /// Create a copy of LibraryItemExtras
   /// with the given fields replaced by the non-null parameter values.
@@ -33,7 +32,7 @@ abstract class $LibraryItemExtrasCopyWith<$Res> {
           LibraryItemExtras value, $Res Function(LibraryItemExtras) then) =
       _$LibraryItemExtrasCopyWithImpl<$Res, LibraryItemExtras>;
   @useResult
-  $Res call({BookMinified? book, String heroTagSuffix, Uint8List? coverImage});
+  $Res call({BookMinified? book, String heroTagSuffix});
 }
 
 /// @nodoc
@@ -53,7 +52,6 @@ class _$LibraryItemExtrasCopyWithImpl<$Res, $Val extends LibraryItemExtras>
   $Res call({
     Object? book = freezed,
     Object? heroTagSuffix = null,
-    Object? coverImage = freezed,
   }) {
     return _then(_value.copyWith(
       book: freezed == book
@@ -64,10 +62,6 @@ class _$LibraryItemExtrasCopyWithImpl<$Res, $Val extends LibraryItemExtras>
           ? _value.heroTagSuffix
           : heroTagSuffix // ignore: cast_nullable_to_non_nullable
               as String,
-      coverImage: freezed == coverImage
-          ? _value.coverImage
-          : coverImage // ignore: cast_nullable_to_non_nullable
-              as Uint8List?,
     ) as $Val);
   }
 }
@@ -80,7 +74,7 @@ abstract class _$$LibraryItemExtrasImplCopyWith<$Res>
       __$$LibraryItemExtrasImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({BookMinified? book, String heroTagSuffix, Uint8List? coverImage});
+  $Res call({BookMinified? book, String heroTagSuffix});
 }
 
 /// @nodoc
@@ -98,7 +92,6 @@ class __$$LibraryItemExtrasImplCopyWithImpl<$Res>
   $Res call({
     Object? book = freezed,
     Object? heroTagSuffix = null,
-    Object? coverImage = freezed,
   }) {
     return _then(_$LibraryItemExtrasImpl(
       book: freezed == book
@@ -109,10 +102,6 @@ class __$$LibraryItemExtrasImplCopyWithImpl<$Res>
           ? _value.heroTagSuffix
           : heroTagSuffix // ignore: cast_nullable_to_non_nullable
               as String,
-      coverImage: freezed == coverImage
-          ? _value.coverImage
-          : coverImage // ignore: cast_nullable_to_non_nullable
-              as Uint8List?,
     ));
   }
 }
@@ -120,20 +109,17 @@ class __$$LibraryItemExtrasImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LibraryItemExtrasImpl implements _LibraryItemExtras {
-  const _$LibraryItemExtrasImpl(
-      {this.book, this.heroTagSuffix = '', this.coverImage});
+  const _$LibraryItemExtrasImpl({this.book, this.heroTagSuffix = ''});
 
   @override
   final BookMinified? book;
   @override
   @JsonKey()
   final String heroTagSuffix;
-  @override
-  final Uint8List? coverImage;
 
   @override
   String toString() {
-    return 'LibraryItemExtras(book: $book, heroTagSuffix: $heroTagSuffix, coverImage: $coverImage)';
+    return 'LibraryItemExtras(book: $book, heroTagSuffix: $heroTagSuffix)';
   }
 
   @override
@@ -143,14 +129,11 @@ class _$LibraryItemExtrasImpl implements _LibraryItemExtras {
             other is _$LibraryItemExtrasImpl &&
             (identical(other.book, book) || other.book == book) &&
             (identical(other.heroTagSuffix, heroTagSuffix) ||
-                other.heroTagSuffix == heroTagSuffix) &&
-            const DeepCollectionEquality()
-                .equals(other.coverImage, coverImage));
+                other.heroTagSuffix == heroTagSuffix));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, book, heroTagSuffix,
-      const DeepCollectionEquality().hash(coverImage));
+  int get hashCode => Object.hash(runtimeType, book, heroTagSuffix);
 
   /// Create a copy of LibraryItemExtras
   /// with the given fields replaced by the non-null parameter values.
@@ -165,15 +148,12 @@ class _$LibraryItemExtrasImpl implements _LibraryItemExtras {
 abstract class _LibraryItemExtras implements LibraryItemExtras {
   const factory _LibraryItemExtras(
       {final BookMinified? book,
-      final String heroTagSuffix,
-      final Uint8List? coverImage}) = _$LibraryItemExtrasImpl;
+      final String heroTagSuffix}) = _$LibraryItemExtrasImpl;
 
   @override
   BookMinified? get book;
   @override
   String get heroTagSuffix;
-  @override
-  Uint8List? get coverImage;
 
   /// Create a copy of LibraryItemExtras
   /// with the given fields replaced by the non-null parameter values.

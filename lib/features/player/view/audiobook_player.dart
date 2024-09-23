@@ -36,7 +36,7 @@ class AudiobookPlayer extends HookConsumerWidget {
     final player = ref.watch(audiobookPlayerProvider);
     final imageOfItemBeingPlayed = itemBeingPlayed.valueOrNull != null
         ? ref.watch(
-            coverImageProvider(itemBeingPlayed.valueOrNull!),
+            coverImageProvider(itemBeingPlayed.valueOrNull!.id),
           )
         : null;
     final imgWidget = imageOfItemBeingPlayed?.valueOrNull != null
@@ -63,7 +63,7 @@ class AudiobookPlayer extends HookConsumerWidget {
     // theme from image
     final imageTheme = ref.watch(
       themeOfLibraryItemProvider(
-        itemBeingPlayed.valueOrNull,
+        itemBeingPlayed.valueOrNull?.id,
         brightness: Theme.of(context).brightness,
       ),
     );
