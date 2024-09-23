@@ -92,50 +92,13 @@ class AudiobookDownloadManager {
         allowPause: allowPause,
         group: item.id,
         baseDirectory: downloadDirectory,
+        updates: Updates.statusAndProgress,
         // metaData: token
       );
       // _downloadTasks.add(task);
       tq.add(task);
       _logger.info('queued task: ${task.taskId}');
     }
-
-    FileDownloader().registerCallbacks(
-      group: item.id,
-      taskProgressCallback: (update) {
-        try {
-          taskProgressCallback?.call(update);
-        } catch (e) {
-          _logger.warning('Error in taskProgressCallback: $e');
-        }
-        _logger.info('Group: ${item.id}, Progress Update: ${update.progress}');
-      },
-      taskStatusCallback: (update) {
-        try {
-          taskStatusCallback?.call(update);
-        } catch (e) {
-          _logger.warning('Error in taskStatusCallback: $e');
-        }
-        switch (update.status) {
-          case TaskStatus.complete:
-            _logger.info('Group: ${item.id}, Download Complete');
-            break;
-          case TaskStatus.failed:
-            _logger.warning('Group: ${item.id}, Download Failed');
-            break;
-          default:
-            _logger
-                .info('Group: ${item.id}, Download Status: ${update.status}');
-        }
-      },
-      taskNotificationTapCallback: (task, notificationType) {
-        try {
-          taskNotificationTapCallback?.call(task, notificationType);
-        } catch (e) {
-          _logger.warning('Error in taskNotificationTapCallback: $e');
-        }
-        _logger.info('Group: ${item.id}, Task: ${task.taskId}');
-      },
-    );
   }
 
   String constructFilePath(
@@ -152,16 +115,35 @@ class AudiobookDownloadManager {
   }
 
   bool isItemDownloading(String id) {
-    if (tq.isEmpty) {
-      return false;
-    }
-
     return tq.enqueued.any((task) => task.group == id);
   }
 
   bool isFileDownloaded(String filePath) {
     final fileExists = File(filePath).existsSync();
     return fileExists;
+  }
+
+  Future<List<LibraryFile>> getDownloadedFilesMetadata(
+    LibraryItemExpanded item,
+  ) async {
+    final directory = await getApplicationSupportDirectory();
+    final downloadedFiles = <LibraryFile>[];
+    for (final file in item.libraryFiles) {
+      final filePath = constructFilePath(directory, item, file);
+      if (isFileDownloaded(filePath)) {
+        downloadedFiles.add(file);
+      }
+    }
+
+    return downloadedFiles;
+  }
+
+  Future<int> getDownloadedSize(LibraryItemExpanded item) async {
+    final files = await getDownloadedFilesMetadata(item);
+    return files.fold<int>(
+      0,
+      (previousValue, element) => previousValue + element.metadata.size,
+    );
   }
 
   Future<bool> isItemDownloaded(LibraryItemExpanded item) async {
@@ -188,7 +170,7 @@ class AudiobookDownloadManager {
     }
   }
 
-  Future<List<Uri>> getDownloadedFiles(LibraryItemExpanded item) async {
+  Future<List<Uri>> getDownloadedFilesUri(LibraryItemExpanded item) async {
     final directory = await getApplicationSupportDirectory();
     final files = <Uri>[];
     for (final file in item.libraryFiles) {
@@ -214,12 +196,12 @@ class AudiobookDownloadManager {
 
     await fileDownloader.trackTasks();
 
-    _logger.info('Listening to download manager updates');
     try {
-     _updatesSubscription = fileDownloader.updates.listen((event) {
-        _logger.info('Got event: $event');
+      _updatesSubscription = fileDownloader.updates.listen((event) {
+        _logger.finer('Got event: $event');
         _taskStatusController.add(event);
       });
+      _logger.info('Listening to download manager updates');
     } catch (e) {
       _logger.warning('Error when listening to download manager updates: $e');
     }

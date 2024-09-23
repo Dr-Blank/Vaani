@@ -3,8 +3,10 @@ import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/api/library_item_provider.dart';
 import 'package:vaani/features/downloads/core/download_manager.dart' as core;
 import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/shared/extensions/item_files.dart';
 
 part 'download_manager.g.dart';
 
@@ -36,15 +38,11 @@ class SimpleDownloadManager extends _$SimpleDownloadManager {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class DownloadManager extends _$DownloadManager {
   @override
   core.AudiobookDownloadManager build() {
     final manager = ref.watch(simpleDownloadManagerProvider);
-    ref.onDispose(() {
-      manager.dispose();
-    });
-
     manager.taskUpdateStream.listen((_) {
       ref.notifyListeners();
     });
@@ -87,49 +85,52 @@ class DownloadManager extends _$DownloadManager {
 class IsItemDownloading extends _$IsItemDownloading {
   @override
   bool build(String id) {
-    final manager = ref.read(downloadManagerProvider);
-    ref.onDispose(() {
-      manager.dispose();
-    });
-
-    callback(dynamic _) {
-      ref.notifyListeners();
-    }
-
-    FileDownloader().registerCallbacks(
-      group: id,
-      taskStatusCallback: callback,
-    );
-
-    ref.onDispose(() {
-      FileDownloader().unregisterCallbacks(group: id, callback: callback);
-    });
-
+    final manager = ref.watch(downloadManagerProvider);
     return manager.isItemDownloading(id);
   }
 }
 
-@Riverpod(keepAlive: true)
-class DownloadProgress extends _$DownloadProgress {
+@riverpod
+class ItemDownloadProgress extends _$ItemDownloadProgress {
   @override
-  double build(String id) {
-    var progress = 0.0;
+  Future<double?> build(String id) async {
+    final item = await ref.watch(libraryItemProvider(id).future);
+    final manager = ref.read(downloadManagerProvider);
+    manager.taskUpdateStream.map((taskUpdate) {
+      if (taskUpdate is! TaskProgressUpdate) {
+        return null;
+      }
+      if (taskUpdate.task.group == id) {
+        return taskUpdate;
+      }
+    }).listen((task) async {
+      if (task != null) {
+        final totalSize = item.totalSize;
+        // if total size is 0, return 0
+        if (totalSize == 0) {
+          state = const AsyncValue.data(0.0);
+          return;
+        }
+        final downloadedFiles = await manager.getDownloadedFilesMetadata(item);
+        // calculate total size of downloaded files and total size of item, then divide
+        // to get percentage
+        final downloadedSize = downloadedFiles.fold<int>(
+          0,
+          (previousValue, element) => previousValue + element.metadata.size,
+        );
 
-    void progressCallback(TaskProgressUpdate progress) {
-      state = progress.progress;
-    }
+        final inProgressFileSize = task.progress * task.expectedFileSize;
+        final totalDownloadedSize = downloadedSize + inProgressFileSize;
+        final progress = totalDownloadedSize / totalSize;
+        // if current progress is more than calculated progress, do not update
+        if (progress < (state.valueOrNull ?? 0.0)) {
+          return;
+        }
 
-    FileDownloader().registerCallbacks(
-      group: id,
-      taskProgressCallback: progressCallback,
-    );
-
-    ref.onDispose(() {
-      FileDownloader()
-          .unregisterCallbacks(group: id, callback: progressCallback);
+        state = AsyncValue.data(progress.clamp(0.0, 1.0));
+      }
     });
-
-    return progress;
+    return null;
   }
 }
 
@@ -141,17 +142,8 @@ FutureOr<List<TaskRecord>> downloadHistory(
   return await FileDownloader().database.allRecords(group: group);
 }
 
-// @Riverpod(keepAlive: false)
-// FutureOr<bool> downloadStatus(
-//   DownloadStatusRef ref,
-//   LibraryItemExpanded item,
-// ) async {
-//   final manager = ref.read(simpleDownloadManagerProvider);
-//   return manager.isItemDownloaded(item);
-// }
-
 @riverpod
-class DownloadStatus extends _$DownloadStatus {
+class IsItemDownloaded extends _$IsItemDownloaded {
   @override
   FutureOr<bool> build(
     LibraryItemExpanded item,
@@ -159,5 +151,4 @@ class DownloadStatus extends _$DownloadStatus {
     final manager = ref.watch(downloadManagerProvider);
     return manager.isItemDownloaded(item);
   }
-
 }

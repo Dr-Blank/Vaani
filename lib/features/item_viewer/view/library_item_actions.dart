@@ -1,7 +1,6 @@
 import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
@@ -11,9 +10,9 @@ import 'package:vaani/features/downloads/providers/download_manager.dart'
     show
         downloadHistoryProvider,
         downloadManagerProvider,
-        downloadProgressProvider,
-        downloadStatusProvider,
+        isItemDownloadedProvider,
         isItemDownloadingProvider,
+        itemDownloadProgressProvider,
         simpleDownloadManagerProvider;
 import 'package:vaani/features/item_viewer/view/library_item_page.dart';
 import 'package:vaani/features/per_book_settings/providers/book_settings_provider.dart';
@@ -214,12 +213,13 @@ class LibItemDownloadButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isItemDownloaded = ref.watch(downloadStatusProvider(item));
+    final isItemDownloaded = ref.watch(isItemDownloadedProvider(item));
+    if (isItemDownloaded.valueOrNull ?? false) {
+      return AlreadyItemDownloadedButton(item: item);
+    }
     final isItemDownloading = ref.watch(isItemDownloadingProvider(item.id));
 
-    return isItemDownloaded.valueOrNull ?? false
-        ? AlreadyItemDownloadedButton(item: item)
-        : isItemDownloading
+    return isItemDownloading
             ? ItemCurrentlyInDownloadQueue(
                 item: item,
               )
@@ -248,9 +248,14 @@ class ItemCurrentlyInDownloadQueue extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final progress = ref.watch(downloadProgressProvider(item.id));
-    final updatesStream = useStream(ref.watch(downloadManagerProvider).taskUpdateStream);
+    final progress =
+        ref.watch(itemDownloadProgressProvider(item.id)).valueOrNull;
 
+    if (progress == 1) {
+      return AlreadyItemDownloadedButton(item: item);
+    }
+
+    const shimmerDuration = Duration(milliseconds: 1000);
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -260,19 +265,22 @@ class ItemCurrentlyInDownloadQueue extends HookConsumerWidget {
         ),
         const Icon(
           Icons.download,
+          // color: Theme.of(context).progressIndicatorTheme.color,
         )
             .animate(
               onPlay: (controller) => controller.repeat(),
             )
             .fade(
-              begin: 0.5,
+              duration: shimmerDuration,
               end: 1,
-              duration: 1.seconds,
+              begin: 0.6,
+              curve: Curves.linearToEaseOut,
             )
             .fade(
+              duration: shimmerDuration,
+              end: 0.7,
               begin: 1,
-              end: 0.5,
-              duration: 1.seconds,
+              curve: Curves.easeInToLinear,
             ),
       ],
     );
@@ -520,7 +528,7 @@ Future<void> libraryItemPlayButtonOnPressed({
     final downloadManager = ref.watch(simpleDownloadManagerProvider);
     final libItem =
         await ref.read(libraryItemProvider(book.libraryItemId).future);
-    final downloadedUris = await downloadManager.getDownloadedFiles(libItem);
+    final downloadedUris = await downloadManager.getDownloadedFilesUri(libItem);
     setSourceFuture = player.setSourceAudiobook(
       book,
       initialPosition: userMediaProgress?.currentTime,

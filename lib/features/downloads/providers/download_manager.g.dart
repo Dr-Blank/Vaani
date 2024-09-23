@@ -174,12 +174,12 @@ final simpleDownloadManagerProvider = NotifierProvider<SimpleDownloadManager,
 );
 
 typedef _$SimpleDownloadManager = Notifier<core.AudiobookDownloadManager>;
-String _$downloadManagerHash() => r'bf08bdeda54773a4b6713ad77abb75add3ed30ee';
+String _$downloadManagerHash() => r'9566b772d792b32e1b199d4aa834e28de3b034d0';
 
 /// See also [DownloadManager].
 @ProviderFor(DownloadManager)
-final downloadManagerProvider = AutoDisposeNotifierProvider<DownloadManager,
-    core.AudiobookDownloadManager>.internal(
+final downloadManagerProvider =
+    NotifierProvider<DownloadManager, core.AudiobookDownloadManager>.internal(
   DownloadManager.new,
   name: r'downloadManagerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -189,8 +189,8 @@ final downloadManagerProvider = AutoDisposeNotifierProvider<DownloadManager,
   allTransitiveDependencies: null,
 );
 
-typedef _$DownloadManager = AutoDisposeNotifier<core.AudiobookDownloadManager>;
-String _$isItemDownloadingHash() => r'07e35ae25c096e9c9071667c6303a43f7b5e4cff';
+typedef _$DownloadManager = Notifier<core.AudiobookDownloadManager>;
+String _$isItemDownloadingHash() => r'ea43c06393beec828134e08d5f896ddbcfbac8f0';
 
 abstract class _$IsItemDownloading extends BuildlessAutoDisposeNotifier<bool> {
   late final String id;
@@ -332,37 +332,39 @@ class _IsItemDownloadingProviderElement
   String get id => (origin as IsItemDownloadingProvider).id;
 }
 
-String _$downloadProgressHash() => r'1677f45191181765f6efebdb74206a438a47a4b7';
+String _$itemDownloadProgressHash() =>
+    r'd007c55c6e2e4b992069d0306df8a600225d8598';
 
-abstract class _$DownloadProgress extends BuildlessNotifier<double> {
+abstract class _$ItemDownloadProgress
+    extends BuildlessAutoDisposeAsyncNotifier<double?> {
   late final String id;
 
-  double build(
+  FutureOr<double?> build(
     String id,
   );
 }
 
-/// See also [DownloadProgress].
-@ProviderFor(DownloadProgress)
-const downloadProgressProvider = DownloadProgressFamily();
+/// See also [ItemDownloadProgress].
+@ProviderFor(ItemDownloadProgress)
+const itemDownloadProgressProvider = ItemDownloadProgressFamily();
 
-/// See also [DownloadProgress].
-class DownloadProgressFamily extends Family<double> {
-  /// See also [DownloadProgress].
-  const DownloadProgressFamily();
+/// See also [ItemDownloadProgress].
+class ItemDownloadProgressFamily extends Family<AsyncValue<double?>> {
+  /// See also [ItemDownloadProgress].
+  const ItemDownloadProgressFamily();
 
-  /// See also [DownloadProgress].
-  DownloadProgressProvider call(
+  /// See also [ItemDownloadProgress].
+  ItemDownloadProgressProvider call(
     String id,
   ) {
-    return DownloadProgressProvider(
+    return ItemDownloadProgressProvider(
       id,
     );
   }
 
   @override
-  DownloadProgressProvider getProviderOverride(
-    covariant DownloadProgressProvider provider,
+  ItemDownloadProgressProvider getProviderOverride(
+    covariant ItemDownloadProgressProvider provider,
   ) {
     return call(
       provider.id,
@@ -381,30 +383,30 @@ class DownloadProgressFamily extends Family<double> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'downloadProgressProvider';
+  String? get name => r'itemDownloadProgressProvider';
 }
 
-/// See also [DownloadProgress].
-class DownloadProgressProvider
-    extends NotifierProviderImpl<DownloadProgress, double> {
-  /// See also [DownloadProgress].
-  DownloadProgressProvider(
+/// See also [ItemDownloadProgress].
+class ItemDownloadProgressProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    ItemDownloadProgress, double?> {
+  /// See also [ItemDownloadProgress].
+  ItemDownloadProgressProvider(
     String id,
   ) : this._internal(
-          () => DownloadProgress()..id = id,
-          from: downloadProgressProvider,
-          name: r'downloadProgressProvider',
+          () => ItemDownloadProgress()..id = id,
+          from: itemDownloadProgressProvider,
+          name: r'itemDownloadProgressProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$downloadProgressHash,
-          dependencies: DownloadProgressFamily._dependencies,
+                  : _$itemDownloadProgressHash,
+          dependencies: ItemDownloadProgressFamily._dependencies,
           allTransitiveDependencies:
-              DownloadProgressFamily._allTransitiveDependencies,
+              ItemDownloadProgressFamily._allTransitiveDependencies,
           id: id,
         );
 
-  DownloadProgressProvider._internal(
+  ItemDownloadProgressProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -417,8 +419,8 @@ class DownloadProgressProvider
   final String id;
 
   @override
-  double runNotifierBuild(
-    covariant DownloadProgress notifier,
+  FutureOr<double?> runNotifierBuild(
+    covariant ItemDownloadProgress notifier,
   ) {
     return notifier.build(
       id,
@@ -426,10 +428,10 @@ class DownloadProgressProvider
   }
 
   @override
-  Override overrideWith(DownloadProgress Function() create) {
+  Override overrideWith(ItemDownloadProgress Function() create) {
     return ProviderOverride(
       origin: this,
-      override: DownloadProgressProvider._internal(
+      override: ItemDownloadProgressProvider._internal(
         () => create()..id = id,
         from: from,
         name: null,
@@ -442,13 +444,14 @@ class DownloadProgressProvider
   }
 
   @override
-  NotifierProviderElement<DownloadProgress, double> createElement() {
-    return _DownloadProgressProviderElement(this);
+  AutoDisposeAsyncNotifierProviderElement<ItemDownloadProgress, double?>
+      createElement() {
+    return _ItemDownloadProgressProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is DownloadProgressProvider && other.id == id;
+    return other is ItemDownloadProgressProvider && other.id == id;
   }
 
   @override
@@ -460,23 +463,23 @@ class DownloadProgressProvider
   }
 }
 
-mixin DownloadProgressRef on NotifierProviderRef<double> {
+mixin ItemDownloadProgressRef on AutoDisposeAsyncNotifierProviderRef<double?> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
-class _DownloadProgressProviderElement
-    extends NotifierProviderElement<DownloadProgress, double>
-    with DownloadProgressRef {
-  _DownloadProgressProviderElement(super.provider);
+class _ItemDownloadProgressProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<ItemDownloadProgress,
+        double?> with ItemDownloadProgressRef {
+  _ItemDownloadProgressProviderElement(super.provider);
 
   @override
-  String get id => (origin as DownloadProgressProvider).id;
+  String get id => (origin as ItemDownloadProgressProvider).id;
 }
 
-String _$downloadStatusHash() => r'3f2bf4e7fb01b9329d31f4797537a307aff70397';
+String _$isItemDownloadedHash() => r'9bb7ba28bdb73e1ba706e849fedc9c7bd67f4b67';
 
-abstract class _$DownloadStatus
+abstract class _$IsItemDownloaded
     extends BuildlessAutoDisposeAsyncNotifier<bool> {
   late final LibraryItemExpanded item;
 
@@ -485,27 +488,27 @@ abstract class _$DownloadStatus
   );
 }
 
-/// See also [DownloadStatus].
-@ProviderFor(DownloadStatus)
-const downloadStatusProvider = DownloadStatusFamily();
+/// See also [IsItemDownloaded].
+@ProviderFor(IsItemDownloaded)
+const isItemDownloadedProvider = IsItemDownloadedFamily();
 
-/// See also [DownloadStatus].
-class DownloadStatusFamily extends Family<AsyncValue<bool>> {
-  /// See also [DownloadStatus].
-  const DownloadStatusFamily();
+/// See also [IsItemDownloaded].
+class IsItemDownloadedFamily extends Family<AsyncValue<bool>> {
+  /// See also [IsItemDownloaded].
+  const IsItemDownloadedFamily();
 
-  /// See also [DownloadStatus].
-  DownloadStatusProvider call(
+  /// See also [IsItemDownloaded].
+  IsItemDownloadedProvider call(
     LibraryItemExpanded item,
   ) {
-    return DownloadStatusProvider(
+    return IsItemDownloadedProvider(
       item,
     );
   }
 
   @override
-  DownloadStatusProvider getProviderOverride(
-    covariant DownloadStatusProvider provider,
+  IsItemDownloadedProvider getProviderOverride(
+    covariant IsItemDownloadedProvider provider,
   ) {
     return call(
       provider.item,
@@ -524,30 +527,30 @@ class DownloadStatusFamily extends Family<AsyncValue<bool>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'downloadStatusProvider';
+  String? get name => r'isItemDownloadedProvider';
 }
 
-/// See also [DownloadStatus].
-class DownloadStatusProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<DownloadStatus, bool> {
-  /// See also [DownloadStatus].
-  DownloadStatusProvider(
+/// See also [IsItemDownloaded].
+class IsItemDownloadedProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<IsItemDownloaded, bool> {
+  /// See also [IsItemDownloaded].
+  IsItemDownloadedProvider(
     LibraryItemExpanded item,
   ) : this._internal(
-          () => DownloadStatus()..item = item,
-          from: downloadStatusProvider,
-          name: r'downloadStatusProvider',
+          () => IsItemDownloaded()..item = item,
+          from: isItemDownloadedProvider,
+          name: r'isItemDownloadedProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$downloadStatusHash,
-          dependencies: DownloadStatusFamily._dependencies,
+                  : _$isItemDownloadedHash,
+          dependencies: IsItemDownloadedFamily._dependencies,
           allTransitiveDependencies:
-              DownloadStatusFamily._allTransitiveDependencies,
+              IsItemDownloadedFamily._allTransitiveDependencies,
           item: item,
         );
 
-  DownloadStatusProvider._internal(
+  IsItemDownloadedProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -561,7 +564,7 @@ class DownloadStatusProvider
 
   @override
   FutureOr<bool> runNotifierBuild(
-    covariant DownloadStatus notifier,
+    covariant IsItemDownloaded notifier,
   ) {
     return notifier.build(
       item,
@@ -569,10 +572,10 @@ class DownloadStatusProvider
   }
 
   @override
-  Override overrideWith(DownloadStatus Function() create) {
+  Override overrideWith(IsItemDownloaded Function() create) {
     return ProviderOverride(
       origin: this,
-      override: DownloadStatusProvider._internal(
+      override: IsItemDownloadedProvider._internal(
         () => create()..item = item,
         from: from,
         name: null,
@@ -585,14 +588,14 @@ class DownloadStatusProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<DownloadStatus, bool>
+  AutoDisposeAsyncNotifierProviderElement<IsItemDownloaded, bool>
       createElement() {
-    return _DownloadStatusProviderElement(this);
+    return _IsItemDownloadedProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is DownloadStatusProvider && other.item == item;
+    return other is IsItemDownloadedProvider && other.item == item;
   }
 
   @override
@@ -604,18 +607,18 @@ class DownloadStatusProvider
   }
 }
 
-mixin DownloadStatusRef on AutoDisposeAsyncNotifierProviderRef<bool> {
+mixin IsItemDownloadedRef on AutoDisposeAsyncNotifierProviderRef<bool> {
   /// The parameter `item` of this provider.
   LibraryItemExpanded get item;
 }
 
-class _DownloadStatusProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<DownloadStatus, bool>
-    with DownloadStatusRef {
-  _DownloadStatusProviderElement(super.provider);
+class _IsItemDownloadedProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<IsItemDownloaded, bool>
+    with IsItemDownloadedRef {
+  _IsItemDownloadedProviderElement(super.provider);
 
   @override
-  LibraryItemExpanded get item => (origin as DownloadStatusProvider).item;
+  LibraryItemExpanded get item => (origin as IsItemDownloadedProvider).item;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
