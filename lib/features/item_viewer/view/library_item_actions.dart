@@ -222,21 +222,21 @@ class LibItemDownloadButton extends HookConsumerWidget {
     final isItemDownloading = ref.watch(isItemDownloadingProvider(item.id));
 
     return isItemDownloading
-            ? ItemCurrentlyInDownloadQueue(
-                item: item,
-              )
-            : IconButton(
-                onPressed: () {
-                  appLogger.fine('Pressed download button');
+        ? ItemCurrentlyInDownloadQueue(
+            item: item,
+          )
+        : IconButton(
+            onPressed: () {
+              appLogger.fine('Pressed download button');
 
-                  ref
-                      .read(downloadManagerProvider.notifier)
-                      .queueAudioBookDownload(item);
-                },
-                icon: const Icon(
-                  Icons.download_rounded,
-                ),
-              );
+              ref
+                  .read(downloadManagerProvider.notifier)
+                  .queueAudioBookDownload(item);
+            },
+            icon: const Icon(
+              Icons.download_rounded,
+            ),
+          );
   }
 }
 
@@ -250,8 +250,10 @@ class ItemCurrentlyInDownloadQueue extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final progress =
-        ref.watch(itemDownloadProgressProvider(item.id)).valueOrNull;
+    final progress = ref
+        .watch(itemDownloadProgressProvider(item.id))
+        .valueOrNull
+        ?.clamp(0.05, 1.0);
 
     if (progress == 1) {
       return AlreadyItemDownloadedButton(item: item);
