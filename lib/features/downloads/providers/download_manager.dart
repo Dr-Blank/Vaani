@@ -50,28 +50,10 @@ class DownloadManager extends _$DownloadManager {
   }
 
   Future<void> queueAudioBookDownload(
-    LibraryItemExpanded item, {
-    void Function(TaskStatusUpdate)? taskStatusCallback,
-    void Function(TaskProgressUpdate)? taskProgressCallback,
-  }) async {
+    LibraryItemExpanded item,
+  ) async {
     await state.queueAudioBookDownload(
       item,
-      taskStatusCallback: (item) {
-        try {
-          taskStatusCallback?.call(item);
-        } catch (e) {
-          _logger.severe('Error in taskStatusCallback', e);
-        }
-        ref.notifyListeners();
-      },
-      taskProgressCallback: (item) {
-        try {
-          taskProgressCallback?.call(item);
-        } catch (e) {
-          _logger.severe('Error in taskProgressCallback', e);
-        }
-        ref.notifyListeners();
-      },
     );
   }
 
