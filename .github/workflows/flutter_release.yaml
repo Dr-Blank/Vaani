@@ -18,6 +18,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Decode android/upload.jks
+        run: echo "${{ secrets.UPLOAD_KEYSTORE_JKS }}" | base64 --decode > android/upload.jks
+
+      - name: Decode android/key.properties
+        run: echo "${{ secrets.KEY_PROPERTIES }}" | base64 --decode > android/key.properties
+
       - name: Checkout shelfsdk
         uses: actions/checkout@v3
         with:
