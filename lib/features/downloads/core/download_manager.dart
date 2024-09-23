@@ -65,11 +65,8 @@ class AudiobookDownloadManager {
   late StreamSubscription<TaskUpdate> _updatesSubscription;
 
   Future<void> queueAudioBookDownload(
-    LibraryItemExpanded item, {
-    void Function(TaskStatusUpdate)? taskStatusCallback,
-    void Function(TaskProgressUpdate)? taskProgressCallback,
-    void Function(Task, NotificationType)? taskNotificationTapCallback,
-  }) async {
+    LibraryItemExpanded item,
+  ) async {
     _logger.info('queuing download for item: ${item.id}');
     // create a download task for each file in the item
     final directory = await getApplicationSupportDirectory();
@@ -119,8 +116,7 @@ class AudiobookDownloadManager {
   }
 
   bool isFileDownloaded(String filePath) {
-    final fileExists = File(filePath).existsSync();
-    return fileExists;
+    return File(filePath).existsSync();
   }
 
   Future<List<LibraryFile>> getDownloadedFilesMetadata(
@@ -159,7 +155,7 @@ class AudiobookDownloadManager {
   }
 
   Future<void> deleteDownloadedItem(LibraryItemExpanded item) async {
-    _logger.info('deleting downloaded item id: ${item.id}');
+    _logger.info('deleting downloaded item with id: ${item.id}');
     final directory = await getApplicationSupportDirectory();
     for (final file in item.libraryFiles) {
       final filePath = constructFilePath(directory, item, file);
