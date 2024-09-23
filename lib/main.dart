@@ -8,7 +8,6 @@ import 'package:just_audio_media_kit/just_audio_media_kit.dart'
 import 'package:logging/logging.dart';
 import 'package:vaani/api/server_provider.dart';
 import 'package:vaani/db/storage.dart';
-import 'package:vaani/features/downloads/core/download_manager.dart';
 import 'package:vaani/features/downloads/providers/download_manager.dart';
 import 'package:vaani/features/playback_reporting/providers/playback_reporter_provider.dart';
 import 'package:vaani/features/player/providers/audiobook_player.dart';
@@ -48,9 +47,6 @@ void main() async {
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
   );
-
-  // for initializing the download manager
-  await initDownloadManager();
 
   // run the app
   runApp(

@@ -1,5 +1,6 @@
 // download manager to handle download tasks of files
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:background_downloader/background_downloader.dart';
@@ -38,6 +39,7 @@ class AudiobookDownloadManager {
     _logger.fine(
       'requiresWiFi: $requiresWiFi, retries: $retries, allowPause: $allowPause',
     );
+    initDownloadManager();
   }
 
   // the base url for the audio files
@@ -55,10 +57,17 @@ class AudiobookDownloadManager {
   // whether to allow pausing of downloads
   final bool allowPause;
 
-  // final List<DownloadTask> _downloadTasks = [];
+  final StreamController<TaskUpdate> _taskStatusController =
+      StreamController.broadcast();
 
-  Future<void> queueAudioBookDownload(LibraryItemExpanded item) async {
-    _logger.info('queuing download for item: ${item.toJson()}');
+  Stream<TaskUpdate> get taskUpdateStream => _taskStatusController.stream;
+
+  late StreamSubscription<TaskUpdate> _updatesSubscription;
+
+  Future<void> queueAudioBookDownload(
+    LibraryItemExpanded item,
+  ) async {
+    _logger.info('queuing download for item: ${item.id}');
     // create a download task for each file in the item
     final directory = await getApplicationSupportDirectory();
     for (final file in item.libraryFiles) {
@@ -80,35 +89,13 @@ class AudiobookDownloadManager {
         allowPause: allowPause,
         group: item.id,
         baseDirectory: downloadDirectory,
+        updates: Updates.statusAndProgress,
         // metaData: token
       );
       // _downloadTasks.add(task);
       tq.add(task);
-      _logger.info('queued task: ${task.toJson()}');
+      _logger.info('queued task: ${task.taskId}');
     }
-
-    FileDownloader().registerCallbacks(
-      group: item.id,
-      taskProgressCallback: (update) {
-        _logger.info('Group: ${item.id}, Progress Update: ${update.progress}');
-      },
-      taskStatusCallback: (update) {
-        switch (update.status) {
-          case TaskStatus.complete:
-            _logger.info('Group: ${item.id}, Download Complete');
-            break;
-          case TaskStatus.failed:
-            _logger.warning('Group: ${item.id}, Download Failed');
-            break;
-          default:
-            _logger
-                .info('Group: ${item.id}, Download Status: ${update.status}');
-        }
-      },
-      taskNotificationTapCallback: (task, notificationType) {
-        _logger.info('Group: ${item.id}, Task: ${task.toJson()}');
-      },
-    );
   }
 
   String constructFilePath(
@@ -118,23 +105,41 @@ class AudiobookDownloadManager {
   ) =>
       '${directory.path}/${item.relPath}/${file.metadata.filename}';
 
-  // void startDownload() {
-  //   for (final task in _downloadTasks) {
-  //     _logger.fine('enqueuing task: $task');
-  //     FileDownloader().enqueue(task);
-  //   }
-  // }
-
   void dispose() {
-    // tq.removeAll();
-    _logger.fine('disposed');
+    _updatesSubscription.cancel();
+    FileDownloader().destroy();
+    _logger.fine('Destroyed download manager');
+  }
+
+  bool isItemDownloading(String id) {
+    return tq.enqueued.any((task) => task.group == id);
   }
 
   bool isFileDownloaded(String filePath) {
-    // Check if the file exists
-    final fileExists = File(filePath).existsSync();
+    return File(filePath).existsSync();
+  }
 
-    return fileExists;
+  Future<List<LibraryFile>> getDownloadedFilesMetadata(
+    LibraryItemExpanded item,
+  ) async {
+    final directory = await getApplicationSupportDirectory();
+    final downloadedFiles = <LibraryFile>[];
+    for (final file in item.libraryFiles) {
+      final filePath = constructFilePath(directory, item, file);
+      if (isFileDownloaded(filePath)) {
+        downloadedFiles.add(file);
+      }
+    }
+
+    return downloadedFiles;
+  }
+
+  Future<int> getDownloadedSize(LibraryItemExpanded item) async {
+    final files = await getDownloadedFilesMetadata(item);
+    return files.fold<int>(
+      0,
+      (previousValue, element) => previousValue + element.metadata.size,
+    );
   }
 
   Future<bool> isItemDownloaded(LibraryItemExpanded item) async {
@@ -145,11 +150,12 @@ class AudiobookDownloadManager {
         return false;
       }
     }
-
+    _logger.info('all files downloaded for item id: ${item.id}');
     return true;
   }
 
   Future<void> deleteDownloadedItem(LibraryItemExpanded item) async {
+    _logger.info('deleting downloaded item with id: ${item.id}');
     final directory = await getApplicationSupportDirectory();
     for (final file in item.libraryFiles) {
       final filePath = constructFilePath(directory, item, file);
@@ -160,7 +166,7 @@ class AudiobookDownloadManager {
     }
   }
 
-  Future<List<Uri>> getDownloadedFiles(LibraryItemExpanded item) async {
+  Future<List<Uri>> getDownloadedFilesUri(LibraryItemExpanded item) async {
     final directory = await getApplicationSupportDirectory();
     final files = <Uri>[];
     for (final file in item.libraryFiles) {
@@ -172,14 +178,28 @@ class AudiobookDownloadManager {
 
     return files;
   }
-}
 
-Future<void> initDownloadManager() async {
-  // initialize the download manager
-  var fileDownloader = FileDownloader();
-  fileDownloader.configureNotification(
-    running: const TaskNotification('Downloading', 'file: {filename}'),
-    progressBar: true,
-  );
-  await fileDownloader.trackTasks();
+  Future<void> initDownloadManager() async {
+    // initialize the download manager
+    _logger.info('Initializing download manager');
+    final fileDownloader = FileDownloader();
+
+    _logger.info('Configuring Notification');
+    fileDownloader.configureNotification(
+      running: const TaskNotification('Downloading', 'file: {filename}'),
+      progressBar: true,
+    );
+
+    await fileDownloader.trackTasks();
+
+    try {
+      _updatesSubscription = fileDownloader.updates.listen((event) {
+        _logger.finer('Got event: $event');
+        _taskStatusController.add(event);
+      });
+      _logger.info('Listening to download manager updates');
+    } catch (e) {
+      _logger.warning('Error when listening to download manager updates: $e');
+    }
+  }
 }

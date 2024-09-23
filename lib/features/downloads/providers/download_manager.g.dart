@@ -157,29 +157,358 @@ class _DownloadHistoryProviderElement
   String? get group => (origin as DownloadHistoryProvider).group;
 }
 
-String _$downloadStatusHash() => r'f37b4678d3c2a7c6e985b0149d72ea0f9b1b42ca';
+String _$simpleDownloadManagerHash() =>
+    r'cec95717c86e422f88f78aa014d29e800e5a2089';
 
-/// See also [downloadStatus].
-@ProviderFor(downloadStatus)
-const downloadStatusProvider = DownloadStatusFamily();
+/// See also [SimpleDownloadManager].
+@ProviderFor(SimpleDownloadManager)
+final simpleDownloadManagerProvider = NotifierProvider<SimpleDownloadManager,
+    core.AudiobookDownloadManager>.internal(
+  SimpleDownloadManager.new,
+  name: r'simpleDownloadManagerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$simpleDownloadManagerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-/// See also [downloadStatus].
-class DownloadStatusFamily extends Family<AsyncValue<bool>> {
-  /// See also [downloadStatus].
-  const DownloadStatusFamily();
+typedef _$SimpleDownloadManager = Notifier<core.AudiobookDownloadManager>;
+String _$downloadManagerHash() => r'9566b772d792b32e1b199d4aa834e28de3b034d0';
 
-  /// See also [downloadStatus].
-  DownloadStatusProvider call(
+/// See also [DownloadManager].
+@ProviderFor(DownloadManager)
+final downloadManagerProvider =
+    NotifierProvider<DownloadManager, core.AudiobookDownloadManager>.internal(
+  DownloadManager.new,
+  name: r'downloadManagerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$downloadManagerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$DownloadManager = Notifier<core.AudiobookDownloadManager>;
+String _$isItemDownloadingHash() => r'ea43c06393beec828134e08d5f896ddbcfbac8f0';
+
+abstract class _$IsItemDownloading extends BuildlessAutoDisposeNotifier<bool> {
+  late final String id;
+
+  bool build(
+    String id,
+  );
+}
+
+/// See also [IsItemDownloading].
+@ProviderFor(IsItemDownloading)
+const isItemDownloadingProvider = IsItemDownloadingFamily();
+
+/// See also [IsItemDownloading].
+class IsItemDownloadingFamily extends Family<bool> {
+  /// See also [IsItemDownloading].
+  const IsItemDownloadingFamily();
+
+  /// See also [IsItemDownloading].
+  IsItemDownloadingProvider call(
+    String id,
+  ) {
+    return IsItemDownloadingProvider(
+      id,
+    );
+  }
+
+  @override
+  IsItemDownloadingProvider getProviderOverride(
+    covariant IsItemDownloadingProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'isItemDownloadingProvider';
+}
+
+/// See also [IsItemDownloading].
+class IsItemDownloadingProvider
+    extends AutoDisposeNotifierProviderImpl<IsItemDownloading, bool> {
+  /// See also [IsItemDownloading].
+  IsItemDownloadingProvider(
+    String id,
+  ) : this._internal(
+          () => IsItemDownloading()..id = id,
+          from: isItemDownloadingProvider,
+          name: r'isItemDownloadingProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$isItemDownloadingHash,
+          dependencies: IsItemDownloadingFamily._dependencies,
+          allTransitiveDependencies:
+              IsItemDownloadingFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  IsItemDownloadingProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final String id;
+
+  @override
+  bool runNotifierBuild(
+    covariant IsItemDownloading notifier,
+  ) {
+    return notifier.build(
+      id,
+    );
+  }
+
+  @override
+  Override overrideWith(IsItemDownloading Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: IsItemDownloadingProvider._internal(
+        () => create()..id = id,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeNotifierProviderElement<IsItemDownloading, bool> createElement() {
+    return _IsItemDownloadingProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is IsItemDownloadingProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin IsItemDownloadingRef on AutoDisposeNotifierProviderRef<bool> {
+  /// The parameter `id` of this provider.
+  String get id;
+}
+
+class _IsItemDownloadingProviderElement
+    extends AutoDisposeNotifierProviderElement<IsItemDownloading, bool>
+    with IsItemDownloadingRef {
+  _IsItemDownloadingProviderElement(super.provider);
+
+  @override
+  String get id => (origin as IsItemDownloadingProvider).id;
+}
+
+String _$itemDownloadProgressHash() =>
+    r'd007c55c6e2e4b992069d0306df8a600225d8598';
+
+abstract class _$ItemDownloadProgress
+    extends BuildlessAutoDisposeAsyncNotifier<double?> {
+  late final String id;
+
+  FutureOr<double?> build(
+    String id,
+  );
+}
+
+/// See also [ItemDownloadProgress].
+@ProviderFor(ItemDownloadProgress)
+const itemDownloadProgressProvider = ItemDownloadProgressFamily();
+
+/// See also [ItemDownloadProgress].
+class ItemDownloadProgressFamily extends Family<AsyncValue<double?>> {
+  /// See also [ItemDownloadProgress].
+  const ItemDownloadProgressFamily();
+
+  /// See also [ItemDownloadProgress].
+  ItemDownloadProgressProvider call(
+    String id,
+  ) {
+    return ItemDownloadProgressProvider(
+      id,
+    );
+  }
+
+  @override
+  ItemDownloadProgressProvider getProviderOverride(
+    covariant ItemDownloadProgressProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'itemDownloadProgressProvider';
+}
+
+/// See also [ItemDownloadProgress].
+class ItemDownloadProgressProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    ItemDownloadProgress, double?> {
+  /// See also [ItemDownloadProgress].
+  ItemDownloadProgressProvider(
+    String id,
+  ) : this._internal(
+          () => ItemDownloadProgress()..id = id,
+          from: itemDownloadProgressProvider,
+          name: r'itemDownloadProgressProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$itemDownloadProgressHash,
+          dependencies: ItemDownloadProgressFamily._dependencies,
+          allTransitiveDependencies:
+              ItemDownloadProgressFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  ItemDownloadProgressProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final String id;
+
+  @override
+  FutureOr<double?> runNotifierBuild(
+    covariant ItemDownloadProgress notifier,
+  ) {
+    return notifier.build(
+      id,
+    );
+  }
+
+  @override
+  Override overrideWith(ItemDownloadProgress Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: ItemDownloadProgressProvider._internal(
+        () => create()..id = id,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeAsyncNotifierProviderElement<ItemDownloadProgress, double?>
+      createElement() {
+    return _ItemDownloadProgressProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ItemDownloadProgressProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ItemDownloadProgressRef on AutoDisposeAsyncNotifierProviderRef<double?> {
+  /// The parameter `id` of this provider.
+  String get id;
+}
+
+class _ItemDownloadProgressProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<ItemDownloadProgress,
+        double?> with ItemDownloadProgressRef {
+  _ItemDownloadProgressProviderElement(super.provider);
+
+  @override
+  String get id => (origin as ItemDownloadProgressProvider).id;
+}
+
+String _$isItemDownloadedHash() => r'9bb7ba28bdb73e1ba706e849fedc9c7bd67f4b67';
+
+abstract class _$IsItemDownloaded
+    extends BuildlessAutoDisposeAsyncNotifier<bool> {
+  late final LibraryItemExpanded item;
+
+  FutureOr<bool> build(
+    LibraryItemExpanded item,
+  );
+}
+
+/// See also [IsItemDownloaded].
+@ProviderFor(IsItemDownloaded)
+const isItemDownloadedProvider = IsItemDownloadedFamily();
+
+/// See also [IsItemDownloaded].
+class IsItemDownloadedFamily extends Family<AsyncValue<bool>> {
+  /// See also [IsItemDownloaded].
+  const IsItemDownloadedFamily();
+
+  /// See also [IsItemDownloaded].
+  IsItemDownloadedProvider call(
     LibraryItemExpanded item,
   ) {
-    return DownloadStatusProvider(
+    return IsItemDownloadedProvider(
       item,
     );
   }
 
   @override
-  DownloadStatusProvider getProviderOverride(
-    covariant DownloadStatusProvider provider,
+  IsItemDownloadedProvider getProviderOverride(
+    covariant IsItemDownloadedProvider provider,
   ) {
     return call(
       provider.item,
@@ -198,32 +527,30 @@ class DownloadStatusFamily extends Family<AsyncValue<bool>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'downloadStatusProvider';
+  String? get name => r'isItemDownloadedProvider';
 }
 
-/// See also [downloadStatus].
-class DownloadStatusProvider extends AutoDisposeFutureProvider<bool> {
-  /// See also [downloadStatus].
-  DownloadStatusProvider(
+/// See also [IsItemDownloaded].
+class IsItemDownloadedProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<IsItemDownloaded, bool> {
+  /// See also [IsItemDownloaded].
+  IsItemDownloadedProvider(
     LibraryItemExpanded item,
   ) : this._internal(
-          (ref) => downloadStatus(
-            ref as DownloadStatusRef,
-            item,
-          ),
-          from: downloadStatusProvider,
-          name: r'downloadStatusProvider',
+          () => IsItemDownloaded()..item = item,
+          from: isItemDownloadedProvider,
+          name: r'isItemDownloadedProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$downloadStatusHash,
-          dependencies: DownloadStatusFamily._dependencies,
+                  : _$isItemDownloadedHash,
+          dependencies: IsItemDownloadedFamily._dependencies,
           allTransitiveDependencies:
-              DownloadStatusFamily._allTransitiveDependencies,
+              IsItemDownloadedFamily._allTransitiveDependencies,
           item: item,
         );
 
-  DownloadStatusProvider._internal(
+  IsItemDownloadedProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -236,13 +563,20 @@ class DownloadStatusProvider extends AutoDisposeFutureProvider<bool> {
   final LibraryItemExpanded item;
 
   @override
-  Override overrideWith(
-    FutureOr<bool> Function(DownloadStatusRef provider) create,
+  FutureOr<bool> runNotifierBuild(
+    covariant IsItemDownloaded notifier,
   ) {
+    return notifier.build(
+      item,
+    );
+  }
+
+  @override
+  Override overrideWith(IsItemDownloaded Function() create) {
     return ProviderOverride(
       origin: this,
-      override: DownloadStatusProvider._internal(
-        (ref) => create(ref as DownloadStatusRef),
+      override: IsItemDownloadedProvider._internal(
+        () => create()..item = item,
         from: from,
         name: null,
         dependencies: null,
@@ -254,13 +588,14 @@ class DownloadStatusProvider extends AutoDisposeFutureProvider<bool> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<bool> createElement() {
-    return _DownloadStatusProviderElement(this);
+  AutoDisposeAsyncNotifierProviderElement<IsItemDownloaded, bool>
+      createElement() {
+    return _IsItemDownloadedProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is DownloadStatusProvider && other.item == item;
+    return other is IsItemDownloadedProvider && other.item == item;
   }
 
   @override
@@ -272,35 +607,18 @@ class DownloadStatusProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
-mixin DownloadStatusRef on AutoDisposeFutureProviderRef<bool> {
+mixin IsItemDownloadedRef on AutoDisposeAsyncNotifierProviderRef<bool> {
   /// The parameter `item` of this provider.
   LibraryItemExpanded get item;
 }
 
-class _DownloadStatusProviderElement
-    extends AutoDisposeFutureProviderElement<bool> with DownloadStatusRef {
-  _DownloadStatusProviderElement(super.provider);
+class _IsItemDownloadedProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<IsItemDownloaded, bool>
+    with IsItemDownloadedRef {
+  _IsItemDownloadedProviderElement(super.provider);
 
   @override
-  LibraryItemExpanded get item => (origin as DownloadStatusProvider).item;
+  LibraryItemExpanded get item => (origin as IsItemDownloadedProvider).item;
 }
-
-String _$simpleDownloadManagerHash() =>
-    r'cec95717c86e422f88f78aa014d29e800e5a2089';
-
-/// See also [SimpleDownloadManager].
-@ProviderFor(SimpleDownloadManager)
-final simpleDownloadManagerProvider = NotifierProvider<SimpleDownloadManager,
-    core.AudiobookDownloadManager>.internal(
-  SimpleDownloadManager.new,
-  name: r'simpleDownloadManagerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$simpleDownloadManagerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$SimpleDownloadManager = Notifier<core.AudiobookDownloadManager>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
