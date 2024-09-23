@@ -1,0 +1,41 @@
+name: Flutter Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Checkout shelfsdk
+        uses: actions/checkout@v3
+        with:
+          repository: Dr-Blank/shelfsdk
+          path: ./shelfsdk
+
+      - name: Set Up Java
+        uses: actions/setup-java@v3.12.0
+        with:
+          distribution: "oracle"
+          java-version: "17"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # - name: Run tests
+      #   run: flutter test
+
+      - name: Build APK
+        run: flutter build apk --release
