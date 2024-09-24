@@ -46,6 +46,7 @@ void main() async {
     androidNotificationChannelId: 'com.vaani.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
+    androidNotificationIcon: 'mipmap/launcher_icon',
   );
 
   // run the app
