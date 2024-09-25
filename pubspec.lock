@@ -71,7 +71,7 @@ packages:
     source: hosted
     version: "2.11.0"
   audio_service:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: audio_service
       sha256: "9dd5ba7e77567b290c35908b1950d61485b4dfdd3a0ac398e98cfeec04651b75"
@@ -704,10 +704,11 @@ packages:
   just_audio_background:
     dependency: "direct main"
     description:
-      name: just_audio_background
-      sha256: "7547b076d5445431c780b0915707f18baa6d9588077d5d8f811e8a77b4e0bec5"
-      url: "https://pub.dev"
-    source: hosted
+      path: just_audio_background
+      ref: media-notification-config
+      resolved-ref: "79ac48a7d322d5b8db8847b35ed0c8555fa249bc"
+      url: "https://github.com/Dr-Blank/just_audio"
+    source: git
     version: "0.0.1-beta.13"
   just_audio_media_kit:
     dependency: "direct main"

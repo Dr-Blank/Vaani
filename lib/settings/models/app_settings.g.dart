@@ -20,6 +20,10 @@ _$AppSettingsImpl _$$AppSettingsImplFromJson(Map<String, dynamic> json) =>
           ? const DownloadSettings()
           : DownloadSettings.fromJson(
               json['downloadSettings'] as Map<String, dynamic>),
+      notificationSettings: json['notificationSettings'] == null
+          ? const NotificationSettings()
+          : NotificationSettings.fromJson(
+              json['notificationSettings'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
@@ -27,6 +31,7 @@ Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
       'themeSettings': instance.themeSettings,
       'playerSettings': instance.playerSettings,
       'downloadSettings': instance.downloadSettings,
+      'notificationSettings': instance.notificationSettings,
     };
 
 _$ThemeSettingsImpl _$$ThemeSettingsImplFromJson(Map<String, dynamic> json) =>
@@ -203,3 +208,50 @@ Map<String, dynamic> _$$DownloadSettingsImplToJson(
       'maxConcurrentByHost': instance.maxConcurrentByHost,
       'maxConcurrentByGroup': instance.maxConcurrentByGroup,
     };
+
+_$NotificationSettingsImpl _$$NotificationSettingsImplFromJson(
+        Map<String, dynamic> json) =>
+    _$NotificationSettingsImpl(
+      fastForwardInterval: json['fastForwardInterval'] == null
+          ? const Duration(seconds: 30)
+          : Duration(
+              microseconds: (json['fastForwardInterval'] as num).toInt()),
+      rewindInterval: json['rewindInterval'] == null
+          ? const Duration(seconds: 10)
+          : Duration(microseconds: (json['rewindInterval'] as num).toInt()),
+      progressBarIsChapterProgress:
+          json['progressBarIsChapterProgress'] as bool? ?? true,
+      primaryTitle: json['primaryTitle'] as String? ?? '\$bookTitle',
+      secondaryTitle: json['secondaryTitle'] as String? ?? '\$author',
+      mediaControls: (json['mediaControls'] as List<dynamic>?)
+              ?.map((e) => $enumDecode(_$NotificationMediaControlEnumMap, e))
+              .toList() ??
+          const [
+            NotificationMediaControl.rewind,
+            NotificationMediaControl.fastForward,
+            NotificationMediaControl.skipToPreviousChapter,
+            NotificationMediaControl.skipToNextChapter
+          ],
+    );
+
+Map<String, dynamic> _$$NotificationSettingsImplToJson(
+        _$NotificationSettingsImpl instance) =>
+    <String, dynamic>{
+      'fastForwardInterval': instance.fastForwardInterval.inMicroseconds,
+      'rewindInterval': instance.rewindInterval.inMicroseconds,
+      'progressBarIsChapterProgress': instance.progressBarIsChapterProgress,
+      'primaryTitle': instance.primaryTitle,
+      'secondaryTitle': instance.secondaryTitle,
+      'mediaControls': instance.mediaControls
+          .map((e) => _$NotificationMediaControlEnumMap[e]!)
+          .toList(),
+    };
+
+const _$NotificationMediaControlEnumMap = {
+  NotificationMediaControl.fastForward: 'fastForward',
+  NotificationMediaControl.rewind: 'rewind',
+  NotificationMediaControl.speedToggle: 'speedToggle',
+  NotificationMediaControl.stop: 'stop',
+  NotificationMediaControl.skipToNextChapter: 'skipToNextChapter',
+  NotificationMediaControl.skipToPreviousChapter: 'skipToPreviousChapter',
+};

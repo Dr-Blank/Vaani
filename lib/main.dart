@@ -1,15 +1,11 @@
-import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:just_audio_background/just_audio_background.dart'
-    show JustAudioBackground;
-import 'package:just_audio_media_kit/just_audio_media_kit.dart'
-    show JustAudioMediaKit;
 import 'package:logging/logging.dart';
 import 'package:vaani/api/server_provider.dart';
 import 'package:vaani/db/storage.dart';
 import 'package:vaani/features/downloads/providers/download_manager.dart';
 import 'package:vaani/features/playback_reporting/providers/playback_reporter_provider.dart';
+import 'package:vaani/features/player/core/init.dart';
 import 'package:vaani/features/player/providers/audiobook_player.dart';
 import 'package:vaani/features/sleep_timer/providers/sleep_timer_provider.dart';
 import 'package:vaani/router/router.dart';
@@ -31,22 +27,12 @@ void main() async {
     );
   });
 
-  // for playing audio on windows, linux
-  JustAudioMediaKit.ensureInitialized();
-
   // initialize the storage
   await initStorage();
 
-  // for configuring how this app will interact with other audio apps
-  final session = await AudioSession.instance;
-  await session.configure(const AudioSessionConfiguration.speech());
+  // initialize audio player
+  await configurePlayer();
 
-  // for playing audio in the background
-  await JustAudioBackground.init(
-    androidNotificationChannelId: 'com.vaani.bg_demo.channel.audio',
-    androidNotificationChannelName: 'Audio playback',
-    androidNotificationOngoing: true,
-  );
 
   // run the app
   runApp(

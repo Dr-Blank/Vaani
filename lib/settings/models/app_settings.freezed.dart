@@ -23,6 +23,8 @@ mixin _$AppSettings {
   ThemeSettings get themeSettings => throw _privateConstructorUsedError;
   PlayerSettings get playerSettings => throw _privateConstructorUsedError;
   DownloadSettings get downloadSettings => throw _privateConstructorUsedError;
+  NotificationSettings get notificationSettings =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this AppSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,11 +45,13 @@ abstract class $AppSettingsCopyWith<$Res> {
   $Res call(
       {ThemeSettings themeSettings,
       PlayerSettings playerSettings,
-      DownloadSettings downloadSettings});
+      DownloadSettings downloadSettings,
+      NotificationSettings notificationSettings});
 
   $ThemeSettingsCopyWith<$Res> get themeSettings;
   $PlayerSettingsCopyWith<$Res> get playerSettings;
   $DownloadSettingsCopyWith<$Res> get downloadSettings;
+  $NotificationSettingsCopyWith<$Res> get notificationSettings;
 }
 
 /// @nodoc
@@ -68,6 +72,7 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
     Object? themeSettings = null,
     Object? playerSettings = null,
     Object? downloadSettings = null,
+    Object? notificationSettings = null,
   }) {
     return _then(_value.copyWith(
       themeSettings: null == themeSettings
@@ -82,6 +87,10 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
           ? _value.downloadSettings
           : downloadSettings // ignore: cast_nullable_to_non_nullable
               as DownloadSettings,
+      notificationSettings: null == notificationSettings
+          ? _value.notificationSettings
+          : notificationSettings // ignore: cast_nullable_to_non_nullable
+              as NotificationSettings,
     ) as $Val);
   }
 
@@ -114,6 +123,17 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
       return _then(_value.copyWith(downloadSettings: value) as $Val);
     });
   }
+
+  /// Create a copy of AppSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $NotificationSettingsCopyWith<$Res> get notificationSettings {
+    return $NotificationSettingsCopyWith<$Res>(_value.notificationSettings,
+        (value) {
+      return _then(_value.copyWith(notificationSettings: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -127,7 +147,8 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
   $Res call(
       {ThemeSettings themeSettings,
       PlayerSettings playerSettings,
-      DownloadSettings downloadSettings});
+      DownloadSettings downloadSettings,
+      NotificationSettings notificationSettings});
 
   @override
   $ThemeSettingsCopyWith<$Res> get themeSettings;
@@ -135,6 +156,8 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
   $PlayerSettingsCopyWith<$Res> get playerSettings;
   @override
   $DownloadSettingsCopyWith<$Res> get downloadSettings;
+  @override
+  $NotificationSettingsCopyWith<$Res> get notificationSettings;
 }
 
 /// @nodoc
@@ -153,6 +176,7 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
     Object? themeSettings = null,
     Object? playerSettings = null,
     Object? downloadSettings = null,
+    Object? notificationSettings = null,
   }) {
     return _then(_$AppSettingsImpl(
       themeSettings: null == themeSettings
@@ -167,6 +191,10 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
           ? _value.downloadSettings
           : downloadSettings // ignore: cast_nullable_to_non_nullable
               as DownloadSettings,
+      notificationSettings: null == notificationSettings
+          ? _value.notificationSettings
+          : notificationSettings // ignore: cast_nullable_to_non_nullable
+              as NotificationSettings,
     ));
   }
 }
@@ -177,7 +205,8 @@ class _$AppSettingsImpl implements _AppSettings {
   const _$AppSettingsImpl(
       {this.themeSettings = const ThemeSettings(),
       this.playerSettings = const PlayerSettings(),
-      this.downloadSettings = const DownloadSettings()});
+      this.downloadSettings = const DownloadSettings(),
+      this.notificationSettings = const NotificationSettings()});
 
   factory _$AppSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppSettingsImplFromJson(json);
@@ -191,10 +220,13 @@ class _$AppSettingsImpl implements _AppSettings {
   @override
   @JsonKey()
   final DownloadSettings downloadSettings;
+  @override
+  @JsonKey()
+  final NotificationSettings notificationSettings;
 
   @override
   String toString() {
-    return 'AppSettings(themeSettings: $themeSettings, playerSettings: $playerSettings, downloadSettings: $downloadSettings)';
+    return 'AppSettings(themeSettings: $themeSettings, playerSettings: $playerSettings, downloadSettings: $downloadSettings, notificationSettings: $notificationSettings)';
   }
 
   @override
@@ -207,13 +239,15 @@ class _$AppSettingsImpl implements _AppSettings {
             (identical(other.playerSettings, playerSettings) ||
                 other.playerSettings == playerSettings) &&
             (identical(other.downloadSettings, downloadSettings) ||
-                other.downloadSettings == downloadSettings));
+                other.downloadSettings == downloadSettings) &&
+            (identical(other.notificationSettings, notificationSettings) ||
+                other.notificationSettings == notificationSettings));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, themeSettings, playerSettings, downloadSettings);
+  int get hashCode => Object.hash(runtimeType, themeSettings, playerSettings,
+      downloadSettings, notificationSettings);
 
   /// Create a copy of AppSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -235,7 +269,8 @@ abstract class _AppSettings implements AppSettings {
   const factory _AppSettings(
       {final ThemeSettings themeSettings,
       final PlayerSettings playerSettings,
-      final DownloadSettings downloadSettings}) = _$AppSettingsImpl;
+      final DownloadSettings downloadSettings,
+      final NotificationSettings notificationSettings}) = _$AppSettingsImpl;
 
   factory _AppSettings.fromJson(Map<String, dynamic> json) =
       _$AppSettingsImpl.fromJson;
@@ -246,6 +281,8 @@ abstract class _AppSettings implements AppSettings {
   PlayerSettings get playerSettings;
   @override
   DownloadSettings get downloadSettings;
+  @override
+  NotificationSettings get notificationSettings;
 
   /// Create a copy of AppSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -1934,4 +1971,294 @@ abstract class _DownloadSettings implements DownloadSettings {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DownloadSettingsImplCopyWith<_$DownloadSettingsImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+NotificationSettings _$NotificationSettingsFromJson(Map<String, dynamic> json) {
+  return _NotificationSettings.fromJson(json);
+}
+
+/// @nodoc
+mixin _$NotificationSettings {
+  Duration get fastForwardInterval => throw _privateConstructorUsedError;
+  Duration get rewindInterval => throw _privateConstructorUsedError;
+  bool get progressBarIsChapterProgress => throw _privateConstructorUsedError;
+  String get primaryTitle => throw _privateConstructorUsedError;
+  String get secondaryTitle => throw _privateConstructorUsedError;
+  List<NotificationMediaControl> get mediaControls =>
+      throw _privateConstructorUsedError;
+
+  /// Serializes this NotificationSettings to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of NotificationSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $NotificationSettingsCopyWith<NotificationSettings> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $NotificationSettingsCopyWith<$Res> {
+  factory $NotificationSettingsCopyWith(NotificationSettings value,
+          $Res Function(NotificationSettings) then) =
+      _$NotificationSettingsCopyWithImpl<$Res, NotificationSettings>;
+  @useResult
+  $Res call(
+      {Duration fastForwardInterval,
+      Duration rewindInterval,
+      bool progressBarIsChapterProgress,
+      String primaryTitle,
+      String secondaryTitle,
+      List<NotificationMediaControl> mediaControls});
+}
+
+/// @nodoc
+class _$NotificationSettingsCopyWithImpl<$Res,
+        $Val extends NotificationSettings>
+    implements $NotificationSettingsCopyWith<$Res> {
+  _$NotificationSettingsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of NotificationSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? fastForwardInterval = null,
+    Object? rewindInterval = null,
+    Object? progressBarIsChapterProgress = null,
+    Object? primaryTitle = null,
+    Object? secondaryTitle = null,
+    Object? mediaControls = null,
+  }) {
+    return _then(_value.copyWith(
+      fastForwardInterval: null == fastForwardInterval
+          ? _value.fastForwardInterval
+          : fastForwardInterval // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      rewindInterval: null == rewindInterval
+          ? _value.rewindInterval
+          : rewindInterval // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      progressBarIsChapterProgress: null == progressBarIsChapterProgress
+          ? _value.progressBarIsChapterProgress
+          : progressBarIsChapterProgress // ignore: cast_nullable_to_non_nullable
+              as bool,
+      primaryTitle: null == primaryTitle
+          ? _value.primaryTitle
+          : primaryTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      secondaryTitle: null == secondaryTitle
+          ? _value.secondaryTitle
+          : secondaryTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      mediaControls: null == mediaControls
+          ? _value.mediaControls
+          : mediaControls // ignore: cast_nullable_to_non_nullable
+              as List<NotificationMediaControl>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$NotificationSettingsImplCopyWith<$Res>
+    implements $NotificationSettingsCopyWith<$Res> {
+  factory _$$NotificationSettingsImplCopyWith(_$NotificationSettingsImpl value,
+          $Res Function(_$NotificationSettingsImpl) then) =
+      __$$NotificationSettingsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {Duration fastForwardInterval,
+      Duration rewindInterval,
+      bool progressBarIsChapterProgress,
+      String primaryTitle,
+      String secondaryTitle,
+      List<NotificationMediaControl> mediaControls});
+}
+
+/// @nodoc
+class __$$NotificationSettingsImplCopyWithImpl<$Res>
+    extends _$NotificationSettingsCopyWithImpl<$Res, _$NotificationSettingsImpl>
+    implements _$$NotificationSettingsImplCopyWith<$Res> {
+  __$$NotificationSettingsImplCopyWithImpl(_$NotificationSettingsImpl _value,
+      $Res Function(_$NotificationSettingsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of NotificationSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? fastForwardInterval = null,
+    Object? rewindInterval = null,
+    Object? progressBarIsChapterProgress = null,
+    Object? primaryTitle = null,
+    Object? secondaryTitle = null,
+    Object? mediaControls = null,
+  }) {
+    return _then(_$NotificationSettingsImpl(
+      fastForwardInterval: null == fastForwardInterval
+          ? _value.fastForwardInterval
+          : fastForwardInterval // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      rewindInterval: null == rewindInterval
+          ? _value.rewindInterval
+          : rewindInterval // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      progressBarIsChapterProgress: null == progressBarIsChapterProgress
+          ? _value.progressBarIsChapterProgress
+          : progressBarIsChapterProgress // ignore: cast_nullable_to_non_nullable
+              as bool,
+      primaryTitle: null == primaryTitle
+          ? _value.primaryTitle
+          : primaryTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      secondaryTitle: null == secondaryTitle
+          ? _value.secondaryTitle
+          : secondaryTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      mediaControls: null == mediaControls
+          ? _value._mediaControls
+          : mediaControls // ignore: cast_nullable_to_non_nullable
+              as List<NotificationMediaControl>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$NotificationSettingsImpl implements _NotificationSettings {
+  const _$NotificationSettingsImpl(
+      {this.fastForwardInterval = const Duration(seconds: 30),
+      this.rewindInterval = const Duration(seconds: 10),
+      this.progressBarIsChapterProgress = true,
+      this.primaryTitle = '\$bookTitle',
+      this.secondaryTitle = '\$author',
+      final List<NotificationMediaControl> mediaControls = const [
+        NotificationMediaControl.rewind,
+        NotificationMediaControl.fastForward,
+        NotificationMediaControl.skipToPreviousChapter,
+        NotificationMediaControl.skipToNextChapter
+      ]})
+      : _mediaControls = mediaControls;
+
+  factory _$NotificationSettingsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$NotificationSettingsImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final Duration fastForwardInterval;
+  @override
+  @JsonKey()
+  final Duration rewindInterval;
+  @override
+  @JsonKey()
+  final bool progressBarIsChapterProgress;
+  @override
+  @JsonKey()
+  final String primaryTitle;
+  @override
+  @JsonKey()
+  final String secondaryTitle;
+  final List<NotificationMediaControl> _mediaControls;
+  @override
+  @JsonKey()
+  List<NotificationMediaControl> get mediaControls {
+    if (_mediaControls is EqualUnmodifiableListView) return _mediaControls;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_mediaControls);
+  }
+
+  @override
+  String toString() {
+    return 'NotificationSettings(fastForwardInterval: $fastForwardInterval, rewindInterval: $rewindInterval, progressBarIsChapterProgress: $progressBarIsChapterProgress, primaryTitle: $primaryTitle, secondaryTitle: $secondaryTitle, mediaControls: $mediaControls)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NotificationSettingsImpl &&
+            (identical(other.fastForwardInterval, fastForwardInterval) ||
+                other.fastForwardInterval == fastForwardInterval) &&
+            (identical(other.rewindInterval, rewindInterval) ||
+                other.rewindInterval == rewindInterval) &&
+            (identical(other.progressBarIsChapterProgress,
+                    progressBarIsChapterProgress) ||
+                other.progressBarIsChapterProgress ==
+                    progressBarIsChapterProgress) &&
+            (identical(other.primaryTitle, primaryTitle) ||
+                other.primaryTitle == primaryTitle) &&
+            (identical(other.secondaryTitle, secondaryTitle) ||
+                other.secondaryTitle == secondaryTitle) &&
+            const DeepCollectionEquality()
+                .equals(other._mediaControls, _mediaControls));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      fastForwardInterval,
+      rewindInterval,
+      progressBarIsChapterProgress,
+      primaryTitle,
+      secondaryTitle,
+      const DeepCollectionEquality().hash(_mediaControls));
+
+  /// Create a copy of NotificationSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NotificationSettingsImplCopyWith<_$NotificationSettingsImpl>
+      get copyWith =>
+          __$$NotificationSettingsImplCopyWithImpl<_$NotificationSettingsImpl>(
+              this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$NotificationSettingsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _NotificationSettings implements NotificationSettings {
+  const factory _NotificationSettings(
+          {final Duration fastForwardInterval,
+          final Duration rewindInterval,
+          final bool progressBarIsChapterProgress,
+          final String primaryTitle,
+          final String secondaryTitle,
+          final List<NotificationMediaControl> mediaControls}) =
+      _$NotificationSettingsImpl;
+
+  factory _NotificationSettings.fromJson(Map<String, dynamic> json) =
+      _$NotificationSettingsImpl.fromJson;
+
+  @override
+  Duration get fastForwardInterval;
+  @override
+  Duration get rewindInterval;
+  @override
+  bool get progressBarIsChapterProgress;
+  @override
+  String get primaryTitle;
+  @override
+  String get secondaryTitle;
+  @override
+  List<NotificationMediaControl> get mediaControls;
+
+  /// Create a copy of NotificationSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$NotificationSettingsImplCopyWith<_$NotificationSettingsImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

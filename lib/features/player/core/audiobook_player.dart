@@ -8,6 +8,9 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:logging/logging.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
+import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/settings/models/app_settings.dart';
+import 'package:vaani/shared/extensions/model_conversions.dart';
 
 final _logger = Logger('AudiobookPlayer');
 
@@ -81,6 +84,7 @@ class AudiobookPlayer extends AudioPlayer {
     List<Uri>? downloadedUris,
     Uri? artworkUri,
   }) async {
+    final appSettings = loadOrCreateAppSettings();
     // if the book is null, stop the player
     if (book == null) {
       _book = null;
@@ -128,8 +132,10 @@ class AudiobookPlayer extends AudioPlayer {
               // Specify a unique ID for each media item:
               id: book.libraryItemId + track.index.toString(),
               // Metadata to display in the notification:
-              album: book.metadata.title,
-              title: book.metadata.title ?? track.title,
+              title: appSettings.notificationSettings.primaryTitle
+                  .formatNotificationTitle(book),
+              album: appSettings.notificationSettings.secondaryTitle
+                  .formatNotificationTitle(book),
               artUri: artworkUri ??
                   Uri.parse(
                     '$baseUrl/api/items/${book.libraryItemId}/cover?token=$token&width=800',
@@ -198,7 +204,7 @@ class AudiobookPlayer extends AudioPlayer {
 
   @override
   Stream<Duration> get positionStream {
-    // return the positioninbook stream
+    // return the positionInBook stream
     return super.positionStream.map((position) {
       if (_book == null) {
         return Duration.zero;
@@ -266,4 +272,43 @@ Uri _getUri(
 
   return uri ??
       Uri.parse('${baseUrl.toString()}${track.contentUrl}?token=$token');
+}
+
+extension FormatNotificationTitle on String {
+  String formatNotificationTitle(BookExpanded book) {
+    return replaceAllMapped(
+      RegExp(r'\$(\w+)'),
+      (match) {
+        final type = match.group(1);
+        return NotificationTitleType.values
+                .firstWhere((element) => element.stringValue == type)
+                .extractFrom(book) ??
+            match.group(0) ??
+            '';
+      },
+    );
+  }
+}
+
+extension NotificationTitleUtils on NotificationTitleType {
+  String? extractFrom(BookExpanded book) {
+    var bookMetadataExpanded = book.metadata.asBookMetadataExpanded;
+    switch (this) {
+      case NotificationTitleType.bookTitle:
+        return bookMetadataExpanded.title;
+      case NotificationTitleType.chapterTitle:
+        // TODO: implement chapter title; depends on https://github.com/Dr-Blank/Vaani/issues/2
+        return bookMetadataExpanded.title;
+      case NotificationTitleType.author:
+        return bookMetadataExpanded.authorName;
+      case NotificationTitleType.narrator:
+        return bookMetadataExpanded.narratorName;
+      case NotificationTitleType.series:
+        return bookMetadataExpanded.seriesName;
+      case NotificationTitleType.subtitle:
+        return bookMetadataExpanded.subtitle;
+      case NotificationTitleType.year:
+        return bookMetadataExpanded.publishedYear;
+    }
+  }
 }

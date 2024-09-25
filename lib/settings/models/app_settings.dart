@@ -14,6 +14,7 @@ class AppSettings with _$AppSettings {
     @Default(ThemeSettings()) ThemeSettings themeSettings,
     @Default(PlayerSettings()) PlayerSettings playerSettings,
     @Default(DownloadSettings()) DownloadSettings downloadSettings,
+    @Default(NotificationSettings()) NotificationSettings notificationSettings,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>
@@ -132,4 +133,50 @@ class DownloadSettings with _$DownloadSettings {
 
   factory DownloadSettings.fromJson(Map<String, dynamic> json) =>
       _$DownloadSettingsFromJson(json);
+}
+
+@freezed
+class NotificationSettings with _$NotificationSettings {
+  const factory NotificationSettings({
+    @Default(Duration(seconds: 30)) Duration fastForwardInterval,
+    @Default(Duration(seconds: 10)) Duration rewindInterval,
+    @Default(true) bool progressBarIsChapterProgress,
+    @Default('\$bookTitle') String primaryTitle,
+    @Default('\$author') String secondaryTitle,
+    @Default(
+      [
+        NotificationMediaControl.rewind,
+        NotificationMediaControl.fastForward,
+        NotificationMediaControl.skipToPreviousChapter,
+        NotificationMediaControl.skipToNextChapter,
+      ],
+    )
+    List<NotificationMediaControl> mediaControls,
+  }) = _NotificationSettings;
+
+  factory NotificationSettings.fromJson(Map<String, dynamic> json) =>
+      _$NotificationSettingsFromJson(json);
+}
+
+enum NotificationTitleType {
+  chapterTitle('chapterTitle'),
+  bookTitle('bookTitle'),
+  author('author'),
+  subtitle('subtitle'),
+  series('series'),
+  narrator('narrator'),
+  year('year');
+
+  const NotificationTitleType(this.stringValue);
+
+  final String stringValue;
+}
+
+enum NotificationMediaControl {
+  fastForward,
+  rewind,
+  speedToggle,
+  stop,
+  skipToNextChapter,
+  skipToPreviousChapter,
 }

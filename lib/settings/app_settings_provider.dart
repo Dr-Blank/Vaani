@@ -11,25 +11,29 @@ final _box = AvailableHiveBoxes.userPrefsBox;
 
 final _logger = Logger('AppSettingsProvider');
 
-model.AppSettings readFromBoxOrCreate() {
+model.AppSettings loadOrCreateAppSettings() {
   // see if the settings are already in the box
+  model.AppSettings? settings;
   if (_box.isNotEmpty) {
-    final foundSettings = _box.getAt(0);
-    _logger.fine('found settings in box: $foundSettings');
-    return foundSettings;
+    try {
+      settings = _box.getAt(0);
+      _logger.fine('found settings in box: $settings');
+    } catch (e) {
+      _logger.warning('error reading settings from box: $e'
+          '\nclearing box');
+      _box.clear();
+    }
   } else {
-    // create a new settings object
-    const settings = model.AppSettings();
-    _logger.fine('created new settings: $settings');
-    return settings;
+    _logger.fine('no settings found in box, creating new settings');
   }
+  return settings ?? const model.AppSettings();
 }
 
 @Riverpod(keepAlive: true)
 class AppSettings extends _$AppSettings {
   @override
   model.AppSettings build() {
-    state = readFromBoxOrCreate();
+    state = loadOrCreateAppSettings();
     ref.listenSelf((_, __) {
       writeToBox();
     });
