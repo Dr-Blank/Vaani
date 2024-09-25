@@ -6,6 +6,7 @@ import 'package:vaani/features/explore/providers/search_controller.dart';
 import 'package:vaani/features/player/providers/player_form.dart';
 import 'package:vaani/features/player/view/audiobook_player.dart';
 import 'package:vaani/features/player/view/player_when_expanded.dart';
+import 'package:vaani/router/router.dart';
 
 // stack to track changes in navigationShell.currentIndex
 // home is always at index 0 and at the start and should be the last before popping
@@ -153,6 +154,8 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
     // Check if the current branch is the same as the branch that was tapped.
     // If it is, debugPrint a message to the console.
     if (index == navigationShell.currentIndex) {
+      debugPrint('Tapped the current branch');
+
       // if current branch is explore, open the search view
       if (index == 2) {
         final searchController = ref.read(globalSearchControllerProvider);
@@ -163,7 +166,14 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
           searchController.closeView(null);
         }
       }
-      debugPrint('Tapped the current branch');
+
+      // open settings page if the current branch is you
+      if (index == 3) {
+        // do not open settings page if it is already open
+        if (GoRouterState.of(context).topRoute?.name != Routes.settings.name) {
+          GoRouter.of(context).pushNamed(Routes.settings.name);
+        }
+      }
     }
   }
 }
