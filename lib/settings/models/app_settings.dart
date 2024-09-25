@@ -1,5 +1,6 @@
 // a freezed class to store the settings of the app
 
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'app_settings.freezed.dart';
@@ -173,10 +174,14 @@ enum NotificationTitleType {
 }
 
 enum NotificationMediaControl {
-  fastForward,
-  rewind,
-  speedToggle,
-  stop,
-  skipToNextChapter,
-  skipToPreviousChapter,
+  fastForward(Icons.fast_forward),
+  rewind(Icons.fast_rewind),
+  speedToggle(Icons.speed),
+  stop(Icons.stop),
+  skipToNextChapter(Icons.skip_next),
+  skipToPreviousChapter(Icons.skip_previous);
+
+  const NotificationMediaControl(this.icon);
+
+  final IconData icon;
 }

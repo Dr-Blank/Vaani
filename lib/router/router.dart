@@ -12,6 +12,7 @@ import 'package:vaani/features/you/view/you_page.dart';
 import 'package:vaani/pages/home_page.dart';
 import 'package:vaani/settings/view/app_settings_page.dart';
 import 'package:vaani/settings/view/auto_sleep_timer_settings_page.dart';
+import 'package:vaani/settings/view/notification_settings_page.dart';
 
 import 'scaffold_with_nav_bar.dart';
 import 'transitions/slide.dart';
@@ -172,15 +173,22 @@ class MyAppRouter {
                     name: Routes.settings.name,
                     // builder: (context, state) => const AppSettingsPage(),
                     pageBuilder: defaultPageBuilder(const AppSettingsPage()),
-                  ),
-                  GoRoute(
-                    path: Routes.autoSleepTimerSettings.localPath,
-                    name: Routes.autoSleepTimerSettings.name,
-                    // builder: (context, state) =>
-                    //     const AutoSleepTimerSettingsPage(),
-                    pageBuilder: defaultPageBuilder(
-                      const AutoSleepTimerSettingsPage(),
-                    ),
+                    routes: [
+                      GoRoute(
+                        path: Routes.autoSleepTimerSettings.pathName,
+                        name: Routes.autoSleepTimerSettings.name,
+                        pageBuilder: defaultPageBuilder(
+                          const AutoSleepTimerSettingsPage(),
+                        ),
+                      ),
+                      GoRoute(
+                        path: Routes.notificationSettings.pathName,
+                        name: Routes.notificationSettings.name,
+                        pageBuilder: defaultPageBuilder(
+                          const NotificationSettingsPage(),
+                        ),
+                      ),
+                    ],
                   ),
                   GoRoute(
                     path: Routes.userManagement.localPath,

@@ -28,9 +28,14 @@ class Routes {
     name: 'settings',
   );
   static const autoSleepTimerSettings = _SimpleRoute(
-    pathName: 'autosleeptimer',
+    pathName: 'autoSleepTimer',
     name: 'autoSleepTimerSettings',
-    // parentRoute: settings,
+    parentRoute: settings,
+  );
+  static const notificationSettings = _SimpleRoute(
+    pathName: 'notifications',
+    name: 'notificationSettings',
+    parentRoute: settings,
   );
 
   // search and explore
