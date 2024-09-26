@@ -4,6 +4,7 @@ import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/settings/models/app_settings.dart';
+import 'package:vaani/settings/view/buttons.dart';
 import 'package:vaani/settings/view/simple_settings_page.dart';
 
 class NotificationSettingsPage extends HookConsumerWidget {
@@ -220,17 +221,11 @@ class MediaControlsPicker extends HookConsumerWidget {
     return AlertDialog(
       title: const Text('Media Controls'),
       actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Cancel'),
-        ),
-        TextButton(
+        const CancelButton(),
+        OkButton(
           onPressed: () {
             Navigator.of(context).pop(selectedMediaControls.value);
-          },
-          child: const Text('OK'),
+          }
         ),
       ],
       // a list of chips to easily select the media controls to display
@@ -333,17 +328,11 @@ class NotificationTitlePicker extends HookConsumerWidget {
     return AlertDialog(
       title: Text(title),
       actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Cancel'),
-        ),
-        TextButton(
+        const CancelButton(),
+        OkButton(
           onPressed: () {
             Navigator.of(context).pop(selectedTitle.value);
-          },
-          child: const Text('OK'),
+          }
         ),
       ],
       // a list of chips to easily insert available fields into the text field

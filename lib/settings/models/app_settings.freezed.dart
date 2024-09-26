@@ -512,6 +512,9 @@ mixin _$PlayerSettings {
   double get preferredDefaultVolume => throw _privateConstructorUsedError;
   double get preferredDefaultSpeed => throw _privateConstructorUsedError;
   List<double> get speedOptions => throw _privateConstructorUsedError;
+  double get speedIncrement => throw _privateConstructorUsedError;
+  double get minSpeed => throw _privateConstructorUsedError;
+  double get maxSpeed => throw _privateConstructorUsedError;
   SleepTimerSettings get sleepTimerSettings =>
       throw _privateConstructorUsedError;
   Duration get minimumPositionForReporting =>
@@ -542,6 +545,9 @@ abstract class $PlayerSettingsCopyWith<$Res> {
       double preferredDefaultVolume,
       double preferredDefaultSpeed,
       List<double> speedOptions,
+      double speedIncrement,
+      double minSpeed,
+      double maxSpeed,
       SleepTimerSettings sleepTimerSettings,
       Duration minimumPositionForReporting,
       Duration playbackReportInterval,
@@ -573,6 +579,9 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
     Object? preferredDefaultVolume = null,
     Object? preferredDefaultSpeed = null,
     Object? speedOptions = null,
+    Object? speedIncrement = null,
+    Object? minSpeed = null,
+    Object? maxSpeed = null,
     Object? sleepTimerSettings = null,
     Object? minimumPositionForReporting = null,
     Object? playbackReportInterval = null,
@@ -600,6 +609,18 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
           ? _value.speedOptions
           : speedOptions // ignore: cast_nullable_to_non_nullable
               as List<double>,
+      speedIncrement: null == speedIncrement
+          ? _value.speedIncrement
+          : speedIncrement // ignore: cast_nullable_to_non_nullable
+              as double,
+      minSpeed: null == minSpeed
+          ? _value.minSpeed
+          : minSpeed // ignore: cast_nullable_to_non_nullable
+              as double,
+      maxSpeed: null == maxSpeed
+          ? _value.maxSpeed
+          : maxSpeed // ignore: cast_nullable_to_non_nullable
+              as double,
       sleepTimerSettings: null == sleepTimerSettings
           ? _value.sleepTimerSettings
           : sleepTimerSettings // ignore: cast_nullable_to_non_nullable
@@ -671,6 +692,9 @@ abstract class _$$PlayerSettingsImplCopyWith<$Res>
       double preferredDefaultVolume,
       double preferredDefaultSpeed,
       List<double> speedOptions,
+      double speedIncrement,
+      double minSpeed,
+      double maxSpeed,
       SleepTimerSettings sleepTimerSettings,
       Duration minimumPositionForReporting,
       Duration playbackReportInterval,
@@ -703,6 +727,9 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
     Object? preferredDefaultVolume = null,
     Object? preferredDefaultSpeed = null,
     Object? speedOptions = null,
+    Object? speedIncrement = null,
+    Object? minSpeed = null,
+    Object? maxSpeed = null,
     Object? sleepTimerSettings = null,
     Object? minimumPositionForReporting = null,
     Object? playbackReportInterval = null,
@@ -730,6 +757,18 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
           ? _value._speedOptions
           : speedOptions // ignore: cast_nullable_to_non_nullable
               as List<double>,
+      speedIncrement: null == speedIncrement
+          ? _value.speedIncrement
+          : speedIncrement // ignore: cast_nullable_to_non_nullable
+              as double,
+      minSpeed: null == minSpeed
+          ? _value.minSpeed
+          : minSpeed // ignore: cast_nullable_to_non_nullable
+              as double,
+      maxSpeed: null == maxSpeed
+          ? _value.maxSpeed
+          : maxSpeed // ignore: cast_nullable_to_non_nullable
+              as double,
       sleepTimerSettings: null == sleepTimerSettings
           ? _value.sleepTimerSettings
           : sleepTimerSettings // ignore: cast_nullable_to_non_nullable
@@ -763,6 +802,9 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
       this.preferredDefaultVolume = 1,
       this.preferredDefaultSpeed = 1,
       final List<double> speedOptions = const [0.75, 1, 1.25, 1.5, 1.75, 2],
+      this.speedIncrement = 0.05,
+      this.minSpeed = 0.1,
+      this.maxSpeed = 4,
       this.sleepTimerSettings = const SleepTimerSettings(),
       this.minimumPositionForReporting = const Duration(seconds: 10),
       this.playbackReportInterval = const Duration(seconds: 10),
@@ -796,6 +838,15 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
 
   @override
   @JsonKey()
+  final double speedIncrement;
+  @override
+  @JsonKey()
+  final double minSpeed;
+  @override
+  @JsonKey()
+  final double maxSpeed;
+  @override
+  @JsonKey()
   final SleepTimerSettings sleepTimerSettings;
   @override
   @JsonKey()
@@ -812,7 +863,7 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
 
   @override
   String toString() {
-    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredDefaultVolume: $preferredDefaultVolume, preferredDefaultSpeed: $preferredDefaultSpeed, speedOptions: $speedOptions, sleepTimerSettings: $sleepTimerSettings, minimumPositionForReporting: $minimumPositionForReporting, playbackReportInterval: $playbackReportInterval, markCompleteWhenTimeLeft: $markCompleteWhenTimeLeft, configurePlayerForEveryBook: $configurePlayerForEveryBook)';
+    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredDefaultVolume: $preferredDefaultVolume, preferredDefaultSpeed: $preferredDefaultSpeed, speedOptions: $speedOptions, speedIncrement: $speedIncrement, minSpeed: $minSpeed, maxSpeed: $maxSpeed, sleepTimerSettings: $sleepTimerSettings, minimumPositionForReporting: $minimumPositionForReporting, playbackReportInterval: $playbackReportInterval, markCompleteWhenTimeLeft: $markCompleteWhenTimeLeft, configurePlayerForEveryBook: $configurePlayerForEveryBook)';
   }
 
   @override
@@ -830,6 +881,12 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
                 other.preferredDefaultSpeed == preferredDefaultSpeed) &&
             const DeepCollectionEquality()
                 .equals(other._speedOptions, _speedOptions) &&
+            (identical(other.speedIncrement, speedIncrement) ||
+                other.speedIncrement == speedIncrement) &&
+            (identical(other.minSpeed, minSpeed) ||
+                other.minSpeed == minSpeed) &&
+            (identical(other.maxSpeed, maxSpeed) ||
+                other.maxSpeed == maxSpeed) &&
             (identical(other.sleepTimerSettings, sleepTimerSettings) ||
                 other.sleepTimerSettings == sleepTimerSettings) &&
             (identical(other.minimumPositionForReporting,
@@ -856,6 +913,9 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
       preferredDefaultVolume,
       preferredDefaultSpeed,
       const DeepCollectionEquality().hash(_speedOptions),
+      speedIncrement,
+      minSpeed,
+      maxSpeed,
       sleepTimerSettings,
       minimumPositionForReporting,
       playbackReportInterval,
@@ -886,6 +946,9 @@ abstract class _PlayerSettings implements PlayerSettings {
       final double preferredDefaultVolume,
       final double preferredDefaultSpeed,
       final List<double> speedOptions,
+      final double speedIncrement,
+      final double minSpeed,
+      final double maxSpeed,
       final SleepTimerSettings sleepTimerSettings,
       final Duration minimumPositionForReporting,
       final Duration playbackReportInterval,
@@ -905,6 +968,12 @@ abstract class _PlayerSettings implements PlayerSettings {
   double get preferredDefaultSpeed;
   @override
   List<double> get speedOptions;
+  @override
+  double get speedIncrement;
+  @override
+  double get minSpeed;
+  @override
+  double get maxSpeed;
   @override
   SleepTimerSettings get sleepTimerSettings;
   @override

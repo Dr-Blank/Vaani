@@ -13,6 +13,7 @@ import 'package:vaani/pages/home_page.dart';
 import 'package:vaani/settings/view/app_settings_page.dart';
 import 'package:vaani/settings/view/auto_sleep_timer_settings_page.dart';
 import 'package:vaani/settings/view/notification_settings_page.dart';
+import 'package:vaani/settings/view/player_settings_page.dart';
 
 import 'scaffold_with_nav_bar.dart';
 import 'transitions/slide.dart';
@@ -187,6 +188,12 @@ class MyAppRouter {
                         pageBuilder: defaultPageBuilder(
                           const NotificationSettingsPage(),
                         ),
+                      ),
+                      GoRoute(
+                        path: Routes.playerSettings.pathName,
+                        name: Routes.playerSettings.name,
+                        pageBuilder:
+                            defaultPageBuilder(const PlayerSettingsPage()),
                       ),
                     ],
                   ),

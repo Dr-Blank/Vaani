@@ -51,6 +51,16 @@ class AppSettingsPage extends HookConsumerWidget {
                 context.pushNamed(Routes.notificationSettings.name);
               },
             ),
+            SettingsTile(
+              title: const Text('Player Settings'),
+              leading: const Icon(Icons.play_arrow),
+              description: const Text(
+                'Customize the player settings',
+              ),
+              onPressed: (context) {
+                context.pushNamed(Routes.playerSettings.name);
+              },
+            ),
           ],
         ),
         // Appearance section

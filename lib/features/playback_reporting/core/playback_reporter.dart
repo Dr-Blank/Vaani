@@ -166,7 +166,8 @@ class PlaybackReporter {
       return _session!;
     }
     if (player.book == null) {
-      throw NoAudiobookPlayingError();
+      _logger.warning('No audiobook playing to start session');
+      return null;
     }
     _session = await authenticatedApi.items.play(
       libraryItemId: player.book!.libraryItemId,
@@ -204,8 +205,11 @@ class PlaybackReporter {
     }
     try {
       _session ??= await startSession();
-    } on NoAudiobookPlayingError {
-      _logger.warning('No audiobook playing to sync position');
+    } on Error catch (e) {
+      _logger.warning('Error starting session: $e');
+    }
+    if (_session == null) {
+      _logger.warning('No session to sync position');
       return;
     }
     final currentPosition = player.positionInBook;

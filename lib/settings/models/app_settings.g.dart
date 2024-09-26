@@ -69,6 +69,9 @@ _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => (e as num).toDouble())
               .toList() ??
           const [0.75, 1, 1.25, 1.5, 1.75, 2],
+      speedIncrement: (json['speedIncrement'] as num?)?.toDouble() ?? 0.05,
+      minSpeed: (json['minSpeed'] as num?)?.toDouble() ?? 0.1,
+      maxSpeed: (json['maxSpeed'] as num?)?.toDouble() ?? 4,
       sleepTimerSettings: json['sleepTimerSettings'] == null
           ? const SleepTimerSettings()
           : SleepTimerSettings.fromJson(
@@ -98,6 +101,9 @@ Map<String, dynamic> _$$PlayerSettingsImplToJson(
       'preferredDefaultVolume': instance.preferredDefaultVolume,
       'preferredDefaultSpeed': instance.preferredDefaultSpeed,
       'speedOptions': instance.speedOptions,
+      'speedIncrement': instance.speedIncrement,
+      'minSpeed': instance.minSpeed,
+      'maxSpeed': instance.maxSpeed,
       'sleepTimerSettings': instance.sleepTimerSettings,
       'minimumPositionForReporting':
           instance.minimumPositionForReporting.inMicroseconds,

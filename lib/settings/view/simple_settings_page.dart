@@ -46,6 +46,8 @@ class SimpleSettingsPage extends HookConsumerWidget {
                 ],
               ),
             ),
+          // some padding at the bottom
+          const SliverPadding(padding: EdgeInsets.only(bottom: 20)),
         ],
       ),
     );

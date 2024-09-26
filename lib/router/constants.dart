@@ -37,6 +37,11 @@ class Routes {
     name: 'notificationSettings',
     parentRoute: settings,
   );
+  static const playerSettings = _SimpleRoute(
+    pathName: 'player',
+    name: 'playerSettings',
+    parentRoute: settings,
+  );
 
   // search and explore
   static const search = _SimpleRoute(
