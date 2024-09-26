@@ -39,7 +39,15 @@ class PlaybackReporter {
   /// the minimum duration to report
   final Duration reportingDurationThreshold;
 
+  /// the duration to wait before starting the reporting
+  /// this is to ignore the initial duration in case user is browsing
+  final Duration? minimumPositionForReporting;
+
+  /// the duration to mark the book as complete when the time left is less than this
+  final Duration markCompleteWhenTimeLeft;
+
   /// timer to report every 10 seconds
+  /// tracking the time since the last report
   Timer? _reportTimer;
 
   /// metadata to report
@@ -61,6 +69,8 @@ class PlaybackReporter {
     this.deviceManufacturer,
     this.reportingDurationThreshold = const Duration(seconds: 1),
     Duration reportingInterval = const Duration(seconds: 10),
+    this.minimumPositionForReporting,
+    this.markCompleteWhenTimeLeft = const Duration(seconds: 5),
   }) : _reportingInterval = reportingInterval {
     // initial conditions
     if (player.playing) {
@@ -97,23 +107,35 @@ class PlaybackReporter {
           _logger.fine(
             'player state observed, stopping stopwatch at ${_stopwatch.elapsed}',
           );
-          await syncCurrentPosition();
+          await tryReportPlayback(null);
         }
       }),
     );
 
     _logger.fine(
-      'initialized with interval: $reportingInterval, threshold: $reportingDurationThreshold',
+      'initialized with reportingInterval: $reportingInterval, reportingDurationThreshold: $reportingDurationThreshold',
+    );
+    _logger.fine(
+      'initialized with minimumPositionForReporting: $minimumPositionForReporting, markCompleteWhenTimeLeft: $markCompleteWhenTimeLeft',
     );
     _logger.fine(
       'initialized with deviceModel: $deviceModel, deviceSdkVersion: $deviceSdkVersion, deviceClientName: $deviceClientName, deviceClientVersion: $deviceClientVersion, deviceManufacturer: $deviceManufacturer',
     );
   }
 
-  void tryReportPlayback(_) async {
+  Future<void> tryReportPlayback(_) async {
     _logger.fine(
       'callback called when elapsed ${_stopwatch.elapsed}',
     );
+    if (player.book != null &&
+        player.positionInBook >=
+            player.book!.duration - markCompleteWhenTimeLeft) {
+      _logger.info(
+        'marking complete as time left is less than $markCompleteWhenTimeLeft',
+      );
+      await markComplete();
+      return;
+    }
     if (_stopwatch.elapsed > reportingDurationThreshold) {
       _logger.fine(
         'reporting now with elapsed ${_stopwatch.elapsed} > threshold $reportingDurationThreshold',
@@ -157,6 +179,22 @@ class PlaybackReporter {
     );
     _logger.info('Started session: $sessionId');
     return _session;
+  }
+
+  Future<void> markComplete() async {
+    if (player.book == null) {
+      throw NoAudiobookPlayingError();
+    }
+    await authenticatedApi.me.createUpdateMediaProgress(
+      libraryItemId: player.book!.libraryItemId,
+      parameters: CreateUpdateProgressReqParams(
+        isFinished: true,
+        currentTime: player.positionInBook,
+        duration: player.book!.duration,
+      ),
+      responseErrorHandler: _responseErrorHandler,
+    );
+    _logger.info('Marked complete for book: ${player.book!.libraryItemId}');
   }
 
   Future<void> syncCurrentPosition() async {
@@ -229,6 +267,23 @@ class PlaybackReporter {
       );
       return null;
     }
+
+    // if in the ignore duration, don't sync
+    if (minimumPositionForReporting != null &&
+        player.positionInBook < minimumPositionForReporting!) {
+      // but if elapsed time is more than the minimumPositionForReporting, sync
+      if (_stopwatch.elapsed > minimumPositionForReporting!) {
+        _logger.info(
+          'Syncing position despite being less than minimumPositionForReporting as elapsed time is more: ${_stopwatch.elapsed}',
+        );
+      } else {
+        _logger.info(
+          'Ignoring sync for position: ${player.positionInBook} < $minimumPositionForReporting',
+        );
+        return null;
+      }
+    }
+
     return SyncSessionReqParams(
       currentTime: player.positionInBook,
       timeListened: _stopwatch.elapsed,

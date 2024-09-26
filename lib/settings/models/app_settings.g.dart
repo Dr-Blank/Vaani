@@ -73,10 +73,19 @@ _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
           ? const SleepTimerSettings()
           : SleepTimerSettings.fromJson(
               json['sleepTimerSettings'] as Map<String, dynamic>),
+      minimumPositionForReporting: json['minimumPositionForReporting'] == null
+          ? const Duration(seconds: 10)
+          : Duration(
+              microseconds:
+                  (json['minimumPositionForReporting'] as num).toInt()),
       playbackReportInterval: json['playbackReportInterval'] == null
           ? const Duration(seconds: 10)
           : Duration(
               microseconds: (json['playbackReportInterval'] as num).toInt()),
+      markCompleteWhenTimeLeft: json['markCompleteWhenTimeLeft'] == null
+          ? const Duration(seconds: 15)
+          : Duration(
+              microseconds: (json['markCompleteWhenTimeLeft'] as num).toInt()),
       configurePlayerForEveryBook:
           json['configurePlayerForEveryBook'] as bool? ?? true,
     );
@@ -90,7 +99,11 @@ Map<String, dynamic> _$$PlayerSettingsImplToJson(
       'preferredDefaultSpeed': instance.preferredDefaultSpeed,
       'speedOptions': instance.speedOptions,
       'sleepTimerSettings': instance.sleepTimerSettings,
+      'minimumPositionForReporting':
+          instance.minimumPositionForReporting.inMicroseconds,
       'playbackReportInterval': instance.playbackReportInterval.inMicroseconds,
+      'markCompleteWhenTimeLeft':
+          instance.markCompleteWhenTimeLeft.inMicroseconds,
       'configurePlayerForEveryBook': instance.configurePlayerForEveryBook,
     };
 

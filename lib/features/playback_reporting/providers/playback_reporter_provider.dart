@@ -13,7 +13,7 @@ part 'playback_reporter_provider.g.dart';
 class PlaybackReporter extends _$PlaybackReporter {
   @override
   Future<core.PlaybackReporter> build() async {
-    final appSettings = ref.watch(appSettingsProvider);
+    final playerSettings = ref.watch(appSettingsProvider).playerSettings;
     final player = ref.watch(simpleAudiobookPlayerProvider);
     final packageInfo = await PackageInfo.fromPlatform();
     final api = ref.watch(authenticatedApiProvider);
@@ -26,7 +26,9 @@ class PlaybackReporter extends _$PlaybackReporter {
     final reporter = core.PlaybackReporter(
       player,
       api,
-      reportingInterval: appSettings.playerSettings.playbackReportInterval,
+      reportingInterval: playerSettings.playbackReportInterval,
+      markCompleteWhenTimeLeft: playerSettings.markCompleteWhenTimeLeft,
+      minimumPositionForReporting: playerSettings.minimumPositionForReporting,
       deviceName: deviceName,
       deviceModel: deviceModel,
       deviceSdkVersion: deviceSdkVersion,
