@@ -477,7 +477,10 @@ mixin _$PlayerSettings {
   List<double> get speedOptions => throw _privateConstructorUsedError;
   SleepTimerSettings get sleepTimerSettings =>
       throw _privateConstructorUsedError;
+  Duration get minimumPositionForReporting =>
+      throw _privateConstructorUsedError;
   Duration get playbackReportInterval => throw _privateConstructorUsedError;
+  Duration get markCompleteWhenTimeLeft => throw _privateConstructorUsedError;
   bool get configurePlayerForEveryBook => throw _privateConstructorUsedError;
 
   /// Serializes this PlayerSettings to a JSON map.
@@ -503,7 +506,9 @@ abstract class $PlayerSettingsCopyWith<$Res> {
       double preferredDefaultSpeed,
       List<double> speedOptions,
       SleepTimerSettings sleepTimerSettings,
+      Duration minimumPositionForReporting,
       Duration playbackReportInterval,
+      Duration markCompleteWhenTimeLeft,
       bool configurePlayerForEveryBook});
 
   $MinimizedPlayerSettingsCopyWith<$Res> get miniPlayerSettings;
@@ -532,7 +537,9 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
     Object? preferredDefaultSpeed = null,
     Object? speedOptions = null,
     Object? sleepTimerSettings = null,
+    Object? minimumPositionForReporting = null,
     Object? playbackReportInterval = null,
+    Object? markCompleteWhenTimeLeft = null,
     Object? configurePlayerForEveryBook = null,
   }) {
     return _then(_value.copyWith(
@@ -560,9 +567,17 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
           ? _value.sleepTimerSettings
           : sleepTimerSettings // ignore: cast_nullable_to_non_nullable
               as SleepTimerSettings,
+      minimumPositionForReporting: null == minimumPositionForReporting
+          ? _value.minimumPositionForReporting
+          : minimumPositionForReporting // ignore: cast_nullable_to_non_nullable
+              as Duration,
       playbackReportInterval: null == playbackReportInterval
           ? _value.playbackReportInterval
           : playbackReportInterval // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      markCompleteWhenTimeLeft: null == markCompleteWhenTimeLeft
+          ? _value.markCompleteWhenTimeLeft
+          : markCompleteWhenTimeLeft // ignore: cast_nullable_to_non_nullable
               as Duration,
       configurePlayerForEveryBook: null == configurePlayerForEveryBook
           ? _value.configurePlayerForEveryBook
@@ -620,7 +635,9 @@ abstract class _$$PlayerSettingsImplCopyWith<$Res>
       double preferredDefaultSpeed,
       List<double> speedOptions,
       SleepTimerSettings sleepTimerSettings,
+      Duration minimumPositionForReporting,
       Duration playbackReportInterval,
+      Duration markCompleteWhenTimeLeft,
       bool configurePlayerForEveryBook});
 
   @override
@@ -650,7 +667,9 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
     Object? preferredDefaultSpeed = null,
     Object? speedOptions = null,
     Object? sleepTimerSettings = null,
+    Object? minimumPositionForReporting = null,
     Object? playbackReportInterval = null,
+    Object? markCompleteWhenTimeLeft = null,
     Object? configurePlayerForEveryBook = null,
   }) {
     return _then(_$PlayerSettingsImpl(
@@ -678,9 +697,17 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
           ? _value.sleepTimerSettings
           : sleepTimerSettings // ignore: cast_nullable_to_non_nullable
               as SleepTimerSettings,
+      minimumPositionForReporting: null == minimumPositionForReporting
+          ? _value.minimumPositionForReporting
+          : minimumPositionForReporting // ignore: cast_nullable_to_non_nullable
+              as Duration,
       playbackReportInterval: null == playbackReportInterval
           ? _value.playbackReportInterval
           : playbackReportInterval // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      markCompleteWhenTimeLeft: null == markCompleteWhenTimeLeft
+          ? _value.markCompleteWhenTimeLeft
+          : markCompleteWhenTimeLeft // ignore: cast_nullable_to_non_nullable
               as Duration,
       configurePlayerForEveryBook: null == configurePlayerForEveryBook
           ? _value.configurePlayerForEveryBook
@@ -700,7 +727,9 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
       this.preferredDefaultSpeed = 1,
       final List<double> speedOptions = const [0.75, 1, 1.25, 1.5, 1.75, 2],
       this.sleepTimerSettings = const SleepTimerSettings(),
+      this.minimumPositionForReporting = const Duration(seconds: 10),
       this.playbackReportInterval = const Duration(seconds: 10),
+      this.markCompleteWhenTimeLeft = const Duration(seconds: 15),
       this.configurePlayerForEveryBook = true})
       : _speedOptions = speedOptions;
 
@@ -733,14 +762,20 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
   final SleepTimerSettings sleepTimerSettings;
   @override
   @JsonKey()
+  final Duration minimumPositionForReporting;
+  @override
+  @JsonKey()
   final Duration playbackReportInterval;
+  @override
+  @JsonKey()
+  final Duration markCompleteWhenTimeLeft;
   @override
   @JsonKey()
   final bool configurePlayerForEveryBook;
 
   @override
   String toString() {
-    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredDefaultVolume: $preferredDefaultVolume, preferredDefaultSpeed: $preferredDefaultSpeed, speedOptions: $speedOptions, sleepTimerSettings: $sleepTimerSettings, playbackReportInterval: $playbackReportInterval, configurePlayerForEveryBook: $configurePlayerForEveryBook)';
+    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredDefaultVolume: $preferredDefaultVolume, preferredDefaultSpeed: $preferredDefaultSpeed, speedOptions: $speedOptions, sleepTimerSettings: $sleepTimerSettings, minimumPositionForReporting: $minimumPositionForReporting, playbackReportInterval: $playbackReportInterval, markCompleteWhenTimeLeft: $markCompleteWhenTimeLeft, configurePlayerForEveryBook: $configurePlayerForEveryBook)';
   }
 
   @override
@@ -760,8 +795,15 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
                 .equals(other._speedOptions, _speedOptions) &&
             (identical(other.sleepTimerSettings, sleepTimerSettings) ||
                 other.sleepTimerSettings == sleepTimerSettings) &&
+            (identical(other.minimumPositionForReporting,
+                    minimumPositionForReporting) ||
+                other.minimumPositionForReporting ==
+                    minimumPositionForReporting) &&
             (identical(other.playbackReportInterval, playbackReportInterval) ||
                 other.playbackReportInterval == playbackReportInterval) &&
+            (identical(
+                    other.markCompleteWhenTimeLeft, markCompleteWhenTimeLeft) ||
+                other.markCompleteWhenTimeLeft == markCompleteWhenTimeLeft) &&
             (identical(other.configurePlayerForEveryBook,
                     configurePlayerForEveryBook) ||
                 other.configurePlayerForEveryBook ==
@@ -778,7 +820,9 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
       preferredDefaultSpeed,
       const DeepCollectionEquality().hash(_speedOptions),
       sleepTimerSettings,
+      minimumPositionForReporting,
       playbackReportInterval,
+      markCompleteWhenTimeLeft,
       configurePlayerForEveryBook);
 
   /// Create a copy of PlayerSettings
@@ -806,7 +850,9 @@ abstract class _PlayerSettings implements PlayerSettings {
       final double preferredDefaultSpeed,
       final List<double> speedOptions,
       final SleepTimerSettings sleepTimerSettings,
+      final Duration minimumPositionForReporting,
       final Duration playbackReportInterval,
+      final Duration markCompleteWhenTimeLeft,
       final bool configurePlayerForEveryBook}) = _$PlayerSettingsImpl;
 
   factory _PlayerSettings.fromJson(Map<String, dynamic> json) =
@@ -825,7 +871,11 @@ abstract class _PlayerSettings implements PlayerSettings {
   @override
   SleepTimerSettings get sleepTimerSettings;
   @override
+  Duration get minimumPositionForReporting;
+  @override
   Duration get playbackReportInterval;
+  @override
+  Duration get markCompleteWhenTimeLeft;
   @override
   bool get configurePlayerForEveryBook;
 
