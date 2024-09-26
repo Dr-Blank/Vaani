@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,7 +18,8 @@ class SpeedSelector extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appSettings = ref.watch(appSettingsProvider);
-    final speeds = appSettings.playerSettings.speedOptions;
+    final playerSettings = appSettings.playerSettings;
+    final speeds = playerSettings.speedOptions;
     final currentSpeed = ref.watch(audiobookPlayerProvider).speed;
     final speedState = useState(currentSpeed);
 
@@ -30,10 +33,16 @@ class SpeedSelector extends HookConsumerWidget {
     );
 
     // the speed options
-    const minSpeed = 0.1;
-    const maxSpeed = 4.0;
-    const speedIncrement = 0.05;
-    final availableSpeeds = ((maxSpeed - minSpeed) / speedIncrement).ceil();
+    final minSpeed = min(
+      speeds.reduce((minSpeedSoFar, element) => min(minSpeedSoFar, element)),
+      playerSettings.minSpeed,
+    );
+    final maxSpeed = max(
+      speeds.reduce((maxSpeedSoFar, element) => max(maxSpeedSoFar, element)),
+      playerSettings.maxSpeed,
+    );
+    final speedIncrement = playerSettings.speedIncrement;
+    final availableSpeeds = ((maxSpeed - minSpeed) / speedIncrement).ceil() + 1;
     final availableSpeedsList = List.generate(
       availableSpeeds,
       (index) {
@@ -52,154 +61,210 @@ class SpeedSelector extends HookConsumerWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  'Playback Speed: ${speedState.value}x',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
+          // the title
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                'Playback Speed: ${speedState.value}x',
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
+
+          // the speed selector
           Flexible(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // a minus button to decrease the speed
-                IconButton.filledTonal(
-                  icon: const Icon(Icons.remove),
-                  onPressed: () {
-                    // animate to index - 1
-                    final index = availableSpeedsList.indexOf(speedState.value);
-                    if (index > 0) {
-                      scrollController.animateToItem(
-                        index - 1,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                ),
-                Expanded(
-                  child: ListWheelScrollViewX(
-                    controller: scrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemExtent: itemExtent,
-                    diameterRatio: 1.5, squeeze: 1.2,
-                    // useMagnifier: true,
-                    // magnification: 1.5,
-                    physics: const FixedExtentScrollPhysics(),
-                    children: availableSpeedsList
-                        .map(
-                          (speed) => Column(
-                            children: [
-                              // a vertical line
-                              Container(
-                                height: itemExtent * 2,
-                                // thick if multiple of 1, thin if multiple of 0.5 and transparent if multiple of 0.05
-                                width: speed % 0.5 == 0
-                                    ? 3
-                                    : speed % 0.25 == 0
-                                        ? 2
-                                        : 0.5,
-                                color:
-                                    Theme.of(context).colorScheme.onSurface,
-                              ),
-                              // the speed text but only at .5 increments of speed
-                              if (speed % 0.25 == 0)
-                                Text(
-                                  speed.toString(),
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface,
-                                  ),
-                                ),
-                            ],
-                          ),
-                        )
-                        .toList(),
-                    onSelectedItemChanged: (index) {
-                      speedState.value = availableSpeedsList[index];
-                      // onSpeedSelected(availableSpeedsList[index]);
-                      // call after 500ms to avoid the scrollview from scrolling to the selected speed
-                      // Future.delayed(
-                      //   const Duration(milliseconds: 100),
-                      //   () => onSpeedSelected(availableSpeedsList[index]),
-                      // );
-                    },
-                  ),
-                ),
-                // a plus button to increase the speed
-                IconButton.filledTonal(
-                  icon: const Icon(Icons.add),
-                  onPressed: () {
-                    // animate to index + 1
-                    final index = availableSpeedsList.indexOf(speedState.value);
-                    if (index < availableSpeedsList.length - 1) {
-                      scrollController.animateToItem(
-                        index + 1,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                ),
-              ],
+            child: SpeedWheel(
+              availableSpeedsList: availableSpeedsList,
+              speedState: speedState,
+              scrollController: scrollController,
+              itemExtent: itemExtent,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+          // the speed buttons
+          Wrap(
+            spacing: 8.0,
+            alignment: WrapAlignment.center,
+            runAlignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: speeds
                 .map(
-                  (speed) => Flexible(
-                    // the text button should be highlighted if the speed is selected
-                    child: TextButton(
-                      style: speed == speedState.value
-                          ? TextButton.styleFrom(
-                              backgroundColor: Theme.of(context)
+                  (speed) => TextButton(
+                    style: speed == speedState.value
+                        ? TextButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primaryContainer,
+                            foregroundColor: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer,
+                          )
+                        // border if not selected
+                        : TextButton.styleFrom(
+                            side: BorderSide(
+                              color: Theme.of(context)
                                   .colorScheme
                                   .primaryContainer,
-                              foregroundColor: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer,
-                            )
-                          : null,
-                      onPressed: () async {
-                        // animate the wheel to the selected speed
-                        var index = availableSpeedsList.indexOf(speed);
-                        // if the speed is not in the list
-                        if (index == -1) {
-                          // find the nearest speed
-                          final nearestSpeed = availableSpeedsList.firstWhere(
-                            (element) => element > speed,
-                            orElse: () => availableSpeedsList.last,
-                          );
-                          index = availableSpeedsList.indexOf(nearestSpeed);
-                        }
-                        await scrollController.animateToItem(
-                          index,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
+                            ),
+                          ),
+                    onPressed: () async {
+                      // animate the wheel to the selected speed
+                      var index = availableSpeedsList.indexOf(speed);
+                      // if the speed is not in the list
+                      if (index == -1) {
+                        // find the nearest speed
+                        final nearestSpeed = availableSpeedsList.firstWhere(
+                          (element) => element > speed,
+                          orElse: () => availableSpeedsList.last,
                         );
+                        index = availableSpeedsList.indexOf(nearestSpeed);
+                      }
+                      await scrollController.animateToItem(
+                        index,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
 
-                        // call the onSpeedSelected function
-                        speedState.value = speed;
-                      },
-                      child: Text('$speed'),
-                    ),
+                      // call the onSpeedSelected function
+                      speedState.value = speed;
+                    },
+                    child: Text('$speed'),
                   ),
                 )
                 .toList(),
           ),
-          const SizedBox(
-            height: 8,
-          ),
         ],
       ),
+    );
+  }
+}
+
+class SpeedWheel extends StatelessWidget {
+  const SpeedWheel({
+    super.key,
+    required this.availableSpeedsList,
+    required this.speedState,
+    required this.scrollController,
+    required this.itemExtent,
+    this.showIncrementButtons = true,
+  });
+
+  final List<double> availableSpeedsList;
+  final ValueNotifier<double> speedState;
+  final FixedExtentScrollController scrollController;
+  final double itemExtent;
+  final bool showIncrementButtons;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // a minus button to decrease the speed
+        if (showIncrementButtons)
+          IconButton.filledTonal(
+            icon: const Icon(Icons.remove),
+            onPressed: () {
+              // animate to index - 1
+              final index = availableSpeedsList.indexOf(speedState.value);
+              if (index > 0) {
+                scrollController.animateToItem(
+                  index - 1,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              }
+            },
+          ),
+        // the speed selector wheel
+        Expanded(
+          child: ListWheelScrollViewX(
+            controller: scrollController,
+            scrollDirection: Axis.horizontal,
+            itemExtent: itemExtent,
+            diameterRatio: 1.5, squeeze: 1.2,
+            // useMagnifier: true,
+            // magnification: 1.5,
+            physics: const FixedExtentScrollPhysics(),
+            children: availableSpeedsList
+                .map(
+                  (speed) => Expanded(
+                    child: SpeedLine(itemExtent: itemExtent, speed: speed),
+                  ),
+                )
+                .toList(),
+            onSelectedItemChanged: (index) {
+              speedState.value = availableSpeedsList[index];
+            },
+          ),
+        ),
+
+        if (showIncrementButtons)
+          // a plus button to increase the speed
+          IconButton.filledTonal(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              // animate to index + 1
+              final index = availableSpeedsList.indexOf(speedState.value);
+              if (index < availableSpeedsList.length - 1) {
+                scrollController.animateToItem(
+                  index + 1,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              }
+            },
+          ),
+      ],
+    );
+  }
+}
+
+class SpeedLine extends StatelessWidget {
+  const SpeedLine({
+    super.key,
+    required this.itemExtent,
+    required this.speed,
+  });
+
+  final double itemExtent;
+  final double speed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // a vertical line
+        Container(
+          height: itemExtent * 2,
+          // thick if multiple of 1, thin if multiple of 0.5 and transparent if multiple of 0.05
+          width: speed % 0.5 == 0
+              ? 3
+              : speed % 0.25 == 0
+                  ? 2
+                  : 0.5,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+        // the speed text but only at .5 increments of speed
+        if (speed % 0.25 == 0)
+          Expanded(
+            child: Text.rich(
+              TextSpan(
+                text: speed.floor().toString(),
+                children: [
+                  TextSpan(
+                    text: '.${speed.toStringAsFixed(2).split('.').last}',
+                    style: TextStyle(
+                      fontSize:
+                          Theme.of(context).textTheme.labelSmall?.fontSize,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
