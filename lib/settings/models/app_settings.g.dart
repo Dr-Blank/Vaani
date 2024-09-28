@@ -24,6 +24,10 @@ _$AppSettingsImpl _$$AppSettingsImplFromJson(Map<String, dynamic> json) =>
           ? const NotificationSettings()
           : NotificationSettings.fromJson(
               json['notificationSettings'] as Map<String, dynamic>),
+      shakeDetectionSettings: json['shakeDetectionSettings'] == null
+          ? const ShakeDetectionSettings()
+          : ShakeDetectionSettings.fromJson(
+              json['shakeDetectionSettings'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
@@ -32,6 +36,7 @@ Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
       'playerSettings': instance.playerSettings,
       'downloadSettings': instance.downloadSettings,
       'notificationSettings': instance.notificationSettings,
+      'shakeDetectionSettings': instance.shakeDetectionSettings,
     };
 
 _$ThemeSettingsImpl _$$ThemeSettingsImplFromJson(Map<String, dynamic> json) =>
@@ -273,4 +278,82 @@ const _$NotificationMediaControlEnumMap = {
   NotificationMediaControl.stop: 'stop',
   NotificationMediaControl.skipToNextChapter: 'skipToNextChapter',
   NotificationMediaControl.skipToPreviousChapter: 'skipToPreviousChapter',
+};
+
+_$ShakeDetectionSettingsImpl _$$ShakeDetectionSettingsImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ShakeDetectionSettingsImpl(
+      isEnabled: json['isEnabled'] as bool? ?? true,
+      direction:
+          $enumDecodeNullable(_$ShakeDirectionEnumMap, json['direction']) ??
+              ShakeDirection.horizontal,
+      threshold: (json['threshold'] as num?)?.toDouble() ?? 6,
+      force: $enumDecodeNullable(_$ShakeForceEnumMap, json['force']) ??
+          ShakeForce.medium,
+      shakeAction:
+          $enumDecodeNullable(_$ShakeActionEnumMap, json['shakeAction']) ??
+              ShakeAction.sleepTimerReset,
+      feedback: (json['feedback'] as List<dynamic>?)
+              ?.map((e) => $enumDecode(_$ShakeDetectedFeedbackEnumMap, e))
+              .toList() ??
+          const [ShakeDetectedFeedback.vibrate, ShakeDetectedFeedback.beep],
+      beepVolume: (json['beepVolume'] as num?)?.toDouble() ?? 0.5,
+      shakeTriggerCoolDown: json['shakeTriggerCoolDown'] == null
+          ? const Duration(seconds: 5)
+          : Duration(
+              microseconds: (json['shakeTriggerCoolDown'] as num).toInt()),
+      shakeTriggerCount: (json['shakeTriggerCount'] as num?)?.toInt() ?? 2,
+      samplingPeriod: json['samplingPeriod'] == null
+          ? const Duration(milliseconds: 100)
+          : Duration(microseconds: (json['samplingPeriod'] as num).toInt()),
+    );
+
+Map<String, dynamic> _$$ShakeDetectionSettingsImplToJson(
+        _$ShakeDetectionSettingsImpl instance) =>
+    <String, dynamic>{
+      'isEnabled': instance.isEnabled,
+      'direction': _$ShakeDirectionEnumMap[instance.direction]!,
+      'threshold': instance.threshold,
+      'force': _$ShakeForceEnumMap[instance.force],
+      'shakeAction': _$ShakeActionEnumMap[instance.shakeAction]!,
+      'feedback': instance.feedback
+          .map((e) => _$ShakeDetectedFeedbackEnumMap[e]!)
+          .toList(),
+      'beepVolume': instance.beepVolume,
+      'shakeTriggerCoolDown': instance.shakeTriggerCoolDown.inMicroseconds,
+      'shakeTriggerCount': instance.shakeTriggerCount,
+      'samplingPeriod': instance.samplingPeriod.inMicroseconds,
+    };
+
+const _$ShakeDirectionEnumMap = {
+  ShakeDirection.horizontal: 'horizontal',
+  ShakeDirection.vertical: 'vertical',
+};
+
+const _$ShakeForceEnumMap = {
+  ShakeForce.low: 'low',
+  ShakeForce.medium: 'medium',
+  ShakeForce.high: 'high',
+  ShakeForce.leafRustle: 'leafRustle',
+  ShakeForce.breeze: 'breeze',
+  ShakeForce.storm: 'storm',
+  ShakeForce.hurricane: 'hurricane',
+  ShakeForce.earthquake: 'earthquake',
+  ShakeForce.meteorShower: 'meteorShower',
+  ShakeForce.supernova: 'supernova',
+  ShakeForce.blackHole: 'blackHole',
+};
+
+const _$ShakeActionEnumMap = {
+  ShakeAction.none: 'none',
+  ShakeAction.playPause: 'playPause',
+  ShakeAction.sleepTimerReset: 'sleepTimerReset',
+  ShakeAction.fastForward: 'fastForward',
+  ShakeAction.rewind: 'rewind',
+  ShakeAction.custom: 'custom',
+};
+
+const _$ShakeDetectedFeedbackEnumMap = {
+  ShakeDetectedFeedback.vibrate: 'vibrate',
+  ShakeDetectedFeedback.beep: 'beep',
 };

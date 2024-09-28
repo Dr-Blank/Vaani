@@ -11,6 +11,7 @@ import 'package:vaani/features/sleep_timer/core/sleep_timer.dart';
 import 'package:vaani/features/sleep_timer/providers/sleep_timer_provider.dart'
     show sleepTimerProvider;
 import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/shared/extensions/duration_format.dart';
 import 'package:vaani/shared/extensions/inverse_lerp.dart';
 import 'package:vaani/shared/widgets/not_implemented.dart';
 
@@ -376,26 +377,12 @@ class RemainingSleepTimeDisplay extends HookConsumerWidget {
       ),
       child: Text(
         timer.timer == null
-            ? timer.duration.formatSingleLargestUnit()
-            : remainingTime?.formatSingleLargestUnit() ?? '',
+            ? timer.duration.smartBinaryFormat
+            : remainingTime?.smartBinaryFormat ?? '',
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
       ),
     );
-  }
-}
-
-extension DurationFormat on Duration {
-  /// will return a number followed by h, m, or s depending on the duration
-  /// only the largest unit will be shown
-  String formatSingleLargestUnit() {
-    if (inHours > 0) {
-      return '${inHours}h';
-    } else if (inMinutes > 0) {
-      return '${inMinutes}m';
-    } else {
-      return '${inSeconds}s';
-    }
   }
 }

@@ -225,7 +225,7 @@ class MediaControlsPicker extends HookConsumerWidget {
         OkButton(
           onPressed: () {
             Navigator.of(context).pop(selectedMediaControls.value);
-          }
+          },
         ),
       ],
       // a list of chips to easily select the media controls to display
@@ -332,7 +332,7 @@ class NotificationTitlePicker extends HookConsumerWidget {
         OkButton(
           onPressed: () {
             Navigator.of(context).pop(selectedTitle.value);
-          }
+          },
         ),
       ],
       // a list of chips to easily insert available fields into the text field
@@ -362,10 +362,10 @@ class NotificationTitlePicker extends HookConsumerWidget {
             children: NotificationTitleType.values
                 .map(
                   (type) => ActionChip(
-                    label: Text(type.stringValue),
+                    label: Text(type.name),
                     onPressed: () {
                       final text = controller.text;
-                      final newText = '$text\$${type.stringValue}';
+                      final newText = '$text\$${type.name}';
                       controller.text = newText;
                       selectedTitle.value = newText;
                     },

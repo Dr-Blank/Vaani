@@ -16,6 +16,16 @@ extension DurationFormat on Duration {
       return '${seconds}s';
     }
   }
+
+  String get smartSingleFormat {
+    if (inHours > 0) {
+      return '${inHours}h';
+    } else if (inMinutes > 0) {
+      return '${inMinutes}m';
+    } else {
+      return '${inSeconds}s';
+    }
+  }
 }
 
 extension OnlyTime on DateTime {

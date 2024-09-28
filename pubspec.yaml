@@ -88,6 +88,7 @@ dependencies:
     path: ./shelfsdk
   shimmer: ^3.0.0
   url_launcher: ^6.2.6
+  vibration: ^2.0.0
 dev_dependencies:
   build_runner: ^2.4.9
   custom_lint: ^0.6.4
@@ -112,6 +113,7 @@ flutter:
   assets:
     - assets/
     - assets/animations/
+    - assets/sounds/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see

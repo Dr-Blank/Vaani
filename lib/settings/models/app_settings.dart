@@ -16,6 +16,8 @@ class AppSettings with _$AppSettings {
     @Default(PlayerSettings()) PlayerSettings playerSettings,
     @Default(DownloadSettings()) DownloadSettings downloadSettings,
     @Default(NotificationSettings()) NotificationSettings notificationSettings,
+    @Default(ShakeDetectionSettings())
+    ShakeDetectionSettings shakeDetectionSettings,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>
@@ -165,17 +167,13 @@ class NotificationSettings with _$NotificationSettings {
 }
 
 enum NotificationTitleType {
-  chapterTitle('chapterTitle'),
-  bookTitle('bookTitle'),
-  author('author'),
-  subtitle('subtitle'),
-  series('series'),
-  narrator('narrator'),
-  year('year');
-
-  const NotificationTitleType(this.stringValue);
-
-  final String stringValue;
+  chapterTitle,
+  bookTitle,
+  author,
+  subtitle,
+  series,
+  narrator,
+  year,
 }
 
 enum NotificationMediaControl {
@@ -190,3 +188,67 @@ enum NotificationMediaControl {
 
   final IconData icon;
 }
+
+/// Shake Detection Settings
+@freezed
+class ShakeDetectionSettings with _$ShakeDetectionSettings {
+  const factory ShakeDetectionSettings({
+    @Default(true) bool isEnabled,
+    @Default(ShakeDirection.horizontal) ShakeDirection direction,
+    @Default(6) double threshold,
+    @Default(ShakeForce.medium) ShakeForce? force,
+    @Default(ShakeAction.sleepTimerReset) ShakeAction shakeAction,
+    @Default([ShakeDetectedFeedback.vibrate, ShakeDetectedFeedback.beep])
+    List<ShakeDetectedFeedback> feedback,
+    @Default(0.5) double beepVolume,
+
+    /// the duration to wait before the shake detection is enabled again
+    @Default(Duration(seconds: 5)) Duration shakeTriggerCoolDown,
+
+    /// the number of shakes required to trigger the action
+    @Default(2) int shakeTriggerCount,
+
+    /// acceleration sampling interval
+    @Default(Duration(milliseconds: 100)) Duration samplingPeriod,
+  }) = _ShakeDetectionSettings;
+
+  factory ShakeDetectionSettings.fromJson(Map<String, dynamic> json) =>
+      _$ShakeDetectionSettingsFromJson(json);
+}
+
+enum ShakeDirection { horizontal, vertical }
+
+enum ShakeForce {
+  low(2.5),
+  medium(10),
+  high(15),
+  leafRustle(3),
+  breeze(7),
+  storm(12),
+  hurricane(18),
+  earthquake(25),
+  meteorShower(30),
+  supernova(40),
+  blackHole(50);
+
+  const ShakeForce(this.threshold);
+
+  final double threshold;
+
+  String get properName {
+    return name
+        .replaceAllMapped(RegExp(r'([A-Z])'), (match) => ' ${match.group(0)}')
+        .trim();
+  }
+}
+
+enum ShakeAction {
+  none,
+  playPause,
+  sleepTimerReset,
+  fastForward,
+  rewind,
+  custom,
+}
+
+enum ShakeDetectedFeedback { vibrate, beep }
