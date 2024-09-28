@@ -42,6 +42,11 @@ class Routes {
     name: 'playerSettings',
     parentRoute: settings,
   );
+  static const shakeDetectorSettings = _SimpleRoute(
+    pathName: 'shakeDetector',
+    name: 'shakeDetectorSettings',
+    parentRoute: settings,
+  );
 
   // search and explore
   static const search = _SimpleRoute(

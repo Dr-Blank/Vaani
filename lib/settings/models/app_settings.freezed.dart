@@ -2429,10 +2429,8 @@ mixin _$ShakeDetectionSettings {
   bool get isEnabled => throw _privateConstructorUsedError;
   ShakeDirection get direction => throw _privateConstructorUsedError;
   double get threshold => throw _privateConstructorUsedError;
-  ShakeForce? get force => throw _privateConstructorUsedError;
   ShakeAction get shakeAction => throw _privateConstructorUsedError;
-  List<ShakeDetectedFeedback> get feedback =>
-      throw _privateConstructorUsedError;
+  Set<ShakeDetectedFeedback> get feedback => throw _privateConstructorUsedError;
   double get beepVolume => throw _privateConstructorUsedError;
 
   /// the duration to wait before the shake detection is enabled again
@@ -2464,9 +2462,8 @@ abstract class $ShakeDetectionSettingsCopyWith<$Res> {
       {bool isEnabled,
       ShakeDirection direction,
       double threshold,
-      ShakeForce? force,
       ShakeAction shakeAction,
-      List<ShakeDetectedFeedback> feedback,
+      Set<ShakeDetectedFeedback> feedback,
       double beepVolume,
       Duration shakeTriggerCoolDown,
       int shakeTriggerCount,
@@ -2492,7 +2489,6 @@ class _$ShakeDetectionSettingsCopyWithImpl<$Res,
     Object? isEnabled = null,
     Object? direction = null,
     Object? threshold = null,
-    Object? force = freezed,
     Object? shakeAction = null,
     Object? feedback = null,
     Object? beepVolume = null,
@@ -2513,10 +2509,6 @@ class _$ShakeDetectionSettingsCopyWithImpl<$Res,
           ? _value.threshold
           : threshold // ignore: cast_nullable_to_non_nullable
               as double,
-      force: freezed == force
-          ? _value.force
-          : force // ignore: cast_nullable_to_non_nullable
-              as ShakeForce?,
       shakeAction: null == shakeAction
           ? _value.shakeAction
           : shakeAction // ignore: cast_nullable_to_non_nullable
@@ -2524,7 +2516,7 @@ class _$ShakeDetectionSettingsCopyWithImpl<$Res,
       feedback: null == feedback
           ? _value.feedback
           : feedback // ignore: cast_nullable_to_non_nullable
-              as List<ShakeDetectedFeedback>,
+              as Set<ShakeDetectedFeedback>,
       beepVolume: null == beepVolume
           ? _value.beepVolume
           : beepVolume // ignore: cast_nullable_to_non_nullable
@@ -2558,9 +2550,8 @@ abstract class _$$ShakeDetectionSettingsImplCopyWith<$Res>
       {bool isEnabled,
       ShakeDirection direction,
       double threshold,
-      ShakeForce? force,
       ShakeAction shakeAction,
-      List<ShakeDetectedFeedback> feedback,
+      Set<ShakeDetectedFeedback> feedback,
       double beepVolume,
       Duration shakeTriggerCoolDown,
       int shakeTriggerCount,
@@ -2585,7 +2576,6 @@ class __$$ShakeDetectionSettingsImplCopyWithImpl<$Res>
     Object? isEnabled = null,
     Object? direction = null,
     Object? threshold = null,
-    Object? force = freezed,
     Object? shakeAction = null,
     Object? feedback = null,
     Object? beepVolume = null,
@@ -2606,10 +2596,6 @@ class __$$ShakeDetectionSettingsImplCopyWithImpl<$Res>
           ? _value.threshold
           : threshold // ignore: cast_nullable_to_non_nullable
               as double,
-      force: freezed == force
-          ? _value.force
-          : force // ignore: cast_nullable_to_non_nullable
-              as ShakeForce?,
       shakeAction: null == shakeAction
           ? _value.shakeAction
           : shakeAction // ignore: cast_nullable_to_non_nullable
@@ -2617,7 +2603,7 @@ class __$$ShakeDetectionSettingsImplCopyWithImpl<$Res>
       feedback: null == feedback
           ? _value._feedback
           : feedback // ignore: cast_nullable_to_non_nullable
-              as List<ShakeDetectedFeedback>,
+              as Set<ShakeDetectedFeedback>,
       beepVolume: null == beepVolume
           ? _value.beepVolume
           : beepVolume // ignore: cast_nullable_to_non_nullable
@@ -2644,13 +2630,12 @@ class _$ShakeDetectionSettingsImpl implements _ShakeDetectionSettings {
   const _$ShakeDetectionSettingsImpl(
       {this.isEnabled = true,
       this.direction = ShakeDirection.horizontal,
-      this.threshold = 6,
-      this.force = ShakeForce.medium,
-      this.shakeAction = ShakeAction.sleepTimerReset,
-      final List<ShakeDetectedFeedback> feedback = const [
+      this.threshold = 5,
+      this.shakeAction = ShakeAction.resetSleepTimer,
+      final Set<ShakeDetectedFeedback> feedback = const {
         ShakeDetectedFeedback.vibrate,
         ShakeDetectedFeedback.beep
-      ],
+      },
       this.beepVolume = 0.5,
       this.shakeTriggerCoolDown = const Duration(seconds: 5),
       this.shakeTriggerCount = 2,
@@ -2671,17 +2656,14 @@ class _$ShakeDetectionSettingsImpl implements _ShakeDetectionSettings {
   final double threshold;
   @override
   @JsonKey()
-  final ShakeForce? force;
-  @override
-  @JsonKey()
   final ShakeAction shakeAction;
-  final List<ShakeDetectedFeedback> _feedback;
+  final Set<ShakeDetectedFeedback> _feedback;
   @override
   @JsonKey()
-  List<ShakeDetectedFeedback> get feedback {
-    if (_feedback is EqualUnmodifiableListView) return _feedback;
+  Set<ShakeDetectedFeedback> get feedback {
+    if (_feedback is EqualUnmodifiableSetView) return _feedback;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_feedback);
+    return EqualUnmodifiableSetView(_feedback);
   }
 
   @override
@@ -2705,7 +2687,7 @@ class _$ShakeDetectionSettingsImpl implements _ShakeDetectionSettings {
 
   @override
   String toString() {
-    return 'ShakeDetectionSettings(isEnabled: $isEnabled, direction: $direction, threshold: $threshold, force: $force, shakeAction: $shakeAction, feedback: $feedback, beepVolume: $beepVolume, shakeTriggerCoolDown: $shakeTriggerCoolDown, shakeTriggerCount: $shakeTriggerCount, samplingPeriod: $samplingPeriod)';
+    return 'ShakeDetectionSettings(isEnabled: $isEnabled, direction: $direction, threshold: $threshold, shakeAction: $shakeAction, feedback: $feedback, beepVolume: $beepVolume, shakeTriggerCoolDown: $shakeTriggerCoolDown, shakeTriggerCount: $shakeTriggerCount, samplingPeriod: $samplingPeriod)';
   }
 
   @override
@@ -2719,7 +2701,6 @@ class _$ShakeDetectionSettingsImpl implements _ShakeDetectionSettings {
                 other.direction == direction) &&
             (identical(other.threshold, threshold) ||
                 other.threshold == threshold) &&
-            (identical(other.force, force) || other.force == force) &&
             (identical(other.shakeAction, shakeAction) ||
                 other.shakeAction == shakeAction) &&
             const DeepCollectionEquality().equals(other._feedback, _feedback) &&
@@ -2740,7 +2721,6 @@ class _$ShakeDetectionSettingsImpl implements _ShakeDetectionSettings {
       isEnabled,
       direction,
       threshold,
-      force,
       shakeAction,
       const DeepCollectionEquality().hash(_feedback),
       beepVolume,
@@ -2770,9 +2750,8 @@ abstract class _ShakeDetectionSettings implements ShakeDetectionSettings {
       {final bool isEnabled,
       final ShakeDirection direction,
       final double threshold,
-      final ShakeForce? force,
       final ShakeAction shakeAction,
-      final List<ShakeDetectedFeedback> feedback,
+      final Set<ShakeDetectedFeedback> feedback,
       final double beepVolume,
       final Duration shakeTriggerCoolDown,
       final int shakeTriggerCount,
@@ -2788,11 +2767,9 @@ abstract class _ShakeDetectionSettings implements ShakeDetectionSettings {
   @override
   double get threshold;
   @override
-  ShakeForce? get force;
-  @override
   ShakeAction get shakeAction;
   @override
-  List<ShakeDetectedFeedback> get feedback;
+  Set<ShakeDetectedFeedback> get feedback;
   @override
   double get beepVolume;
 

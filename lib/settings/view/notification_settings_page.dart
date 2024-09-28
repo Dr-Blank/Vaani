@@ -6,6 +6,7 @@ import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/settings/models/app_settings.dart';
 import 'package:vaani/settings/view/buttons.dart';
 import 'package:vaani/settings/view/simple_settings_page.dart';
+import 'package:vaani/shared/extensions/enum.dart';
 
 class NotificationSettingsPage extends HookConsumerWidget {
   const NotificationSettingsPage({
@@ -16,7 +17,7 @@ class NotificationSettingsPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appSettings = ref.watch(appSettingsProvider);
     final notificationSettings = appSettings.notificationSettings;
-
+    final primaryColor = Theme.of(context).colorScheme.primary;
     return SimpleSettingsPage(
       title: const Text('Notification Settings'),
       sections: [
@@ -37,7 +38,10 @@ class NotificationSettingsPage extends HookConsumerWidget {
                   children: [
                     TextSpan(
                       text: notificationSettings.primaryTitle,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                      ),
                     ),
                   ],
                 ),
@@ -72,7 +76,10 @@ class NotificationSettingsPage extends HookConsumerWidget {
                   children: [
                     TextSpan(
                       text: notificationSettings.secondaryTitle,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                      ),
                     ),
                   ],
                 ),
@@ -151,19 +158,17 @@ class NotificationSettingsPage extends HookConsumerWidget {
               title: const Text('Media Controls'),
               leading: const Icon(Icons.control_camera),
               // description: const Text('Select the media controls to display'),
-              description: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Select the media controls to display'),
-                  Wrap(
-                    spacing: 8.0,
-                    children: notificationSettings.mediaControls
-                        .map(
-                          (control) => Icon(control.icon),
-                        )
-                        .toList(),
-                  ),
-                ],
+              description: const Text('Select the media controls to display'),
+              trailing: Wrap(
+                spacing: 8.0,
+                children: notificationSettings.mediaControls
+                    .map(
+                      (control) => Icon(
+                        control.icon,
+                        color: primaryColor,
+                      ),
+                    )
+                    .toList(),
               ),
               onPressed: (context) async {
                 final selectedControls =
@@ -235,14 +240,8 @@ class MediaControlsPicker extends HookConsumerWidget {
         children: NotificationMediaControl.values
             .map(
               (control) => ChoiceChip(
-                label: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(control.icon),
-                    const SizedBox(width: 4.0),
-                    Text(control.name),
-                  ],
-                ),
+                avatar: Icon(control.icon),
+                label: Text(control.pascalCase),
                 selected: selectedMediaControls.value.contains(control),
                 onSelected: (selected) {
                   if (selected) {
@@ -362,7 +361,7 @@ class NotificationTitlePicker extends HookConsumerWidget {
             children: NotificationTitleType.values
                 .map(
                   (type) => ActionChip(
-                    label: Text(type.name),
+                    label: Text(type.pascalCase),
                     onPressed: () {
                       final text = controller.text;
                       final newText = '$text\$${type.name}';
@@ -377,17 +376,4 @@ class NotificationTitlePicker extends HookConsumerWidget {
       ),
     );
   }
-}
-
-Future<String?> showNotificationTitlePicker(
-  BuildContext context, {
-  required String initialValue,
-  required String title,
-}) async {
-  return showDialog<String>(
-    context: context,
-    builder: (context) {
-      return NotificationTitlePicker(initialValue: initialValue, title: title);
-    },
-  );
 }

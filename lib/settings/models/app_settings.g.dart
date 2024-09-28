@@ -287,16 +287,14 @@ _$ShakeDetectionSettingsImpl _$$ShakeDetectionSettingsImplFromJson(
       direction:
           $enumDecodeNullable(_$ShakeDirectionEnumMap, json['direction']) ??
               ShakeDirection.horizontal,
-      threshold: (json['threshold'] as num?)?.toDouble() ?? 6,
-      force: $enumDecodeNullable(_$ShakeForceEnumMap, json['force']) ??
-          ShakeForce.medium,
+      threshold: (json['threshold'] as num?)?.toDouble() ?? 5,
       shakeAction:
           $enumDecodeNullable(_$ShakeActionEnumMap, json['shakeAction']) ??
-              ShakeAction.sleepTimerReset,
+              ShakeAction.resetSleepTimer,
       feedback: (json['feedback'] as List<dynamic>?)
               ?.map((e) => $enumDecode(_$ShakeDetectedFeedbackEnumMap, e))
-              .toList() ??
-          const [ShakeDetectedFeedback.vibrate, ShakeDetectedFeedback.beep],
+              .toSet() ??
+          const {ShakeDetectedFeedback.vibrate, ShakeDetectedFeedback.beep},
       beepVolume: (json['beepVolume'] as num?)?.toDouble() ?? 0.5,
       shakeTriggerCoolDown: json['shakeTriggerCoolDown'] == null
           ? const Duration(seconds: 5)
@@ -314,7 +312,6 @@ Map<String, dynamic> _$$ShakeDetectionSettingsImplToJson(
       'isEnabled': instance.isEnabled,
       'direction': _$ShakeDirectionEnumMap[instance.direction]!,
       'threshold': instance.threshold,
-      'force': _$ShakeForceEnumMap[instance.force],
       'shakeAction': _$ShakeActionEnumMap[instance.shakeAction]!,
       'feedback': instance.feedback
           .map((e) => _$ShakeDetectedFeedbackEnumMap[e]!)
@@ -330,27 +327,12 @@ const _$ShakeDirectionEnumMap = {
   ShakeDirection.vertical: 'vertical',
 };
 
-const _$ShakeForceEnumMap = {
-  ShakeForce.low: 'low',
-  ShakeForce.medium: 'medium',
-  ShakeForce.high: 'high',
-  ShakeForce.leafRustle: 'leafRustle',
-  ShakeForce.breeze: 'breeze',
-  ShakeForce.storm: 'storm',
-  ShakeForce.hurricane: 'hurricane',
-  ShakeForce.earthquake: 'earthquake',
-  ShakeForce.meteorShower: 'meteorShower',
-  ShakeForce.supernova: 'supernova',
-  ShakeForce.blackHole: 'blackHole',
-};
-
 const _$ShakeActionEnumMap = {
   ShakeAction.none: 'none',
   ShakeAction.playPause: 'playPause',
-  ShakeAction.sleepTimerReset: 'sleepTimerReset',
+  ShakeAction.resetSleepTimer: 'resetSleepTimer',
   ShakeAction.fastForward: 'fastForward',
   ShakeAction.rewind: 'rewind',
-  ShakeAction.custom: 'custom',
 };
 
 const _$ShakeDetectedFeedbackEnumMap = {

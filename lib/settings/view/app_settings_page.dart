@@ -12,6 +12,7 @@ import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/settings/models/app_settings.dart' as model;
 import 'package:vaani/settings/view/simple_settings_page.dart';
+import 'package:vaani/settings/view/widgets/navigation_with_switch_tile.dart';
 
 class AppSettingsPage extends HookConsumerWidget {
   const AppSettingsPage({
@@ -30,39 +31,6 @@ class AppSettingsPage extends HookConsumerWidget {
     return SimpleSettingsPage(
       title: const Text('App Settings'),
       sections: [
-        // General section
-        SettingsSection(
-          margin: const EdgeInsetsDirectional.symmetric(
-            horizontal: 16.0,
-            vertical: 8.0,
-          ),
-          title: Text(
-            'General',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          tiles: [
-            SettingsTile(
-              title: const Text('Notification Media Player'),
-              leading: const Icon(Icons.play_lesson),
-              description: const Text(
-                'Customize the media player in notifications',
-              ),
-              onPressed: (context) {
-                context.pushNamed(Routes.notificationSettings.name);
-              },
-            ),
-            SettingsTile(
-              title: const Text('Player Settings'),
-              leading: const Icon(Icons.play_arrow),
-              description: const Text(
-                'Customize the player settings',
-              ),
-              onPressed: (context) {
-                context.pushNamed(Routes.playerSettings.name);
-              },
-            ),
-          ],
-        ),
         // Appearance section
         SettingsSection(
           margin: const EdgeInsetsDirectional.symmetric(
@@ -106,20 +74,19 @@ class AppSettingsPage extends HookConsumerWidget {
           ],
         ),
 
-        // Sleep Timer section
+        // General section
         SettingsSection(
           margin: const EdgeInsetsDirectional.symmetric(
             horizontal: 16.0,
             vertical: 8.0,
           ),
           title: Text(
-            'Sleep Timer',
+            'General',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           tiles: [
-            SettingsTile.navigation(
-              // initialValue: sleepTimerSettings.autoTurnOnTimer,
-              title: const Text('Auto Turn On Timer'),
+            NavigationWithSwitchTile(
+              title: const Text('Auto Turn On Sleep Timer'),
               description: const Text(
                 'Automatically turn on the sleep timer based on the time of day',
               ),
@@ -127,39 +94,57 @@ class AppSettingsPage extends HookConsumerWidget {
                   ? const Icon(Icons.timer)
                   : const Icon(Icons.timer_off),
               onPressed: (context) {
-                // push the sleep timer settings page
                 context.pushNamed(Routes.autoSleepTimerSettings.name);
               },
-              // a switch to enable or disable the auto turn off time
-              trailing: IntrinsicHeight(
-                child: Row(
-                  children: [
-                    VerticalDivider(
-                      color: Theme.of(context).dividerColor.withOpacity(0.5),
-                      indent: 8.0,
-                      endIndent: 8.0,
-                      // width: 8.0,
-                      // thickness: 2.0,
-                      // height: 24.0,
-                    ),
-                    Switch(
-                      value: sleepTimerSettings.autoTurnOnTimer,
-                      onChanged: (value) {
-                        ref.read(appSettingsProvider.notifier).update(
-                              appSettings.copyWith.playerSettings
-                                  .sleepTimerSettings(
-                                autoTurnOnTimer: value,
-                              ),
-                            );
-                      },
-                    ),
-                  ],
-                ),
+              value: sleepTimerSettings.autoTurnOnTimer,
+              onToggle: (value) {
+                ref.read(appSettingsProvider.notifier).update(
+                      appSettings.copyWith.playerSettings.sleepTimerSettings(
+                        autoTurnOnTimer: value,
+                      ),
+                    );
+              },
+            ),
+            SettingsTile(
+              title: const Text('Notification Media Player'),
+              leading: const Icon(Icons.play_lesson),
+              description: const Text(
+                'Customize the media player in notifications',
               ),
+              onPressed: (context) {
+                context.pushNamed(Routes.notificationSettings.name);
+              },
+            ),
+            SettingsTile(
+              title: const Text('Player Settings'),
+              leading: const Icon(Icons.play_arrow),
+              description: const Text(
+                'Customize the player settings',
+              ),
+              onPressed: (context) {
+                context.pushNamed(Routes.playerSettings.name);
+              },
+            ),
+            NavigationWithSwitchTile(
+              title: const Text('Shake Detector'),
+              leading: const Icon(Icons.vibration),
+              description: const Text(
+                'Customize the shake detector settings',
+              ),
+              value: appSettings.shakeDetectionSettings.isEnabled,
+              onPressed: (context) {
+                context.pushNamed(Routes.shakeDetectorSettings.name);
+              },
+              onToggle: (value) {
+                ref.read(appSettingsProvider.notifier).update(
+                      appSettings.copyWith.shakeDetectionSettings(
+                        isEnabled: value,
+                      ),
+                    );
+              },
             ),
           ],
         ),
-
         // Backup and Restore section
         SettingsSection(
           margin: const EdgeInsetsDirectional.symmetric(

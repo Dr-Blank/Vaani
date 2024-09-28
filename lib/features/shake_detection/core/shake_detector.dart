@@ -36,7 +36,7 @@ class ShakeDetector {
     _accelerometerSubscription =
         userAccelerometerEventStream(samplingPeriod: _settings.samplingPeriod)
             .listen((event) {
-      if (event.rms > (_settings.force?.threshold ?? _settings.threshold)) {
+      if (event.rms > _settings.threshold) {
         _currentShakeCount++;
 
         if (_currentShakeCount >= _settings.shakeTriggerCount &&

@@ -195,11 +195,10 @@ class ShakeDetectionSettings with _$ShakeDetectionSettings {
   const factory ShakeDetectionSettings({
     @Default(true) bool isEnabled,
     @Default(ShakeDirection.horizontal) ShakeDirection direction,
-    @Default(6) double threshold,
-    @Default(ShakeForce.medium) ShakeForce? force,
-    @Default(ShakeAction.sleepTimerReset) ShakeAction shakeAction,
-    @Default([ShakeDetectedFeedback.vibrate, ShakeDetectedFeedback.beep])
-    List<ShakeDetectedFeedback> feedback,
+    @Default(5) double threshold,
+    @Default(ShakeAction.resetSleepTimer) ShakeAction shakeAction,
+    @Default({ShakeDetectedFeedback.vibrate, ShakeDetectedFeedback.beep})
+    Set<ShakeDetectedFeedback> feedback,
     @Default(0.5) double beepVolume,
 
     /// the duration to wait before the shake detection is enabled again
@@ -218,37 +217,12 @@ class ShakeDetectionSettings with _$ShakeDetectionSettings {
 
 enum ShakeDirection { horizontal, vertical }
 
-enum ShakeForce {
-  low(2.5),
-  medium(10),
-  high(15),
-  leafRustle(3),
-  breeze(7),
-  storm(12),
-  hurricane(18),
-  earthquake(25),
-  meteorShower(30),
-  supernova(40),
-  blackHole(50);
-
-  const ShakeForce(this.threshold);
-
-  final double threshold;
-
-  String get properName {
-    return name
-        .replaceAllMapped(RegExp(r'([A-Z])'), (match) => ' ${match.group(0)}')
-        .trim();
-  }
-}
-
 enum ShakeAction {
   none,
   playPause,
-  sleepTimerReset,
+  resetSleepTimer,
   fastForward,
   rewind,
-  custom,
 }
 
 enum ShakeDetectedFeedback { vibrate, beep }

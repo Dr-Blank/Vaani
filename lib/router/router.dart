@@ -14,6 +14,7 @@ import 'package:vaani/settings/view/app_settings_page.dart';
 import 'package:vaani/settings/view/auto_sleep_timer_settings_page.dart';
 import 'package:vaani/settings/view/notification_settings_page.dart';
 import 'package:vaani/settings/view/player_settings_page.dart';
+import 'package:vaani/settings/view/shake_detector_settings_page.dart';
 
 import 'scaffold_with_nav_bar.dart';
 import 'transitions/slide.dart';
@@ -194,6 +195,13 @@ class MyAppRouter {
                         name: Routes.playerSettings.name,
                         pageBuilder:
                             defaultPageBuilder(const PlayerSettingsPage()),
+                      ),
+                      GoRoute(
+                        path: Routes.shakeDetectorSettings.pathName,
+                        name: Routes.shakeDetectorSettings.name,
+                        pageBuilder: defaultPageBuilder(
+                          const ShakeDetectorSettingsPage(),
+                        ),
                       ),
                     ],
                   ),

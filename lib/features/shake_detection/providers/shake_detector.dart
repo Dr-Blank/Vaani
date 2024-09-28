@@ -65,7 +65,7 @@ class ShakeDetector extends _$ShakeDetector {
   }) {
     final player = ref.watch(simpleAudiobookPlayerProvider);
     switch (shakeAction) {
-      case ShakeAction.sleepTimerReset:
+      case ShakeAction.resetSleepTimer:
         _logger.fine('Resetting sleep timer');
         ref.read(sleepTimerProvider.notifier).restartTimer();
         break;
@@ -133,6 +133,6 @@ extension on ShakeDetectionSettings {
   }
 
   bool get shouldActOnSleepTimer {
-    return {ShakeAction.sleepTimerReset}.contains(shakeAction);
+    return {ShakeAction.resetSleepTimer}.contains(shakeAction);
   }
 }
