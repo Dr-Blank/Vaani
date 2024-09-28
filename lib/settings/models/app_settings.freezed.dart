@@ -25,6 +25,8 @@ mixin _$AppSettings {
   DownloadSettings get downloadSettings => throw _privateConstructorUsedError;
   NotificationSettings get notificationSettings =>
       throw _privateConstructorUsedError;
+  ShakeDetectionSettings get shakeDetectionSettings =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this AppSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,12 +48,14 @@ abstract class $AppSettingsCopyWith<$Res> {
       {ThemeSettings themeSettings,
       PlayerSettings playerSettings,
       DownloadSettings downloadSettings,
-      NotificationSettings notificationSettings});
+      NotificationSettings notificationSettings,
+      ShakeDetectionSettings shakeDetectionSettings});
 
   $ThemeSettingsCopyWith<$Res> get themeSettings;
   $PlayerSettingsCopyWith<$Res> get playerSettings;
   $DownloadSettingsCopyWith<$Res> get downloadSettings;
   $NotificationSettingsCopyWith<$Res> get notificationSettings;
+  $ShakeDetectionSettingsCopyWith<$Res> get shakeDetectionSettings;
 }
 
 /// @nodoc
@@ -73,6 +77,7 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
     Object? playerSettings = null,
     Object? downloadSettings = null,
     Object? notificationSettings = null,
+    Object? shakeDetectionSettings = null,
   }) {
     return _then(_value.copyWith(
       themeSettings: null == themeSettings
@@ -91,6 +96,10 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
           ? _value.notificationSettings
           : notificationSettings // ignore: cast_nullable_to_non_nullable
               as NotificationSettings,
+      shakeDetectionSettings: null == shakeDetectionSettings
+          ? _value.shakeDetectionSettings
+          : shakeDetectionSettings // ignore: cast_nullable_to_non_nullable
+              as ShakeDetectionSettings,
     ) as $Val);
   }
 
@@ -134,6 +143,17 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
       return _then(_value.copyWith(notificationSettings: value) as $Val);
     });
   }
+
+  /// Create a copy of AppSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ShakeDetectionSettingsCopyWith<$Res> get shakeDetectionSettings {
+    return $ShakeDetectionSettingsCopyWith<$Res>(_value.shakeDetectionSettings,
+        (value) {
+      return _then(_value.copyWith(shakeDetectionSettings: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -148,7 +168,8 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
       {ThemeSettings themeSettings,
       PlayerSettings playerSettings,
       DownloadSettings downloadSettings,
-      NotificationSettings notificationSettings});
+      NotificationSettings notificationSettings,
+      ShakeDetectionSettings shakeDetectionSettings});
 
   @override
   $ThemeSettingsCopyWith<$Res> get themeSettings;
@@ -158,6 +179,8 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
   $DownloadSettingsCopyWith<$Res> get downloadSettings;
   @override
   $NotificationSettingsCopyWith<$Res> get notificationSettings;
+  @override
+  $ShakeDetectionSettingsCopyWith<$Res> get shakeDetectionSettings;
 }
 
 /// @nodoc
@@ -177,6 +200,7 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
     Object? playerSettings = null,
     Object? downloadSettings = null,
     Object? notificationSettings = null,
+    Object? shakeDetectionSettings = null,
   }) {
     return _then(_$AppSettingsImpl(
       themeSettings: null == themeSettings
@@ -195,6 +219,10 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
           ? _value.notificationSettings
           : notificationSettings // ignore: cast_nullable_to_non_nullable
               as NotificationSettings,
+      shakeDetectionSettings: null == shakeDetectionSettings
+          ? _value.shakeDetectionSettings
+          : shakeDetectionSettings // ignore: cast_nullable_to_non_nullable
+              as ShakeDetectionSettings,
     ));
   }
 }
@@ -206,7 +234,8 @@ class _$AppSettingsImpl implements _AppSettings {
       {this.themeSettings = const ThemeSettings(),
       this.playerSettings = const PlayerSettings(),
       this.downloadSettings = const DownloadSettings(),
-      this.notificationSettings = const NotificationSettings()});
+      this.notificationSettings = const NotificationSettings(),
+      this.shakeDetectionSettings = const ShakeDetectionSettings()});
 
   factory _$AppSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppSettingsImplFromJson(json);
@@ -223,10 +252,13 @@ class _$AppSettingsImpl implements _AppSettings {
   @override
   @JsonKey()
   final NotificationSettings notificationSettings;
+  @override
+  @JsonKey()
+  final ShakeDetectionSettings shakeDetectionSettings;
 
   @override
   String toString() {
-    return 'AppSettings(themeSettings: $themeSettings, playerSettings: $playerSettings, downloadSettings: $downloadSettings, notificationSettings: $notificationSettings)';
+    return 'AppSettings(themeSettings: $themeSettings, playerSettings: $playerSettings, downloadSettings: $downloadSettings, notificationSettings: $notificationSettings, shakeDetectionSettings: $shakeDetectionSettings)';
   }
 
   @override
@@ -241,13 +273,15 @@ class _$AppSettingsImpl implements _AppSettings {
             (identical(other.downloadSettings, downloadSettings) ||
                 other.downloadSettings == downloadSettings) &&
             (identical(other.notificationSettings, notificationSettings) ||
-                other.notificationSettings == notificationSettings));
+                other.notificationSettings == notificationSettings) &&
+            (identical(other.shakeDetectionSettings, shakeDetectionSettings) ||
+                other.shakeDetectionSettings == shakeDetectionSettings));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, themeSettings, playerSettings,
-      downloadSettings, notificationSettings);
+      downloadSettings, notificationSettings, shakeDetectionSettings);
 
   /// Create a copy of AppSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -270,7 +304,8 @@ abstract class _AppSettings implements AppSettings {
       {final ThemeSettings themeSettings,
       final PlayerSettings playerSettings,
       final DownloadSettings downloadSettings,
-      final NotificationSettings notificationSettings}) = _$AppSettingsImpl;
+      final NotificationSettings notificationSettings,
+      final ShakeDetectionSettings shakeDetectionSettings}) = _$AppSettingsImpl;
 
   factory _AppSettings.fromJson(Map<String, dynamic> json) =
       _$AppSettingsImpl.fromJson;
@@ -283,6 +318,8 @@ abstract class _AppSettings implements AppSettings {
   DownloadSettings get downloadSettings;
   @override
   NotificationSettings get notificationSettings;
+  @override
+  ShakeDetectionSettings get shakeDetectionSettings;
 
   /// Create a copy of AppSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -2379,5 +2416,379 @@ abstract class _NotificationSettings implements NotificationSettings {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$NotificationSettingsImplCopyWith<_$NotificationSettingsImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+ShakeDetectionSettings _$ShakeDetectionSettingsFromJson(
+    Map<String, dynamic> json) {
+  return _ShakeDetectionSettings.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ShakeDetectionSettings {
+  bool get isEnabled => throw _privateConstructorUsedError;
+  ShakeDirection get direction => throw _privateConstructorUsedError;
+  double get threshold => throw _privateConstructorUsedError;
+  ShakeAction get shakeAction => throw _privateConstructorUsedError;
+  Set<ShakeDetectedFeedback> get feedback => throw _privateConstructorUsedError;
+  double get beepVolume => throw _privateConstructorUsedError;
+
+  /// the duration to wait before the shake detection is enabled again
+  Duration get shakeTriggerCoolDown => throw _privateConstructorUsedError;
+
+  /// the number of shakes required to trigger the action
+  int get shakeTriggerCount => throw _privateConstructorUsedError;
+
+  /// acceleration sampling interval
+  Duration get samplingPeriod => throw _privateConstructorUsedError;
+
+  /// Serializes this ShakeDetectionSettings to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of ShakeDetectionSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ShakeDetectionSettingsCopyWith<ShakeDetectionSettings> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ShakeDetectionSettingsCopyWith<$Res> {
+  factory $ShakeDetectionSettingsCopyWith(ShakeDetectionSettings value,
+          $Res Function(ShakeDetectionSettings) then) =
+      _$ShakeDetectionSettingsCopyWithImpl<$Res, ShakeDetectionSettings>;
+  @useResult
+  $Res call(
+      {bool isEnabled,
+      ShakeDirection direction,
+      double threshold,
+      ShakeAction shakeAction,
+      Set<ShakeDetectedFeedback> feedback,
+      double beepVolume,
+      Duration shakeTriggerCoolDown,
+      int shakeTriggerCount,
+      Duration samplingPeriod});
+}
+
+/// @nodoc
+class _$ShakeDetectionSettingsCopyWithImpl<$Res,
+        $Val extends ShakeDetectionSettings>
+    implements $ShakeDetectionSettingsCopyWith<$Res> {
+  _$ShakeDetectionSettingsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ShakeDetectionSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isEnabled = null,
+    Object? direction = null,
+    Object? threshold = null,
+    Object? shakeAction = null,
+    Object? feedback = null,
+    Object? beepVolume = null,
+    Object? shakeTriggerCoolDown = null,
+    Object? shakeTriggerCount = null,
+    Object? samplingPeriod = null,
+  }) {
+    return _then(_value.copyWith(
+      isEnabled: null == isEnabled
+          ? _value.isEnabled
+          : isEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      direction: null == direction
+          ? _value.direction
+          : direction // ignore: cast_nullable_to_non_nullable
+              as ShakeDirection,
+      threshold: null == threshold
+          ? _value.threshold
+          : threshold // ignore: cast_nullable_to_non_nullable
+              as double,
+      shakeAction: null == shakeAction
+          ? _value.shakeAction
+          : shakeAction // ignore: cast_nullable_to_non_nullable
+              as ShakeAction,
+      feedback: null == feedback
+          ? _value.feedback
+          : feedback // ignore: cast_nullable_to_non_nullable
+              as Set<ShakeDetectedFeedback>,
+      beepVolume: null == beepVolume
+          ? _value.beepVolume
+          : beepVolume // ignore: cast_nullable_to_non_nullable
+              as double,
+      shakeTriggerCoolDown: null == shakeTriggerCoolDown
+          ? _value.shakeTriggerCoolDown
+          : shakeTriggerCoolDown // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      shakeTriggerCount: null == shakeTriggerCount
+          ? _value.shakeTriggerCount
+          : shakeTriggerCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      samplingPeriod: null == samplingPeriod
+          ? _value.samplingPeriod
+          : samplingPeriod // ignore: cast_nullable_to_non_nullable
+              as Duration,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ShakeDetectionSettingsImplCopyWith<$Res>
+    implements $ShakeDetectionSettingsCopyWith<$Res> {
+  factory _$$ShakeDetectionSettingsImplCopyWith(
+          _$ShakeDetectionSettingsImpl value,
+          $Res Function(_$ShakeDetectionSettingsImpl) then) =
+      __$$ShakeDetectionSettingsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {bool isEnabled,
+      ShakeDirection direction,
+      double threshold,
+      ShakeAction shakeAction,
+      Set<ShakeDetectedFeedback> feedback,
+      double beepVolume,
+      Duration shakeTriggerCoolDown,
+      int shakeTriggerCount,
+      Duration samplingPeriod});
+}
+
+/// @nodoc
+class __$$ShakeDetectionSettingsImplCopyWithImpl<$Res>
+    extends _$ShakeDetectionSettingsCopyWithImpl<$Res,
+        _$ShakeDetectionSettingsImpl>
+    implements _$$ShakeDetectionSettingsImplCopyWith<$Res> {
+  __$$ShakeDetectionSettingsImplCopyWithImpl(
+      _$ShakeDetectionSettingsImpl _value,
+      $Res Function(_$ShakeDetectionSettingsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ShakeDetectionSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isEnabled = null,
+    Object? direction = null,
+    Object? threshold = null,
+    Object? shakeAction = null,
+    Object? feedback = null,
+    Object? beepVolume = null,
+    Object? shakeTriggerCoolDown = null,
+    Object? shakeTriggerCount = null,
+    Object? samplingPeriod = null,
+  }) {
+    return _then(_$ShakeDetectionSettingsImpl(
+      isEnabled: null == isEnabled
+          ? _value.isEnabled
+          : isEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      direction: null == direction
+          ? _value.direction
+          : direction // ignore: cast_nullable_to_non_nullable
+              as ShakeDirection,
+      threshold: null == threshold
+          ? _value.threshold
+          : threshold // ignore: cast_nullable_to_non_nullable
+              as double,
+      shakeAction: null == shakeAction
+          ? _value.shakeAction
+          : shakeAction // ignore: cast_nullable_to_non_nullable
+              as ShakeAction,
+      feedback: null == feedback
+          ? _value._feedback
+          : feedback // ignore: cast_nullable_to_non_nullable
+              as Set<ShakeDetectedFeedback>,
+      beepVolume: null == beepVolume
+          ? _value.beepVolume
+          : beepVolume // ignore: cast_nullable_to_non_nullable
+              as double,
+      shakeTriggerCoolDown: null == shakeTriggerCoolDown
+          ? _value.shakeTriggerCoolDown
+          : shakeTriggerCoolDown // ignore: cast_nullable_to_non_nullable
+              as Duration,
+      shakeTriggerCount: null == shakeTriggerCount
+          ? _value.shakeTriggerCount
+          : shakeTriggerCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      samplingPeriod: null == samplingPeriod
+          ? _value.samplingPeriod
+          : samplingPeriod // ignore: cast_nullable_to_non_nullable
+              as Duration,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ShakeDetectionSettingsImpl implements _ShakeDetectionSettings {
+  const _$ShakeDetectionSettingsImpl(
+      {this.isEnabled = true,
+      this.direction = ShakeDirection.horizontal,
+      this.threshold = 5,
+      this.shakeAction = ShakeAction.resetSleepTimer,
+      final Set<ShakeDetectedFeedback> feedback = const {
+        ShakeDetectedFeedback.vibrate,
+        ShakeDetectedFeedback.beep
+      },
+      this.beepVolume = 0.5,
+      this.shakeTriggerCoolDown = const Duration(seconds: 5),
+      this.shakeTriggerCount = 2,
+      this.samplingPeriod = const Duration(milliseconds: 100)})
+      : _feedback = feedback;
+
+  factory _$ShakeDetectionSettingsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ShakeDetectionSettingsImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final bool isEnabled;
+  @override
+  @JsonKey()
+  final ShakeDirection direction;
+  @override
+  @JsonKey()
+  final double threshold;
+  @override
+  @JsonKey()
+  final ShakeAction shakeAction;
+  final Set<ShakeDetectedFeedback> _feedback;
+  @override
+  @JsonKey()
+  Set<ShakeDetectedFeedback> get feedback {
+    if (_feedback is EqualUnmodifiableSetView) return _feedback;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableSetView(_feedback);
+  }
+
+  @override
+  @JsonKey()
+  final double beepVolume;
+
+  /// the duration to wait before the shake detection is enabled again
+  @override
+  @JsonKey()
+  final Duration shakeTriggerCoolDown;
+
+  /// the number of shakes required to trigger the action
+  @override
+  @JsonKey()
+  final int shakeTriggerCount;
+
+  /// acceleration sampling interval
+  @override
+  @JsonKey()
+  final Duration samplingPeriod;
+
+  @override
+  String toString() {
+    return 'ShakeDetectionSettings(isEnabled: $isEnabled, direction: $direction, threshold: $threshold, shakeAction: $shakeAction, feedback: $feedback, beepVolume: $beepVolume, shakeTriggerCoolDown: $shakeTriggerCoolDown, shakeTriggerCount: $shakeTriggerCount, samplingPeriod: $samplingPeriod)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ShakeDetectionSettingsImpl &&
+            (identical(other.isEnabled, isEnabled) ||
+                other.isEnabled == isEnabled) &&
+            (identical(other.direction, direction) ||
+                other.direction == direction) &&
+            (identical(other.threshold, threshold) ||
+                other.threshold == threshold) &&
+            (identical(other.shakeAction, shakeAction) ||
+                other.shakeAction == shakeAction) &&
+            const DeepCollectionEquality().equals(other._feedback, _feedback) &&
+            (identical(other.beepVolume, beepVolume) ||
+                other.beepVolume == beepVolume) &&
+            (identical(other.shakeTriggerCoolDown, shakeTriggerCoolDown) ||
+                other.shakeTriggerCoolDown == shakeTriggerCoolDown) &&
+            (identical(other.shakeTriggerCount, shakeTriggerCount) ||
+                other.shakeTriggerCount == shakeTriggerCount) &&
+            (identical(other.samplingPeriod, samplingPeriod) ||
+                other.samplingPeriod == samplingPeriod));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      isEnabled,
+      direction,
+      threshold,
+      shakeAction,
+      const DeepCollectionEquality().hash(_feedback),
+      beepVolume,
+      shakeTriggerCoolDown,
+      shakeTriggerCount,
+      samplingPeriod);
+
+  /// Create a copy of ShakeDetectionSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ShakeDetectionSettingsImplCopyWith<_$ShakeDetectionSettingsImpl>
+      get copyWith => __$$ShakeDetectionSettingsImplCopyWithImpl<
+          _$ShakeDetectionSettingsImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ShakeDetectionSettingsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ShakeDetectionSettings implements ShakeDetectionSettings {
+  const factory _ShakeDetectionSettings(
+      {final bool isEnabled,
+      final ShakeDirection direction,
+      final double threshold,
+      final ShakeAction shakeAction,
+      final Set<ShakeDetectedFeedback> feedback,
+      final double beepVolume,
+      final Duration shakeTriggerCoolDown,
+      final int shakeTriggerCount,
+      final Duration samplingPeriod}) = _$ShakeDetectionSettingsImpl;
+
+  factory _ShakeDetectionSettings.fromJson(Map<String, dynamic> json) =
+      _$ShakeDetectionSettingsImpl.fromJson;
+
+  @override
+  bool get isEnabled;
+  @override
+  ShakeDirection get direction;
+  @override
+  double get threshold;
+  @override
+  ShakeAction get shakeAction;
+  @override
+  Set<ShakeDetectedFeedback> get feedback;
+  @override
+  double get beepVolume;
+
+  /// the duration to wait before the shake detection is enabled again
+  @override
+  Duration get shakeTriggerCoolDown;
+
+  /// the number of shakes required to trigger the action
+  @override
+  int get shakeTriggerCount;
+
+  /// acceleration sampling interval
+  @override
+  Duration get samplingPeriod;
+
+  /// Create a copy of ShakeDetectionSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ShakeDetectionSettingsImplCopyWith<_$ShakeDetectionSettingsImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

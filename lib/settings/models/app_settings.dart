@@ -16,6 +16,8 @@ class AppSettings with _$AppSettings {
     @Default(PlayerSettings()) PlayerSettings playerSettings,
     @Default(DownloadSettings()) DownloadSettings downloadSettings,
     @Default(NotificationSettings()) NotificationSettings notificationSettings,
+    @Default(ShakeDetectionSettings())
+    ShakeDetectionSettings shakeDetectionSettings,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>
@@ -165,17 +167,13 @@ class NotificationSettings with _$NotificationSettings {
 }
 
 enum NotificationTitleType {
-  chapterTitle('chapterTitle'),
-  bookTitle('bookTitle'),
-  author('author'),
-  subtitle('subtitle'),
-  series('series'),
-  narrator('narrator'),
-  year('year');
-
-  const NotificationTitleType(this.stringValue);
-
-  final String stringValue;
+  chapterTitle,
+  bookTitle,
+  author,
+  subtitle,
+  series,
+  narrator,
+  year,
 }
 
 enum NotificationMediaControl {
@@ -190,3 +188,41 @@ enum NotificationMediaControl {
 
   final IconData icon;
 }
+
+/// Shake Detection Settings
+@freezed
+class ShakeDetectionSettings with _$ShakeDetectionSettings {
+  const factory ShakeDetectionSettings({
+    @Default(true) bool isEnabled,
+    @Default(ShakeDirection.horizontal) ShakeDirection direction,
+    @Default(5) double threshold,
+    @Default(ShakeAction.resetSleepTimer) ShakeAction shakeAction,
+    @Default({ShakeDetectedFeedback.vibrate, ShakeDetectedFeedback.beep})
+    Set<ShakeDetectedFeedback> feedback,
+    @Default(0.5) double beepVolume,
+
+    /// the duration to wait before the shake detection is enabled again
+    @Default(Duration(seconds: 5)) Duration shakeTriggerCoolDown,
+
+    /// the number of shakes required to trigger the action
+    @Default(2) int shakeTriggerCount,
+
+    /// acceleration sampling interval
+    @Default(Duration(milliseconds: 100)) Duration samplingPeriod,
+  }) = _ShakeDetectionSettings;
+
+  factory ShakeDetectionSettings.fromJson(Map<String, dynamic> json) =>
+      _$ShakeDetectionSettingsFromJson(json);
+}
+
+enum ShakeDirection { horizontal, vertical }
+
+enum ShakeAction {
+  none,
+  playPause,
+  resetSleepTimer,
+  fastForward,
+  rewind,
+}
+
+enum ShakeDetectedFeedback { vibrate, beep }

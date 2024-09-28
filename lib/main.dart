@@ -7,6 +7,7 @@ import 'package:vaani/features/downloads/providers/download_manager.dart';
 import 'package:vaani/features/playback_reporting/providers/playback_reporter_provider.dart';
 import 'package:vaani/features/player/core/init.dart';
 import 'package:vaani/features/player/providers/audiobook_player.dart';
+import 'package:vaani/features/shake_detection/providers/shake_detector.dart';
 import 'package:vaani/features/sleep_timer/providers/sleep_timer_provider.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
@@ -93,6 +94,7 @@ class _EagerInitialization extends ConsumerWidget {
       ref.watch(sleepTimerProvider);
       ref.watch(playbackReporterProvider);
       ref.watch(simpleDownloadManagerProvider);
+      ref.watch(shakeDetectorProvider);
     } catch (e) {
       debugPrintStack(stackTrace: StackTrace.current, label: e.toString());
     }

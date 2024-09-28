@@ -19,7 +19,7 @@ class SleepTimer {
 
   set duration(Duration value) {
     _duration = value;
-    reset();
+    clearCountDownTimer();
   }
 
   /// The player to be paused
@@ -40,7 +40,7 @@ class SleepTimer {
       player.playbackEventStream.listen((event) {
         if (event.processingState == ProcessingState.completed ||
             event.processingState == ProcessingState.idle) {
-          reset();
+          clearCountDownTimer();
         }
       }),
     );
@@ -49,9 +49,9 @@ class SleepTimer {
     _subscriptions.add(
       player.playerStateStream.listen((state) {
         if (state.playing && timer == null) {
-          startTimer();
+          startCountDown();
         } else if (!state.playing) {
-          reset();
+          clearCountDownTimer();
         }
       }),
     );
@@ -59,8 +59,8 @@ class SleepTimer {
     _logger.fine('created with duration: $duration');
   }
 
-  /// resets the timer
-  void reset() {
+  /// resets the timer and stops it
+  void clearCountDownTimer() {
     if (timer != null) {
       timer!.cancel();
       _logger.fine(
@@ -70,15 +70,25 @@ class SleepTimer {
     }
   }
 
+  /// refills the timer with the default duration and starts it if the player is playing
+  /// if the player is not playing, the timer is stopped
+  void restartTimer() {
+    clearCountDownTimer();
+    if (player.playing) {
+      startCountDown();
+    }
+    _logger.fine('restarted timer');
+  }
+
   /// starts the timer with the given duration or the default duration
-  void startTimer([
+  void startCountDown([
     Duration? forDuration,
   ]) {
-    reset();
+    clearCountDownTimer();
     duration = forDuration ?? duration;
     timer = Timer(duration, () {
       player.pause();
-      reset();
+      clearCountDownTimer();
       _logger.fine('paused player after $duration');
     });
     startedAt = DateTime.now();
@@ -103,7 +113,7 @@ class SleepTimer {
 
   /// dispose the timer
   void dispose() {
-    reset();
+    clearCountDownTimer();
     for (var sub in _subscriptions) {
       sub.cancel();
     }

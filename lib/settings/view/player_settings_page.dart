@@ -17,6 +17,7 @@ class PlayerSettingsPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appSettings = ref.watch(appSettingsProvider);
     final playerSettings = appSettings.playerSettings;
+    final primaryColor = Theme.of(context).colorScheme.primary;
 
     return SimpleSettingsPage(
       title: const Text('Player Settings'),
@@ -47,7 +48,11 @@ class PlayerSettingsPage extends HookConsumerWidget {
             // preferred default speed
             SettingsTile(
               title: const Text('Default Speed'),
-              description: Text('${playerSettings.preferredDefaultSpeed}x'),
+              trailing: Text(
+                '${playerSettings.preferredDefaultSpeed}x',
+                style:
+                    TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+              ),
               leading: const Icon(Icons.speed),
               onPressed: (context) async {
                 final newSpeed = await showDialog(
@@ -70,6 +75,8 @@ class PlayerSettingsPage extends HookConsumerWidget {
               title: const Text('Speed Options'),
               description: Text(
                 playerSettings.speedOptions.map((e) => '${e}x').join(', '),
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: primaryColor),
               ),
               leading: const Icon(Icons.speed),
               onPressed: (context) async {
@@ -104,7 +111,10 @@ class PlayerSettingsPage extends HookConsumerWidget {
                     TextSpan(
                       text: playerSettings
                           .minimumPositionForReporting.smartBinaryFormat,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                      ),
                     ),
                     const TextSpan(text: ' of the book'),
                   ],
@@ -141,7 +151,10 @@ class PlayerSettingsPage extends HookConsumerWidget {
                     TextSpan(
                       text: playerSettings
                           .markCompleteWhenTimeLeft.smartBinaryFormat,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                      ),
                     ),
                     const TextSpan(text: ' left in the book'),
                   ],
@@ -178,7 +191,10 @@ class PlayerSettingsPage extends HookConsumerWidget {
                     TextSpan(
                       text: playerSettings
                           .playbackReportInterval.smartBinaryFormat,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                      ),
                     ),
                     const TextSpan(text: ' to the server'),
                   ],

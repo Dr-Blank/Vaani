@@ -281,7 +281,7 @@ extension FormatNotificationTitle on String {
       (match) {
         final type = match.group(1);
         return NotificationTitleType.values
-                .firstWhere((element) => element.stringValue == type)
+                .firstWhere((element) => element.name == type)
                 .extractFrom(book) ??
             match.group(0) ??
             '';
