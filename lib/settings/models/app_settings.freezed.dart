@@ -2633,11 +2633,10 @@ class _$ShakeDetectionSettingsImpl implements _ShakeDetectionSettings {
       this.threshold = 5,
       this.shakeAction = ShakeAction.resetSleepTimer,
       final Set<ShakeDetectedFeedback> feedback = const {
-        ShakeDetectedFeedback.vibrate,
-        ShakeDetectedFeedback.beep
+        ShakeDetectedFeedback.vibrate
       },
       this.beepVolume = 0.5,
-      this.shakeTriggerCoolDown = const Duration(seconds: 5),
+      this.shakeTriggerCoolDown = const Duration(seconds: 2),
       this.shakeTriggerCount = 2,
       this.samplingPeriod = const Duration(milliseconds: 100)})
       : _feedback = feedback;
