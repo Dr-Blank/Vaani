@@ -19,6 +19,8 @@ Logger _logger = Logger('ShakeDetector');
 
 @riverpod
 class ShakeDetector extends _$ShakeDetector {
+  bool wasPlayerLoaded = false;
+
   @override
   core.ShakeDetector? build() {
     final appSettings = ref.watch(appSettingsProvider);
@@ -34,18 +36,29 @@ class ShakeDetector extends _$ShakeDetector {
     // when paused or playing
 
     // if no book is loaded, shake detection should not be enabled
-    // final player = ref.watch(audiobookPlayerProvider);
+    final player = ref.watch(simpleAudiobookPlayerProvider);
+    player.playerStateStream.listen((event) {
+      if (event.processingState == ProcessingState.idle && wasPlayerLoaded) {
+        _logger.config('Player is now not loaded, invalidating');
+        wasPlayerLoaded = false;
+        ref.invalidateSelf();
+      }
+      if (event.processingState != ProcessingState.idle && !wasPlayerLoaded) {
+        _logger.config('Player is now loaded, invalidating');
+        wasPlayerLoaded = true;
+        ref.invalidateSelf();
+      }
+    });
 
-    // if (player.book == null) {
-    //   _logger.config('No book is loaded');
-    //   return null;
-    // }
-    // if (!player.playing && !shakeDetectionSettings.isActiveWhenPaused) {
-    //   _logger.config(
-    //     'Shake detection is disabled when paused and player is not playing',
-    //   );
-    //   return null;
-    // }
+    if (player.book == null) {
+      _logger.config('No book is loaded, disabling shake detection');
+      wasPlayerLoaded = false;
+      return null;
+    } else {
+      _logger.finer('Book is loaded, marking player as loaded');
+      wasPlayerLoaded = true;
+    }
+
     // if sleep timer is not enabled, shake detection should not be enabled
     final sleepTimer = ref.watch(sleepTimerProvider);
     if (!shakeDetectionSettings.shakeAction.isPlaybackManagementEnabled &&
@@ -95,13 +108,22 @@ class ShakeDetector extends _$ShakeDetector {
         return true;
       case ShakeAction.fastForward:
         _logger.fine('Fast forwarding');
+        if (!player.playing) {
+          _logger.warning('Player is not playing');
+          return false;
+        }
         player.seek(player.position + const Duration(seconds: 30));
         return true;
       case ShakeAction.rewind:
         _logger.fine('Rewinding');
+        if (!player.playing) {
+          _logger.warning('Player is not playing');
+          return false;
+        }
         player.seek(player.position - const Duration(seconds: 30));
         return true;
       case ShakeAction.playPause:
+        _logger.fine('Toggling play/pause');
         player.togglePlayPause();
         return true;
       default:
