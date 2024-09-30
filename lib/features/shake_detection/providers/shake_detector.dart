@@ -31,10 +31,6 @@ class ShakeDetector extends _$ShakeDetector {
       return null;
     }
 
-    // TODO: implement optimization when no book is loaded, currently it is not possible
-    // as rebuild is not triggered when app is in background and player keeps rebuilding
-    // when paused or playing
-
     // if no book is loaded, shake detection should not be enabled
     final player = ref.watch(simpleAudiobookPlayerProvider);
     player.playerStateStream.listen((event) {
