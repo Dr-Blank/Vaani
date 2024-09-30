@@ -48,7 +48,7 @@ class ShakeDetector extends _$ShakeDetector {
     // }
     // if sleep timer is not enabled, shake detection should not be enabled
     final sleepTimer = ref.watch(sleepTimerProvider);
-    if (!shakeDetectionSettings.isPlaybackManagementEnabled &&
+    if (!shakeDetectionSettings.shakeAction.isPlaybackManagementEnabled &&
         sleepTimer == null) {
       _logger
           .config('No playback management is enabled and sleep timer is off, '
@@ -60,47 +60,52 @@ class ShakeDetector extends _$ShakeDetector {
     final detector = core.ShakeDetector(
       shakeDetectionSettings,
       () {
-        doShakeAction(
+        final wasActionComplete = doShakeAction(
           shakeDetectionSettings.shakeAction,
           ref: ref,
         );
-        shakeDetectionSettings.feedback.forEach(postShakeFeedback);
+        if (wasActionComplete) {
+          shakeDetectionSettings.feedback.forEach(postShakeFeedback);
+        }
       },
     );
     ref.onDispose(detector.dispose);
     return detector;
   }
 
-  void doShakeAction(
+  /// Perform the shake action and return whether the action was successful
+  bool doShakeAction(
     ShakeAction shakeAction, {
     required Ref ref,
   }) {
     final player = ref.read(simpleAudiobookPlayerProvider);
-    if (player.book == null) {
+    if (player.book == null && shakeAction.isPlaybackManagementEnabled) {
       _logger.warning('No book is loaded');
+      return false;
     }
     switch (shakeAction) {
       case ShakeAction.resetSleepTimer:
         _logger.fine('Resetting sleep timer');
         var sleepTimer = ref.read(sleepTimerProvider);
-        if (sleepTimer == null) {
+        if (sleepTimer == null || !sleepTimer.isActive) {
           _logger.warning('No sleep timer is running');
+          return false;
         }
-        sleepTimer!.restartTimer();
-        break;
+        sleepTimer.restartTimer();
+        return true;
       case ShakeAction.fastForward:
         _logger.fine('Fast forwarding');
         player.seek(player.position + const Duration(seconds: 30));
-        break;
+        return true;
       case ShakeAction.rewind:
         _logger.fine('Rewinding');
         player.seek(player.position - const Duration(seconds: 30));
-        break;
+        return true;
       case ShakeAction.playPause:
         player.togglePlayPause();
-        break;
+        return true;
       default:
-        break;
+        return false;
     }
   }
 
@@ -136,18 +141,18 @@ class ShakeDetector extends _$ShakeDetector {
   }
 }
 
-extension on ShakeDetectionSettings {
+extension on ShakeAction {
   bool get isActiveWhenPaused {
     // If the shake action is play/pause, it should be required when not playing
-    return shakeAction == ShakeAction.playPause;
+    return this == ShakeAction.playPause;
   }
 
   bool get isPlaybackManagementEnabled {
     return {ShakeAction.playPause, ShakeAction.fastForward, ShakeAction.rewind}
-        .contains(shakeAction);
+        .contains(this);
   }
 
   bool get shouldActOnSleepTimer {
-    return {ShakeAction.resetSleepTimer}.contains(shakeAction);
+    return {ShakeAction.resetSleepTimer}.contains(this);
   }
 }

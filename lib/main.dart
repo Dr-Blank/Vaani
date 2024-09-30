@@ -20,7 +20,7 @@ final appLogger = Logger('vaani');
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Configure the root Logger
-  Logger.root.level = Level.ALL; // Capture all logs
+  Logger.root.level = Level.FINE; // Capture all logs
   Logger.root.onRecord.listen((record) {
     // Print log records to the console
     debugPrint(

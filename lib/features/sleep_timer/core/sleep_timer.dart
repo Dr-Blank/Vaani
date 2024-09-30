@@ -28,6 +28,9 @@ class SleepTimer {
   /// The timer that will pause the player
   Timer? timer;
 
+  /// is the sleep timer actively counting down
+  bool get isActive => timer != null && timer!.isActive;
+
   /// for internal use only
   /// when the timer was started
   DateTime? startedAt;
