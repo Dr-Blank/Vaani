@@ -197,12 +197,12 @@ class ShakeDetectionSettings with _$ShakeDetectionSettings {
     @Default(ShakeDirection.horizontal) ShakeDirection direction,
     @Default(5) double threshold,
     @Default(ShakeAction.resetSleepTimer) ShakeAction shakeAction,
-    @Default({ShakeDetectedFeedback.vibrate, ShakeDetectedFeedback.beep})
+    @Default({ShakeDetectedFeedback.vibrate})
     Set<ShakeDetectedFeedback> feedback,
     @Default(0.5) double beepVolume,
 
     /// the duration to wait before the shake detection is enabled again
-    @Default(Duration(seconds: 5)) Duration shakeTriggerCoolDown,
+    @Default(Duration(seconds: 2)) Duration shakeTriggerCoolDown,
 
     /// the number of shakes required to trigger the action
     @Default(2) int shakeTriggerCount,

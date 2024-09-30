@@ -54,7 +54,7 @@ class SleepTimer extends _$SleepTimer {
   void restartTimer() {
     state?.restartTimer();
 
-    ref.notifyListeners();
+    // ref.notifyListeners(); // see https://github.com/Dr-Blank/Vaani/pull/40 for more information on why this is commented out
   }
 
   void cancelTimer() {

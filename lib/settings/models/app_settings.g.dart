@@ -294,10 +294,10 @@ _$ShakeDetectionSettingsImpl _$$ShakeDetectionSettingsImplFromJson(
       feedback: (json['feedback'] as List<dynamic>?)
               ?.map((e) => $enumDecode(_$ShakeDetectedFeedbackEnumMap, e))
               .toSet() ??
-          const {ShakeDetectedFeedback.vibrate, ShakeDetectedFeedback.beep},
+          const {ShakeDetectedFeedback.vibrate},
       beepVolume: (json['beepVolume'] as num?)?.toDouble() ?? 0.5,
       shakeTriggerCoolDown: json['shakeTriggerCoolDown'] == null
-          ? const Duration(seconds: 5)
+          ? const Duration(seconds: 2)
           : Duration(
               microseconds: (json['shakeTriggerCoolDown'] as num).toInt()),
       shakeTriggerCount: (json['shakeTriggerCount'] as num?)?.toInt() ?? 2,
