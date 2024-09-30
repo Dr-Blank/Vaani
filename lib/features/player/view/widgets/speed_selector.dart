@@ -57,23 +57,34 @@ class SpeedSelector extends HookConsumerWidget {
       initialItem: availableSpeedsList.indexOf(currentSpeed),
     );
     const double itemExtent = 25;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          // the title
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                'Playback Speed: ${speedState.value}x',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // the title
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+          child: Center(
+            child: Text(
+              'Playback Speed: ${speedState.value}x',
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
+        ),
 
-          // the speed selector
-          Flexible(
+        // a inverted triangle to indicate the speed selector
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Icon(
+            Icons.arrow_drop_down,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+
+        // the speed selector
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0, right: 8.0, left: 8.0),
+          child: SizedBox(
+            height: 80,
             child: SpeedWheel(
               availableSpeedsList: availableSpeedsList,
               speedState: speedState,
@@ -81,9 +92,12 @@ class SpeedSelector extends HookConsumerWidget {
               itemExtent: itemExtent,
             ),
           ),
+        ),
 
-          // the speed buttons
-          Wrap(
+        // the speed buttons
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Wrap(
             spacing: 8.0,
             alignment: WrapAlignment.center,
             runAlignment: WrapAlignment.center,
@@ -133,8 +147,8 @@ class SpeedSelector extends HookConsumerWidget {
                 )
                 .toList(),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -178,7 +192,7 @@ class SpeedWheel extends StatelessWidget {
             },
           ),
         // the speed selector wheel
-        Expanded(
+        Flexible(
           child: ListWheelScrollViewX(
             controller: scrollController,
             scrollDirection: Axis.horizontal,
@@ -189,9 +203,7 @@ class SpeedWheel extends StatelessWidget {
             physics: const FixedExtentScrollPhysics(),
             children: availableSpeedsList
                 .map(
-                  (speed) => Expanded(
-                    child: SpeedLine(itemExtent: itemExtent, speed: speed),
-                  ),
+                  (speed) => SpeedLine(itemExtent: itemExtent, speed: speed),
                 )
                 .toList(),
             onSelectedItemChanged: (index) {
@@ -236,34 +248,36 @@ class SpeedLine extends StatelessWidget {
     return Column(
       children: [
         // a vertical line
-        Container(
-          height: itemExtent * 2,
-          // thick if multiple of 1, thin if multiple of 0.5 and transparent if multiple of 0.05
-          width: speed % 0.5 == 0
-              ? 3
-              : speed % 0.25 == 0
-                  ? 2
-                  : 0.5,
-          color: Theme.of(context).colorScheme.onSurface,
+        Expanded(
+          child: Container(
+            // height: itemExtent,
+            // thick if multiple of 1, thin if multiple of 0.5 and transparent if multiple of 0.05
+            width: speed % 0.5 == 0
+                ? 3
+                : speed % 0.25 == 0
+                    ? 2
+                    : 0.5,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
         // the speed text but only at .5 increments of speed
-        if (speed % 0.25 == 0)
-          Expanded(
-            child: Text.rich(
-              TextSpan(
-                text: speed.floor().toString(),
-                children: [
-                  TextSpan(
-                    text: '.${speed.toStringAsFixed(2).split('.').last}',
-                    style: TextStyle(
-                      fontSize:
-                          Theme.of(context).textTheme.labelSmall?.fontSize,
-                    ),
+        // if (speed % 0.25 == 0)
+        Opacity(
+          opacity: speed % 0.25 == 0 ? 1 : 0,
+          child: Text.rich(
+            TextSpan(
+              text: speed.floor().toString(),
+              children: [
+                TextSpan(
+                  text: '.${speed.toStringAsFixed(2).split('.').last}',
+                  style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.labelSmall?.fontSize,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
+        ),
       ],
     );
   }

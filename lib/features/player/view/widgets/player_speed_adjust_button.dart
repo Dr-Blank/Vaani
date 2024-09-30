@@ -29,9 +29,6 @@ class PlayerSpeedAdjustButton extends HookConsumerWidget {
         await showModalBottomSheet<bool>(
           context: context,
           barrierLabel: 'Select Speed',
-          constraints: const BoxConstraints(
-            maxHeight: 225,
-          ),
           builder: (context) {
             return SpeedSelector(
               onSpeedSelected: (speed) {
