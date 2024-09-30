@@ -54,7 +54,7 @@ class SleepTimer extends _$SleepTimer {
   void restartTimer() {
     state?.restartTimer();
 
-    ref.notifyListeners();
+    // ref.notifyListeners();
   }
 
   void cancelTimer() {

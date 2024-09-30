@@ -28,6 +28,9 @@ class ShakeDetector {
 
   DateTime _lastShakeTime = DateTime.now();
 
+  final StreamController<UserAccelerometerEvent>
+      _detectedShakeStreamController = StreamController.broadcast();
+
   void start() {
     if (_accelerometerSubscription != null) {
       _logger.warning('ShakeDetector is already running');
@@ -36,6 +39,7 @@ class ShakeDetector {
     _accelerometerSubscription =
         userAccelerometerEventStream(samplingPeriod: _settings.samplingPeriod)
             .listen((event) {
+      _logger.finest('RMS: ${event.rms}');
       if (event.rms > _settings.threshold) {
         _currentShakeCount++;
 
@@ -44,6 +48,7 @@ class ShakeDetector {
           _logger.fine('Shake detected $_currentShakeCount times');
 
           onShakeDetected?.call();
+          _detectedShakeStreamController.add(event);
 
           _lastShakeTime = DateTime.now();
           _currentShakeCount = 0;
@@ -60,6 +65,7 @@ class ShakeDetector {
     _currentShakeCount = 0;
     _accelerometerSubscription?.cancel();
     _accelerometerSubscription = null;
+    _detectedShakeStreamController.close();
     _logger.fine('ShakeDetector stopped');
   }
 

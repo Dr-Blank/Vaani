@@ -25,26 +25,38 @@ class ShakeDetector extends _$ShakeDetector {
     final shakeDetectionSettings = appSettings.shakeDetectionSettings;
 
     if (!shakeDetectionSettings.isEnabled) {
-      _logger.fine('Shake detection is disabled');
+      _logger.config('Shake detection is disabled');
       return null;
     }
-    final player = ref.watch(audiobookPlayerProvider);
-    if (!player.playing && !shakeDetectionSettings.isActiveWhenPaused) {
-      _logger.fine(
-        'Shake detection is disabled when paused and player is not playing',
-      );
-      return null;
-    }
+
+    // TODO: implement optimization when no book is loaded, currently it is not possible
+    // as rebuild is not triggered when app is in background and player keeps rebuilding
+    // when paused or playing
+
+    // if no book is loaded, shake detection should not be enabled
+    // final player = ref.watch(audiobookPlayerProvider);
+
+    // if (player.book == null) {
+    //   _logger.config('No book is loaded');
+    //   return null;
+    // }
+    // if (!player.playing && !shakeDetectionSettings.isActiveWhenPaused) {
+    //   _logger.config(
+    //     'Shake detection is disabled when paused and player is not playing',
+    //   );
+    //   return null;
+    // }
     // if sleep timer is not enabled, shake detection should not be enabled
     final sleepTimer = ref.watch(sleepTimerProvider);
     if (!shakeDetectionSettings.isPlaybackManagementEnabled &&
         sleepTimer == null) {
-      _logger.fine('No playback management is enabled and sleep timer is off, '
-          'so shake detection is disabled');
+      _logger
+          .config('No playback management is enabled and sleep timer is off, '
+              'so shake detection is disabled');
       return null;
     }
 
-    _logger.fine('Creating shake detector');
+    _logger.config('Creating shake detector');
     final detector = core.ShakeDetector(
       shakeDetectionSettings,
       () {
@@ -63,11 +75,18 @@ class ShakeDetector extends _$ShakeDetector {
     ShakeAction shakeAction, {
     required Ref ref,
   }) {
-    final player = ref.watch(simpleAudiobookPlayerProvider);
+    final player = ref.read(simpleAudiobookPlayerProvider);
+    if (player.book == null) {
+      _logger.warning('No book is loaded');
+    }
     switch (shakeAction) {
       case ShakeAction.resetSleepTimer:
         _logger.fine('Resetting sleep timer');
-        ref.read(sleepTimerProvider.notifier).restartTimer();
+        var sleepTimer = ref.read(sleepTimerProvider);
+        if (sleepTimer == null) {
+          _logger.warning('No sleep timer is running');
+        }
+        sleepTimer!.restartTimer();
         break;
       case ShakeAction.fastForward:
         _logger.fine('Fast forwarding');
@@ -78,10 +97,6 @@ class ShakeDetector extends _$ShakeDetector {
         player.seek(player.position - const Duration(seconds: 30));
         break;
       case ShakeAction.playPause:
-        if (player.book == null) {
-          _logger.warning('No book is loaded');
-          break;
-        }
         player.togglePlayPause();
         break;
       default:
