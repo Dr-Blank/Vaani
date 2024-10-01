@@ -21,10 +21,10 @@ Future<void> configurePlayer() async {
   await JustAudioBackground.init(
     androidNotificationChannelId: 'com.vaani.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
-    androidNotificationOngoing: true,
-    androidStopForegroundOnPause: true,
+    androidNotificationOngoing: false,
+    androidStopForegroundOnPause: false,
     androidNotificationChannelDescription: 'Audio playback in the background',
-    androidNotificationIcon: 'drawable/ic_stat_notification_logo',
+    androidNotificationIcon: 'drawable/ic_stat_logo',
     rewindInterval: appSettings.notificationSettings.rewindInterval,
     fastForwardInterval: appSettings.notificationSettings.fastForwardInterval,
     androidShowNotificationBadge: false,
