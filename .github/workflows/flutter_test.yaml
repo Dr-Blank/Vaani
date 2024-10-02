@@ -26,12 +26,6 @@ jobs:
           repository: Dr-Blank/shelfsdk
           path: ./shelfsdk
 
-      - name: Set Up Java
-        uses: actions/setup-java@v3.12.0
-        with:
-          distribution: "oracle"
-          java-version: "17"
-
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -42,6 +36,12 @@ jobs:
 
       - name: Run tests
         run: flutter test
+
+      - name: Set Up Java
+        uses: actions/setup-java@v3.12.0
+        with:
+          distribution: "oracle"
+          java-version: "17"
 
       - name: Build APK
         run: flutter build apk --release
