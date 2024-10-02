@@ -838,7 +838,7 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
       this.expandedPlayerSettings = const ExpandedPlayerSettings(),
       this.preferredDefaultVolume = 1,
       this.preferredDefaultSpeed = 1,
-      final List<double> speedOptions = const [0.75, 1, 1.25, 1.5, 1.75, 2],
+      final List<double> speedOptions = const [1, 1.25, 1.5, 1.75, 2],
       this.speedIncrement = 0.05,
       this.minSpeed = 0.1,
       this.maxSpeed = 4,

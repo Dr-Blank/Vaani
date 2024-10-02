@@ -73,7 +73,7 @@ _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
       speedOptions: (json['speedOptions'] as List<dynamic>?)
               ?.map((e) => (e as num).toDouble())
               .toList() ??
-          const [0.75, 1, 1.25, 1.5, 1.75, 2],
+          const [1, 1.25, 1.5, 1.75, 2],
       speedIncrement: (json['speedIncrement'] as num?)?.toDouble() ?? 0.05,
       minSpeed: (json['minSpeed'] as num?)?.toDouble() ?? 0.1,
       maxSpeed: (json['maxSpeed'] as num?)?.toDouble() ?? 4,
