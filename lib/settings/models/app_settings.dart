@@ -14,6 +14,7 @@ class AppSettings with _$AppSettings {
   const factory AppSettings({
     @Default(ThemeSettings()) ThemeSettings themeSettings,
     @Default(PlayerSettings()) PlayerSettings playerSettings,
+    @Default(SleepTimerSettings()) SleepTimerSettings sleepTimerSettings,
     @Default(DownloadSettings()) DownloadSettings downloadSettings,
     @Default(NotificationSettings()) NotificationSettings notificationSettings,
     @Default(ShakeDetectionSettings())
@@ -49,7 +50,6 @@ class PlayerSettings with _$PlayerSettings {
     @Default(0.05) double speedIncrement,
     @Default(0.1) double minSpeed,
     @Default(4) double maxSpeed,
-    @Default(SleepTimerSettings()) SleepTimerSettings sleepTimerSettings,
     @Default(Duration(seconds: 10)) Duration minimumPositionForReporting,
     @Default(Duration(seconds: 10)) Duration playbackReportInterval,
     @Default(Duration(seconds: 15)) Duration markCompleteWhenTimeLeft,
@@ -81,22 +81,23 @@ class MinimizedPlayerSettings with _$MinimizedPlayerSettings {
       _$MinimizedPlayerSettingsFromJson(json);
 }
 
-enum SleepTimerShakeSenseMode { never, always, nearEnds }
-
 @freezed
 class SleepTimerSettings with _$SleepTimerSettings {
   const factory SleepTimerSettings({
     @Default(Duration(minutes: 15)) Duration defaultDuration,
-    @Default(SleepTimerShakeSenseMode.always)
-    SleepTimerShakeSenseMode shakeSenseMode,
-
-    /// the duration in which the shake is detected before the end of the timer and after the timer ends
-    /// only used if [shakeSenseMode] is [SleepTimerShakeSenseMode.nearEnds]
-    @Default(Duration(seconds: 30)) Duration shakeSenseDuration,
-    @Default(true) bool vibrateWhenReset,
-    @Default(false) bool beepWhenReset,
+    @Default(
+      [
+        Duration(minutes: 5),
+        Duration(minutes: 10),
+        Duration(minutes: 15),
+        Duration(minutes: 20),
+        Duration(minutes: 30),
+      ],
+    )
+    List<Duration> presetDurations,
+    @Default(Duration(minutes: 100)) Duration maxDuration,
     @Default(false) bool fadeOutAudio,
-    @Default(0.5) double shakeDetectThreshold,
+    @Default(Duration(seconds: 20)) Duration fadeOutDuration,
 
     /// if true, the player will automatically rewind the audio when the sleep timer is stopped
     @Default(false) bool autoRewindWhenStopped,
@@ -115,7 +116,7 @@ class SleepTimerSettings with _$SleepTimerSettings {
     @Default(false) bool autoTurnOnTimer,
 
     /// always auto turn on timer settings or during specific times
-    @Default(true) bool alwaysAutoTurnOnTimer,
+    @Default(false) bool alwaysAutoTurnOnTimer,
 
     /// auto timer settings, only used if [alwaysAutoTurnOnTimer] is false
     ///

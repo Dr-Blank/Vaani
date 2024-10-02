@@ -9,14 +9,27 @@ extension DurationFormat on Duration {
     final minutes = inMinutes.remainder(60);
     final seconds = inSeconds.remainder(60);
     if (hours > 0) {
-      return '${hours}h ${minutes}m';
+      // skip minutes if it's 0
+      if (minutes == 0) {
+        return smartSingleFormat;
+      }
+      return '${Duration(hours: hours).smartBinaryFormat} ${Duration(minutes: minutes).smartSingleFormat}';
     } else if (minutes > 0) {
-      return '${minutes}m ${seconds}s';
+      if (seconds == 0) {
+        return smartSingleFormat;
+      }
+      return '${Duration(minutes: minutes).smartSingleFormat} ${Duration(seconds: seconds).smartSingleFormat}';
     } else {
-      return '${seconds}s';
+      return smartSingleFormat;
     }
   }
 
+  /// formats the duration using only 1 unit
+  /// if the duration is more than 1 hour, it will return `10h`
+  /// if the duration is less than 1 hour, it will return `30m`
+  /// if the duration is less than 1 minute, it will return `20s`
+  ///
+  /// rest of the duration will be ignored
   String get smartSingleFormat {
     if (inHours > 0) {
       return '${inHours}h';

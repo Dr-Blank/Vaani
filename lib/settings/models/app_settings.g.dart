@@ -16,6 +16,10 @@ _$AppSettingsImpl _$$AppSettingsImplFromJson(Map<String, dynamic> json) =>
           ? const PlayerSettings()
           : PlayerSettings.fromJson(
               json['playerSettings'] as Map<String, dynamic>),
+      sleepTimerSettings: json['sleepTimerSettings'] == null
+          ? const SleepTimerSettings()
+          : SleepTimerSettings.fromJson(
+              json['sleepTimerSettings'] as Map<String, dynamic>),
       downloadSettings: json['downloadSettings'] == null
           ? const DownloadSettings()
           : DownloadSettings.fromJson(
@@ -34,6 +38,7 @@ Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
     <String, dynamic>{
       'themeSettings': instance.themeSettings,
       'playerSettings': instance.playerSettings,
+      'sleepTimerSettings': instance.sleepTimerSettings,
       'downloadSettings': instance.downloadSettings,
       'notificationSettings': instance.notificationSettings,
       'shakeDetectionSettings': instance.shakeDetectionSettings,
@@ -77,10 +82,6 @@ _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
       speedIncrement: (json['speedIncrement'] as num?)?.toDouble() ?? 0.05,
       minSpeed: (json['minSpeed'] as num?)?.toDouble() ?? 0.1,
       maxSpeed: (json['maxSpeed'] as num?)?.toDouble() ?? 4,
-      sleepTimerSettings: json['sleepTimerSettings'] == null
-          ? const SleepTimerSettings()
-          : SleepTimerSettings.fromJson(
-              json['sleepTimerSettings'] as Map<String, dynamic>),
       minimumPositionForReporting: json['minimumPositionForReporting'] == null
           ? const Duration(seconds: 10)
           : Duration(
@@ -109,7 +110,6 @@ Map<String, dynamic> _$$PlayerSettingsImplToJson(
       'speedIncrement': instance.speedIncrement,
       'minSpeed': instance.minSpeed,
       'maxSpeed': instance.maxSpeed,
-      'sleepTimerSettings': instance.sleepTimerSettings,
       'minimumPositionForReporting':
           instance.minimumPositionForReporting.inMicroseconds,
       'playbackReportInterval': instance.playbackReportInterval.inMicroseconds,
@@ -150,17 +150,23 @@ _$SleepTimerSettingsImpl _$$SleepTimerSettingsImplFromJson(
       defaultDuration: json['defaultDuration'] == null
           ? const Duration(minutes: 15)
           : Duration(microseconds: (json['defaultDuration'] as num).toInt()),
-      shakeSenseMode: $enumDecodeNullable(
-              _$SleepTimerShakeSenseModeEnumMap, json['shakeSenseMode']) ??
-          SleepTimerShakeSenseMode.always,
-      shakeSenseDuration: json['shakeSenseDuration'] == null
-          ? const Duration(seconds: 30)
-          : Duration(microseconds: (json['shakeSenseDuration'] as num).toInt()),
-      vibrateWhenReset: json['vibrateWhenReset'] as bool? ?? true,
-      beepWhenReset: json['beepWhenReset'] as bool? ?? false,
+      presetDurations: (json['presetDurations'] as List<dynamic>?)
+              ?.map((e) => Duration(microseconds: (e as num).toInt()))
+              .toList() ??
+          const [
+            Duration(minutes: 5),
+            Duration(minutes: 10),
+            Duration(minutes: 15),
+            Duration(minutes: 20),
+            Duration(minutes: 30)
+          ],
+      maxDuration: json['maxDuration'] == null
+          ? const Duration(minutes: 100)
+          : Duration(microseconds: (json['maxDuration'] as num).toInt()),
       fadeOutAudio: json['fadeOutAudio'] as bool? ?? false,
-      shakeDetectThreshold:
-          (json['shakeDetectThreshold'] as num?)?.toDouble() ?? 0.5,
+      fadeOutDuration: json['fadeOutDuration'] == null
+          ? const Duration(seconds: 20)
+          : Duration(microseconds: (json['fadeOutDuration'] as num).toInt()),
       autoRewindWhenStopped: json['autoRewindWhenStopped'] as bool? ?? false,
       autoRewindDurations:
           (json['autoRewindDurations'] as Map<String, dynamic>?)?.map(
@@ -175,7 +181,7 @@ _$SleepTimerSettingsImpl _$$SleepTimerSettingsImplFromJson(
                 120: Duration(minutes: 2)
               },
       autoTurnOnTimer: json['autoTurnOnTimer'] as bool? ?? false,
-      alwaysAutoTurnOnTimer: json['alwaysAutoTurnOnTimer'] as bool? ?? true,
+      alwaysAutoTurnOnTimer: json['alwaysAutoTurnOnTimer'] as bool? ?? false,
       autoTurnOnTime: json['autoTurnOnTime'] == null
           ? const Duration(hours: 22, minutes: 0)
           : Duration(microseconds: (json['autoTurnOnTime'] as num).toInt()),
@@ -188,13 +194,11 @@ Map<String, dynamic> _$$SleepTimerSettingsImplToJson(
         _$SleepTimerSettingsImpl instance) =>
     <String, dynamic>{
       'defaultDuration': instance.defaultDuration.inMicroseconds,
-      'shakeSenseMode':
-          _$SleepTimerShakeSenseModeEnumMap[instance.shakeSenseMode]!,
-      'shakeSenseDuration': instance.shakeSenseDuration.inMicroseconds,
-      'vibrateWhenReset': instance.vibrateWhenReset,
-      'beepWhenReset': instance.beepWhenReset,
+      'presetDurations':
+          instance.presetDurations.map((e) => e.inMicroseconds).toList(),
+      'maxDuration': instance.maxDuration.inMicroseconds,
       'fadeOutAudio': instance.fadeOutAudio,
-      'shakeDetectThreshold': instance.shakeDetectThreshold,
+      'fadeOutDuration': instance.fadeOutDuration.inMicroseconds,
       'autoRewindWhenStopped': instance.autoRewindWhenStopped,
       'autoRewindDurations': instance.autoRewindDurations
           .map((k, e) => MapEntry(k.toString(), e.inMicroseconds)),
@@ -203,12 +207,6 @@ Map<String, dynamic> _$$SleepTimerSettingsImplToJson(
       'autoTurnOnTime': instance.autoTurnOnTime.inMicroseconds,
       'autoTurnOffTime': instance.autoTurnOffTime.inMicroseconds,
     };
-
-const _$SleepTimerShakeSenseModeEnumMap = {
-  SleepTimerShakeSenseMode.never: 'never',
-  SleepTimerShakeSenseMode.always: 'always',
-  SleepTimerShakeSenseMode.nearEnds: 'nearEnds',
-};
 
 _$DownloadSettingsImpl _$$DownloadSettingsImplFromJson(
         Map<String, dynamic> json) =>

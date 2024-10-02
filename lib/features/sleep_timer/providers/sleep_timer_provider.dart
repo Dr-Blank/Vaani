@@ -11,20 +11,16 @@ part 'sleep_timer_provider.g.dart';
 class SleepTimer extends _$SleepTimer {
   @override
   core.SleepTimer? build() {
-    final appSettings = ref.watch(appSettingsProvider);
-    final sleepTimerSettings = appSettings.playerSettings.sleepTimerSettings;
-    bool isEnabled = sleepTimerSettings.autoTurnOnTimer;
-    if (!isEnabled) {
+    final sleepTimerSettings = ref.watch(sleepTimerSettingsProvider);
+    if (!sleepTimerSettings.autoTurnOnTimer) {
       return null;
     }
 
     if ((!sleepTimerSettings.alwaysAutoTurnOnTimer) &&
-        (sleepTimerSettings.autoTurnOnTime
-                .toTimeOfDay()
-                .isAfter(TimeOfDay.now()) &&
-            sleepTimerSettings.autoTurnOffTime
-                .toTimeOfDay()
-                .isBefore(TimeOfDay.now()))) {
+        !shouldBuildRightNow(
+          sleepTimerSettings.autoTurnOnTime,
+          sleepTimerSettings.autoTurnOffTime,
+        )) {
       return null;
     }
 
@@ -36,10 +32,16 @@ class SleepTimer extends _$SleepTimer {
     return sleepTimer;
   }
 
-  void setTimer(Duration resultingDuration) {
+  void setTimer(Duration? resultingDuration, {bool notifyListeners = true}) {
+    if (resultingDuration == null || resultingDuration.inSeconds == 0) {
+      cancelTimer();
+      return;
+    }
     if (state != null) {
       state!.duration = resultingDuration;
-      ref.notifyListeners();
+      if (notifyListeners) {
+        ref.notifyListeners();
+      }
     } else {
       final timer = core.SleepTimer(
         duration: resultingDuration,
@@ -61,4 +63,12 @@ class SleepTimer extends _$SleepTimer {
     state?.dispose();
     state = null;
   }
+}
+
+bool shouldBuildRightNow(Duration autoTurnOnTime, Duration autoTurnOffTime) {
+  final now = TimeOfDay.now();
+  return now.isBetween(
+    autoTurnOnTime.toTimeOfDay(),
+    autoTurnOffTime.toTimeOfDay(),
+  );
 }

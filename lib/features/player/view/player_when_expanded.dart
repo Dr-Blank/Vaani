@@ -1,17 +1,11 @@
-import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:vaani/constants/sizes.dart';
 import 'package:vaani/features/player/providers/currently_playing_provider.dart';
 import 'package:vaani/features/player/providers/player_form.dart';
 import 'package:vaani/features/player/view/audiobook_player.dart';
-import 'package:vaani/features/sleep_timer/core/sleep_timer.dart';
-import 'package:vaani/features/sleep_timer/providers/sleep_timer_provider.dart'
-    show sleepTimerProvider;
-import 'package:vaani/settings/app_settings_provider.dart';
-import 'package:vaani/shared/extensions/duration_format.dart';
+import 'package:vaani/features/sleep_timer/view/sleep_timer_button.dart';
 import 'package:vaani/shared/extensions/inverse_lerp.dart';
 import 'package:vaani/shared/widgets/not_implemented.dart';
 
@@ -246,143 +240,18 @@ class PlayerWhenExpanded extends HookConsumerWidget {
                 // chapter list
                 const ChapterSelectionButton(),
                 // settings
-                IconButton(
-                  icon: const Icon(Icons.more_horiz),
-                  onPressed: () {
-                    // show toast
-                    showNotImplementedToast(context);
-                  },
-                ),
+                // IconButton(
+                //   icon: const Icon(Icons.more_horiz),
+                //   onPressed: () {
+                //     // show toast
+                //     showNotImplementedToast(context);
+                //   },
+                // ),
               ],
             ),
           ),
         ),
       ],
-    );
-  }
-}
-
-class SleepTimerButton extends HookConsumerWidget {
-  const SleepTimerButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final sleepTimer = ref.watch(sleepTimerProvider);
-    // if sleep timer is not active, show the button with the sleep timer icon
-    // if the sleep timer is active, show the remaining time in a pill shaped container
-    return Tooltip(
-      message: 'Sleep Timer',
-      child: InkWell(
-        onTap: () async {
-          pendingPlayerModals++;
-          // show the sleep timer dialog
-          final resultingDuration = await showDurationPicker(
-            context: context,
-            initialTime: ref
-                .watch(appSettingsProvider)
-                .playerSettings
-                .sleepTimerSettings
-                .defaultDuration,
-          );
-          pendingPlayerModals--;
-          if (resultingDuration != null) {
-            // if 0 is selected, cancel the timer
-            if (resultingDuration.inSeconds == 0) {
-              ref.read(sleepTimerProvider.notifier).cancelTimer();
-            } else {
-              ref.read(sleepTimerProvider.notifier).setTimer(resultingDuration);
-            }
-          }
-        },
-        child: sleepTimer == null
-            ? Icon(
-                Icons.timer_rounded,
-                color: Theme.of(context).colorScheme.onSurface,
-              )
-            : RemainingSleepTimeDisplay(
-                timer: sleepTimer,
-              ),
-      ),
-    );
-  }
-}
-
-class SleepTimerDialog extends HookConsumerWidget {
-  const SleepTimerDialog({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final sleepTimer = ref.watch(sleepTimerProvider);
-    final sleepTimerSettings =
-        ref.watch(appSettingsProvider).playerSettings.sleepTimerSettings;
-    final timerDurationController = useTextEditingController(
-      text: sleepTimerSettings.defaultDuration.inMinutes.toString(),
-    );
-
-    return AlertDialog(
-      title: const Text('Sleep Timer'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text('Set the duration for the sleep timer'),
-          TextField(
-            controller: timerDurationController,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Duration in minutes',
-            ),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            // sleepTimer.setTimer(
-            //   Duration(
-            //     minutes: int.tryParse(timerDurationController.text) ?? 0,
-            //   ),
-            // );
-            Navigator.of(context).pop();
-          },
-          child: const Text('Set Timer'),
-        ),
-      ],
-    );
-  }
-}
-
-class RemainingSleepTimeDisplay extends HookConsumerWidget {
-  const RemainingSleepTimeDisplay({
-    super.key,
-    required this.timer,
-  });
-
-  final SleepTimer timer;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final remainingTime = useStream(timer.remainingTimeStream).data;
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 4,
-      ),
-      child: Text(
-        timer.timer == null
-            ? timer.duration.smartBinaryFormat
-            : remainingTime?.smartBinaryFormat ?? '',
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-      ),
     );
   }
 }
