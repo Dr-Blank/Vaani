@@ -6,6 +6,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:list_wheel_scroll_view_nls/list_wheel_scroll_view_nls.dart';
 import 'package:vaani/features/player/providers/audiobook_player.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/shared/hooks.dart';
+
+const double itemExtent = 25;
 
 class SpeedSelector extends HookConsumerWidget {
   const SpeedSelector({
@@ -34,11 +37,11 @@ class SpeedSelector extends HookConsumerWidget {
 
     // the speed options
     final minSpeed = min(
-      speeds.reduce((minSpeedSoFar, element) => min(minSpeedSoFar, element)),
+      speeds.reduce(min),
       playerSettings.minSpeed,
     );
     final maxSpeed = max(
-      speeds.reduce((maxSpeedSoFar, element) => max(maxSpeedSoFar, element)),
+      speeds.reduce(max),
       playerSettings.maxSpeed,
     );
     final speedIncrement = playerSettings.speedIncrement;
@@ -53,10 +56,9 @@ class SpeedSelector extends HookConsumerWidget {
       },
     );
 
-    final scrollController = FixedExtentScrollController(
+    final scrollController = useFixedExtentScrollController(
       initialItem: availableSpeedsList.indexOf(currentSpeed),
     );
-    const double itemExtent = 25;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -89,7 +91,6 @@ class SpeedSelector extends HookConsumerWidget {
               availableSpeedsList: availableSpeedsList,
               speedState: speedState,
               scrollController: scrollController,
-              itemExtent: itemExtent,
             ),
           ),
         ),
@@ -159,14 +160,12 @@ class SpeedWheel extends StatelessWidget {
     required this.availableSpeedsList,
     required this.speedState,
     required this.scrollController,
-    required this.itemExtent,
     this.showIncrementButtons = true,
   });
 
   final List<double> availableSpeedsList;
   final ValueNotifier<double> speedState;
   final FixedExtentScrollController scrollController;
-  final double itemExtent;
   final bool showIncrementButtons;
 
   @override
@@ -203,7 +202,7 @@ class SpeedWheel extends StatelessWidget {
             physics: const FixedExtentScrollPhysics(),
             children: availableSpeedsList
                 .map(
-                  (speed) => SpeedLine(itemExtent: itemExtent, speed: speed),
+                  (speed) => SpeedLine(speed: speed),
                 )
                 .toList(),
             onSelectedItemChanged: (index) {
@@ -236,11 +235,9 @@ class SpeedWheel extends StatelessWidget {
 class SpeedLine extends StatelessWidget {
   const SpeedLine({
     super.key,
-    required this.itemExtent,
     required this.speed,
   });
 
-  final double itemExtent;
   final double speed;
 
   @override
@@ -250,7 +247,6 @@ class SpeedLine extends StatelessWidget {
         // a vertical line
         Expanded(
           child: Container(
-            // height: itemExtent,
             // thick if multiple of 1, thin if multiple of 0.5 and transparent if multiple of 0.05
             width: speed % 0.5 == 0
                 ? 3

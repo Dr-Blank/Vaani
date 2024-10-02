@@ -1374,16 +1374,10 @@ SleepTimerSettings _$SleepTimerSettingsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SleepTimerSettings {
   Duration get defaultDuration => throw _privateConstructorUsedError;
-  SleepTimerShakeSenseMode get shakeSenseMode =>
-      throw _privateConstructorUsedError;
-
-  /// the duration in which the shake is detected before the end of the timer and after the timer ends
-  /// only used if [shakeSenseMode] is [SleepTimerShakeSenseMode.nearEnds]
-  Duration get shakeSenseDuration => throw _privateConstructorUsedError;
-  bool get vibrateWhenReset => throw _privateConstructorUsedError;
-  bool get beepWhenReset => throw _privateConstructorUsedError;
+  List<Duration> get presetDurations => throw _privateConstructorUsedError;
+  Duration get maxDuration => throw _privateConstructorUsedError;
   bool get fadeOutAudio => throw _privateConstructorUsedError;
-  double get shakeDetectThreshold => throw _privateConstructorUsedError;
+  Duration get fadeOutDuration => throw _privateConstructorUsedError;
 
   /// if true, the player will automatically rewind the audio when the sleep timer is stopped
   bool get autoRewindWhenStopped => throw _privateConstructorUsedError;
@@ -1422,12 +1416,10 @@ abstract class $SleepTimerSettingsCopyWith<$Res> {
   @useResult
   $Res call(
       {Duration defaultDuration,
-      SleepTimerShakeSenseMode shakeSenseMode,
-      Duration shakeSenseDuration,
-      bool vibrateWhenReset,
-      bool beepWhenReset,
+      List<Duration> presetDurations,
+      Duration maxDuration,
       bool fadeOutAudio,
-      double shakeDetectThreshold,
+      Duration fadeOutDuration,
       bool autoRewindWhenStopped,
       Map<int, Duration> autoRewindDurations,
       bool autoTurnOnTimer,
@@ -1452,12 +1444,10 @@ class _$SleepTimerSettingsCopyWithImpl<$Res, $Val extends SleepTimerSettings>
   @override
   $Res call({
     Object? defaultDuration = null,
-    Object? shakeSenseMode = null,
-    Object? shakeSenseDuration = null,
-    Object? vibrateWhenReset = null,
-    Object? beepWhenReset = null,
+    Object? presetDurations = null,
+    Object? maxDuration = null,
     Object? fadeOutAudio = null,
-    Object? shakeDetectThreshold = null,
+    Object? fadeOutDuration = null,
     Object? autoRewindWhenStopped = null,
     Object? autoRewindDurations = null,
     Object? autoTurnOnTimer = null,
@@ -1470,30 +1460,22 @@ class _$SleepTimerSettingsCopyWithImpl<$Res, $Val extends SleepTimerSettings>
           ? _value.defaultDuration
           : defaultDuration // ignore: cast_nullable_to_non_nullable
               as Duration,
-      shakeSenseMode: null == shakeSenseMode
-          ? _value.shakeSenseMode
-          : shakeSenseMode // ignore: cast_nullable_to_non_nullable
-              as SleepTimerShakeSenseMode,
-      shakeSenseDuration: null == shakeSenseDuration
-          ? _value.shakeSenseDuration
-          : shakeSenseDuration // ignore: cast_nullable_to_non_nullable
+      presetDurations: null == presetDurations
+          ? _value.presetDurations
+          : presetDurations // ignore: cast_nullable_to_non_nullable
+              as List<Duration>,
+      maxDuration: null == maxDuration
+          ? _value.maxDuration
+          : maxDuration // ignore: cast_nullable_to_non_nullable
               as Duration,
-      vibrateWhenReset: null == vibrateWhenReset
-          ? _value.vibrateWhenReset
-          : vibrateWhenReset // ignore: cast_nullable_to_non_nullable
-              as bool,
-      beepWhenReset: null == beepWhenReset
-          ? _value.beepWhenReset
-          : beepWhenReset // ignore: cast_nullable_to_non_nullable
-              as bool,
       fadeOutAudio: null == fadeOutAudio
           ? _value.fadeOutAudio
           : fadeOutAudio // ignore: cast_nullable_to_non_nullable
               as bool,
-      shakeDetectThreshold: null == shakeDetectThreshold
-          ? _value.shakeDetectThreshold
-          : shakeDetectThreshold // ignore: cast_nullable_to_non_nullable
-              as double,
+      fadeOutDuration: null == fadeOutDuration
+          ? _value.fadeOutDuration
+          : fadeOutDuration // ignore: cast_nullable_to_non_nullable
+              as Duration,
       autoRewindWhenStopped: null == autoRewindWhenStopped
           ? _value.autoRewindWhenStopped
           : autoRewindWhenStopped // ignore: cast_nullable_to_non_nullable
@@ -1532,12 +1514,10 @@ abstract class _$$SleepTimerSettingsImplCopyWith<$Res>
   @useResult
   $Res call(
       {Duration defaultDuration,
-      SleepTimerShakeSenseMode shakeSenseMode,
-      Duration shakeSenseDuration,
-      bool vibrateWhenReset,
-      bool beepWhenReset,
+      List<Duration> presetDurations,
+      Duration maxDuration,
       bool fadeOutAudio,
-      double shakeDetectThreshold,
+      Duration fadeOutDuration,
       bool autoRewindWhenStopped,
       Map<int, Duration> autoRewindDurations,
       bool autoTurnOnTimer,
@@ -1560,12 +1540,10 @@ class __$$SleepTimerSettingsImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? defaultDuration = null,
-    Object? shakeSenseMode = null,
-    Object? shakeSenseDuration = null,
-    Object? vibrateWhenReset = null,
-    Object? beepWhenReset = null,
+    Object? presetDurations = null,
+    Object? maxDuration = null,
     Object? fadeOutAudio = null,
-    Object? shakeDetectThreshold = null,
+    Object? fadeOutDuration = null,
     Object? autoRewindWhenStopped = null,
     Object? autoRewindDurations = null,
     Object? autoTurnOnTimer = null,
@@ -1578,30 +1556,22 @@ class __$$SleepTimerSettingsImplCopyWithImpl<$Res>
           ? _value.defaultDuration
           : defaultDuration // ignore: cast_nullable_to_non_nullable
               as Duration,
-      shakeSenseMode: null == shakeSenseMode
-          ? _value.shakeSenseMode
-          : shakeSenseMode // ignore: cast_nullable_to_non_nullable
-              as SleepTimerShakeSenseMode,
-      shakeSenseDuration: null == shakeSenseDuration
-          ? _value.shakeSenseDuration
-          : shakeSenseDuration // ignore: cast_nullable_to_non_nullable
+      presetDurations: null == presetDurations
+          ? _value._presetDurations
+          : presetDurations // ignore: cast_nullable_to_non_nullable
+              as List<Duration>,
+      maxDuration: null == maxDuration
+          ? _value.maxDuration
+          : maxDuration // ignore: cast_nullable_to_non_nullable
               as Duration,
-      vibrateWhenReset: null == vibrateWhenReset
-          ? _value.vibrateWhenReset
-          : vibrateWhenReset // ignore: cast_nullable_to_non_nullable
-              as bool,
-      beepWhenReset: null == beepWhenReset
-          ? _value.beepWhenReset
-          : beepWhenReset // ignore: cast_nullable_to_non_nullable
-              as bool,
       fadeOutAudio: null == fadeOutAudio
           ? _value.fadeOutAudio
           : fadeOutAudio // ignore: cast_nullable_to_non_nullable
               as bool,
-      shakeDetectThreshold: null == shakeDetectThreshold
-          ? _value.shakeDetectThreshold
-          : shakeDetectThreshold // ignore: cast_nullable_to_non_nullable
-              as double,
+      fadeOutDuration: null == fadeOutDuration
+          ? _value.fadeOutDuration
+          : fadeOutDuration // ignore: cast_nullable_to_non_nullable
+              as Duration,
       autoRewindWhenStopped: null == autoRewindWhenStopped
           ? _value.autoRewindWhenStopped
           : autoRewindWhenStopped // ignore: cast_nullable_to_non_nullable
@@ -1635,12 +1605,14 @@ class __$$SleepTimerSettingsImplCopyWithImpl<$Res>
 class _$SleepTimerSettingsImpl implements _SleepTimerSettings {
   const _$SleepTimerSettingsImpl(
       {this.defaultDuration = const Duration(minutes: 15),
-      this.shakeSenseMode = SleepTimerShakeSenseMode.always,
-      this.shakeSenseDuration = const Duration(seconds: 30),
-      this.vibrateWhenReset = true,
-      this.beepWhenReset = false,
+      final List<Duration> presetDurations = const [
+        Duration(minutes: 5),
+        Duration(minutes: 15),
+        Duration(minutes: 30)
+      ],
+      this.maxDuration = const Duration(minutes: 100),
       this.fadeOutAudio = false,
-      this.shakeDetectThreshold = 0.5,
+      this.fadeOutDuration = const Duration(seconds: 20),
       this.autoRewindWhenStopped = false,
       final Map<int, Duration> autoRewindDurations = const {
         5: Duration(seconds: 10),
@@ -1653,7 +1625,8 @@ class _$SleepTimerSettingsImpl implements _SleepTimerSettings {
       this.alwaysAutoTurnOnTimer = true,
       this.autoTurnOnTime = const Duration(hours: 22, minutes: 0),
       this.autoTurnOffTime = const Duration(hours: 6, minutes: 0)})
-      : _autoRewindDurations = autoRewindDurations;
+      : _presetDurations = presetDurations,
+        _autoRewindDurations = autoRewindDurations;
 
   factory _$SleepTimerSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$SleepTimerSettingsImplFromJson(json);
@@ -1661,27 +1634,24 @@ class _$SleepTimerSettingsImpl implements _SleepTimerSettings {
   @override
   @JsonKey()
   final Duration defaultDuration;
+  final List<Duration> _presetDurations;
   @override
   @JsonKey()
-  final SleepTimerShakeSenseMode shakeSenseMode;
+  List<Duration> get presetDurations {
+    if (_presetDurations is EqualUnmodifiableListView) return _presetDurations;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_presetDurations);
+  }
 
-  /// the duration in which the shake is detected before the end of the timer and after the timer ends
-  /// only used if [shakeSenseMode] is [SleepTimerShakeSenseMode.nearEnds]
   @override
   @JsonKey()
-  final Duration shakeSenseDuration;
-  @override
-  @JsonKey()
-  final bool vibrateWhenReset;
-  @override
-  @JsonKey()
-  final bool beepWhenReset;
+  final Duration maxDuration;
   @override
   @JsonKey()
   final bool fadeOutAudio;
   @override
   @JsonKey()
-  final double shakeDetectThreshold;
+  final Duration fadeOutDuration;
 
   /// if true, the player will automatically rewind the audio when the sleep timer is stopped
   @override
@@ -1723,7 +1693,7 @@ class _$SleepTimerSettingsImpl implements _SleepTimerSettings {
 
   @override
   String toString() {
-    return 'SleepTimerSettings(defaultDuration: $defaultDuration, shakeSenseMode: $shakeSenseMode, shakeSenseDuration: $shakeSenseDuration, vibrateWhenReset: $vibrateWhenReset, beepWhenReset: $beepWhenReset, fadeOutAudio: $fadeOutAudio, shakeDetectThreshold: $shakeDetectThreshold, autoRewindWhenStopped: $autoRewindWhenStopped, autoRewindDurations: $autoRewindDurations, autoTurnOnTimer: $autoTurnOnTimer, alwaysAutoTurnOnTimer: $alwaysAutoTurnOnTimer, autoTurnOnTime: $autoTurnOnTime, autoTurnOffTime: $autoTurnOffTime)';
+    return 'SleepTimerSettings(defaultDuration: $defaultDuration, presetDurations: $presetDurations, maxDuration: $maxDuration, fadeOutAudio: $fadeOutAudio, fadeOutDuration: $fadeOutDuration, autoRewindWhenStopped: $autoRewindWhenStopped, autoRewindDurations: $autoRewindDurations, autoTurnOnTimer: $autoTurnOnTimer, alwaysAutoTurnOnTimer: $alwaysAutoTurnOnTimer, autoTurnOnTime: $autoTurnOnTime, autoTurnOffTime: $autoTurnOffTime)';
   }
 
   @override
@@ -1733,18 +1703,14 @@ class _$SleepTimerSettingsImpl implements _SleepTimerSettings {
             other is _$SleepTimerSettingsImpl &&
             (identical(other.defaultDuration, defaultDuration) ||
                 other.defaultDuration == defaultDuration) &&
-            (identical(other.shakeSenseMode, shakeSenseMode) ||
-                other.shakeSenseMode == shakeSenseMode) &&
-            (identical(other.shakeSenseDuration, shakeSenseDuration) ||
-                other.shakeSenseDuration == shakeSenseDuration) &&
-            (identical(other.vibrateWhenReset, vibrateWhenReset) ||
-                other.vibrateWhenReset == vibrateWhenReset) &&
-            (identical(other.beepWhenReset, beepWhenReset) ||
-                other.beepWhenReset == beepWhenReset) &&
+            const DeepCollectionEquality()
+                .equals(other._presetDurations, _presetDurations) &&
+            (identical(other.maxDuration, maxDuration) ||
+                other.maxDuration == maxDuration) &&
             (identical(other.fadeOutAudio, fadeOutAudio) ||
                 other.fadeOutAudio == fadeOutAudio) &&
-            (identical(other.shakeDetectThreshold, shakeDetectThreshold) ||
-                other.shakeDetectThreshold == shakeDetectThreshold) &&
+            (identical(other.fadeOutDuration, fadeOutDuration) ||
+                other.fadeOutDuration == fadeOutDuration) &&
             (identical(other.autoRewindWhenStopped, autoRewindWhenStopped) ||
                 other.autoRewindWhenStopped == autoRewindWhenStopped) &&
             const DeepCollectionEquality()
@@ -1764,12 +1730,10 @@ class _$SleepTimerSettingsImpl implements _SleepTimerSettings {
   int get hashCode => Object.hash(
       runtimeType,
       defaultDuration,
-      shakeSenseMode,
-      shakeSenseDuration,
-      vibrateWhenReset,
-      beepWhenReset,
+      const DeepCollectionEquality().hash(_presetDurations),
+      maxDuration,
       fadeOutAudio,
-      shakeDetectThreshold,
+      fadeOutDuration,
       autoRewindWhenStopped,
       const DeepCollectionEquality().hash(_autoRewindDurations),
       autoTurnOnTimer,
@@ -1797,12 +1761,10 @@ class _$SleepTimerSettingsImpl implements _SleepTimerSettings {
 abstract class _SleepTimerSettings implements SleepTimerSettings {
   const factory _SleepTimerSettings(
       {final Duration defaultDuration,
-      final SleepTimerShakeSenseMode shakeSenseMode,
-      final Duration shakeSenseDuration,
-      final bool vibrateWhenReset,
-      final bool beepWhenReset,
+      final List<Duration> presetDurations,
+      final Duration maxDuration,
       final bool fadeOutAudio,
-      final double shakeDetectThreshold,
+      final Duration fadeOutDuration,
       final bool autoRewindWhenStopped,
       final Map<int, Duration> autoRewindDurations,
       final bool autoTurnOnTimer,
@@ -1816,20 +1778,13 @@ abstract class _SleepTimerSettings implements SleepTimerSettings {
   @override
   Duration get defaultDuration;
   @override
-  SleepTimerShakeSenseMode get shakeSenseMode;
-
-  /// the duration in which the shake is detected before the end of the timer and after the timer ends
-  /// only used if [shakeSenseMode] is [SleepTimerShakeSenseMode.nearEnds]
+  List<Duration> get presetDurations;
   @override
-  Duration get shakeSenseDuration;
-  @override
-  bool get vibrateWhenReset;
-  @override
-  bool get beepWhenReset;
+  Duration get maxDuration;
   @override
   bool get fadeOutAudio;
   @override
-  double get shakeDetectThreshold;
+  Duration get fadeOutDuration;
 
   /// if true, the player will automatically rewind the audio when the sleep timer is stopped
   @override

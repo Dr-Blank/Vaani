@@ -36,10 +36,16 @@ class SleepTimer extends _$SleepTimer {
     return sleepTimer;
   }
 
-  void setTimer(Duration resultingDuration) {
+  void setTimer(Duration? resultingDuration, {bool notifyListeners = true}) {
+    if (resultingDuration == null || resultingDuration.inSeconds == 0) {
+      cancelTimer();
+      return;
+    }
     if (state != null) {
       state!.duration = resultingDuration;
-      ref.notifyListeners();
+      if (notifyListeners) {
+        ref.notifyListeners();
+      }
     } else {
       final timer = core.SleepTimer(
         duration: resultingDuration,

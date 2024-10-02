@@ -19,7 +19,17 @@ class SleepTimer {
 
   set duration(Duration value) {
     _duration = value;
-    clearCountDownTimer();
+    _logger.fine('duration set to $value');
+
+    /// if the timer is active, restart it with the new duration
+    /// if the timer is not active, do nothing
+    if (isActive && player.playing) {
+      _logger.fine('timer is active counting down with new duration');
+      startCountDown(value);
+    } else {
+      _logger.fine('timer is not active');
+      clearCountDownTimer();
+    }
   }
 
   /// The player to be paused
