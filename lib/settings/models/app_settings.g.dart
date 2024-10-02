@@ -179,7 +179,7 @@ _$SleepTimerSettingsImpl _$$SleepTimerSettingsImplFromJson(
                 120: Duration(minutes: 2)
               },
       autoTurnOnTimer: json['autoTurnOnTimer'] as bool? ?? false,
-      alwaysAutoTurnOnTimer: json['alwaysAutoTurnOnTimer'] as bool? ?? true,
+      alwaysAutoTurnOnTimer: json['alwaysAutoTurnOnTimer'] as bool? ?? false,
       autoTurnOnTime: json['autoTurnOnTime'] == null
           ? const Duration(hours: 22, minutes: 0)
           : Duration(microseconds: (json['autoTurnOnTime'] as num).toInt()),

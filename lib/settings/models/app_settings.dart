@@ -110,7 +110,7 @@ class SleepTimerSettings with _$SleepTimerSettings {
     @Default(false) bool autoTurnOnTimer,
 
     /// always auto turn on timer settings or during specific times
-    @Default(true) bool alwaysAutoTurnOnTimer,
+    @Default(false) bool alwaysAutoTurnOnTimer,
 
     /// auto timer settings, only used if [alwaysAutoTurnOnTimer] is false
     ///

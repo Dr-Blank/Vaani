@@ -1627,7 +1627,7 @@ class _$SleepTimerSettingsImpl implements _SleepTimerSettings {
         120: Duration(minutes: 2)
       },
       this.autoTurnOnTimer = false,
-      this.alwaysAutoTurnOnTimer = true,
+      this.alwaysAutoTurnOnTimer = false,
       this.autoTurnOnTime = const Duration(hours: 22, minutes: 0),
       this.autoTurnOffTime = const Duration(hours: 6, minutes: 0)})
       : _presetDurations = presetDurations,
