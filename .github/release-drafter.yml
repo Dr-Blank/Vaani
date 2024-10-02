@@ -1,13 +1,14 @@
 name-template: "v$RESOLVED_VERSION"
 tag-template: "v$RESOLVED_VERSION"
-# name-template: 'v$NEXT_PATCH_VERSION'
-# tag-template: 'v$NEXT_PATCH_VERSION'
 
 categories:
   - title: "🚀 Features"
     labels:
       - "feature"
       - "enhancement"
+  - title: "📱 UI Changes"
+    labels:
+      - "ui"
   - title: "🐛 Bug Fixes"
     labels:
       - "fix"
@@ -18,7 +19,7 @@ categories:
   - title: "💥 Breaking Changes"
     labels:
       - "breaking"
-change-template: "- $TITLE by @$AUTHOR in #$NUMBER"
+change-template: "- $TITLE (#$NUMBER)"
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
   major:
@@ -60,3 +61,9 @@ autolabeler:
   - label: "chore"
     title:
       - "/chore/i"
+  - label: "ui"
+    title:
+      - "/^ui\b/i"
+  - label: "refactor"
+    title:
+      - "/refactor/i"
