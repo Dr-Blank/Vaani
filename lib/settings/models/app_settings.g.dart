@@ -155,7 +155,9 @@ _$SleepTimerSettingsImpl _$$SleepTimerSettingsImplFromJson(
               .toList() ??
           const [
             Duration(minutes: 5),
+            Duration(minutes: 10),
             Duration(minutes: 15),
+            Duration(minutes: 20),
             Duration(minutes: 30)
           ],
       maxDuration: json['maxDuration'] == null

@@ -1612,7 +1612,9 @@ class _$SleepTimerSettingsImpl implements _SleepTimerSettings {
       {this.defaultDuration = const Duration(minutes: 15),
       final List<Duration> presetDurations = const [
         Duration(minutes: 5),
+        Duration(minutes: 10),
         Duration(minutes: 15),
+        Duration(minutes: 20),
         Duration(minutes: 30)
       ],
       this.maxDuration = const Duration(minutes: 100),

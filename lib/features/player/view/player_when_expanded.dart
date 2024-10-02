@@ -240,13 +240,13 @@ class PlayerWhenExpanded extends HookConsumerWidget {
                 // chapter list
                 const ChapterSelectionButton(),
                 // settings
-                IconButton(
-                  icon: const Icon(Icons.more_horiz),
-                  onPressed: () {
-                    // show toast
-                    showNotImplementedToast(context);
-                  },
-                ),
+                // IconButton(
+                //   icon: const Icon(Icons.more_horiz),
+                //   onPressed: () {
+                //     // show toast
+                //     showNotImplementedToast(context);
+                //   },
+                // ),
               ],
             ),
           ),

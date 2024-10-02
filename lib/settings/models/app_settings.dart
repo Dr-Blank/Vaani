@@ -86,7 +86,13 @@ class SleepTimerSettings with _$SleepTimerSettings {
   const factory SleepTimerSettings({
     @Default(Duration(minutes: 15)) Duration defaultDuration,
     @Default(
-      [Duration(minutes: 5), Duration(minutes: 15), Duration(minutes: 30)],
+      [
+        Duration(minutes: 5),
+        Duration(minutes: 10),
+        Duration(minutes: 15),
+        Duration(minutes: 20),
+        Duration(minutes: 30),
+      ],
     )
     List<Duration> presetDurations,
     @Default(Duration(minutes: 100)) Duration maxDuration,
