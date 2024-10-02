@@ -153,7 +153,7 @@ class SleepTimerBottomSheet extends HookConsumerWidget {
               onDurationSelected?.call(null);
               Navigator.of(context).pop();
             },
-            icon: const Icon(Icons.cancel),
+            icon: const Icon(Icons.timer_off),
             label: const Text('Cancel Sleep Timer'),
           ),
         ),
