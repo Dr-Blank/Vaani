@@ -16,6 +16,10 @@ _$AppSettingsImpl _$$AppSettingsImplFromJson(Map<String, dynamic> json) =>
           ? const PlayerSettings()
           : PlayerSettings.fromJson(
               json['playerSettings'] as Map<String, dynamic>),
+      sleepTimerSettings: json['sleepTimerSettings'] == null
+          ? const SleepTimerSettings()
+          : SleepTimerSettings.fromJson(
+              json['sleepTimerSettings'] as Map<String, dynamic>),
       downloadSettings: json['downloadSettings'] == null
           ? const DownloadSettings()
           : DownloadSettings.fromJson(
@@ -34,6 +38,7 @@ Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
     <String, dynamic>{
       'themeSettings': instance.themeSettings,
       'playerSettings': instance.playerSettings,
+      'sleepTimerSettings': instance.sleepTimerSettings,
       'downloadSettings': instance.downloadSettings,
       'notificationSettings': instance.notificationSettings,
       'shakeDetectionSettings': instance.shakeDetectionSettings,
@@ -77,10 +82,6 @@ _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
       speedIncrement: (json['speedIncrement'] as num?)?.toDouble() ?? 0.05,
       minSpeed: (json['minSpeed'] as num?)?.toDouble() ?? 0.1,
       maxSpeed: (json['maxSpeed'] as num?)?.toDouble() ?? 4,
-      sleepTimerSettings: json['sleepTimerSettings'] == null
-          ? const SleepTimerSettings()
-          : SleepTimerSettings.fromJson(
-              json['sleepTimerSettings'] as Map<String, dynamic>),
       minimumPositionForReporting: json['minimumPositionForReporting'] == null
           ? const Duration(seconds: 10)
           : Duration(
@@ -109,7 +110,6 @@ Map<String, dynamic> _$$PlayerSettingsImplToJson(
       'speedIncrement': instance.speedIncrement,
       'minSpeed': instance.minSpeed,
       'maxSpeed': instance.maxSpeed,
-      'sleepTimerSettings': instance.sleepTimerSettings,
       'minimumPositionForReporting':
           instance.minimumPositionForReporting.inMicroseconds,
       'playbackReportInterval': instance.playbackReportInterval.inMicroseconds,

@@ -14,6 +14,7 @@ class AppSettings with _$AppSettings {
   const factory AppSettings({
     @Default(ThemeSettings()) ThemeSettings themeSettings,
     @Default(PlayerSettings()) PlayerSettings playerSettings,
+    @Default(SleepTimerSettings()) SleepTimerSettings sleepTimerSettings,
     @Default(DownloadSettings()) DownloadSettings downloadSettings,
     @Default(NotificationSettings()) NotificationSettings notificationSettings,
     @Default(ShakeDetectionSettings())
@@ -49,7 +50,6 @@ class PlayerSettings with _$PlayerSettings {
     @Default(0.05) double speedIncrement,
     @Default(0.1) double minSpeed,
     @Default(4) double maxSpeed,
-    @Default(SleepTimerSettings()) SleepTimerSettings sleepTimerSettings,
     @Default(Duration(seconds: 10)) Duration minimumPositionForReporting,
     @Default(Duration(seconds: 10)) Duration playbackReportInterval,
     @Default(Duration(seconds: 15)) Duration markCompleteWhenTimeLeft,

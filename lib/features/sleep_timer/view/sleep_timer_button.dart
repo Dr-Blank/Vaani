@@ -77,8 +77,7 @@ class SleepTimerBottomSheet extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sleepTimer = ref.watch(sleepTimerProvider);
-    final sleepTimerSettings =
-        ref.watch(appSettingsProvider).playerSettings.sleepTimerSettings;
+    final sleepTimerSettings = ref.watch(sleepTimerSettingsProvider);
 
     final durationOptions = sleepTimerSettings.presetDurations;
     final minDuration = Duration.zero;

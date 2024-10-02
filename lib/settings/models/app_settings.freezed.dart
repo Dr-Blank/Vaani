@@ -22,6 +22,8 @@ AppSettings _$AppSettingsFromJson(Map<String, dynamic> json) {
 mixin _$AppSettings {
   ThemeSettings get themeSettings => throw _privateConstructorUsedError;
   PlayerSettings get playerSettings => throw _privateConstructorUsedError;
+  SleepTimerSettings get sleepTimerSettings =>
+      throw _privateConstructorUsedError;
   DownloadSettings get downloadSettings => throw _privateConstructorUsedError;
   NotificationSettings get notificationSettings =>
       throw _privateConstructorUsedError;
@@ -47,12 +49,14 @@ abstract class $AppSettingsCopyWith<$Res> {
   $Res call(
       {ThemeSettings themeSettings,
       PlayerSettings playerSettings,
+      SleepTimerSettings sleepTimerSettings,
       DownloadSettings downloadSettings,
       NotificationSettings notificationSettings,
       ShakeDetectionSettings shakeDetectionSettings});
 
   $ThemeSettingsCopyWith<$Res> get themeSettings;
   $PlayerSettingsCopyWith<$Res> get playerSettings;
+  $SleepTimerSettingsCopyWith<$Res> get sleepTimerSettings;
   $DownloadSettingsCopyWith<$Res> get downloadSettings;
   $NotificationSettingsCopyWith<$Res> get notificationSettings;
   $ShakeDetectionSettingsCopyWith<$Res> get shakeDetectionSettings;
@@ -75,6 +79,7 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
   $Res call({
     Object? themeSettings = null,
     Object? playerSettings = null,
+    Object? sleepTimerSettings = null,
     Object? downloadSettings = null,
     Object? notificationSettings = null,
     Object? shakeDetectionSettings = null,
@@ -88,6 +93,10 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
           ? _value.playerSettings
           : playerSettings // ignore: cast_nullable_to_non_nullable
               as PlayerSettings,
+      sleepTimerSettings: null == sleepTimerSettings
+          ? _value.sleepTimerSettings
+          : sleepTimerSettings // ignore: cast_nullable_to_non_nullable
+              as SleepTimerSettings,
       downloadSettings: null == downloadSettings
           ? _value.downloadSettings
           : downloadSettings // ignore: cast_nullable_to_non_nullable
@@ -120,6 +129,17 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
   $PlayerSettingsCopyWith<$Res> get playerSettings {
     return $PlayerSettingsCopyWith<$Res>(_value.playerSettings, (value) {
       return _then(_value.copyWith(playerSettings: value) as $Val);
+    });
+  }
+
+  /// Create a copy of AppSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $SleepTimerSettingsCopyWith<$Res> get sleepTimerSettings {
+    return $SleepTimerSettingsCopyWith<$Res>(_value.sleepTimerSettings,
+        (value) {
+      return _then(_value.copyWith(sleepTimerSettings: value) as $Val);
     });
   }
 
@@ -167,6 +187,7 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
   $Res call(
       {ThemeSettings themeSettings,
       PlayerSettings playerSettings,
+      SleepTimerSettings sleepTimerSettings,
       DownloadSettings downloadSettings,
       NotificationSettings notificationSettings,
       ShakeDetectionSettings shakeDetectionSettings});
@@ -175,6 +196,8 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
   $ThemeSettingsCopyWith<$Res> get themeSettings;
   @override
   $PlayerSettingsCopyWith<$Res> get playerSettings;
+  @override
+  $SleepTimerSettingsCopyWith<$Res> get sleepTimerSettings;
   @override
   $DownloadSettingsCopyWith<$Res> get downloadSettings;
   @override
@@ -198,6 +221,7 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
   $Res call({
     Object? themeSettings = null,
     Object? playerSettings = null,
+    Object? sleepTimerSettings = null,
     Object? downloadSettings = null,
     Object? notificationSettings = null,
     Object? shakeDetectionSettings = null,
@@ -211,6 +235,10 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
           ? _value.playerSettings
           : playerSettings // ignore: cast_nullable_to_non_nullable
               as PlayerSettings,
+      sleepTimerSettings: null == sleepTimerSettings
+          ? _value.sleepTimerSettings
+          : sleepTimerSettings // ignore: cast_nullable_to_non_nullable
+              as SleepTimerSettings,
       downloadSettings: null == downloadSettings
           ? _value.downloadSettings
           : downloadSettings // ignore: cast_nullable_to_non_nullable
@@ -233,6 +261,7 @@ class _$AppSettingsImpl implements _AppSettings {
   const _$AppSettingsImpl(
       {this.themeSettings = const ThemeSettings(),
       this.playerSettings = const PlayerSettings(),
+      this.sleepTimerSettings = const SleepTimerSettings(),
       this.downloadSettings = const DownloadSettings(),
       this.notificationSettings = const NotificationSettings(),
       this.shakeDetectionSettings = const ShakeDetectionSettings()});
@@ -248,6 +277,9 @@ class _$AppSettingsImpl implements _AppSettings {
   final PlayerSettings playerSettings;
   @override
   @JsonKey()
+  final SleepTimerSettings sleepTimerSettings;
+  @override
+  @JsonKey()
   final DownloadSettings downloadSettings;
   @override
   @JsonKey()
@@ -258,7 +290,7 @@ class _$AppSettingsImpl implements _AppSettings {
 
   @override
   String toString() {
-    return 'AppSettings(themeSettings: $themeSettings, playerSettings: $playerSettings, downloadSettings: $downloadSettings, notificationSettings: $notificationSettings, shakeDetectionSettings: $shakeDetectionSettings)';
+    return 'AppSettings(themeSettings: $themeSettings, playerSettings: $playerSettings, sleepTimerSettings: $sleepTimerSettings, downloadSettings: $downloadSettings, notificationSettings: $notificationSettings, shakeDetectionSettings: $shakeDetectionSettings)';
   }
 
   @override
@@ -270,6 +302,8 @@ class _$AppSettingsImpl implements _AppSettings {
                 other.themeSettings == themeSettings) &&
             (identical(other.playerSettings, playerSettings) ||
                 other.playerSettings == playerSettings) &&
+            (identical(other.sleepTimerSettings, sleepTimerSettings) ||
+                other.sleepTimerSettings == sleepTimerSettings) &&
             (identical(other.downloadSettings, downloadSettings) ||
                 other.downloadSettings == downloadSettings) &&
             (identical(other.notificationSettings, notificationSettings) ||
@@ -280,8 +314,14 @@ class _$AppSettingsImpl implements _AppSettings {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, themeSettings, playerSettings,
-      downloadSettings, notificationSettings, shakeDetectionSettings);
+  int get hashCode => Object.hash(
+      runtimeType,
+      themeSettings,
+      playerSettings,
+      sleepTimerSettings,
+      downloadSettings,
+      notificationSettings,
+      shakeDetectionSettings);
 
   /// Create a copy of AppSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -303,6 +343,7 @@ abstract class _AppSettings implements AppSettings {
   const factory _AppSettings(
       {final ThemeSettings themeSettings,
       final PlayerSettings playerSettings,
+      final SleepTimerSettings sleepTimerSettings,
       final DownloadSettings downloadSettings,
       final NotificationSettings notificationSettings,
       final ShakeDetectionSettings shakeDetectionSettings}) = _$AppSettingsImpl;
@@ -314,6 +355,8 @@ abstract class _AppSettings implements AppSettings {
   ThemeSettings get themeSettings;
   @override
   PlayerSettings get playerSettings;
+  @override
+  SleepTimerSettings get sleepTimerSettings;
   @override
   DownloadSettings get downloadSettings;
   @override
@@ -552,8 +595,6 @@ mixin _$PlayerSettings {
   double get speedIncrement => throw _privateConstructorUsedError;
   double get minSpeed => throw _privateConstructorUsedError;
   double get maxSpeed => throw _privateConstructorUsedError;
-  SleepTimerSettings get sleepTimerSettings =>
-      throw _privateConstructorUsedError;
   Duration get minimumPositionForReporting =>
       throw _privateConstructorUsedError;
   Duration get playbackReportInterval => throw _privateConstructorUsedError;
@@ -585,7 +626,6 @@ abstract class $PlayerSettingsCopyWith<$Res> {
       double speedIncrement,
       double minSpeed,
       double maxSpeed,
-      SleepTimerSettings sleepTimerSettings,
       Duration minimumPositionForReporting,
       Duration playbackReportInterval,
       Duration markCompleteWhenTimeLeft,
@@ -593,7 +633,6 @@ abstract class $PlayerSettingsCopyWith<$Res> {
 
   $MinimizedPlayerSettingsCopyWith<$Res> get miniPlayerSettings;
   $ExpandedPlayerSettingsCopyWith<$Res> get expandedPlayerSettings;
-  $SleepTimerSettingsCopyWith<$Res> get sleepTimerSettings;
 }
 
 /// @nodoc
@@ -619,7 +658,6 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
     Object? speedIncrement = null,
     Object? minSpeed = null,
     Object? maxSpeed = null,
-    Object? sleepTimerSettings = null,
     Object? minimumPositionForReporting = null,
     Object? playbackReportInterval = null,
     Object? markCompleteWhenTimeLeft = null,
@@ -658,10 +696,6 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
           ? _value.maxSpeed
           : maxSpeed // ignore: cast_nullable_to_non_nullable
               as double,
-      sleepTimerSettings: null == sleepTimerSettings
-          ? _value.sleepTimerSettings
-          : sleepTimerSettings // ignore: cast_nullable_to_non_nullable
-              as SleepTimerSettings,
       minimumPositionForReporting: null == minimumPositionForReporting
           ? _value.minimumPositionForReporting
           : minimumPositionForReporting // ignore: cast_nullable_to_non_nullable
@@ -702,17 +736,6 @@ class _$PlayerSettingsCopyWithImpl<$Res, $Val extends PlayerSettings>
       return _then(_value.copyWith(expandedPlayerSettings: value) as $Val);
     });
   }
-
-  /// Create a copy of PlayerSettings
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $SleepTimerSettingsCopyWith<$Res> get sleepTimerSettings {
-    return $SleepTimerSettingsCopyWith<$Res>(_value.sleepTimerSettings,
-        (value) {
-      return _then(_value.copyWith(sleepTimerSettings: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -732,7 +755,6 @@ abstract class _$$PlayerSettingsImplCopyWith<$Res>
       double speedIncrement,
       double minSpeed,
       double maxSpeed,
-      SleepTimerSettings sleepTimerSettings,
       Duration minimumPositionForReporting,
       Duration playbackReportInterval,
       Duration markCompleteWhenTimeLeft,
@@ -742,8 +764,6 @@ abstract class _$$PlayerSettingsImplCopyWith<$Res>
   $MinimizedPlayerSettingsCopyWith<$Res> get miniPlayerSettings;
   @override
   $ExpandedPlayerSettingsCopyWith<$Res> get expandedPlayerSettings;
-  @override
-  $SleepTimerSettingsCopyWith<$Res> get sleepTimerSettings;
 }
 
 /// @nodoc
@@ -767,7 +787,6 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
     Object? speedIncrement = null,
     Object? minSpeed = null,
     Object? maxSpeed = null,
-    Object? sleepTimerSettings = null,
     Object? minimumPositionForReporting = null,
     Object? playbackReportInterval = null,
     Object? markCompleteWhenTimeLeft = null,
@@ -806,10 +825,6 @@ class __$$PlayerSettingsImplCopyWithImpl<$Res>
           ? _value.maxSpeed
           : maxSpeed // ignore: cast_nullable_to_non_nullable
               as double,
-      sleepTimerSettings: null == sleepTimerSettings
-          ? _value.sleepTimerSettings
-          : sleepTimerSettings // ignore: cast_nullable_to_non_nullable
-              as SleepTimerSettings,
       minimumPositionForReporting: null == minimumPositionForReporting
           ? _value.minimumPositionForReporting
           : minimumPositionForReporting // ignore: cast_nullable_to_non_nullable
@@ -842,7 +857,6 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
       this.speedIncrement = 0.05,
       this.minSpeed = 0.1,
       this.maxSpeed = 4,
-      this.sleepTimerSettings = const SleepTimerSettings(),
       this.minimumPositionForReporting = const Duration(seconds: 10),
       this.playbackReportInterval = const Duration(seconds: 10),
       this.markCompleteWhenTimeLeft = const Duration(seconds: 15),
@@ -884,9 +898,6 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
   final double maxSpeed;
   @override
   @JsonKey()
-  final SleepTimerSettings sleepTimerSettings;
-  @override
-  @JsonKey()
   final Duration minimumPositionForReporting;
   @override
   @JsonKey()
@@ -900,7 +911,7 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
 
   @override
   String toString() {
-    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredDefaultVolume: $preferredDefaultVolume, preferredDefaultSpeed: $preferredDefaultSpeed, speedOptions: $speedOptions, speedIncrement: $speedIncrement, minSpeed: $minSpeed, maxSpeed: $maxSpeed, sleepTimerSettings: $sleepTimerSettings, minimumPositionForReporting: $minimumPositionForReporting, playbackReportInterval: $playbackReportInterval, markCompleteWhenTimeLeft: $markCompleteWhenTimeLeft, configurePlayerForEveryBook: $configurePlayerForEveryBook)';
+    return 'PlayerSettings(miniPlayerSettings: $miniPlayerSettings, expandedPlayerSettings: $expandedPlayerSettings, preferredDefaultVolume: $preferredDefaultVolume, preferredDefaultSpeed: $preferredDefaultSpeed, speedOptions: $speedOptions, speedIncrement: $speedIncrement, minSpeed: $minSpeed, maxSpeed: $maxSpeed, minimumPositionForReporting: $minimumPositionForReporting, playbackReportInterval: $playbackReportInterval, markCompleteWhenTimeLeft: $markCompleteWhenTimeLeft, configurePlayerForEveryBook: $configurePlayerForEveryBook)';
   }
 
   @override
@@ -924,8 +935,6 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
                 other.minSpeed == minSpeed) &&
             (identical(other.maxSpeed, maxSpeed) ||
                 other.maxSpeed == maxSpeed) &&
-            (identical(other.sleepTimerSettings, sleepTimerSettings) ||
-                other.sleepTimerSettings == sleepTimerSettings) &&
             (identical(other.minimumPositionForReporting,
                     minimumPositionForReporting) ||
                 other.minimumPositionForReporting ==
@@ -953,7 +962,6 @@ class _$PlayerSettingsImpl implements _PlayerSettings {
       speedIncrement,
       minSpeed,
       maxSpeed,
-      sleepTimerSettings,
       minimumPositionForReporting,
       playbackReportInterval,
       markCompleteWhenTimeLeft,
@@ -986,7 +994,6 @@ abstract class _PlayerSettings implements PlayerSettings {
       final double speedIncrement,
       final double minSpeed,
       final double maxSpeed,
-      final SleepTimerSettings sleepTimerSettings,
       final Duration minimumPositionForReporting,
       final Duration playbackReportInterval,
       final Duration markCompleteWhenTimeLeft,
@@ -1011,8 +1018,6 @@ abstract class _PlayerSettings implements PlayerSettings {
   double get minSpeed;
   @override
   double get maxSpeed;
-  @override
-  SleepTimerSettings get sleepTimerSettings;
   @override
   Duration get minimumPositionForReporting;
   @override

@@ -26,7 +26,7 @@ class AppSettingsPage extends HookConsumerWidget {
     final registeredServersAsList = registeredServers.toList();
     final availableUsers = ref.watch(authenticatedUserProvider);
     final serverURIController = useTextEditingController();
-    final sleepTimerSettings = appSettings.playerSettings.sleepTimerSettings;
+    final sleepTimerSettings = appSettings.sleepTimerSettings;
 
     return SimpleSettingsPage(
       title: const Text('App Settings'),
@@ -99,7 +99,7 @@ class AppSettingsPage extends HookConsumerWidget {
               value: sleepTimerSettings.autoTurnOnTimer,
               onToggle: (value) {
                 ref.read(appSettingsProvider.notifier).update(
-                      appSettings.copyWith.playerSettings.sleepTimerSettings(
+                      appSettings.copyWith.sleepTimerSettings(
                         autoTurnOnTimer: value,
                       ),
                     );

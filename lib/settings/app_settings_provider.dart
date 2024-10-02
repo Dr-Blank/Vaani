@@ -60,3 +60,19 @@ class AppSettings extends _$AppSettings {
     state = const model.AppSettings();
   }
 }
+
+// SleepTimerSettings provider but only rebuilds when the sleep timer settings change
+@Riverpod(keepAlive: true)
+class SleepTimerSettings extends _$SleepTimerSettings {
+  @override
+  model.SleepTimerSettings build() {
+    final settings = ref.read(appSettingsProvider).sleepTimerSettings;
+    state = settings;
+    ref.listen(appSettingsProvider, (a, b) {
+      if (a?.sleepTimerSettings != b.sleepTimerSettings) {
+        state = b.sleepTimerSettings;
+      }
+    });
+    return state;
+  }
+}

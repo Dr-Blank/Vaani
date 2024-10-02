@@ -13,7 +13,7 @@ class AutoSleepTimerSettingsPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appSettings = ref.watch(appSettingsProvider);
-    final sleepTimerSettings = appSettings.playerSettings.sleepTimerSettings;
+    final sleepTimerSettings = appSettings.sleepTimerSettings;
 
     return SimpleSettingsPage(
       title: const Text('Auto Sleep Timer Settings'),
@@ -35,7 +35,7 @@ class AutoSleepTimerSettingsPage extends HookConsumerWidget {
                   : const Icon(Icons.timer_off),
               onToggle: (value) {
                 ref.read(appSettingsProvider.notifier).update(
-                      appSettings.copyWith.playerSettings.sleepTimerSettings(
+                      appSettings.copyWith.sleepTimerSettings(
                         autoTurnOnTimer: value,
                       ),
                     );
@@ -57,7 +57,7 @@ class AutoSleepTimerSettingsPage extends HookConsumerWidget {
                 );
                 if (selected != null) {
                   ref.read(appSettingsProvider.notifier).update(
-                        appSettings.copyWith.playerSettings.sleepTimerSettings(
+                        appSettings.copyWith.sleepTimerSettings(
                           autoTurnOnTime: selected.toDuration(),
                         ),
                       );
@@ -81,7 +81,7 @@ class AutoSleepTimerSettingsPage extends HookConsumerWidget {
                 );
                 if (selected != null) {
                   ref.read(appSettingsProvider.notifier).update(
-                        appSettings.copyWith.playerSettings.sleepTimerSettings(
+                        appSettings.copyWith.sleepTimerSettings(
                           autoTurnOffTime: selected.toDuration(),
                         ),
                       );

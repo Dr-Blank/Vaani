@@ -11,20 +11,16 @@ part 'sleep_timer_provider.g.dart';
 class SleepTimer extends _$SleepTimer {
   @override
   core.SleepTimer? build() {
-    final appSettings = ref.watch(appSettingsProvider);
-    final sleepTimerSettings = appSettings.playerSettings.sleepTimerSettings;
-    bool isEnabled = sleepTimerSettings.autoTurnOnTimer;
-    if (!isEnabled) {
+    final sleepTimerSettings = ref.watch(sleepTimerSettingsProvider);
+    if (!sleepTimerSettings.autoTurnOnTimer) {
       return null;
     }
 
     if ((!sleepTimerSettings.alwaysAutoTurnOnTimer) &&
-        (sleepTimerSettings.autoTurnOnTime
-                .toTimeOfDay()
-                .isAfter(TimeOfDay.now()) &&
-            sleepTimerSettings.autoTurnOffTime
-                .toTimeOfDay()
-                .isBefore(TimeOfDay.now()))) {
+        !shouldBuildRightNow(
+          sleepTimerSettings.autoTurnOnTime,
+          sleepTimerSettings.autoTurnOffTime,
+        )) {
       return null;
     }
 
@@ -67,4 +63,10 @@ class SleepTimer extends _$SleepTimer {
     state?.dispose();
     state = null;
   }
+}
+
+bool shouldBuildRightNow(Duration autoTurnOnTime, Duration autoTurnOffTime) {
+  final now = TimeOfDay.now();
+  return autoTurnOnTime.toTimeOfDay().isBefore(now) &&
+      autoTurnOffTime.toTimeOfDay().isAfter(now);
 }
