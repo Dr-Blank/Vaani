@@ -67,6 +67,8 @@ class SleepTimer extends _$SleepTimer {
 
 bool shouldBuildRightNow(Duration autoTurnOnTime, Duration autoTurnOffTime) {
   final now = TimeOfDay.now();
-  return autoTurnOnTime.toTimeOfDay().isBefore(now) &&
-      autoTurnOffTime.toTimeOfDay().isAfter(now);
+  return now.isBetween(
+    autoTurnOnTime.toTimeOfDay(),
+    autoTurnOffTime.toTimeOfDay(),
+  );
 }

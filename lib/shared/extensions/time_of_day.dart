@@ -31,4 +31,16 @@ extension TimeOfDayExtension on TimeOfDay {
 
   bool isBefore(TimeOfDay other) => this < other;
   bool isAfter(TimeOfDay other) => this > other;
+
+  bool isBetween(TimeOfDay start, TimeOfDay end) {
+    // needs more logic to handle the case where start is after end
+    //but on the other day
+    if (start == end) {
+      return this == start;
+    }
+    if (start < end) {
+      return this >= start && this <= end;
+    }
+    return this >= start || this <= end;
+  }
 }
