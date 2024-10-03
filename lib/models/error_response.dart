@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
+import 'package:vaani/shared/extensions/obfuscation.dart';
 
 final _logger = Logger('ErrorResponse');
 
@@ -13,7 +14,7 @@ class ErrorResponseHandler {
   }) : _response = response ?? http.Response('', 418);
 
   void storeError(http.Response response, [Object? error]) {
-    _logger.fine('for $name got response: $response');
+    _logger.fine('for $name got response: ${response.obfuscate()}');
     _response = response;
   }
 

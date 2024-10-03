@@ -4,6 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:vaani/db/available_boxes.dart';
 import 'package:vaani/settings/models/api_settings.dart' as model;
+import 'package:vaani/shared/extensions/obfuscation.dart';
 
 part 'api_settings_provider.g.dart';
 
@@ -19,6 +20,7 @@ class ApiSettings extends _$ApiSettings {
     ref.listenSelf((_, __) {
       writeToBox();
     });
+
     return state;
   }
 
@@ -33,7 +35,7 @@ class ApiSettings extends _$ApiSettings {
           activeServer: foundSettings.activeUser?.server,
         );
       }
-      _logger.fine('found api settings in box: $foundSettings');
+      _logger.fine('found api settings in box: ${foundSettings.obfuscate()}');
       return foundSettings;
     } else {
       // create a new settings object
@@ -47,7 +49,7 @@ class ApiSettings extends _$ApiSettings {
   void writeToBox() {
     _box.clear();
     _box.add(state);
-    _logger.fine('wrote api settings to box: $state');
+    _logger.fine('wrote api settings to box: ${state.obfuscate()}');
   }
 
   void updateState(model.ApiSettings newSettings, {bool force = false}) {

@@ -1,15 +1,17 @@
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:vaani/api/authenticated_user_provider.dart';
 import 'package:vaani/db/storage.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
-import 'package:vaani/settings/models/audiobookshelf_server.dart'
-    as model;
+import 'package:vaani/settings/models/audiobookshelf_server.dart' as model;
+import 'package:vaani/shared/extensions/obfuscation.dart';
 
 part 'server_provider.g.dart';
 
 final _box = AvailableHiveBoxes.serverBox;
+
+final _logger = Logger('AudiobookShelfServerProvider');
 
 class ServerAlreadyExistsException implements Exception {
   final model.AudiobookShelfServer server;
@@ -47,10 +49,10 @@ class AudiobookShelfServer extends _$AudiobookShelfServer {
   Set<model.AudiobookShelfServer> readFromBoxOrCreate() {
     if (_box.isNotEmpty) {
       final foundServers = _box.getRange(0, _box.length);
-      debugPrint('found servers in box: $foundServers');
+      _logger.info('found servers in box: ${foundServers.obfuscate()}');
       return foundServers.whereNotNull().toSet();
     } else {
-      debugPrint('no settings found in box');
+      _logger.info('no settings found in box');
       return {};
     }
   }
@@ -61,7 +63,7 @@ class AudiobookShelfServer extends _$AudiobookShelfServer {
       return;
     }
     _box.addAll(state);
-    debugPrint('writing state to box: $state');
+    _logger.info('writing state to box: ${state.obfuscate()}');
   }
 
   void addServer(model.AudiobookShelfServer server) {
@@ -71,8 +73,8 @@ class AudiobookShelfServer extends _$AudiobookShelfServer {
     state = {...state, server};
   }
 
-  void removeServer(model.AudiobookShelfServer server,
-      {
+  void removeServer(
+    model.AudiobookShelfServer server, {
     bool removeUsers = false,
   }) {
     state = state.where((s) => s != server).toSet();

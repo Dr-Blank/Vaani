@@ -327,7 +327,7 @@ class _IsServerAliveProviderElement
   String get address => (origin as IsServerAliveProvider).address;
 }
 
-String _$serverStatusHash() => r'2739906a1862d09b098588ebd16749a09032ee99';
+String _$serverStatusHash() => r'd7079e19e68f5f61b0afa0f73a2af8807c4b3cf6';
 
 /// fetch status of server
 ///

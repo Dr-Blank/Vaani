@@ -6,6 +6,7 @@ import 'package:vaani/features/explore/providers/search_controller.dart';
 import 'package:vaani/features/player/providers/player_form.dart';
 import 'package:vaani/features/player/view/audiobook_player.dart';
 import 'package:vaani/features/player/view/player_when_expanded.dart';
+import 'package:vaani/main.dart';
 import 'package:vaani/router/router.dart';
 
 // stack to track changes in navigationShell.currentIndex
@@ -42,13 +43,13 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
     onBackButtonPressed() async {
       final isPlayerExpanded = playerProgress != playerMinHeight;
 
-      debugPrint(
+      appLogger.fine(
         'BackButtonListener: Back button pressed, isPlayerExpanded: $isPlayerExpanded, stack: $navigationShellStack, pendingPlayerModals: $pendingPlayerModals',
       );
 
       // close miniplayer if it is open
       if (isPlayerExpanded && pendingPlayerModals == 0) {
-        debugPrint(
+        appLogger.fine(
           'BackButtonListener: closing the player',
         );
         audioBookMiniplayerController.animateToHeight(state: PanelState.MIN);
@@ -59,7 +60,7 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
       final canPop = GoRouter.of(context).canPop();
 
       if (canPop) {
-        debugPrint(
+        appLogger.fine(
           'BackButtonListener: passing it to the router as canPop is true',
         );
         return false;
@@ -69,7 +70,7 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
         // pop the last index from the stack and navigate to it
         final index = navigationShellStack.last;
         navigationShellStack.remove(index);
-        debugPrint('BackButtonListener: popping the stack, index: $index');
+        appLogger.fine('BackButtonListener: popping the stack, index: $index');
 
         // if the stack is empty, navigate to home else navigate to the last index
         if (navigationShellStack.isNotEmpty) {
@@ -79,12 +80,12 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
       }
       if (navigationShell.currentIndex != 0) {
         // if the stack is empty and the current branch is not home, navigate to home
-        debugPrint('BackButtonListener: navigating to home');
+        appLogger.fine('BackButtonListener: navigating to home');
         navigationShell.goBranch(0);
         return true;
       }
 
-      debugPrint('BackButtonListener: passing it to the router');
+      appLogger.fine('BackButtonListener: passing it to the router');
       return false;
     }
 
@@ -149,12 +150,11 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
       navigationShellStack.remove(index);
     }
     navigationShellStack.add(index);
-    debugPrint('Tapped index: $index, stack: $navigationShellStack');
+    appLogger.fine('Tapped index: $index, stack: $navigationShellStack');
 
     // Check if the current branch is the same as the branch that was tapped.
-    // If it is, debugPrint a message to the console.
     if (index == navigationShell.currentIndex) {
-      debugPrint('Tapped the current branch');
+      appLogger.fine('Tapped the current branch');
 
       // if current branch is explore, open the search view
       if (index == 2) {

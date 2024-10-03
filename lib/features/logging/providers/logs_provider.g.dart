@@ -1,25 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'api_settings_provider.dart';
+part of 'logs_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$apiSettingsHash() => r'5bc1e16e9d72b77fb10637aabadf08e8947da580';
+String _$logsHash() => r'901376741d17ddbb889d1b7b96bc2882289720a0';
 
-/// See also [ApiSettings].
-@ProviderFor(ApiSettings)
-final apiSettingsProvider =
-    NotifierProvider<ApiSettings, model.ApiSettings>.internal(
-  ApiSettings.new,
-  name: r'apiSettingsProvider',
+/// See also [Logs].
+@ProviderFor(Logs)
+final logsProvider =
+    AutoDisposeAsyncNotifierProvider<Logs, List<LogRecord>>.internal(
+  Logs.new,
+  name: r'logsProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$apiSettingsHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$logsHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ApiSettings = Notifier<model.ApiSettings>;
+typedef _$Logs = AutoDisposeAsyncNotifier<List<LogRecord>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -11,6 +11,7 @@ import 'package:vaani/models/error_response.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/constants.dart';
 import 'package:vaani/settings/models/models.dart' as model;
+import 'package:vaani/shared/extensions/obfuscation.dart';
 import 'package:vaani/shared/utils.dart';
 
 class UserLoginWithOpenID extends HookConsumerWidget {
@@ -89,7 +90,9 @@ class UserLoginWithOpenID extends HookConsumerWidget {
         return;
       }
 
-      appLogger.fine('Got OpenID login endpoint: $openIDLoginEndpoint');
+      appLogger.fine(
+        'Got OpenID login endpoint: ${openIDLoginEndpoint.obfuscate()}',
+      );
 
       // add the flow to the provider
       ref.read(oauthFlowsProvider.notifier).addFlow(

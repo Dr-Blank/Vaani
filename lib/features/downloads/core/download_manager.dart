@@ -8,6 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/shared/extensions/model_conversions.dart';
+import 'package:vaani/shared/extensions/obfuscation.dart';
 
 final _logger = Logger('AudiobookDownloadManager');
 final tq = MemoryTaskQueue();
@@ -35,7 +36,9 @@ class AudiobookDownloadManager {
 
     FileDownloader().addTaskQueue(tq);
 
-    _logger.fine('initialized with baseUrl: $baseUrl, token: $token');
+    _logger.fine(
+      'initialized with baseUrl: ${Uri.parse(baseUrl).obfuscate()} and token: ${token.obfuscate()}',
+    );
     _logger.fine(
       'requiresWiFi: $requiresWiFi, retries: $retries, allowPause: $allowPause',
     );

@@ -5,10 +5,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/api/api_provider.dart';
 import 'package:vaani/api/authenticated_user_provider.dart';
 import 'package:vaani/api/server_provider.dart';
+import 'package:vaani/main.dart';
 import 'package:vaani/models/error_response.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
 import 'package:vaani/settings/models/models.dart' as model;
+import 'package:vaani/shared/extensions/obfuscation.dart';
 import 'package:vaani/shared/widgets/add_new_server.dart';
 
 class ServerManagerPage extends HookConsumerWidget {
@@ -25,8 +27,8 @@ class ServerManagerPage extends HookConsumerWidget {
     final serverURIController = useTextEditingController();
     final formKey = GlobalKey<FormState>();
 
-    debugPrint('registered servers: $registeredServers');
-    debugPrint('available users: $availableUsers');
+    appLogger.fine('registered servers: ${registeredServers.obfuscate()}');
+    appLogger.fine('available users: ${availableUsers.obfuscate()}');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Manage Accounts'),

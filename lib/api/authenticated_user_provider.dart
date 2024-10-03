@@ -5,8 +5,8 @@ import 'package:vaani/api/server_provider.dart'
 import 'package:vaani/db/storage.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
 import 'package:vaani/settings/models/audiobookshelf_server.dart';
-import 'package:vaani/settings/models/authenticated_user.dart'
-    as model;
+import 'package:vaani/settings/models/authenticated_user.dart' as model;
+import 'package:vaani/shared/extensions/obfuscation.dart';
 
 part 'authenticated_user_provider.g.dart';
 
@@ -35,7 +35,9 @@ class AuthenticatedUser extends _$AuthenticatedUser {
   Set<model.AuthenticatedUser> readFromBoxOrCreate() {
     if (_box.isNotEmpty) {
       final foundData = _box.getRange(0, _box.length);
-      _logger.fine('found users in box: $foundData');
+      _logger.fine(
+        'found users in box: ${foundData.obfuscate()}',
+      );
       return foundData.toSet();
     } else {
       _logger.fine('no settings found in box');
@@ -49,7 +51,7 @@ class AuthenticatedUser extends _$AuthenticatedUser {
       return;
     }
     _box.addAll(state);
-    _logger.fine('writing state to box: $state');
+    _logger.fine('writing state to box: ${state.obfuscate()}');
   }
 
   void addUser(model.AuthenticatedUser user, {bool setActive = false}) {
