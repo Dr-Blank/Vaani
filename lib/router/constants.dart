@@ -90,6 +90,12 @@ class Routes {
     name: 'openIDCallback',
     parentRoute: onboarding,
   );
+
+  // logs page
+  static const logs = _SimpleRoute(
+    pathName: 'logs',
+    name: 'logs',
+  );
 }
 
 // a class to store path

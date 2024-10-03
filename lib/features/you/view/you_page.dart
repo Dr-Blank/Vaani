@@ -41,14 +41,21 @@ class _YouPage extends HookConsumerWidget {
         // title: const Text('You'),
         backgroundColor: Colors.transparent,
         actions: [
+          IconButton(
+            tooltip: 'Logs',
+            icon: const Icon(Icons.bug_report),
+            onPressed: () {
+              context.pushNamed(Routes.logs.name);
+            },
+          ),
           // IconButton(
           //   icon: const Icon(Icons.edit),
           //   onPressed: () {
           //     // Handle edit profile
           //   },
           // ),
-          // settings button
           IconButton(
+            tooltip: 'Settings',
             icon: const Icon(Icons.settings),
             onPressed: () {
               context.pushNamed(Routes.settings.name);
