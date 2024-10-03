@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/api/api_provider.dart';
 import 'package:vaani/router/router.dart';
+import 'package:vaani/settings/constants.dart';
 import 'package:vaani/shared/utils.dart';
 import 'package:vaani/shared/widgets/not_implemented.dart';
 
@@ -83,21 +84,6 @@ class YouPage extends HookConsumerWidget {
                     title: const Text('My Playlists'),
                     onTap: () {
                       // Handle navigation to playlists
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.help),
-                    title: const Text('Help'),
-                    onTap: () {
-                      // Handle navigation to help website
-                      showNotImplementedToast(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.info),
-                    title: const Text('About'),
-                    onTap: () {
-                      // Handle navigation to about
                       showNotImplementedToast(context);
                     },
                   ),
@@ -111,10 +97,40 @@ class YouPage extends HookConsumerWidget {
                       );
                     },
                   ),
-                  // const SizedBox(height: 16),
-                  // const Text('App Version: 1.0.0'),
-                  // const Text('Server Version: 1.0.0'),
-                  // const Text('Author: Your Name'),
+                  ListTile(
+                    leading: const Icon(Icons.help),
+                    title: const Text('Help'),
+                    onTap: () {
+                      // Handle navigation to help website
+                      showNotImplementedToast(context);
+                    },
+                  ),
+
+                  AboutListTile(
+                    icon: const Icon(Icons.info),
+                    applicationName: AppMetadata.appName,
+                    applicationVersion: AppMetadata.version,
+                    applicationLegalese:
+                        'Made with ❤️ by ${AppMetadata.author}',
+                    aboutBoxChildren: [
+                      // link to github repo
+                      ListTile(
+                        leading: Icon(Icons.code),
+                        title: Text('Source Code'),
+                        onTap: () {
+                          handleLaunchUrl(AppMetadata.githubRepo);
+                        },
+                      ),
+                    ],
+                    // apply blend mode to the icon to match the primary color
+                    applicationIcon: ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.primary,
+                        BlendMode.srcIn,
+                      ),
+                      child: const VaaniLogo(),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -163,6 +179,32 @@ class UserBar extends HookConsumerWidget {
       },
       loading: () => const CircularProgressIndicator(),
       error: (error, stack) => Text('Error: $error'),
+    );
+  }
+}
+
+class VaaniLogo extends StatelessWidget {
+  const VaaniLogo({
+    super.key,
+    this.size,
+    this.duration = const Duration(milliseconds: 750),
+    this.curve = Curves.fastOutSlowIn,
+  });
+
+  final double? size;
+  final Duration duration;
+  final Curve curve;
+
+  @override
+  Widget build(BuildContext context) {
+    final IconThemeData iconTheme = IconTheme.of(context);
+    final double? iconSize = size ?? iconTheme.size;
+    return AnimatedContainer(
+      width: iconSize,
+      height: iconSize,
+      duration: duration,
+      curve: curve,
+      child: Image.asset('assets/images/vaani_logo_foreground.png'),
     );
   }
 }
