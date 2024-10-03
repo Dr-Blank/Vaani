@@ -39,7 +39,11 @@ class Logs extends _$Logs {
 
 Future<String> generateZipFilePath() async {
   Directory appDocDirectory = await getTemporaryDirectory();
-  return '${appDocDirectory.path}/vaani_logs.zip';
+  return '${appDocDirectory.path}/${generateZipFileName()}';
+}
+
+String generateZipFileName() {
+  return 'vaani-${DateTime.now().toIso8601String()}.zip';
 }
 
 Level parseLevel(String level) {

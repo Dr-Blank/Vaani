@@ -87,7 +87,7 @@ class LogsPage extends HookConsumerWidget {
               // save to folder
               String? outputFile = await FilePicker.platform.saveFile(
                 dialogTitle: 'Please select an output file:',
-                fileName: 'vaani_logs.zip',
+                fileName: zipLogFilePath.split('/').last,
               );
               if (outputFile != null) {
                 try {
