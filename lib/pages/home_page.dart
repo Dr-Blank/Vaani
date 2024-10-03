@@ -49,6 +49,9 @@ class HomePage extends HookConsumerWidget {
                     // try again button
                     ElevatedButton(
                       onPressed: () {
+                        ref.read(apiSettingsProvider.notifier).updateState(
+                              apiSettings.copyWith(activeLibraryId: null),
+                            );
                         ref.invalidate(personalizedViewProvider);
                       },
                       child: const Text('Try again'),
