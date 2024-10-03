@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/api_provider.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/shared/utils.dart';
@@ -11,27 +10,6 @@ class YouPage extends HookConsumerWidget {
   const YouPage({
     super.key,
   });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final me = ref.watch(meProvider);
-    return me.when(
-      data: (data) {
-        return _YouPage(userData: data);
-      },
-      loading: () => const CircularProgressIndicator(),
-      error: (error, stack) => Text('Error: $error'),
-    );
-  }
-}
-
-class _YouPage extends HookConsumerWidget {
-  const _YouPage({
-    super.key,
-    required this.userData,
-  });
-
-  final User userData;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -71,30 +49,7 @@ class _YouPage extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        // backgroundImage: NetworkImage(userData.avatarUrl),
-                        // first letter of the username
-                        child: Text(
-                          userData.username[0].toUpperCase(),
-                          style: const TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Text(
-                        userData.username,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+                  UserBar(),
                   const SizedBox(height: 16),
                   Wrap(
                     spacing: 8,
@@ -166,6 +121,48 @@ class _YouPage extends HookConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class UserBar extends HookConsumerWidget {
+  const UserBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final me = ref.watch(meProvider);
+
+    return me.when(
+      data: (userData) {
+        return Row(
+          children: [
+            CircleAvatar(
+              radius: 40,
+              // backgroundImage: NetworkImage(userData.avatarUrl),
+              // first letter of the username
+              child: Text(
+                userData.username[0].toUpperCase(),
+                style: const TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Text(
+              userData.username,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        );
+      },
+      loading: () => const CircularProgressIndicator(),
+      error: (error, stack) => Text('Error: $error'),
     );
   }
 }
