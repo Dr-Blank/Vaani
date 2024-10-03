@@ -10,6 +10,7 @@ import 'package:vaani/features/onboarding/view/callback_page.dart';
 import 'package:vaani/features/onboarding/view/onboarding_single_page.dart';
 import 'package:vaani/features/you/view/server_manager.dart';
 import 'package:vaani/features/you/view/you_page.dart';
+import 'package:vaani/main.dart';
 import 'package:vaani/pages/home_page.dart';
 import 'package:vaani/settings/view/app_settings_page.dart';
 import 'package:vaani/settings/view/auto_sleep_timer_settings_page.dart';
@@ -234,7 +235,7 @@ class MyAppRouter {
     // extract the code and state from the uri
     final code = state.uri.queryParameters['code'];
     final stateParam = state.uri.queryParameters['state'];
-    debugPrint('deep linking callback: code: $code, state: $stateParam');
+    appLogger.fine('deep linking callback: code: $code, state: $stateParam');
 
     var callbackPage =
         CallbackPage(code: code, state: stateParam, key: ValueKey(stateParam));

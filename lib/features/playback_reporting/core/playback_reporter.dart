@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/features/player/core/audiobook_player.dart';
+import 'package:vaani/shared/extensions/obfuscation.dart';
 
 final _logger = Logger('PlaybackReporter');
 
@@ -255,9 +257,9 @@ class PlaybackReporter {
     _logger.fine('cancelled timer');
   }
 
-  void _responseErrorHandler(response, [error]) {
+  void _responseErrorHandler(http.Response response, [error]) {
     if (response.statusCode != 200) {
-      _logger.shout('Error with api: $response, $error');
+      _logger.severe('Error with api: ${response.obfuscate()}, $error');
       throw PlaybackSyncError(
         'Error syncing position: ${response.body}, $error',
       );

@@ -383,7 +383,7 @@ class _BookCover extends HookConsumerWidget {
                     : themeData,
               );
             } catch (e) {
-              appLogger.shout('Error changing theme: $e');
+              appLogger.severe('Error changing theme: $e');
             }
           });
         }

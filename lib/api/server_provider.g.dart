@@ -7,7 +7,7 @@ part of 'server_provider.dart';
 // **************************************************************************
 
 String _$audiobookShelfServerHash() =>
-    r'f0d645bb42233c59886bc43fdc473897484ceca1';
+    r'0084fb72c4c54323207928b95716cfd9ca496c11';
 
 /// provides with a set of servers added by the user
 ///

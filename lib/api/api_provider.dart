@@ -8,6 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/db/cache_manager.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
+import 'package:vaani/shared/extensions/obfuscation.dart';
 
 part 'api_provider.g.dart';
 
@@ -80,7 +81,7 @@ FutureOr<ServerStatusResponse?> serverStatus(
   Uri baseUrl, [
   ResponseErrorHandler? responseErrorHandler,
 ]) async {
-  _logger.fine('fetching server status: $baseUrl');
+  _logger.fine('fetching server status: ${baseUrl.obfuscate()}');
   final api = ref.watch(audiobookshelfApiProvider(baseUrl));
   final res =
       await api.server.status(responseErrorHandler: responseErrorHandler);
@@ -145,7 +146,6 @@ class PersonalizedView extends _$PersonalizedView {
       _logger.warning('failed to fetch personalized view');
       yield [];
     }
-    
   }
 
   // method to force refresh the view and ignore the cache

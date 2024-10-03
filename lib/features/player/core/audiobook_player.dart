@@ -11,6 +11,7 @@ import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/settings/models/app_settings.dart';
 import 'package:vaani/shared/extensions/model_conversions.dart';
+import 'package:vaani/shared/extensions/obfuscation.dart';
 
 final _logger = Logger('AudiobookPlayer');
 
@@ -124,7 +125,7 @@ class AudiobookPlayer extends AudioPlayer {
           final retrievedUri =
               _getUri(track, downloadedUris, baseUrl: baseUrl, token: token);
           _logger.fine(
-            'Setting source for track: ${track.title}, URI: $retrievedUri',
+            'Setting source for track: ${track.title}, URI: ${retrievedUri.obfuscate()}',
           );
           return AudioSource.uri(
             retrievedUri,

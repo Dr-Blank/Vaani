@@ -518,7 +518,7 @@ Future<void> libraryItemPlayButtonOnPressed({
   required shelfsdk.BookExpanded book,
   shelfsdk.MediaProgress? userMediaProgress,
 }) async {
-  debugPrint('Pressed play/resume button');
+  appLogger.info('Pressed play/resume button');
   final player = ref.watch(audiobookPlayerProvider);
 
   final isCurrentBookSetInPlayer = player.book == book;
@@ -527,8 +527,8 @@ Future<void> libraryItemPlayButtonOnPressed({
   Future<void>? setSourceFuture;
   // set the book to the player if not already set
   if (!isCurrentBookSetInPlayer) {
-    debugPrint('Setting the book ${book.libraryItemId}');
-    debugPrint('Initial position: ${userMediaProgress?.currentTime}');
+    appLogger.info('Setting the book ${book.libraryItemId}');
+    appLogger.info('Initial position: ${userMediaProgress?.currentTime}');
     final downloadManager = ref.watch(simpleDownloadManagerProvider);
     final libItem =
         await ref.read(libraryItemProvider(book.libraryItemId).future);
@@ -539,9 +539,9 @@ Future<void> libraryItemPlayButtonOnPressed({
       downloadedUris: downloadedUris,
     );
   } else {
-    debugPrint('Book was already set');
+    appLogger.info('Book was already set');
     if (isPlayingThisBook) {
-      debugPrint('Pausing the book');
+      appLogger.info('Pausing the book');
       await player.pause();
       return;
     }

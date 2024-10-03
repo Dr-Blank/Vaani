@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/features/player/providers/audiobook_player.dart';
 import 'package:vaani/features/player/providers/currently_playing_provider.dart';
 import 'package:vaani/features/player/view/player_when_expanded.dart';
+import 'package:vaani/main.dart';
 import 'package:vaani/shared/extensions/chapter.dart';
 import 'package:vaani/shared/extensions/duration_format.dart';
 import 'package:vaani/shared/hooks.dart';
@@ -55,7 +56,7 @@ class ChapterSelectionModal extends HookConsumerWidget {
     final currentChapterIndex = currentChapter?.id;
     final chapterKey = GlobalKey();
     scrollToCurrentChapter() async {
-      debugPrint('scrolling to chapter');
+      appLogger.fine('scrolling to chapter');
       await Scrollable.ensureVisible(
         chapterKey.currentContext!,
         duration: 200.ms,

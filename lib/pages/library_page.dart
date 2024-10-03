@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/main.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
 
 import '../shared/widgets/drawer.dart';
@@ -47,7 +48,7 @@ class LibraryPage extends HookConsumerWidget {
             final shelvesToDisplay = data
                 // .where((element) => !element.id.contains('discover'))
                 .map((shelf) {
-              debugPrint('building shelf ${shelf.label}');
+              appLogger.fine('building shelf ${shelf.label}');
               return HomeShelf(
                 title: shelf.label,
                 shelf: shelf,

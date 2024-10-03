@@ -31,9 +31,11 @@ class SimpleDownloadManager extends _$SimpleDownloadManager {
     core.tq.maxConcurrentByGroup = downloadSettings.maxConcurrentByGroup;
 
     ref.onDispose(() {
+      _logger.info('disposing download manager');
       manager.dispose();
     });
 
+    _logger.config('initialized download manager');
     return manager;
   }
 }
@@ -52,12 +54,14 @@ class DownloadManager extends _$DownloadManager {
   Future<void> queueAudioBookDownload(
     LibraryItemExpanded item,
   ) async {
+    _logger.fine('queueing download for ${item.id}');
     await state.queueAudioBookDownload(
       item,
     );
   }
 
   Future<void> deleteDownloadedItem(LibraryItemExpanded item) async {
+    _logger.fine('deleting downloaded item ${item.id}');
     await state.deleteDownloadedItem(item);
     ref.notifyListeners();
   }

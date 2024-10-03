@@ -69,7 +69,7 @@ class SleepTimer {
       }),
     );
 
-    _logger.fine('created with duration: $duration');
+    _logger.info('created with duration: $duration');
   }
 
   /// resets the timer and stops it
@@ -90,7 +90,7 @@ class SleepTimer {
     if (player.playing) {
       startCountDown();
     }
-    _logger.fine('restarted timer');
+    _logger.info('restarted timer');
   }
 
   /// starts the timer with the given duration or the default duration
@@ -105,7 +105,7 @@ class SleepTimer {
       _logger.fine('paused player after $duration');
     });
     startedAt = DateTime.now();
-    _logger.fine('started for $duration at $startedAt');
+    _logger.info('started for $duration at $startedAt');
   }
 
   Duration get remainingTime {
@@ -130,6 +130,6 @@ class SleepTimer {
     for (var sub in _subscriptions) {
       sub.cancel();
     }
-    _logger.fine('disposed');
+    _logger.info('disposed');
   }
 }
