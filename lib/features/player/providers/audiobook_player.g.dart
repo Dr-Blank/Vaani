@@ -7,7 +7,7 @@ part of 'audiobook_player.dart';
 // **************************************************************************
 
 String _$simpleAudiobookPlayerHash() =>
-    r'9e11ed2791d35e308f8cbe61a79a45cf51466ebb';
+    r'5e94bbff4314adceb5affa704fc4d079d4016afa';
 
 /// Simple because it doesn't rebuild when the player state changes
 /// it only rebuilds when the token changes
@@ -26,7 +26,7 @@ final simpleAudiobookPlayerProvider =
 );
 
 typedef _$SimpleAudiobookPlayer = Notifier<core.AudiobookPlayer>;
-String _$audiobookPlayerHash() => r'44394b1dbbf85eb19ef1f693717e8cbc15b768e5';
+String _$audiobookPlayerHash() => r'0f180308067486896fec6a65a6afb0e6686ac4a0';
 
 /// See also [AudiobookPlayer].
 @ProviderFor(AudiobookPlayer)

@@ -1,21 +1,11 @@
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:vaani/api/api_provider.dart';
-import 'package:vaani/features/player/core/audiobook_player.dart'
-    as core;
+import 'package:vaani/features/player/core/audiobook_player.dart' as core;
 
 part 'audiobook_player.g.dart';
 
-// @Riverpod(keepAlive: true)
-// core.AudiobookPlayer audiobookPlayer(
-//   AudiobookPlayerRef ref,
-// ) {
-//   final api = ref.watch(authenticatedApiProvider);
-//   final player = core.AudiobookPlayer(api.token!, api.baseUrl);
-
-//   ref.onDispose(player.dispose);
-
-//   return player;
-// }
+final _logger = Logger('AudiobookPlayerProvider');
 
 const playerId = 'audiobook_player';
 
@@ -32,6 +22,7 @@ class SimpleAudiobookPlayer extends _$SimpleAudiobookPlayer {
     );
 
     ref.onDispose(player.dispose);
+    _logger.finer('created simple player');
 
     return player;
   }
@@ -47,18 +38,16 @@ class AudiobookPlayer extends _$AudiobookPlayer {
 
     // bind notify listeners to the player
     player.playerStateStream.listen((_) {
-      notifyListeners();
+      ref.notifyListeners();
     });
+
+    _logger.finer('created player');
 
     return player;
   }
 
-  void notifyListeners() {
-    ref.notifyListeners();
-  }
-
   Future<void> setSpeed(double speed) async {
     await state.setSpeed(speed);
-    notifyListeners();
+    ref.notifyListeners();
   }
 }

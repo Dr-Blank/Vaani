@@ -17,33 +17,32 @@ final _logger = Logger('AudiobookPlayer');
 
 /// returns the sum of the duration of all the previous tracks before the [index]
 Duration sumOfTracks(BookExpanded book, int? index) {
+  _logger.fine('Calculating sum of tracks for index: $index');
   // return 0 if index is less than 0
   if (index == null || index < 0) {
+    _logger.warning('Index is null or less than 0, returning 0');
     return Duration.zero;
   }
-  return book.tracks.sublist(0, index).fold<Duration>(Duration.zero,
-      (previousValue, element) {
-    return previousValue + element.duration;
-  });
+  final total = book.tracks.sublist(0, index).fold<Duration>(
+        Duration.zero,
+        (previousValue, element) => previousValue + element.duration,
+      );
+  _logger.fine('Sum of tracks for index: $index is $total');
+  return total;
 }
 
 /// returns the [AudioTrack] to play based on the [position] in the [book]
 AudioTrack getTrackToPlay(BookExpanded book, Duration position) {
-  // var totalDuration = Duration.zero;
-  // for (var track in book.tracks) {
-  //   totalDuration += track.duration;
-  //   if (totalDuration >= position) {
-  //     return track;
-  //   }
-  // }
-  // return book.tracks.last;
-  return book.tracks.firstWhere(
+  _logger.fine('Getting track to play for position: $position');
+  final track = book.tracks.firstWhere(
     (element) {
       return element.startOffset <= position &&
           (element.startOffset + element.duration) >= position;
     },
     orElse: () => book.tracks.last,
   );
+  _logger.fine('Track to play for position: $position is $track');
+  return track;
 }
 
 /// will manage the audio player instance
@@ -51,6 +50,7 @@ class AudiobookPlayer extends AudioPlayer {
   // constructor which takes in the BookExpanded object
   AudiobookPlayer(this.token, this.baseUrl) : super() {
     // set the source of the player to the first track in the book
+    _logger.config('Setting up audiobook player');
   }
 
   /// the [BookExpanded] being played
@@ -85,20 +85,23 @@ class AudiobookPlayer extends AudioPlayer {
     List<Uri>? downloadedUris,
     Uri? artworkUri,
   }) async {
+    _logger.finer(
+      'Initial position: $initialPosition, Downloaded URIs: $downloadedUris',
+    );
     final appSettings = loadOrCreateAppSettings();
-    // if the book is null, stop the player
     if (book == null) {
       _book = null;
       _logger.info('Book is null, stopping player');
       return stop();
     }
 
-    // see if the book is the same as the current book
     if (_book == book) {
       _logger.info('Book is the same, doing nothing');
       return;
     }
-    // first stop the player and clear the source
+    _logger.info('Setting source for book: $book');
+
+    _logger.fine('Stopping player');
     await stop();
 
     _book = book;
@@ -115,6 +118,7 @@ class AudiobookPlayer extends AudioPlayer {
         ? initialPosition - trackToPlay.startOffset
         : null;
 
+    _logger.finer('Setting audioSource');
     await setAudioSource(
       preload: preload,
       initialIndex: initialIndex,
@@ -146,7 +150,7 @@ class AudiobookPlayer extends AudioPlayer {
         }).toList(),
       ),
     ).catchError((error) {
-      _logger.shout('Error: $error');
+      _logger.shout('Error in setting audio source: $error');
     });
   }
 
@@ -154,7 +158,7 @@ class AudiobookPlayer extends AudioPlayer {
   Future<void> togglePlayPause() {
     // check if book is set
     if (_book == null) {
-      throw StateError('No book is set');
+      _logger.warning('No book is set, not toggling play/pause');
     }
 
     // TODO refactor this to cover all the states
@@ -170,9 +174,11 @@ class AudiobookPlayer extends AudioPlayer {
   @override
   Future<void> seek(Duration? positionInBook, {int? index}) async {
     if (_book == null) {
+      _logger.warning('No book is set, not seeking');
       return;
     }
     if (positionInBook == null) {
+      _logger.warning('Position given is null, not seeking');
       return;
     }
     final tracks = _book!.tracks;
