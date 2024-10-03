@@ -5,7 +5,6 @@ import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:vaani/features/logging/core/logger.dart';
-
 part 'logs_provider.g.dart';
 
 @riverpod
@@ -43,7 +42,7 @@ Future<String> generateZipFilePath() async {
 }
 
 String generateZipFileName() {
-  return 'vaani-${DateTime.now().toIso8601String()}.zip';
+  return 'vaani-${DateTime.now().microsecondsSinceEpoch}.zip';
 }
 
 Level parseLevel(String level) {

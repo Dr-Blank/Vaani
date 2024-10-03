@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:vaani/features/logging/providers/logs_provider.dart';
 import 'package:vaani/main.dart';
+import 'package:vaani/settings/metadata/metadata_provider.dart';
 
 class LogsPage extends HookConsumerWidget {
   const LogsPage({super.key});
@@ -81,6 +83,46 @@ class LogsPage extends HookConsumerWidget {
             icon: const Icon(Icons.download),
             onPressed: () async {
               appLogger.info('Preparing logs for download');
+
+              if (Platform.isAndroid) {
+                final androidVersion =
+                    await ref.watch(deviceSdkVersionProvider.future);
+
+                if ((int.parse(androidVersion)) > 29) {
+                  final status = await Permission.manageExternalStorage.status;
+                  if (!status.isGranted) {
+                    appLogger
+                        .info('Requesting manageExternalStorage permission');
+                    final newStatus =
+                        await Permission.manageExternalStorage.request();
+                    if (!newStatus.isGranted) {
+                      appLogger
+                          .warning('manageExternalStorage permission denied');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Storage permission denied'),
+                        ),
+                      );
+                      return;
+                    }
+                  }
+                } else {
+                  final status = await Permission.storage.status;
+                  if (!status.isGranted) {
+                    appLogger.info('Requesting storage permission');
+                    final newStatus = await Permission.storage.request();
+                    if (!newStatus.isGranted) {
+                      appLogger.warning('Storage permission denied');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Storage permission denied'),
+                        ),
+                      );
+                      return;
+                    }
+                  }
+                }
+              }
               final zipLogFilePath =
                   await ref.read(logsProvider.notifier).getZipFilePath();
 
@@ -88,12 +130,14 @@ class LogsPage extends HookConsumerWidget {
               String? outputFile = await FilePicker.platform.saveFile(
                 dialogTitle: 'Please select an output file:',
                 fileName: zipLogFilePath.split('/').last,
+                bytes: await File(zipLogFilePath).readAsBytes(),
               );
               if (outputFile != null) {
                 try {
                   final file = File(outputFile);
                   final zipFile = File(zipLogFilePath);
                   await zipFile.copy(file.path);
+                  appLogger.info('File saved to: $outputFile');
                 } catch (e) {
                   appLogger.severe('Error saving file: $e');
                 }

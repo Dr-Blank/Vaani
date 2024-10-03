@@ -39,7 +39,10 @@ class AddNewServer extends HookConsumerWidget {
       controller: controller,
       keyboardType: TextInputType.url,
       autofillHints: const [AutofillHints.url],
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.done,
+      onFieldSubmitted: (_) {
+        onPressed?.call();
+      },
       decoration: InputDecoration(
         labelText: 'Server URI',
         labelStyle: TextStyle(
