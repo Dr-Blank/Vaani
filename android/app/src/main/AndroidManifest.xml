@@ -9,7 +9,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:label="Vaani"
-        android:name="${applicationName}" android:usesCleartextTraffic="true"
+        android:name="${applicationName}"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <!-- android:name=".MainActivity" -->
         <activity
