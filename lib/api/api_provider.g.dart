@@ -168,7 +168,7 @@ class _AudiobookshelfApiProviderElement
   Uri? get baseUrl => (origin as AudiobookshelfApiProvider).baseUrl;
 }
 
-String _$authenticatedApiHash() => r'f555efb6eede590b5a8d60cad2e6bfc2847e2d14';
+String _$authenticatedApiHash() => r'e662465f01ab1a6384db4738a3ae49b5fab48a4f';
 
 /// get the api instance for the authenticated user
 ///
@@ -507,7 +507,7 @@ final fetchContinueListeningProvider =
 
 typedef FetchContinueListeningRef
     = AutoDisposeFutureProviderRef<GetUserSessionsResponse>;
-String _$meHash() => r'bdc664c4fd867ad13018fa769ce7a6913248c44f';
+String _$meHash() => r'da5f40b8063b0c0a6651fdcc4ac2d192d0dc7df6';
 
 /// See also [me].
 @ProviderFor(me)
@@ -521,7 +521,134 @@ final meProvider = AutoDisposeFutureProvider<User>.internal(
 );
 
 typedef MeRef = AutoDisposeFutureProviderRef<User>;
-String _$personalizedViewHash() => r'4c392ece4650bdc36d7195a0ddb8810e8fe4caa9';
+String _$loginHash() => r'eb1c4fcef1818dce994846c1adb8eca8f6ec9259';
+
+/// See also [login].
+@ProviderFor(login)
+const loginProvider = LoginFamily();
+
+/// See also [login].
+class LoginFamily extends Family<AsyncValue<LoginResponse?>> {
+  /// See also [login].
+  const LoginFamily();
+
+  /// See also [login].
+  LoginProvider call({
+    AuthenticatedUser? user,
+  }) {
+    return LoginProvider(
+      user: user,
+    );
+  }
+
+  @override
+  LoginProvider getProviderOverride(
+    covariant LoginProvider provider,
+  ) {
+    return call(
+      user: provider.user,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'loginProvider';
+}
+
+/// See also [login].
+class LoginProvider extends AutoDisposeFutureProvider<LoginResponse?> {
+  /// See also [login].
+  LoginProvider({
+    AuthenticatedUser? user,
+  }) : this._internal(
+          (ref) => login(
+            ref as LoginRef,
+            user: user,
+          ),
+          from: loginProvider,
+          name: r'loginProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$loginHash,
+          dependencies: LoginFamily._dependencies,
+          allTransitiveDependencies: LoginFamily._allTransitiveDependencies,
+          user: user,
+        );
+
+  LoginProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.user,
+  }) : super.internal();
+
+  final AuthenticatedUser? user;
+
+  @override
+  Override overrideWith(
+    FutureOr<LoginResponse?> Function(LoginRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: LoginProvider._internal(
+        (ref) => create(ref as LoginRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        user: user,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<LoginResponse?> createElement() {
+    return _LoginProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is LoginProvider && other.user == user;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, user.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin LoginRef on AutoDisposeFutureProviderRef<LoginResponse?> {
+  /// The parameter `user` of this provider.
+  AuthenticatedUser? get user;
+}
+
+class _LoginProviderElement
+    extends AutoDisposeFutureProviderElement<LoginResponse?> with LoginRef {
+  _LoginProviderElement(super.provider);
+
+  @override
+  AuthenticatedUser? get user => (origin as LoginProvider).user;
+}
+
+String _$personalizedViewHash() => r'65c0bc60e312d290498ab488496495114d407ccb';
 
 /// fetch the personalized view
 ///

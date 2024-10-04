@@ -7,7 +7,9 @@ import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/db/cache_manager.dart';
+import 'package:vaani/models/error_response.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
+import 'package:vaani/settings/models/authenticated_user.dart';
 import 'package:vaani/shared/extensions/obfuscation.dart';
 
 part 'api_provider.g.dart';
@@ -49,6 +51,7 @@ AudiobookshelfApi authenticatedApi(AuthenticatedApiRef ref) {
   final apiSettings = ref.watch(apiSettingsProvider);
   final user = apiSettings.activeUser;
   if (user == null) {
+    _logger.severe('No active user can not provide authenticated api');
     throw StateError('No active user');
   }
   return AudiobookshelfApi(
@@ -97,17 +100,26 @@ class PersonalizedView extends _$PersonalizedView {
     final api = ref.watch(authenticatedApiProvider);
     final apiSettings = ref.watch(apiSettingsProvider);
     final user = apiSettings.activeUser;
+    if (user == null) {
+      _logger.warning('no active user');
+      yield [];
+      return;
+    }
     if (apiSettings.activeLibraryId == null) {
       // set it to default user library by logging in and getting the library id
-      final login =
-          await api.login(username: user!.username!, password: user.password!);
+      final login = await ref.read(loginProvider().future);
+      if (login == null) {
+        _logger.shout('failed to login, not building personalized view');
+        yield [];
+        return;
+      }
       ref.read(apiSettingsProvider.notifier).updateState(
-            apiSettings.copyWith(activeLibraryId: login!.userDefaultLibraryId),
+            apiSettings.copyWith(activeLibraryId: login.userDefaultLibraryId),
           );
     }
     // try to find in cache
     // final cacheKey = 'personalizedView:${apiSettings.activeLibraryId}';
-    var key = 'personalizedView:${apiSettings.activeLibraryId! + user!.id!}';
+    final key = 'personalizedView:${apiSettings.activeLibraryId! + user.id}';
     final cachedRes = await apiResponseCacheManager.getFileFromMemory(
           key,
         ) ??
@@ -127,7 +139,7 @@ class PersonalizedView extends _$PersonalizedView {
       }
     }
 
-    // ! exagerated delay
+    // ! exaggerated delay
     // await Future.delayed(const Duration(seconds: 2));
     final res = await api.libraries
         .getPersonalized(libraryId: apiSettings.activeLibraryId!);
@@ -151,6 +163,7 @@ class PersonalizedView extends _$PersonalizedView {
   // method to force refresh the view and ignore the cache
   Future<void> forceRefresh() async {
     // clear the cache
+    // TODO: find a better way to clear the cache for only personalized view key
     return apiResponseCacheManager.emptyCache();
   }
 }
@@ -173,6 +186,47 @@ FutureOr<User> me(
   MeRef ref,
 ) async {
   final api = ref.watch(authenticatedApiProvider);
-  final res = await api.me.getUser();
-  return res!;
+  final errorResponseHandler = ErrorResponseHandler();
+  final res = await api.me.getUser(
+    responseErrorHandler: errorResponseHandler.storeError,
+  );
+  if (res == null) {
+    _logger.severe(
+      'me failed, got response: ${errorResponseHandler.response.obfuscate()}',
+    );
+    throw StateError('me failed');
+  }
+  return res;
+}
+
+@riverpod
+FutureOr<LoginResponse?> login(
+  LoginRef ref, {
+  AuthenticatedUser? user,
+}) async {
+  if (user == null) {
+    // try to get the user from settings
+    final apiSettings = ref.watch(apiSettingsProvider);
+    user = apiSettings.activeUser;
+    if (user == null) {
+      _logger.severe('no active user to login');
+      return null;
+    }
+    _logger.fine('no user provided, using active user: ${user.obfuscate()}');
+  }
+  final api = ref.watch(audiobookshelfApiProvider(user.server.serverUrl));
+  api.token = user.authToken;
+  var errorResponseHandler = ErrorResponseHandler();
+  _logger.fine('logging in with authenticated api');
+  final res = await api.misc.authorize(
+    responseErrorHandler: errorResponseHandler.storeError,
+  );
+  if (res == null) {
+    _logger.severe(
+      'login failed, got response: ${errorResponseHandler.response.obfuscate()}',
+    );
+    return null;
+  }
+  _logger.fine('login response: ${res.obfuscate()}');
+  return res;
 }

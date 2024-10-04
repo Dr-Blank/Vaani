@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:shelfsdk/audiobookshelf_api.dart' as shelfsdk;
 import 'package:vaani/settings/models/api_settings.dart';
 import 'package:vaani/settings/models/audiobookshelf_server.dart';
 import 'package:vaani/settings/models/authenticated_user.dart';
@@ -67,7 +68,6 @@ extension ObfuscateAuthenticatedUser on AuthenticatedUser {
       return this;
     }
     return copyWith(
-      password: password == null ? null : 'passwordObfuscated',
       username: username == null ? null : 'usernameObfuscated',
       authToken: 'authTokenObfuscated',
       server: server.obfuscate(),
@@ -116,10 +116,54 @@ extension ObfuscateResponse on http.Response {
       return this;
     }
     return http.Response(
-      body,
+      obfuscateBody(),
       statusCode,
       headers: headers,
       request: request?.obfuscate(),
+    );
+  }
+
+  String obfuscateBody() {
+    if (!kReleaseMode) {
+      return body;
+    }
+    // replace any email addresses with emailObfuscated
+    // replace any phone numbers with phoneObfuscated
+    // replace any urls with urlObfuscated
+    // replace any tokens with tokenObfuscated
+    // token regex is `"token": "..."`
+    return body
+        .replaceAll(
+          RegExp(r'(\b\w+@\w+\.\w+\b)|'
+              r'(\b\d{3}-\d{3}-\d{4}\b)|'
+              r'(\bhttps?://\S+\b)'),
+          'obfuscated',
+        )
+        .replaceAll(
+          RegExp(r'"?token"?:?\s*"[^"]+"'),
+          '"token": "tokenObfuscated"',
+        );
+  }
+}
+
+extension ObfuscateLoginResponse on shelfsdk.LoginResponse {
+  shelfsdk.LoginResponse obfuscate() {
+    if (!kReleaseMode) {
+      return this;
+    }
+    return copyWith(
+      user: user.obfuscate(),
+    );
+  }
+}
+
+extension ObfuscateUser on shelfsdk.User {
+  shelfsdk.User obfuscate() {
+    if (!kReleaseMode) {
+      return this;
+    }
+    return shelfsdk.User.fromJson(
+      toJson()..['token'] = 'tokenObfuscated',
     );
   }
 }

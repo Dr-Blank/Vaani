@@ -22,9 +22,8 @@ AuthenticatedUser _$AuthenticatedUserFromJson(Map<String, dynamic> json) {
 mixin _$AuthenticatedUser {
   AudiobookShelfServer get server => throw _privateConstructorUsedError;
   String get authToken => throw _privateConstructorUsedError;
-  String? get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String? get username => throw _privateConstructorUsedError;
-  String? get password => throw _privateConstructorUsedError;
 
   /// Serializes this AuthenticatedUser to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,9 +44,8 @@ abstract class $AuthenticatedUserCopyWith<$Res> {
   $Res call(
       {AudiobookShelfServer server,
       String authToken,
-      String? id,
-      String? username,
-      String? password});
+      String id,
+      String? username});
 
   $AudiobookShelfServerCopyWith<$Res> get server;
 }
@@ -69,9 +67,8 @@ class _$AuthenticatedUserCopyWithImpl<$Res, $Val extends AuthenticatedUser>
   $Res call({
     Object? server = null,
     Object? authToken = null,
-    Object? id = freezed,
+    Object? id = null,
     Object? username = freezed,
-    Object? password = freezed,
   }) {
     return _then(_value.copyWith(
       server: null == server
@@ -82,17 +79,13 @@ class _$AuthenticatedUserCopyWithImpl<$Res, $Val extends AuthenticatedUser>
           ? _value.authToken
           : authToken // ignore: cast_nullable_to_non_nullable
               as String,
-      id: freezed == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
-              as String?,
-      password: freezed == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -119,9 +112,8 @@ abstract class _$$AuthenticatedUserImplCopyWith<$Res>
   $Res call(
       {AudiobookShelfServer server,
       String authToken,
-      String? id,
-      String? username,
-      String? password});
+      String id,
+      String? username});
 
   @override
   $AudiobookShelfServerCopyWith<$Res> get server;
@@ -142,9 +134,8 @@ class __$$AuthenticatedUserImplCopyWithImpl<$Res>
   $Res call({
     Object? server = null,
     Object? authToken = null,
-    Object? id = freezed,
+    Object? id = null,
     Object? username = freezed,
-    Object? password = freezed,
   }) {
     return _then(_$AuthenticatedUserImpl(
       server: null == server
@@ -155,17 +146,13 @@ class __$$AuthenticatedUserImplCopyWithImpl<$Res>
           ? _value.authToken
           : authToken // ignore: cast_nullable_to_non_nullable
               as String,
-      id: freezed == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
-              as String?,
-      password: freezed == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -177,9 +164,8 @@ class _$AuthenticatedUserImpl implements _AuthenticatedUser {
   const _$AuthenticatedUserImpl(
       {required this.server,
       required this.authToken,
-      this.id,
-      this.username,
-      this.password});
+      required this.id,
+      this.username});
 
   factory _$AuthenticatedUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthenticatedUserImplFromJson(json);
@@ -189,15 +175,13 @@ class _$AuthenticatedUserImpl implements _AuthenticatedUser {
   @override
   final String authToken;
   @override
-  final String? id;
+  final String id;
   @override
   final String? username;
-  @override
-  final String? password;
 
   @override
   String toString() {
-    return 'AuthenticatedUser(server: $server, authToken: $authToken, id: $id, username: $username, password: $password)';
+    return 'AuthenticatedUser(server: $server, authToken: $authToken, id: $id, username: $username)';
   }
 
   @override
@@ -210,15 +194,12 @@ class _$AuthenticatedUserImpl implements _AuthenticatedUser {
                 other.authToken == authToken) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.username, username) ||
-                other.username == username) &&
-            (identical(other.password, password) ||
-                other.password == password));
+                other.username == username));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, server, authToken, id, username, password);
+  int get hashCode => Object.hash(runtimeType, server, authToken, id, username);
 
   /// Create a copy of AuthenticatedUser
   /// with the given fields replaced by the non-null parameter values.
@@ -241,9 +222,8 @@ abstract class _AuthenticatedUser implements AuthenticatedUser {
   const factory _AuthenticatedUser(
       {required final AudiobookShelfServer server,
       required final String authToken,
-      final String? id,
-      final String? username,
-      final String? password}) = _$AuthenticatedUserImpl;
+      required final String id,
+      final String? username}) = _$AuthenticatedUserImpl;
 
   factory _AuthenticatedUser.fromJson(Map<String, dynamic> json) =
       _$AuthenticatedUserImpl.fromJson;
@@ -253,11 +233,9 @@ abstract class _AuthenticatedUser implements AuthenticatedUser {
   @override
   String get authToken;
   @override
-  String? get id;
+  String get id;
   @override
   String? get username;
-  @override
-  String? get password;
 
   /// Create a copy of AuthenticatedUser
   /// with the given fields replaced by the non-null parameter values.

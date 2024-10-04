@@ -12,9 +12,8 @@ _$AuthenticatedUserImpl _$$AuthenticatedUserImplFromJson(
       server:
           AudiobookShelfServer.fromJson(json['server'] as Map<String, dynamic>),
       authToken: json['authToken'] as String,
-      id: json['id'] as String?,
+      id: json['id'] as String,
       username: json['username'] as String?,
-      password: json['password'] as String?,
     );
 
 Map<String, dynamic> _$$AuthenticatedUserImplToJson(
@@ -24,5 +23,4 @@ Map<String, dynamic> _$$AuthenticatedUserImplToJson(
       'authToken': instance.authToken,
       'id': instance.id,
       'username': instance.username,
-      'password': instance.password,
     };

@@ -76,7 +76,6 @@ class UserLoginWithPassword extends HookConsumerWidget {
       final authenticatedUser = model.AuthenticatedUser(
         server: addServer(),
         id: success.user.id,
-        password: password,
         username: username,
         authToken: api.token!,
       );

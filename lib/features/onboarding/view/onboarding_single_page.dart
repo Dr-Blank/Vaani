@@ -17,7 +17,7 @@ class OnboardingSinglePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final apiSettings = ref.watch(apiSettingsProvider);
     final serverUriController = useTextEditingController(
-      text: apiSettings.activeServer?.serverUrl.toString() ?? '',
+      text: apiSettings.activeServer?.serverUrl.toString() ?? 'https://',
     );
     var audiobookshelfUri = makeBaseUrl(serverUriController.text);
 

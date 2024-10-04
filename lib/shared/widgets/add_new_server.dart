@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/main.dart';
+
+final httpUrlRegExp = RegExp('https?://');
 
 class AddNewServer extends HookConsumerWidget {
   const AddNewServer({
@@ -25,7 +28,8 @@ class AddNewServer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final myController = controller ?? useTextEditingController();
+    final myController =
+        controller ?? useTextEditingController(text: 'https://');
     var newServerURI = useValueListenable(myController);
     final isServerAlive = ref.watch(isServerAliveProvider(newServerURI.text));
     bool isServerAliveValue = isServerAlive.when(
@@ -34,15 +38,33 @@ class AddNewServer extends HookConsumerWidget {
       error: (error, _) => false,
     );
 
+    Uri parsedUri = Uri.parse('');
+
+    try {
+      parsedUri = Uri.parse(newServerURI.text);
+    } on FormatException {
+      // prepend https:// if not present
+      if (!newServerURI.text.startsWith(httpUrlRegExp)) {
+        myController.text = 'https://${newServerURI.text}';
+        parsedUri = Uri.parse(myController.text);
+      }
+    } catch (e) {
+      // do nothing
+      appLogger.severe('Error parsing URI: $e');
+    }
+    final canSubmit = !readOnly &&
+        (isServerAliveValue || (allowEmpty && newServerURI.text.isEmpty));
     return TextFormField(
       readOnly: readOnly,
       controller: controller,
       keyboardType: TextInputType.url,
       autofillHints: const [AutofillHints.url],
       textInputAction: TextInputAction.done,
-      onFieldSubmitted: (_) {
-        onPressed?.call();
-      },
+      onFieldSubmitted: canSubmit
+          ? (_) {
+              onPressed?.call();
+            }
+          : null,
       decoration: InputDecoration(
         labelText: 'Server URI',
         labelStyle: TextStyle(
@@ -50,8 +72,8 @@ class AddNewServer extends HookConsumerWidget {
         ),
         border: const OutlineInputBorder(),
         prefixText:
-            myController.text.startsWith(RegExp('https?://')) ? '' : 'https://',
-        prefixIcon: ServerAliveIcon(server: Uri.parse(newServerURI.text)),
+            myController.text.startsWith(httpUrlRegExp) ? '' : 'https://',
+        prefixIcon: ServerAliveIcon(server: parsedUri),
 
         // add server button
         suffixIcon: onPressed == null
@@ -65,10 +87,10 @@ class AddNewServer extends HookConsumerWidget {
                   focusColor: Theme.of(context).colorScheme.onSurface,
 
                   // should be enabled when
-                  onPressed: !readOnly &&
-                          (isServerAliveValue ||
-                              (allowEmpty && newServerURI.text.isEmpty))
-                      ? onPressed
+                  onPressed: canSubmit
+                      ? () {
+                          onPressed?.call();
+                        }
                       : null, // disable button if server is not alive
                 ),
               ),
