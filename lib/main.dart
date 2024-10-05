@@ -8,12 +8,14 @@ import 'package:vaani/features/downloads/providers/download_manager.dart';
 import 'package:vaani/features/logging/core/logger.dart';
 import 'package:vaani/features/playback_reporting/providers/playback_reporter_provider.dart';
 import 'package:vaani/features/player/core/init.dart';
-import 'package:vaani/features/player/providers/audiobook_player.dart';
+import 'package:vaani/features/player/providers/audiobook_player.dart'
+    show simpleAudiobookPlayerProvider;
 import 'package:vaani/features/shake_detection/providers/shake_detector.dart';
 import 'package:vaani/features/sleep_timer/providers/sleep_timer_provider.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/theme/providers/system_them_provider.dart';
 import 'package:vaani/theme/theme.dart';
 
 final appLogger = Logger('vaani');
@@ -53,73 +55,68 @@ class MyApp extends ConsumerWidget {
       routerConfig.goNamed(Routes.onboarding.name);
     }
     final appSettings = ref.watch(appSettingsProvider);
-
     final themeSettings = appSettings.themeSettings;
-    return DynamicColorBuilder(
-      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        // Decide on a colour/brightness scheme based on OS and user settings
-        ColorScheme lightColorScheme;
-        ColorScheme darkColorScheme;
-        if (lightDynamic != null &&
-            darkDynamic != null &&
-            themeSettings.useMaterialThemeFromSystem) {
-          lightColorScheme = lightDynamic.harmonized();
-          darkColorScheme = darkDynamic.harmonized();
-        } else {
-          lightColorScheme = brandLightColorScheme.harmonized();
-          darkColorScheme = brandDarkColorScheme.harmonized();
-        }
 
-        // set the background and surface colors to pure black in the amoled theme
-        if (MediaQuery.of(context).highContrast || themeSettings.highContrast) {
-          lightColorScheme =
-              lightColorScheme.copyWith(surface: Colors.white).harmonized();
-          darkColorScheme =
-              darkColorScheme.copyWith(surface: Colors.black).harmonized();
-        }
+    ColorScheme lightColorScheme = brandLightColorScheme;
+    ColorScheme darkColorScheme = brandDarkColorScheme;
 
-        final themeLight = ThemeData(
-          useMaterial3: true,
-          colorScheme: lightColorScheme,
-        );
-        final themeDark = ThemeData(
-          useMaterial3: true,
-          colorScheme: darkColorScheme,
-          brightness: Brightness.dark,
-          // TODO bottom sheet theme is not working
-          bottomSheetTheme: BottomSheetThemeData(
-            backgroundColor: darkColorScheme.surface,
-          ),
-        );
-        final themeLightHighContrast = themeLight.copyWith(
-          colorScheme:
-              lightColorScheme.copyWith(surface: Colors.white).harmonized(),
-        );
-        final themeDarkHighContrast = themeDark.copyWith(
-          colorScheme:
-              darkColorScheme.copyWith(surface: Colors.black).harmonized(),
-        );
+    final shouldUseHighContrast =
+        MediaQuery.of(context).highContrast || themeSettings.highContrast;
 
-        try {
-          return MaterialApp.router(
-            // debugShowCheckedModeBanner: false,
-            theme: themeLight,
-            darkTheme: themeDark,
-            themeMode: themeSettings.themeMode,
-            highContrastTheme: themeLightHighContrast,
-            highContrastDarkTheme: themeDarkHighContrast,
-            routerConfig: routerConfig,
-            themeAnimationCurve: Curves.easeInOut,
-          );
-        } catch (e) {
-          debugPrintStack(stackTrace: StackTrace.current, label: e.toString());
-          if (needOnboarding) {
-            routerConfig.goNamed(Routes.onboarding.name);
-          }
-          return const SizedBox.shrink();
-        }
-      },
+    if (shouldUseHighContrast) {
+      lightColorScheme = lightColorScheme.copyWith(
+        surface: Colors.white,
+      );
+      darkColorScheme = darkColorScheme.copyWith(
+        surface: Colors.black,
+      );
+    }
+
+    if (themeSettings.useMaterialThemeFromSystem) {
+      appLogger.info('Using theme from system');
+      var themes =
+          ref.watch(systemThemeProvider(highContrast: shouldUseHighContrast));
+      if (themes.valueOrNull != null) {
+        lightColorScheme = themes.valueOrNull!.$1;
+        darkColorScheme = themes.valueOrNull!.$2;
+      }
+    }
+
+    // AudiobookPlayer? player;
+
+    // if (themeSettings.useMaterialThemeOfPlayingItem) {
+    //   appLogger.info('Using theme from playing item');
+    //   player = ref.watch(audiobookPlayerProvider);
+    // }
+    final appThemeLight = ThemeData(
+      useMaterial3: true,
+      colorScheme: lightColorScheme.harmonized(),
     );
+    final appThemeDark = ThemeData(
+      useMaterial3: true,
+      colorScheme: darkColorScheme.harmonized(),
+      brightness: Brightness.dark,
+      // TODO bottom sheet theme is not working
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: darkColorScheme.surface,
+      ),
+    );
+    try {
+      return MaterialApp.router(
+        // debugShowCheckedModeBanner: false,
+        theme: appThemeLight,
+        darkTheme: appThemeDark,
+        themeMode: themeSettings.themeMode,
+        routerConfig: routerConfig,
+        themeAnimationCurve: Curves.easeInOut,
+      );
+    } catch (e) {
+      debugPrintStack(stackTrace: StackTrace.current, label: e.toString());
+      if (needOnboarding) {
+        routerConfig.goNamed(Routes.onboarding.name);
+      }
+      return const SizedBox.shrink();
+    }
   }
 }
 

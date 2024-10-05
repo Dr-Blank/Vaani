@@ -14,7 +14,7 @@ import 'package:vaani/features/player/providers/player_form.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/shared/extensions/inverse_lerp.dart';
 import 'package:vaani/shared/widgets/shelves/book_shelf.dart';
-import 'package:vaani/theme/theme_from_cover_provider.dart';
+import 'package:vaani/theme/providers/theme_from_cover_provider.dart';
 
 import 'player_when_expanded.dart';
 import 'player_when_minimized.dart';
