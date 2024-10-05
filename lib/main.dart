@@ -9,13 +9,14 @@ import 'package:vaani/features/logging/core/logger.dart';
 import 'package:vaani/features/playback_reporting/providers/playback_reporter_provider.dart';
 import 'package:vaani/features/player/core/init.dart';
 import 'package:vaani/features/player/providers/audiobook_player.dart'
-    show simpleAudiobookPlayerProvider;
+    show audiobookPlayerProvider, simpleAudiobookPlayerProvider;
 import 'package:vaani/features/shake_detection/providers/shake_detector.dart';
 import 'package:vaani/features/sleep_timer/providers/sleep_timer_provider.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/theme/providers/system_them_provider.dart';
+import 'package:vaani/theme/providers/theme_from_cover_provider.dart';
 import 'package:vaani/theme/theme.dart';
 
 final appLogger = Logger('vaani');
@@ -73,7 +74,6 @@ class MyApp extends ConsumerWidget {
     }
 
     if (themeSettings.useMaterialThemeFromSystem) {
-      appLogger.info('Using theme from system');
       var themes =
           ref.watch(systemThemeProvider(highContrast: shouldUseHighContrast));
       if (themes.valueOrNull != null) {
@@ -82,12 +82,29 @@ class MyApp extends ConsumerWidget {
       }
     }
 
-    // AudiobookPlayer? player;
-
-    // if (themeSettings.useMaterialThemeOfPlayingItem) {
-    //   appLogger.info('Using theme from playing item');
-    //   player = ref.watch(audiobookPlayerProvider);
-    // }
+    if (themeSettings.useMaterialThemeOfPlayingItem) {
+      final player = ref.watch(audiobookPlayerProvider);
+      if (player.book != null) {
+        final themeLight = ref.watch(
+          themeOfLibraryItemProvider(
+            player.book!.libraryItemId,
+            highContrast: shouldUseHighContrast,
+            brightness: Brightness.light,
+          ),
+        );
+        final themeDark = ref.watch(
+          themeOfLibraryItemProvider(
+            player.book!.libraryItemId,
+            highContrast: shouldUseHighContrast,
+            brightness: Brightness.dark,
+          ),
+        );
+        if (themeLight.valueOrNull != null && themeDark.valueOrNull != null) {
+          lightColorScheme = themeLight.valueOrNull!;
+          darkColorScheme = themeDark.valueOrNull!;
+        }
+      }
+    }
     final appThemeLight = ThemeData(
       useMaterial3: true,
       colorScheme: lightColorScheme.harmonized(),
