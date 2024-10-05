@@ -648,7 +648,7 @@ class _LoginProviderElement
   AuthenticatedUser? get user => (origin as LoginProvider).user;
 }
 
-String _$personalizedViewHash() => r'65c0bc60e312d290498ab488496495114d407ccb';
+String _$personalizedViewHash() => r'425e89d99d7e4712b4d6a688f3a12442bd66584f';
 
 /// fetch the personalized view
 ///

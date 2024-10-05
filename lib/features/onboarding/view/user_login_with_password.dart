@@ -9,6 +9,7 @@ import 'package:vaani/api/authenticated_user_provider.dart';
 import 'package:vaani/hacks/fix_autofill_losing_focus.dart';
 import 'package:vaani/models/error_response.dart';
 import 'package:vaani/router/router.dart';
+import 'package:vaani/settings/constants.dart';
 import 'package:vaani/settings/models/models.dart' as model;
 import 'package:vaani/shared/utils.dart';
 
@@ -206,8 +207,10 @@ Future<void> handleServerError(
                   onPressed: () {
                     // open an issue on the github page
                     handleLaunchUrl(
-                      Uri.parse(
-                        'https://github.com/Dr-Blank/Vaani/issues',
+                      AppMetadata.githubRepo
+                          // append the issue url
+                          .replace(
+                        path: '${AppMetadata.githubRepo.path}/issues/new',
                       ),
                     );
                   },

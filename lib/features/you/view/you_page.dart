@@ -105,7 +105,6 @@ class YouPage extends HookConsumerWidget {
                       showNotImplementedToast(context);
                     },
                   ),
-
                   AboutListTile(
                     icon: const Icon(Icons.info),
                     applicationName: AppMetadata.appName,
@@ -128,7 +127,9 @@ class YouPage extends HookConsumerWidget {
                         Theme.of(context).colorScheme.primary,
                         BlendMode.srcIn,
                       ),
-                      child: const VaaniLogo(),
+                      child: const VaaniLogo(
+                        size: 48,
+                      ),
                     ),
                   ),
                 ],

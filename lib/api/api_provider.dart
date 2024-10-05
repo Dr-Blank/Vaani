@@ -116,6 +116,8 @@ class PersonalizedView extends _$PersonalizedView {
       ref.read(apiSettingsProvider.notifier).updateState(
             apiSettings.copyWith(activeLibraryId: login.userDefaultLibraryId),
           );
+      yield [];
+      return;
     }
     // try to find in cache
     // final cacheKey = 'personalizedView:${apiSettings.activeLibraryId}';
