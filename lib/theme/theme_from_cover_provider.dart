@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:logging/logging.dart';
@@ -13,15 +14,25 @@ Future<FutureOr<ColorScheme?>> themeFromCover(
   ThemeFromCoverRef ref,
   ImageProvider<Object> img, {
   Brightness brightness = Brightness.dark,
+  bool highContrast = false,
 }) async {
   // ! add deliberate delay to simulate a long running task as it interferes with other animations
   await Future.delayed(500.ms);
 
   _logger.fine('Generating color scheme from cover image');
-  return ColorScheme.fromImageProvider(
+  var theme = await ColorScheme.fromImageProvider(
     provider: img,
     brightness: brightness,
   );
+  // set high contrast theme
+  if (highContrast) {
+    theme = theme
+        .copyWith(
+          surface: brightness == Brightness.light ? Colors.white : Colors.black,
+        )
+        .harmonized();
+  }
+  return theme;
   // TODO isolate is not working
   // see https://github.com/flutter/flutter/issues/119207
   // use isolate to generate the color scheme
@@ -50,14 +61,18 @@ FutureOr<ColorScheme?> themeOfLibraryItem(
   ThemeOfLibraryItemRef ref,
   String? itemId, {
   Brightness brightness = Brightness.dark,
+  bool highContrast = false,
 }) async {
   if (itemId == null) {
     return null;
   }
   final coverImage = await ref.watch(coverImageProvider(itemId).future);
   final val = await ref.watch(
-    themeFromCoverProvider(MemoryImage(coverImage), brightness: brightness)
-        .future,
+    themeFromCoverProvider(
+      MemoryImage(coverImage),
+      brightness: brightness,
+      highContrast: highContrast,
+    ).future,
   );
   return val;
   // coverImage.when(

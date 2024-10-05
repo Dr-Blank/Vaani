@@ -353,16 +353,17 @@ class _BookCover extends HookConsumerWidget {
     final coverImage = ref.watch(coverImageProvider(itemId));
     final themeData = Theme.of(context);
     // final item = ref.watch(libraryItemProvider(itemId));
-    final useMaterialThemeOnItemPage =
-        ref.watch(appSettingsProvider).themeSettings.useMaterialThemeOnItemPage;
+    final themeSettings = ref.watch(appSettingsProvider).themeSettings;
 
     ColorScheme? coverColorScheme;
-    if (useMaterialThemeOnItemPage) {
+    if (themeSettings.useMaterialThemeOnItemPage) {
       coverColorScheme = ref
           .watch(
             themeOfLibraryItemProvider(
               itemId,
               brightness: Theme.of(context).brightness,
+              highContrast: MediaQuery.of(context).highContrast ||
+                  themeSettings.highContrast,
             ),
           )
           .valueOrNull;
@@ -371,7 +372,7 @@ class _BookCover extends HookConsumerWidget {
     return ThemeSwitcher(
       builder: (context) {
         // change theme after 2 seconds
-        if (useMaterialThemeOnItemPage) {
+        if (themeSettings.useMaterialThemeOnItemPage) {
           Future.delayed(150.ms, () {
             try {
               ThemeSwitcher.of(context).changeTheme(

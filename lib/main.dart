@@ -71,7 +71,7 @@ class MyApp extends ConsumerWidget {
         }
 
         // set the background and surface colors to pure black in the amoled theme
-        if (themeSettings.highContrast) {
+        if (MediaQuery.of(context).highContrast || themeSettings.highContrast) {
           lightColorScheme =
               lightColorScheme.copyWith(surface: Colors.white).harmonized();
           darkColorScheme =
@@ -86,6 +86,10 @@ class MyApp extends ConsumerWidget {
           useMaterial3: true,
           colorScheme: darkColorScheme,
           brightness: Brightness.dark,
+          // TODO bottom sheet theme is not working
+          bottomSheetTheme: BottomSheetThemeData(
+            backgroundColor: darkColorScheme.surface,
+          ),
         );
         final themeLightHighContrast = themeLight.copyWith(
           colorScheme:
