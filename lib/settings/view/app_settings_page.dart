@@ -27,30 +27,6 @@ class AppSettingsPage extends HookConsumerWidget {
     return SimpleSettingsPage(
       title: const Text('App Settings'),
       sections: [
-        // Appearance section
-        SettingsSection(
-          margin: const EdgeInsetsDirectional.symmetric(
-            horizontal: 16.0,
-            vertical: 8.0,
-          ),
-          title: Text(
-            'Appearance',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          tiles: [
-            SettingsTile.navigation(
-              leading: const Icon(Icons.color_lens),
-              title: const Text('Theme Settings'),
-              description: const Text(
-                'Customize the app theme',
-              ),
-              onPressed: (context) {
-                context.pushNamed(Routes.themeSettings.name);
-              },
-            ),
-          ],
-        ),
-
         // General section
         SettingsSection(
           margin: const EdgeInsetsDirectional.symmetric(
@@ -62,6 +38,16 @@ class AppSettingsPage extends HookConsumerWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           tiles: [
+            SettingsTile(
+              title: const Text('Player Settings'),
+              leading: const Icon(Icons.play_arrow),
+              description: const Text(
+                'Customize the player settings',
+              ),
+              onPressed: (context) {
+                context.pushNamed(Routes.playerSettings.name);
+              },
+            ),
             NavigationWithSwitchTile(
               title: const Text('Auto Turn On Sleep Timer'),
               description: const Text(
@@ -80,26 +66,6 @@ class AppSettingsPage extends HookConsumerWidget {
                         autoTurnOnTimer: value,
                       ),
                     );
-              },
-            ),
-            SettingsTile(
-              title: const Text('Notification Media Player'),
-              leading: const Icon(Icons.play_lesson),
-              description: const Text(
-                'Customize the media player in notifications',
-              ),
-              onPressed: (context) {
-                context.pushNamed(Routes.notificationSettings.name);
-              },
-            ),
-            SettingsTile(
-              title: const Text('Player Settings'),
-              leading: const Icon(Icons.play_arrow),
-              description: const Text(
-                'Customize the player settings',
-              ),
-              onPressed: (context) {
-                context.pushNamed(Routes.playerSettings.name);
               },
             ),
             NavigationWithSwitchTile(
@@ -122,6 +88,41 @@ class AppSettingsPage extends HookConsumerWidget {
             ),
           ],
         ),
+
+        // Appearance section
+        SettingsSection(
+          margin: const EdgeInsetsDirectional.symmetric(
+            horizontal: 16.0,
+            vertical: 8.0,
+          ),
+          title: Text(
+            'Appearance',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          tiles: [
+            SettingsTile.navigation(
+              leading: const Icon(Icons.color_lens),
+              title: const Text('Theme Settings'),
+              description: const Text(
+                'Customize the app theme',
+              ),
+              onPressed: (context) {
+                context.pushNamed(Routes.themeSettings.name);
+              },
+            ),
+            SettingsTile(
+              title: const Text('Notification Media Player'),
+              leading: const Icon(Icons.play_lesson),
+              description: const Text(
+                'Customize the media player in notifications',
+              ),
+              onPressed: (context) {
+                context.pushNamed(Routes.notificationSettings.name);
+              },
+            ),
+          ],
+        ),
+
         // Backup and Restore section
         SettingsSection(
           margin: const EdgeInsetsDirectional.symmetric(
@@ -226,7 +227,8 @@ class RestoreDialogue extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = GlobalKey<FormState>();
+    final formKey = useMemoized(() => GlobalKey<FormState>());
+    final settings = useState<model.AppSettings?>(null);
 
     final settingsInputController = useTextEditingController();
     return AlertDialog(
@@ -234,12 +236,12 @@ class RestoreDialogue extends HookConsumerWidget {
       content: Form(
         key: formKey,
         child: TextFormField(
-          controller: settingsInputController,
+          autofocus: true,
           decoration: InputDecoration(
             labelText: 'Backup',
             hintText: 'Paste the backup here',
             // clear button
-            suffix: IconButton(
+            suffixIcon: IconButton(
               icon: Icon(Icons.clear),
               onPressed: () {
                 settingsInputController.clear();
@@ -252,7 +254,7 @@ class RestoreDialogue extends HookConsumerWidget {
             }
             try {
               // try to decode the backup
-              model.AppSettings.fromJson(
+              settings.value = model.AppSettings.fromJson(
                 jsonDecode(value),
               );
             } catch (e) {
@@ -263,15 +265,19 @@ class RestoreDialogue extends HookConsumerWidget {
         ),
       ),
       actions: [
+        CancelButton(),
         TextButton(
           onPressed: () {
             if (formKey.currentState!.validate()) {
-              final backup = settingsInputController.text;
-              final newSettings = model.AppSettings.fromJson(
-                // decode the backup as json
-                jsonDecode(backup),
-              );
-              ref.read(appSettingsProvider.notifier).update(newSettings);
+              if (settings.value == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Invalid backup'),
+                  ),
+                );
+                return;
+              }
+              ref.read(appSettingsProvider.notifier).update(settings.value!);
               settingsInputController.clear();
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
@@ -289,7 +295,6 @@ class RestoreDialogue extends HookConsumerWidget {
           },
           child: const Text('Restore'),
         ),
-        CancelButton(),
       ],
     );
   }
