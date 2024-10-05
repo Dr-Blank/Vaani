@@ -382,8 +382,9 @@ mixin _$ThemeSettings {
   bool get highContrast => throw _privateConstructorUsedError;
   bool get useMaterialThemeFromSystem => throw _privateConstructorUsedError;
   String get customThemeColor => throw _privateConstructorUsedError;
-  bool get useMaterialThemeOfPlayingItem => throw _privateConstructorUsedError;
   bool get useMaterialThemeOnItemPage => throw _privateConstructorUsedError;
+  bool get useCurrentPlayerThemeThroughoutApp =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this ThemeSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -406,8 +407,8 @@ abstract class $ThemeSettingsCopyWith<$Res> {
       bool highContrast,
       bool useMaterialThemeFromSystem,
       String customThemeColor,
-      bool useMaterialThemeOfPlayingItem,
-      bool useMaterialThemeOnItemPage});
+      bool useMaterialThemeOnItemPage,
+      bool useCurrentPlayerThemeThroughoutApp});
 }
 
 /// @nodoc
@@ -429,8 +430,8 @@ class _$ThemeSettingsCopyWithImpl<$Res, $Val extends ThemeSettings>
     Object? highContrast = null,
     Object? useMaterialThemeFromSystem = null,
     Object? customThemeColor = null,
-    Object? useMaterialThemeOfPlayingItem = null,
     Object? useMaterialThemeOnItemPage = null,
+    Object? useCurrentPlayerThemeThroughoutApp = null,
   }) {
     return _then(_value.copyWith(
       themeMode: null == themeMode
@@ -449,13 +450,14 @@ class _$ThemeSettingsCopyWithImpl<$Res, $Val extends ThemeSettings>
           ? _value.customThemeColor
           : customThemeColor // ignore: cast_nullable_to_non_nullable
               as String,
-      useMaterialThemeOfPlayingItem: null == useMaterialThemeOfPlayingItem
-          ? _value.useMaterialThemeOfPlayingItem
-          : useMaterialThemeOfPlayingItem // ignore: cast_nullable_to_non_nullable
-              as bool,
       useMaterialThemeOnItemPage: null == useMaterialThemeOnItemPage
           ? _value.useMaterialThemeOnItemPage
           : useMaterialThemeOnItemPage // ignore: cast_nullable_to_non_nullable
+              as bool,
+      useCurrentPlayerThemeThroughoutApp: null ==
+              useCurrentPlayerThemeThroughoutApp
+          ? _value.useCurrentPlayerThemeThroughoutApp
+          : useCurrentPlayerThemeThroughoutApp // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -474,8 +476,8 @@ abstract class _$$ThemeSettingsImplCopyWith<$Res>
       bool highContrast,
       bool useMaterialThemeFromSystem,
       String customThemeColor,
-      bool useMaterialThemeOfPlayingItem,
-      bool useMaterialThemeOnItemPage});
+      bool useMaterialThemeOnItemPage,
+      bool useCurrentPlayerThemeThroughoutApp});
 }
 
 /// @nodoc
@@ -495,8 +497,8 @@ class __$$ThemeSettingsImplCopyWithImpl<$Res>
     Object? highContrast = null,
     Object? useMaterialThemeFromSystem = null,
     Object? customThemeColor = null,
-    Object? useMaterialThemeOfPlayingItem = null,
     Object? useMaterialThemeOnItemPage = null,
+    Object? useCurrentPlayerThemeThroughoutApp = null,
   }) {
     return _then(_$ThemeSettingsImpl(
       themeMode: null == themeMode
@@ -515,13 +517,14 @@ class __$$ThemeSettingsImplCopyWithImpl<$Res>
           ? _value.customThemeColor
           : customThemeColor // ignore: cast_nullable_to_non_nullable
               as String,
-      useMaterialThemeOfPlayingItem: null == useMaterialThemeOfPlayingItem
-          ? _value.useMaterialThemeOfPlayingItem
-          : useMaterialThemeOfPlayingItem // ignore: cast_nullable_to_non_nullable
-              as bool,
       useMaterialThemeOnItemPage: null == useMaterialThemeOnItemPage
           ? _value.useMaterialThemeOnItemPage
           : useMaterialThemeOnItemPage // ignore: cast_nullable_to_non_nullable
+              as bool,
+      useCurrentPlayerThemeThroughoutApp: null ==
+              useCurrentPlayerThemeThroughoutApp
+          ? _value.useCurrentPlayerThemeThroughoutApp
+          : useCurrentPlayerThemeThroughoutApp // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -535,8 +538,8 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
       this.highContrast = false,
       this.useMaterialThemeFromSystem = false,
       this.customThemeColor = '#FF311B92',
-      this.useMaterialThemeOfPlayingItem = true,
-      this.useMaterialThemeOnItemPage = true});
+      this.useMaterialThemeOnItemPage = true,
+      this.useCurrentPlayerThemeThroughoutApp = true});
 
   factory _$ThemeSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$ThemeSettingsImplFromJson(json);
@@ -555,14 +558,14 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
   final String customThemeColor;
   @override
   @JsonKey()
-  final bool useMaterialThemeOfPlayingItem;
+  final bool useMaterialThemeOnItemPage;
   @override
   @JsonKey()
-  final bool useMaterialThemeOnItemPage;
+  final bool useCurrentPlayerThemeThroughoutApp;
 
   @override
   String toString() {
-    return 'ThemeSettings(themeMode: $themeMode, highContrast: $highContrast, useMaterialThemeFromSystem: $useMaterialThemeFromSystem, customThemeColor: $customThemeColor, useMaterialThemeOfPlayingItem: $useMaterialThemeOfPlayingItem, useMaterialThemeOnItemPage: $useMaterialThemeOnItemPage)';
+    return 'ThemeSettings(themeMode: $themeMode, highContrast: $highContrast, useMaterialThemeFromSystem: $useMaterialThemeFromSystem, customThemeColor: $customThemeColor, useMaterialThemeOnItemPage: $useMaterialThemeOnItemPage, useCurrentPlayerThemeThroughoutApp: $useCurrentPlayerThemeThroughoutApp)';
   }
 
   @override
@@ -580,14 +583,14 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
                     useMaterialThemeFromSystem) &&
             (identical(other.customThemeColor, customThemeColor) ||
                 other.customThemeColor == customThemeColor) &&
-            (identical(other.useMaterialThemeOfPlayingItem,
-                    useMaterialThemeOfPlayingItem) ||
-                other.useMaterialThemeOfPlayingItem ==
-                    useMaterialThemeOfPlayingItem) &&
             (identical(other.useMaterialThemeOnItemPage,
                     useMaterialThemeOnItemPage) ||
                 other.useMaterialThemeOnItemPage ==
-                    useMaterialThemeOnItemPage));
+                    useMaterialThemeOnItemPage) &&
+            (identical(other.useCurrentPlayerThemeThroughoutApp,
+                    useCurrentPlayerThemeThroughoutApp) ||
+                other.useCurrentPlayerThemeThroughoutApp ==
+                    useCurrentPlayerThemeThroughoutApp));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -598,8 +601,8 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
       highContrast,
       useMaterialThemeFromSystem,
       customThemeColor,
-      useMaterialThemeOfPlayingItem,
-      useMaterialThemeOnItemPage);
+      useMaterialThemeOnItemPage,
+      useCurrentPlayerThemeThroughoutApp);
 
   /// Create a copy of ThemeSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -623,8 +626,8 @@ abstract class _ThemeSettings implements ThemeSettings {
       final bool highContrast,
       final bool useMaterialThemeFromSystem,
       final String customThemeColor,
-      final bool useMaterialThemeOfPlayingItem,
-      final bool useMaterialThemeOnItemPage}) = _$ThemeSettingsImpl;
+      final bool useMaterialThemeOnItemPage,
+      final bool useCurrentPlayerThemeThroughoutApp}) = _$ThemeSettingsImpl;
 
   factory _ThemeSettings.fromJson(Map<String, dynamic> json) =
       _$ThemeSettingsImpl.fromJson;
@@ -638,9 +641,9 @@ abstract class _ThemeSettings implements ThemeSettings {
   @override
   String get customThemeColor;
   @override
-  bool get useMaterialThemeOfPlayingItem;
-  @override
   bool get useMaterialThemeOnItemPage;
+  @override
+  bool get useCurrentPlayerThemeThroughoutApp;
 
   /// Create a copy of ThemeSettings
   /// with the given fields replaced by the non-null parameter values.

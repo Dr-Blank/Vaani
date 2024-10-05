@@ -82,7 +82,7 @@ class MyApp extends ConsumerWidget {
       }
     }
 
-    if (themeSettings.useMaterialThemeOfPlayingItem) {
+    if (themeSettings.useCurrentPlayerThemeThroughoutApp) {
       final player = ref.watch(audiobookPlayerProvider);
       if (player.book != null) {
         final themeLight = ref.watch(

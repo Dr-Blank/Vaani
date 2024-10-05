@@ -158,18 +158,18 @@ class ThemeSettingsPage extends HookConsumerWidget {
 
             // use theme throughout the app when playing item
             SettingsTile.switchTile(
-              initialValue: themeSettings.useMaterialThemeOfPlayingItem,
+              initialValue: themeSettings.useCurrentPlayerThemeThroughoutApp,
               title: const Text('Adapt theme from currently playing item'),
               description: const Text(
                 'Use the theme colors from the currently playing item for the app',
               ),
-              leading: themeSettings.useMaterialThemeOfPlayingItem
+              leading: themeSettings.useCurrentPlayerThemeThroughoutApp
                   ? const Icon(Icons.auto_fix_high)
                   : const Icon(Icons.auto_fix_off),
               onToggle: (value) {
                 ref.read(appSettingsProvider.notifier).update(
                       appSettings.copyWith.themeSettings(
-                        useMaterialThemeOfPlayingItem: value,
+                        useCurrentPlayerThemeThroughoutApp: value,
                       ),
                     );
               },

@@ -32,8 +32,8 @@ class ThemeSettings with _$ThemeSettings {
     @Default(false) bool highContrast,
     @Default(false) bool useMaterialThemeFromSystem,
     @Default('#FF311B92') String customThemeColor,
-    @Default(true) bool useMaterialThemeOfPlayingItem,
     @Default(true) bool useMaterialThemeOnItemPage,
+    @Default(true) bool useCurrentPlayerThemeThroughoutApp,
   }) = _ThemeSettings;
 
   factory ThemeSettings.fromJson(Map<String, dynamic> json) =>

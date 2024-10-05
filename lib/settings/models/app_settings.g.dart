@@ -52,10 +52,10 @@ _$ThemeSettingsImpl _$$ThemeSettingsImplFromJson(Map<String, dynamic> json) =>
       useMaterialThemeFromSystem:
           json['useMaterialThemeFromSystem'] as bool? ?? false,
       customThemeColor: json['customThemeColor'] as String? ?? '#FF311B92',
-      useMaterialThemeOfPlayingItem:
-          json['useMaterialThemeOfPlayingItem'] as bool? ?? true,
       useMaterialThemeOnItemPage:
           json['useMaterialThemeOnItemPage'] as bool? ?? true,
+      useCurrentPlayerThemeThroughoutApp:
+          json['useCurrentPlayerThemeThroughoutApp'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$ThemeSettingsImplToJson(_$ThemeSettingsImpl instance) =>
@@ -64,8 +64,9 @@ Map<String, dynamic> _$$ThemeSettingsImplToJson(_$ThemeSettingsImpl instance) =>
       'highContrast': instance.highContrast,
       'useMaterialThemeFromSystem': instance.useMaterialThemeFromSystem,
       'customThemeColor': instance.customThemeColor,
-      'useMaterialThemeOfPlayingItem': instance.useMaterialThemeOfPlayingItem,
       'useMaterialThemeOnItemPage': instance.useMaterialThemeOnItemPage,
+      'useCurrentPlayerThemeThroughoutApp':
+          instance.useCurrentPlayerThemeThroughoutApp,
     };
 
 const _$ThemeModeEnumMap = {
