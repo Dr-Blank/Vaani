@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -51,24 +52,58 @@ class MyApp extends ConsumerWidget {
     if (needOnboarding) {
       routerConfig.goNamed(Routes.onboarding.name);
     }
+    final appSettings = ref.watch(appSettingsProvider);
 
-    try {
-      return MaterialApp.router(
-        // debugShowCheckedModeBanner: false,
-        theme: brandLightTheme,
-        darkTheme: brandDarkTheme,
-        themeMode: ref.watch(appSettingsProvider).themeSettings.isDarkMode
-            ? ThemeMode.dark
-            : ThemeMode.light,
-        routerConfig: routerConfig,
-      );
-    } catch (e) {
-      debugPrintStack(stackTrace: StackTrace.current, label: e.toString());
-      if (needOnboarding) {
-        routerConfig.goNamed(Routes.onboarding.name);
-      }
-      return const SizedBox.shrink();
-    }
+    final themeSettings = appSettings.themeSettings;
+    return DynamicColorBuilder(
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        // Decide on a colour/brightness scheme based on OS and user settings
+        ColorScheme lightColorScheme;
+        ColorScheme darkColorScheme;
+        if (lightDynamic != null &&
+            darkDynamic != null &&
+            themeSettings.useMaterialThemeFromSystem) {
+          lightColorScheme = lightDynamic.harmonized();
+          darkColorScheme = darkDynamic.harmonized();
+        } else {
+          lightColorScheme = brandLightColorScheme;
+          darkColorScheme = brandDarkColorScheme;
+        }
+
+        // set the background and surface colors to pure black in the amoled theme
+        if (themeSettings.highContrast) {
+          darkColorScheme =
+              darkColorScheme.copyWith(surface: Colors.black).harmonized();
+        }
+
+        final themeLight = ThemeData(
+          useMaterial3: true,
+          colorScheme: lightColorScheme,
+        );
+        final themeDark = ThemeData(
+          useMaterial3: true,
+          colorScheme: darkColorScheme,
+          brightness: Brightness.dark,
+        );
+
+        try {
+          return MaterialApp.router(
+            // debugShowCheckedModeBanner: false,
+            theme: themeLight,
+            darkTheme: themeDark,
+            themeMode:
+                themeSettings.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            routerConfig: routerConfig,
+          );
+        } catch (e) {
+          debugPrintStack(stackTrace: StackTrace.current, label: e.toString());
+          if (needOnboarding) {
+            routerConfig.goNamed(Routes.onboarding.name);
+          }
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 }
 

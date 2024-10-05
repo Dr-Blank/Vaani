@@ -25,10 +25,17 @@ class AppSettings with _$AppSettings {
       _$AppSettingsFromJson(json);
 }
 
+enum ThemeType { light, dark, system }
+
 @freezed
 class ThemeSettings with _$ThemeSettings {
   const factory ThemeSettings({
     @Default(true) bool isDarkMode,
+    @Default(ThemeType.system) ThemeType themeType,
+    @Default(false) bool highContrast,
+    @Default(true) bool useMaterialThemeFromSystem,
+    @Default('#FF311B92') String customThemeColor,
+    @Default(true) bool useMaterialThemeOfPlayingItem,
     @Default(true) bool useMaterialThemeOnItemPage,
     @Default(true) bool useCurrentPlayerThemeThroughoutApp,
   }) = _ThemeSettings;

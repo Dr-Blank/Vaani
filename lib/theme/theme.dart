@@ -4,18 +4,12 @@ import 'package:flutter/material.dart';
 const brandColor = Color(0xFF311B92);
 const brandColorLight = Color(0xFF604CEC);
 
-final ThemeData brandLightTheme = ThemeData(
+final brandLightColorScheme = ColorScheme.fromSeed(
+  seedColor: brandColor,
   brightness: Brightness.light,
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: brandColor,
-    brightness: Brightness.light,
-  ),
 );
 
-final ThemeData brandDarkTheme = ThemeData(
+final brandDarkColorScheme = ColorScheme.fromSeed(
+  seedColor: brandColor,
   brightness: Brightness.dark,
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: brandColor,
-    brightness: Brightness.dark,
-  ),
 );
