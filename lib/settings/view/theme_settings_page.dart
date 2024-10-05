@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
+import 'package:vaani/settings/view/buttons.dart';
 import 'package:vaani/settings/view/simple_settings_page.dart';
 import 'package:vaani/shared/extensions/enum.dart';
 
@@ -57,28 +59,8 @@ class ThemeSettingsPage extends HookConsumerWidget {
                 final themeMode = await showDialog<ThemeMode>(
                   context: context,
                   builder: (context) {
-                    return SimpleDialog(
-                      title: const Text('Select Theme Mode'),
-                      children: [
-                        SimpleDialogOption(
-                          onPressed: () {
-                            Navigator.pop(context, ThemeMode.system);
-                          },
-                          child: const Text('System'),
-                        ),
-                        SimpleDialogOption(
-                          onPressed: () {
-                            Navigator.pop(context, ThemeMode.light);
-                          },
-                          child: const Text('Light'),
-                        ),
-                        SimpleDialogOption(
-                          onPressed: () {
-                            Navigator.pop(context, ThemeMode.dark);
-                          },
-                          child: const Text('Dark'),
-                        ),
-                      ],
+                    return ModeSelectionDialog(
+                      themeMode: themeSettings.themeMode,
                     );
                   },
                 );
@@ -226,5 +208,54 @@ extension ColorExtension on Color {
 extension StringExtension on String {
   Color toColor() {
     return Color(int.parse('0xff$substring(1)'));
+  }
+}
+
+class ModeSelectionDialog extends HookConsumerWidget {
+  final ThemeMode themeMode;
+
+  const ModeSelectionDialog({
+    super.key,
+    required this.themeMode,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedTheme = useState(themeMode);
+    // a wrap of chips to show the available modes with icons
+    return AlertDialog(
+      title: const Text('Select Theme Mode'),
+      content: Wrap(
+        spacing: 8.0,
+        runSpacing: 8.0,
+        children: ThemeMode.values
+            .map(
+              (mode) => ChoiceChip(
+                avatar: switch (mode) {
+                  ThemeMode.system => const Icon(Icons.auto_awesome),
+                  ThemeMode.light => const Icon(Icons.light_mode),
+                  ThemeMode.dark => const Icon(Icons.dark_mode),
+                },
+                showCheckmark: false,
+                label: Text(mode.pascalCase),
+                selected: mode == selectedTheme.value,
+                onSelected: (selected) {
+                  if (selected) {
+                    selectedTheme.value = mode;
+                  }
+                },
+              ),
+            )
+            .toList(),
+      ),
+      actions: [
+        CancelButton(),
+        OkButton(
+          onPressed: () {
+            Navigator.pop(context, selectedTheme.value);
+          },
+        ),
+      ],
+    );
   }
 }
