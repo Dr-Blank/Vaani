@@ -7,11 +7,10 @@ import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:vaani/api/authenticated_user_provider.dart';
-import 'package:vaani/api/server_provider.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/settings/models/app_settings.dart' as model;
+import 'package:vaani/settings/view/buttons.dart';
 import 'package:vaani/settings/view/simple_settings_page.dart';
 import 'package:vaani/settings/view/widgets/navigation_with_switch_tile.dart';
 
@@ -23,10 +22,6 @@ class AppSettingsPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appSettings = ref.watch(appSettingsProvider);
-    final registeredServers = ref.watch(audiobookShelfServerProvider);
-    final registeredServersAsList = registeredServers.toList();
-    final availableUsers = ref.watch(authenticatedUserProvider);
-    final serverURIController = useTextEditingController();
     final sleepTimerSettings = appSettings.sleepTimerSettings;
 
     return SimpleSettingsPage(
@@ -166,61 +161,11 @@ class AppSettingsPage extends HookConsumerWidget {
                 'Restore the app settings from the backup',
               ),
               onPressed: (context) {
-                final formKey = GlobalKey<FormState>();
                 // show a dialog to get the backup
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return AlertDialog(
-                      title: const Text('Restore Backup'),
-                      content: Form(
-                        key: formKey,
-                        child: TextFormField(
-                          controller: serverURIController,
-                          decoration: const InputDecoration(
-                            labelText: 'Backup',
-                            hintText: 'Paste the backup here',
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please paste the backup here';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              final backup = serverURIController.text;
-                              final newSettings = model.AppSettings.fromJson(
-                                // decode the backup as json
-                                jsonDecode(backup),
-                              );
-                              ref
-                                  .read(appSettingsProvider.notifier)
-                                  .update(newSettings);
-                              Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Settings restored'),
-                                ),
-                              );
-                              // clear the backup
-                              serverURIController.clear();
-                            }
-                          },
-                          child: const Text('Restore'),
-                        ),
-                      ],
-                    );
+                    return RestoreDialogue();
                   },
                 );
               },
@@ -269,6 +214,82 @@ class AppSettingsPage extends HookConsumerWidget {
             ),
           ],
         ),
+      ],
+    );
+  }
+}
+
+class RestoreDialogue extends HookConsumerWidget {
+  const RestoreDialogue({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formKey = GlobalKey<FormState>();
+
+    final settingsInputController = useTextEditingController();
+    return AlertDialog(
+      title: const Text('Restore Backup'),
+      content: Form(
+        key: formKey,
+        child: TextFormField(
+          controller: settingsInputController,
+          decoration: InputDecoration(
+            labelText: 'Backup',
+            hintText: 'Paste the backup here',
+            // clear button
+            suffix: IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                settingsInputController.clear();
+              },
+            ),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please paste the backup here';
+            }
+            try {
+              // try to decode the backup
+              model.AppSettings.fromJson(
+                jsonDecode(value),
+              );
+            } catch (e) {
+              return 'Invalid backup';
+            }
+            return null;
+          },
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            if (formKey.currentState!.validate()) {
+              final backup = settingsInputController.text;
+              final newSettings = model.AppSettings.fromJson(
+                // decode the backup as json
+                jsonDecode(backup),
+              );
+              ref.read(appSettingsProvider.notifier).update(newSettings);
+              settingsInputController.clear();
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Settings restored'),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Invalid backup'),
+                ),
+              );
+            }
+          },
+          child: const Text('Restore'),
+        ),
+        CancelButton(),
       ],
     );
   }
