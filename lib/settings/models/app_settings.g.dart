@@ -46,7 +46,12 @@ Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
 
 _$ThemeSettingsImpl _$$ThemeSettingsImplFromJson(Map<String, dynamic> json) =>
     _$ThemeSettingsImpl(
-      isDarkMode: json['isDarkMode'] as bool? ?? true,
+      themeMode: $enumDecodeNullable(_$ThemeModeEnumMap, json['themeMode']) ??
+          ThemeMode.system,
+      highContrast: json['highContrast'] as bool? ?? false,
+      useMaterialThemeFromSystem:
+          json['useMaterialThemeFromSystem'] as bool? ?? false,
+      customThemeColor: json['customThemeColor'] as String? ?? '#FF311B92',
       useMaterialThemeOnItemPage:
           json['useMaterialThemeOnItemPage'] as bool? ?? true,
       useCurrentPlayerThemeThroughoutApp:
@@ -55,11 +60,20 @@ _$ThemeSettingsImpl _$$ThemeSettingsImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$ThemeSettingsImplToJson(_$ThemeSettingsImpl instance) =>
     <String, dynamic>{
-      'isDarkMode': instance.isDarkMode,
+      'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
+      'highContrast': instance.highContrast,
+      'useMaterialThemeFromSystem': instance.useMaterialThemeFromSystem,
+      'customThemeColor': instance.customThemeColor,
       'useMaterialThemeOnItemPage': instance.useMaterialThemeOnItemPage,
       'useCurrentPlayerThemeThroughoutApp':
           instance.useCurrentPlayerThemeThroughoutApp,
     };
+
+const _$ThemeModeEnumMap = {
+  ThemeMode.system: 'system',
+  ThemeMode.light: 'light',
+  ThemeMode.dark: 'dark',
+};
 
 _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>
     _$PlayerSettingsImpl(

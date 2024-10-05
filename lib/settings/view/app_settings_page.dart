@@ -7,11 +7,10 @@ import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:vaani/api/authenticated_user_provider.dart';
-import 'package:vaani/api/server_provider.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/settings/models/app_settings.dart' as model;
+import 'package:vaani/settings/view/buttons.dart';
 import 'package:vaani/settings/view/simple_settings_page.dart';
 import 'package:vaani/settings/view/widgets/navigation_with_switch_tile.dart';
 
@@ -23,58 +22,11 @@ class AppSettingsPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appSettings = ref.watch(appSettingsProvider);
-    final registeredServers = ref.watch(audiobookShelfServerProvider);
-    final registeredServersAsList = registeredServers.toList();
-    final availableUsers = ref.watch(authenticatedUserProvider);
-    final serverURIController = useTextEditingController();
     final sleepTimerSettings = appSettings.sleepTimerSettings;
 
     return SimpleSettingsPage(
       title: const Text('App Settings'),
       sections: [
-        // Appearance section
-        SettingsSection(
-          margin: const EdgeInsetsDirectional.symmetric(
-            horizontal: 16.0,
-            vertical: 8.0,
-          ),
-          title: Text(
-            'Appearance',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          tiles: [
-            SettingsTile.switchTile(
-              initialValue: appSettings.themeSettings.isDarkMode,
-              title: const Text('Dark Mode'),
-              description: const Text('we all know dark mode is better'),
-              leading: appSettings.themeSettings.isDarkMode
-                  ? const Icon(Icons.dark_mode)
-                  : const Icon(Icons.light_mode),
-              onToggle: (value) {
-                ref.read(appSettingsProvider.notifier).toggleDarkMode();
-              },
-            ),
-            SettingsTile.switchTile(
-              initialValue:
-                  appSettings.themeSettings.useMaterialThemeOnItemPage,
-              title: const Text('Adaptive Theme on Item Page'),
-              description: const Text(
-                'get fancy with the colors on the item page at the cost of some performance',
-              ),
-              leading: appSettings.themeSettings.useMaterialThemeOnItemPage
-                  ? const Icon(Icons.auto_fix_high)
-                  : const Icon(Icons.auto_fix_off),
-              onToggle: (value) {
-                ref.read(appSettingsProvider.notifier).update(
-                      appSettings.copyWith.themeSettings(
-                        useMaterialThemeOnItemPage: value,
-                      ),
-                    );
-              },
-            ),
-          ],
-        ),
-
         // General section
         SettingsSection(
           margin: const EdgeInsetsDirectional.symmetric(
@@ -86,6 +38,16 @@ class AppSettingsPage extends HookConsumerWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           tiles: [
+            SettingsTile(
+              title: const Text('Player Settings'),
+              leading: const Icon(Icons.play_arrow),
+              description: const Text(
+                'Customize the player settings',
+              ),
+              onPressed: (context) {
+                context.pushNamed(Routes.playerSettings.name);
+              },
+            ),
             NavigationWithSwitchTile(
               title: const Text('Auto Turn On Sleep Timer'),
               description: const Text(
@@ -104,26 +66,6 @@ class AppSettingsPage extends HookConsumerWidget {
                         autoTurnOnTimer: value,
                       ),
                     );
-              },
-            ),
-            SettingsTile(
-              title: const Text('Notification Media Player'),
-              leading: const Icon(Icons.play_lesson),
-              description: const Text(
-                'Customize the media player in notifications',
-              ),
-              onPressed: (context) {
-                context.pushNamed(Routes.notificationSettings.name);
-              },
-            ),
-            SettingsTile(
-              title: const Text('Player Settings'),
-              leading: const Icon(Icons.play_arrow),
-              description: const Text(
-                'Customize the player settings',
-              ),
-              onPressed: (context) {
-                context.pushNamed(Routes.playerSettings.name);
               },
             ),
             NavigationWithSwitchTile(
@@ -146,6 +88,41 @@ class AppSettingsPage extends HookConsumerWidget {
             ),
           ],
         ),
+
+        // Appearance section
+        SettingsSection(
+          margin: const EdgeInsetsDirectional.symmetric(
+            horizontal: 16.0,
+            vertical: 8.0,
+          ),
+          title: Text(
+            'Appearance',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          tiles: [
+            SettingsTile.navigation(
+              leading: const Icon(Icons.color_lens),
+              title: const Text('Theme Settings'),
+              description: const Text(
+                'Customize the app theme',
+              ),
+              onPressed: (context) {
+                context.pushNamed(Routes.themeSettings.name);
+              },
+            ),
+            SettingsTile(
+              title: const Text('Notification Media Player'),
+              leading: const Icon(Icons.play_lesson),
+              description: const Text(
+                'Customize the media player in notifications',
+              ),
+              onPressed: (context) {
+                context.pushNamed(Routes.notificationSettings.name);
+              },
+            ),
+          ],
+        ),
+
         // Backup and Restore section
         SettingsSection(
           margin: const EdgeInsetsDirectional.symmetric(
@@ -185,61 +162,11 @@ class AppSettingsPage extends HookConsumerWidget {
                 'Restore the app settings from the backup',
               ),
               onPressed: (context) {
-                final formKey = GlobalKey<FormState>();
                 // show a dialog to get the backup
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return AlertDialog(
-                      title: const Text('Restore Backup'),
-                      content: Form(
-                        key: formKey,
-                        child: TextFormField(
-                          controller: serverURIController,
-                          decoration: const InputDecoration(
-                            labelText: 'Backup',
-                            hintText: 'Paste the backup here',
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please paste the backup here';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              final backup = serverURIController.text;
-                              final newSettings = model.AppSettings.fromJson(
-                                // decode the backup as json
-                                jsonDecode(backup),
-                              );
-                              ref
-                                  .read(appSettingsProvider.notifier)
-                                  .update(newSettings);
-                              Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Settings restored'),
-                                ),
-                              );
-                              // clear the backup
-                              serverURIController.clear();
-                            }
-                          },
-                          child: const Text('Restore'),
-                        ),
-                      ],
-                    );
+                    return RestoreDialogue();
                   },
                 );
               },
@@ -287,6 +214,86 @@ class AppSettingsPage extends HookConsumerWidget {
               },
             ),
           ],
+        ),
+      ],
+    );
+  }
+}
+
+class RestoreDialogue extends HookConsumerWidget {
+  const RestoreDialogue({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formKey = useMemoized(() => GlobalKey<FormState>());
+    final settings = useState<model.AppSettings?>(null);
+
+    final settingsInputController = useTextEditingController();
+    return AlertDialog(
+      title: const Text('Restore Backup'),
+      content: Form(
+        key: formKey,
+        child: TextFormField(
+          autofocus: true,
+          decoration: InputDecoration(
+            labelText: 'Backup',
+            hintText: 'Paste the backup here',
+            // clear button
+            suffixIcon: IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                settingsInputController.clear();
+              },
+            ),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please paste the backup here';
+            }
+            try {
+              // try to decode the backup
+              settings.value = model.AppSettings.fromJson(
+                jsonDecode(value),
+              );
+            } catch (e) {
+              return 'Invalid backup';
+            }
+            return null;
+          },
+        ),
+      ),
+      actions: [
+        CancelButton(),
+        TextButton(
+          onPressed: () {
+            if (formKey.currentState!.validate()) {
+              if (settings.value == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Invalid backup'),
+                  ),
+                );
+                return;
+              }
+              ref.read(appSettingsProvider.notifier).update(settings.value!);
+              settingsInputController.clear();
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Settings restored'),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Invalid backup'),
+                ),
+              );
+            }
+          },
+          child: const Text('Restore'),
         ),
       ],
     );

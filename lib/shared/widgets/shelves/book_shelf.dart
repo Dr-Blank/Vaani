@@ -17,7 +17,7 @@ import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/shared/extensions/model_conversions.dart';
 import 'package:vaani/shared/widgets/shelves/home_shelf.dart';
-import 'package:vaani/theme/theme_from_cover_provider.dart';
+import 'package:vaani/theme/providers/theme_from_cover_provider.dart';
 
 /// A shelf that displays books on the home page
 class BookHomeShelf extends HookConsumerWidget {

@@ -20,12 +20,16 @@ class OkButton<T> extends StatelessWidget {
 class CancelButton extends StatelessWidget {
   const CancelButton({
     super.key,
+    this.onPressed,
   });
+
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
+        onPressed?.call();
         Navigator.of(context).pop();
       },
       child: const Text('Cancel'),

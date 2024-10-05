@@ -15,7 +15,7 @@ import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/shared/extensions/duration_format.dart';
 import 'package:vaani/shared/extensions/model_conversions.dart';
 import 'package:vaani/shared/widgets/shelves/book_shelf.dart';
-import 'package:vaani/theme/theme_from_cover_provider.dart';
+import 'package:vaani/theme/providers/theme_from_cover_provider.dart';
 
 class LibraryItemHeroSection extends HookConsumerWidget {
   const LibraryItemHeroSection({
@@ -353,16 +353,17 @@ class _BookCover extends HookConsumerWidget {
     final coverImage = ref.watch(coverImageProvider(itemId));
     final themeData = Theme.of(context);
     // final item = ref.watch(libraryItemProvider(itemId));
-    final useMaterialThemeOnItemPage =
-        ref.watch(appSettingsProvider).themeSettings.useMaterialThemeOnItemPage;
+    final themeSettings = ref.watch(appSettingsProvider).themeSettings;
 
     ColorScheme? coverColorScheme;
-    if (useMaterialThemeOnItemPage) {
+    if (themeSettings.useMaterialThemeOnItemPage) {
       coverColorScheme = ref
           .watch(
             themeOfLibraryItemProvider(
               itemId,
               brightness: Theme.of(context).brightness,
+              highContrast: themeSettings.highContrast ||
+                  MediaQuery.of(context).highContrast,
             ),
           )
           .valueOrNull;
@@ -371,7 +372,7 @@ class _BookCover extends HookConsumerWidget {
     return ThemeSwitcher(
       builder: (context) {
         // change theme after 2 seconds
-        if (useMaterialThemeOnItemPage) {
+        if (themeSettings.useMaterialThemeOnItemPage) {
           Future.delayed(150.ms, () {
             try {
               ThemeSwitcher.of(context).changeTheme(

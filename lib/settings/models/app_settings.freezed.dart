@@ -378,7 +378,10 @@ ThemeSettings _$ThemeSettingsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ThemeSettings {
-  bool get isDarkMode => throw _privateConstructorUsedError;
+  ThemeMode get themeMode => throw _privateConstructorUsedError;
+  bool get highContrast => throw _privateConstructorUsedError;
+  bool get useMaterialThemeFromSystem => throw _privateConstructorUsedError;
+  String get customThemeColor => throw _privateConstructorUsedError;
   bool get useMaterialThemeOnItemPage => throw _privateConstructorUsedError;
   bool get useCurrentPlayerThemeThroughoutApp =>
       throw _privateConstructorUsedError;
@@ -400,7 +403,10 @@ abstract class $ThemeSettingsCopyWith<$Res> {
       _$ThemeSettingsCopyWithImpl<$Res, ThemeSettings>;
   @useResult
   $Res call(
-      {bool isDarkMode,
+      {ThemeMode themeMode,
+      bool highContrast,
+      bool useMaterialThemeFromSystem,
+      String customThemeColor,
       bool useMaterialThemeOnItemPage,
       bool useCurrentPlayerThemeThroughoutApp});
 }
@@ -420,15 +426,30 @@ class _$ThemeSettingsCopyWithImpl<$Res, $Val extends ThemeSettings>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isDarkMode = null,
+    Object? themeMode = null,
+    Object? highContrast = null,
+    Object? useMaterialThemeFromSystem = null,
+    Object? customThemeColor = null,
     Object? useMaterialThemeOnItemPage = null,
     Object? useCurrentPlayerThemeThroughoutApp = null,
   }) {
     return _then(_value.copyWith(
-      isDarkMode: null == isDarkMode
-          ? _value.isDarkMode
-          : isDarkMode // ignore: cast_nullable_to_non_nullable
+      themeMode: null == themeMode
+          ? _value.themeMode
+          : themeMode // ignore: cast_nullable_to_non_nullable
+              as ThemeMode,
+      highContrast: null == highContrast
+          ? _value.highContrast
+          : highContrast // ignore: cast_nullable_to_non_nullable
               as bool,
+      useMaterialThemeFromSystem: null == useMaterialThemeFromSystem
+          ? _value.useMaterialThemeFromSystem
+          : useMaterialThemeFromSystem // ignore: cast_nullable_to_non_nullable
+              as bool,
+      customThemeColor: null == customThemeColor
+          ? _value.customThemeColor
+          : customThemeColor // ignore: cast_nullable_to_non_nullable
+              as String,
       useMaterialThemeOnItemPage: null == useMaterialThemeOnItemPage
           ? _value.useMaterialThemeOnItemPage
           : useMaterialThemeOnItemPage // ignore: cast_nullable_to_non_nullable
@@ -451,7 +472,10 @@ abstract class _$$ThemeSettingsImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {bool isDarkMode,
+      {ThemeMode themeMode,
+      bool highContrast,
+      bool useMaterialThemeFromSystem,
+      String customThemeColor,
       bool useMaterialThemeOnItemPage,
       bool useCurrentPlayerThemeThroughoutApp});
 }
@@ -469,15 +493,30 @@ class __$$ThemeSettingsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isDarkMode = null,
+    Object? themeMode = null,
+    Object? highContrast = null,
+    Object? useMaterialThemeFromSystem = null,
+    Object? customThemeColor = null,
     Object? useMaterialThemeOnItemPage = null,
     Object? useCurrentPlayerThemeThroughoutApp = null,
   }) {
     return _then(_$ThemeSettingsImpl(
-      isDarkMode: null == isDarkMode
-          ? _value.isDarkMode
-          : isDarkMode // ignore: cast_nullable_to_non_nullable
+      themeMode: null == themeMode
+          ? _value.themeMode
+          : themeMode // ignore: cast_nullable_to_non_nullable
+              as ThemeMode,
+      highContrast: null == highContrast
+          ? _value.highContrast
+          : highContrast // ignore: cast_nullable_to_non_nullable
               as bool,
+      useMaterialThemeFromSystem: null == useMaterialThemeFromSystem
+          ? _value.useMaterialThemeFromSystem
+          : useMaterialThemeFromSystem // ignore: cast_nullable_to_non_nullable
+              as bool,
+      customThemeColor: null == customThemeColor
+          ? _value.customThemeColor
+          : customThemeColor // ignore: cast_nullable_to_non_nullable
+              as String,
       useMaterialThemeOnItemPage: null == useMaterialThemeOnItemPage
           ? _value.useMaterialThemeOnItemPage
           : useMaterialThemeOnItemPage // ignore: cast_nullable_to_non_nullable
@@ -495,7 +534,10 @@ class __$$ThemeSettingsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ThemeSettingsImpl implements _ThemeSettings {
   const _$ThemeSettingsImpl(
-      {this.isDarkMode = true,
+      {this.themeMode = ThemeMode.system,
+      this.highContrast = false,
+      this.useMaterialThemeFromSystem = false,
+      this.customThemeColor = '#FF311B92',
       this.useMaterialThemeOnItemPage = true,
       this.useCurrentPlayerThemeThroughoutApp = true});
 
@@ -504,7 +546,16 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
 
   @override
   @JsonKey()
-  final bool isDarkMode;
+  final ThemeMode themeMode;
+  @override
+  @JsonKey()
+  final bool highContrast;
+  @override
+  @JsonKey()
+  final bool useMaterialThemeFromSystem;
+  @override
+  @JsonKey()
+  final String customThemeColor;
   @override
   @JsonKey()
   final bool useMaterialThemeOnItemPage;
@@ -514,7 +565,7 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
 
   @override
   String toString() {
-    return 'ThemeSettings(isDarkMode: $isDarkMode, useMaterialThemeOnItemPage: $useMaterialThemeOnItemPage, useCurrentPlayerThemeThroughoutApp: $useCurrentPlayerThemeThroughoutApp)';
+    return 'ThemeSettings(themeMode: $themeMode, highContrast: $highContrast, useMaterialThemeFromSystem: $useMaterialThemeFromSystem, customThemeColor: $customThemeColor, useMaterialThemeOnItemPage: $useMaterialThemeOnItemPage, useCurrentPlayerThemeThroughoutApp: $useCurrentPlayerThemeThroughoutApp)';
   }
 
   @override
@@ -522,8 +573,16 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ThemeSettingsImpl &&
-            (identical(other.isDarkMode, isDarkMode) ||
-                other.isDarkMode == isDarkMode) &&
+            (identical(other.themeMode, themeMode) ||
+                other.themeMode == themeMode) &&
+            (identical(other.highContrast, highContrast) ||
+                other.highContrast == highContrast) &&
+            (identical(other.useMaterialThemeFromSystem,
+                    useMaterialThemeFromSystem) ||
+                other.useMaterialThemeFromSystem ==
+                    useMaterialThemeFromSystem) &&
+            (identical(other.customThemeColor, customThemeColor) ||
+                other.customThemeColor == customThemeColor) &&
             (identical(other.useMaterialThemeOnItemPage,
                     useMaterialThemeOnItemPage) ||
                 other.useMaterialThemeOnItemPage ==
@@ -536,8 +595,14 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, isDarkMode,
-      useMaterialThemeOnItemPage, useCurrentPlayerThemeThroughoutApp);
+  int get hashCode => Object.hash(
+      runtimeType,
+      themeMode,
+      highContrast,
+      useMaterialThemeFromSystem,
+      customThemeColor,
+      useMaterialThemeOnItemPage,
+      useCurrentPlayerThemeThroughoutApp);
 
   /// Create a copy of ThemeSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -557,7 +622,10 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
 
 abstract class _ThemeSettings implements ThemeSettings {
   const factory _ThemeSettings(
-      {final bool isDarkMode,
+      {final ThemeMode themeMode,
+      final bool highContrast,
+      final bool useMaterialThemeFromSystem,
+      final String customThemeColor,
       final bool useMaterialThemeOnItemPage,
       final bool useCurrentPlayerThemeThroughoutApp}) = _$ThemeSettingsImpl;
 
@@ -565,7 +633,13 @@ abstract class _ThemeSettings implements ThemeSettings {
       _$ThemeSettingsImpl.fromJson;
 
   @override
-  bool get isDarkMode;
+  ThemeMode get themeMode;
+  @override
+  bool get highContrast;
+  @override
+  bool get useMaterialThemeFromSystem;
+  @override
+  String get customThemeColor;
   @override
   bool get useMaterialThemeOnItemPage;
   @override

@@ -28,7 +28,10 @@ class AppSettings with _$AppSettings {
 @freezed
 class ThemeSettings with _$ThemeSettings {
   const factory ThemeSettings({
-    @Default(true) bool isDarkMode,
+    @Default(ThemeMode.system) ThemeMode themeMode,
+    @Default(false) bool highContrast,
+    @Default(false) bool useMaterialThemeFromSystem,
+    @Default('#FF311B92') String customThemeColor,
     @Default(true) bool useMaterialThemeOnItemPage,
     @Default(true) bool useCurrentPlayerThemeThroughoutApp,
   }) = _ThemeSettings;

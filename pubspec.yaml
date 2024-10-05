@@ -44,6 +44,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   device_info_plus: ^10.1.0
   duration_picker: ^1.2.0
+  dynamic_color: ^1.7.0
   easy_stepper: ^0.8.4
   file_picker: ^8.1.2
   flutter:

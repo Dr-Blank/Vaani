@@ -6,7 +6,7 @@ part of 'theme_from_cover_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$themeFromCoverHash() => r'a549513a0dcdff76be94488baf38a8b886ce63eb';
+String _$themeFromCoverHash() => r'f656614e2d4851acdfa16d249b3198ae0e1d6d6f';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -42,10 +42,12 @@ class ThemeFromCoverFamily extends Family<AsyncValue<FutureOr<ColorScheme?>>> {
   ThemeFromCoverProvider call(
     ImageProvider<Object> img, {
     Brightness brightness = Brightness.dark,
+    bool highContrast = false,
   }) {
     return ThemeFromCoverProvider(
       img,
       brightness: brightness,
+      highContrast: highContrast,
     );
   }
 
@@ -56,6 +58,7 @@ class ThemeFromCoverFamily extends Family<AsyncValue<FutureOr<ColorScheme?>>> {
     return call(
       provider.img,
       brightness: provider.brightness,
+      highContrast: provider.highContrast,
     );
   }
 
@@ -80,11 +83,13 @@ class ThemeFromCoverProvider extends FutureProvider<FutureOr<ColorScheme?>> {
   ThemeFromCoverProvider(
     ImageProvider<Object> img, {
     Brightness brightness = Brightness.dark,
+    bool highContrast = false,
   }) : this._internal(
           (ref) => themeFromCover(
             ref as ThemeFromCoverRef,
             img,
             brightness: brightness,
+            highContrast: highContrast,
           ),
           from: themeFromCoverProvider,
           name: r'themeFromCoverProvider',
@@ -97,6 +102,7 @@ class ThemeFromCoverProvider extends FutureProvider<FutureOr<ColorScheme?>> {
               ThemeFromCoverFamily._allTransitiveDependencies,
           img: img,
           brightness: brightness,
+          highContrast: highContrast,
         );
 
   ThemeFromCoverProvider._internal(
@@ -108,10 +114,12 @@ class ThemeFromCoverProvider extends FutureProvider<FutureOr<ColorScheme?>> {
     required super.from,
     required this.img,
     required this.brightness,
+    required this.highContrast,
   }) : super.internal();
 
   final ImageProvider<Object> img;
   final Brightness brightness;
+  final bool highContrast;
 
   @override
   Override overrideWith(
@@ -129,6 +137,7 @@ class ThemeFromCoverProvider extends FutureProvider<FutureOr<ColorScheme?>> {
         debugGetCreateSourceHash: null,
         img: img,
         brightness: brightness,
+        highContrast: highContrast,
       ),
     );
   }
@@ -142,7 +151,8 @@ class ThemeFromCoverProvider extends FutureProvider<FutureOr<ColorScheme?>> {
   bool operator ==(Object other) {
     return other is ThemeFromCoverProvider &&
         other.img == img &&
-        other.brightness == brightness;
+        other.brightness == brightness &&
+        other.highContrast == highContrast;
   }
 
   @override
@@ -150,6 +160,7 @@ class ThemeFromCoverProvider extends FutureProvider<FutureOr<ColorScheme?>> {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, img.hashCode);
     hash = _SystemHash.combine(hash, brightness.hashCode);
+    hash = _SystemHash.combine(hash, highContrast.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -161,6 +172,9 @@ mixin ThemeFromCoverRef on FutureProviderRef<FutureOr<ColorScheme?>> {
 
   /// The parameter `brightness` of this provider.
   Brightness get brightness;
+
+  /// The parameter `highContrast` of this provider.
+  bool get highContrast;
 }
 
 class _ThemeFromCoverProviderElement
@@ -172,10 +186,12 @@ class _ThemeFromCoverProviderElement
   ImageProvider<Object> get img => (origin as ThemeFromCoverProvider).img;
   @override
   Brightness get brightness => (origin as ThemeFromCoverProvider).brightness;
+  @override
+  bool get highContrast => (origin as ThemeFromCoverProvider).highContrast;
 }
 
 String _$themeOfLibraryItemHash() =>
-    r'a1d0e5d81f4debe88d5a6ce46c3af28623ad4273';
+    r'b2677daf31a6a53f3f237e5204c62dff5ec43171';
 
 /// See also [themeOfLibraryItem].
 @ProviderFor(themeOfLibraryItem)
@@ -190,10 +206,12 @@ class ThemeOfLibraryItemFamily extends Family<AsyncValue<ColorScheme?>> {
   ThemeOfLibraryItemProvider call(
     String? itemId, {
     Brightness brightness = Brightness.dark,
+    bool highContrast = false,
   }) {
     return ThemeOfLibraryItemProvider(
       itemId,
       brightness: brightness,
+      highContrast: highContrast,
     );
   }
 
@@ -204,6 +222,7 @@ class ThemeOfLibraryItemFamily extends Family<AsyncValue<ColorScheme?>> {
     return call(
       provider.itemId,
       brightness: provider.brightness,
+      highContrast: provider.highContrast,
     );
   }
 
@@ -228,11 +247,13 @@ class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
   ThemeOfLibraryItemProvider(
     String? itemId, {
     Brightness brightness = Brightness.dark,
+    bool highContrast = false,
   }) : this._internal(
           (ref) => themeOfLibraryItem(
             ref as ThemeOfLibraryItemRef,
             itemId,
             brightness: brightness,
+            highContrast: highContrast,
           ),
           from: themeOfLibraryItemProvider,
           name: r'themeOfLibraryItemProvider',
@@ -245,6 +266,7 @@ class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
               ThemeOfLibraryItemFamily._allTransitiveDependencies,
           itemId: itemId,
           brightness: brightness,
+          highContrast: highContrast,
         );
 
   ThemeOfLibraryItemProvider._internal(
@@ -256,10 +278,12 @@ class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
     required super.from,
     required this.itemId,
     required this.brightness,
+    required this.highContrast,
   }) : super.internal();
 
   final String? itemId;
   final Brightness brightness;
+  final bool highContrast;
 
   @override
   Override overrideWith(
@@ -276,6 +300,7 @@ class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
         debugGetCreateSourceHash: null,
         itemId: itemId,
         brightness: brightness,
+        highContrast: highContrast,
       ),
     );
   }
@@ -289,7 +314,8 @@ class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
   bool operator ==(Object other) {
     return other is ThemeOfLibraryItemProvider &&
         other.itemId == itemId &&
-        other.brightness == brightness;
+        other.brightness == brightness &&
+        other.highContrast == highContrast;
   }
 
   @override
@@ -297,6 +323,7 @@ class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, itemId.hashCode);
     hash = _SystemHash.combine(hash, brightness.hashCode);
+    hash = _SystemHash.combine(hash, highContrast.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -308,6 +335,9 @@ mixin ThemeOfLibraryItemRef on FutureProviderRef<ColorScheme?> {
 
   /// The parameter `brightness` of this provider.
   Brightness get brightness;
+
+  /// The parameter `highContrast` of this provider.
+  bool get highContrast;
 }
 
 class _ThemeOfLibraryItemProviderElement
@@ -319,6 +349,8 @@ class _ThemeOfLibraryItemProviderElement
   @override
   Brightness get brightness =>
       (origin as ThemeOfLibraryItemProvider).brightness;
+  @override
+  bool get highContrast => (origin as ThemeOfLibraryItemProvider).highContrast;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
