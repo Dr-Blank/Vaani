@@ -50,7 +50,7 @@ _$ThemeSettingsImpl _$$ThemeSettingsImplFromJson(Map<String, dynamic> json) =>
           ThemeMode.system,
       highContrast: json['highContrast'] as bool? ?? false,
       useMaterialThemeFromSystem:
-          json['useMaterialThemeFromSystem'] as bool? ?? true,
+          json['useMaterialThemeFromSystem'] as bool? ?? false,
       customThemeColor: json['customThemeColor'] as String? ?? '#FF311B92',
       useMaterialThemeOfPlayingItem:
           json['useMaterialThemeOfPlayingItem'] as bool? ?? true,

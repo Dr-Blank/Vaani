@@ -30,7 +30,7 @@ class ThemeSettings with _$ThemeSettings {
   const factory ThemeSettings({
     @Default(ThemeMode.system) ThemeMode themeMode,
     @Default(false) bool highContrast,
-    @Default(true) bool useMaterialThemeFromSystem,
+    @Default(false) bool useMaterialThemeFromSystem,
     @Default('#FF311B92') String customThemeColor,
     @Default(true) bool useMaterialThemeOfPlayingItem,
     @Default(true) bool useMaterialThemeOnItemPage,

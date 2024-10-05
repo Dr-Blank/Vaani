@@ -533,7 +533,7 @@ class _$ThemeSettingsImpl implements _ThemeSettings {
   const _$ThemeSettingsImpl(
       {this.themeMode = ThemeMode.system,
       this.highContrast = false,
-      this.useMaterialThemeFromSystem = true,
+      this.useMaterialThemeFromSystem = false,
       this.customThemeColor = '#FF311B92',
       this.useMaterialThemeOfPlayingItem = true,
       this.useMaterialThemeOnItemPage = true});
