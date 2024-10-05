@@ -362,8 +362,8 @@ class _BookCover extends HookConsumerWidget {
             themeOfLibraryItemProvider(
               itemId,
               brightness: Theme.of(context).brightness,
-              highContrast: MediaQuery.of(context).highContrast ||
-                  themeSettings.highContrast,
+              highContrast: themeSettings.highContrast ||
+                  MediaQuery.of(context).highContrast,
             ),
           )
           .valueOrNull;

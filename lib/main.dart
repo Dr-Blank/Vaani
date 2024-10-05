@@ -62,7 +62,7 @@ class MyApp extends ConsumerWidget {
     ColorScheme darkColorScheme = brandDarkColorScheme;
 
     final shouldUseHighContrast =
-        MediaQuery.of(context).highContrast || themeSettings.highContrast;
+        themeSettings.highContrast || MediaQuery.of(context).highContrast;
 
     if (shouldUseHighContrast) {
       lightColorScheme = lightColorScheme.copyWith(

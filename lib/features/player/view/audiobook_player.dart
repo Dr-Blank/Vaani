@@ -65,8 +65,8 @@ class AudiobookPlayer extends HookConsumerWidget {
       themeOfLibraryItemProvider(
         itemBeingPlayed.valueOrNull?.id,
         brightness: Theme.of(context).brightness,
-        highContrast: MediaQuery.of(context).highContrast ||
-            appSettings.themeSettings.highContrast,
+        highContrast: appSettings.themeSettings.highContrast ||
+            MediaQuery.of(context).highContrast,
       ),
     );
 
