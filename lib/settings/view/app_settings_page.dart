@@ -43,33 +43,14 @@ class AppSettingsPage extends HookConsumerWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           tiles: [
-            SettingsTile.switchTile(
-              initialValue: appSettings.themeSettings.isDarkMode,
-              title: const Text('Dark Mode'),
-              description: const Text('we all know dark mode is better'),
-              leading: appSettings.themeSettings.isDarkMode
-                  ? const Icon(Icons.dark_mode)
-                  : const Icon(Icons.light_mode),
-              onToggle: (value) {
-                ref.read(appSettingsProvider.notifier).toggleDarkMode();
-              },
-            ),
-            SettingsTile.switchTile(
-              initialValue:
-                  appSettings.themeSettings.useMaterialThemeOnItemPage,
-              title: const Text('Adaptive Theme on Item Page'),
+            SettingsTile.navigation(
+              leading: const Icon(Icons.color_lens),
+              title: const Text('Theme Settings'),
               description: const Text(
-                'get fancy with the colors on the item page at the cost of some performance',
+                'Customize the app theme',
               ),
-              leading: appSettings.themeSettings.useMaterialThemeOnItemPage
-                  ? const Icon(Icons.auto_fix_high)
-                  : const Icon(Icons.auto_fix_off),
-              onToggle: (value) {
-                ref.read(appSettingsProvider.notifier).update(
-                      appSettings.copyWith.themeSettings(
-                        useMaterialThemeOnItemPage: value,
-                      ),
-                    );
+              onPressed: (context) {
+                context.pushNamed(Routes.themeSettings.name);
               },
             ),
           ],

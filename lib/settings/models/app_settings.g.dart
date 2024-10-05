@@ -46,9 +46,8 @@ Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
 
 _$ThemeSettingsImpl _$$ThemeSettingsImplFromJson(Map<String, dynamic> json) =>
     _$ThemeSettingsImpl(
-      isDarkMode: json['isDarkMode'] as bool? ?? true,
-      themeType: $enumDecodeNullable(_$ThemeTypeEnumMap, json['themeType']) ??
-          ThemeType.system,
+      themeMode: $enumDecodeNullable(_$ThemeModeEnumMap, json['themeMode']) ??
+          ThemeMode.system,
       highContrast: json['highContrast'] as bool? ?? false,
       useMaterialThemeFromSystem:
           json['useMaterialThemeFromSystem'] as bool? ?? true,
@@ -57,27 +56,22 @@ _$ThemeSettingsImpl _$$ThemeSettingsImplFromJson(Map<String, dynamic> json) =>
           json['useMaterialThemeOfPlayingItem'] as bool? ?? true,
       useMaterialThemeOnItemPage:
           json['useMaterialThemeOnItemPage'] as bool? ?? true,
-      useCurrentPlayerThemeThroughoutApp:
-          json['useCurrentPlayerThemeThroughoutApp'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$$ThemeSettingsImplToJson(_$ThemeSettingsImpl instance) =>
     <String, dynamic>{
-      'isDarkMode': instance.isDarkMode,
-      'themeType': _$ThemeTypeEnumMap[instance.themeType]!,
+      'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
       'highContrast': instance.highContrast,
       'useMaterialThemeFromSystem': instance.useMaterialThemeFromSystem,
       'customThemeColor': instance.customThemeColor,
       'useMaterialThemeOfPlayingItem': instance.useMaterialThemeOfPlayingItem,
       'useMaterialThemeOnItemPage': instance.useMaterialThemeOnItemPage,
-      'useCurrentPlayerThemeThroughoutApp':
-          instance.useCurrentPlayerThemeThroughoutApp,
     };
 
-const _$ThemeTypeEnumMap = {
-  ThemeType.light: 'light',
-  ThemeType.dark: 'dark',
-  ThemeType.system: 'system',
+const _$ThemeModeEnumMap = {
+  ThemeMode.system: 'system',
+  ThemeMode.light: 'light',
+  ThemeMode.dark: 'dark',
 };
 
 _$PlayerSettingsImpl _$$PlayerSettingsImplFromJson(Map<String, dynamic> json) =>

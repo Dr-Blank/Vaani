@@ -66,12 +66,14 @@ class MyApp extends ConsumerWidget {
           lightColorScheme = lightDynamic.harmonized();
           darkColorScheme = darkDynamic.harmonized();
         } else {
-          lightColorScheme = brandLightColorScheme;
-          darkColorScheme = brandDarkColorScheme;
+          lightColorScheme = brandLightColorScheme.harmonized();
+          darkColorScheme = brandDarkColorScheme.harmonized();
         }
 
         // set the background and surface colors to pure black in the amoled theme
         if (themeSettings.highContrast) {
+          lightColorScheme =
+              lightColorScheme.copyWith(surface: Colors.white).harmonized();
           darkColorScheme =
               darkColorScheme.copyWith(surface: Colors.black).harmonized();
         }
@@ -85,15 +87,25 @@ class MyApp extends ConsumerWidget {
           colorScheme: darkColorScheme,
           brightness: Brightness.dark,
         );
+        final themeLightHighContrast = themeLight.copyWith(
+          colorScheme:
+              lightColorScheme.copyWith(surface: Colors.white).harmonized(),
+        );
+        final themeDarkHighContrast = themeDark.copyWith(
+          colorScheme:
+              darkColorScheme.copyWith(surface: Colors.black).harmonized(),
+        );
 
         try {
           return MaterialApp.router(
             // debugShowCheckedModeBanner: false,
             theme: themeLight,
             darkTheme: themeDark,
-            themeMode:
-                themeSettings.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            themeMode: themeSettings.themeMode,
+            highContrastTheme: themeLightHighContrast,
+            highContrastDarkTheme: themeDarkHighContrast,
             routerConfig: routerConfig,
+            themeAnimationCurve: Curves.easeInOut,
           );
         } catch (e) {
           debugPrintStack(stackTrace: StackTrace.current, label: e.toString());

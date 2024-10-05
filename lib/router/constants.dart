@@ -27,6 +27,11 @@ class Routes {
     pathName: 'config',
     name: 'settings',
   );
+  static const themeSettings = _SimpleRoute(
+    pathName: 'theme',
+    name: 'themeSettings',
+    parentRoute: settings,
+  );
   static const autoSleepTimerSettings = _SimpleRoute(
     pathName: 'autoSleepTimer',
     name: 'autoSleepTimerSettings',

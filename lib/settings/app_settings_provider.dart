@@ -47,11 +47,6 @@ class AppSettings extends _$AppSettings {
     _logger.fine('wrote settings to box: $state');
   }
 
-  void toggleDarkMode() {
-    state = state.copyWith
-        .themeSettings(isDarkMode: !state.themeSettings.isDarkMode);
-  }
-
   void update(model.AppSettings newSettings) {
     state = newSettings;
   }
