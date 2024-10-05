@@ -15,7 +15,7 @@ import 'package:vaani/features/sleep_timer/providers/sleep_timer_provider.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
-import 'package:vaani/theme/providers/system_them_provider.dart';
+import 'package:vaani/theme/providers/system_theme_provider.dart';
 import 'package:vaani/theme/providers/theme_from_cover_provider.dart';
 import 'package:vaani/theme/theme.dart';
 

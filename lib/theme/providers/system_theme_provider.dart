@@ -5,7 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'system_them_provider.g.dart';
+part 'system_theme_provider.g.dart';
 
 final _logger = Logger('SystemThemeProvider');
 
