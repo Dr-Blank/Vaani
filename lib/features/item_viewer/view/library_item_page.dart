@@ -6,7 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/api/library_item_provider.dart';
 import 'package:vaani/features/item_viewer/view/library_item_sliver_app_bar.dart';
-import 'package:vaani/features/player/providers/player_form.dart';
+import 'package:vaani/features/player/view/mini_player_bottom_padding.dart';
 import 'package:vaani/router/models/library_item_extras.dart';
 import 'package:vaani/shared/widgets/expandable_description.dart';
 
@@ -56,9 +56,7 @@ class LibraryItemPage extends HookConsumerWidget {
                 child: LibraryItemDescription(id: itemId),
               ),
               // a padding at the bottom to make sure the last item is not hidden by mini player
-              const SliverToBoxAdapter(
-                child: SizedBox(height: playerMinHeight),
-              ),
+              const SliverToBoxAdapter(child: MiniPlayerBottomPadding()),
             ],
           ),
         ),

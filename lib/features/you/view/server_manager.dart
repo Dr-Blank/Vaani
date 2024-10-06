@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/api/api_provider.dart';
 import 'package:vaani/api/authenticated_user_provider.dart';
 import 'package:vaani/api/server_provider.dart';
+import 'package:vaani/features/player/view/mini_player_bottom_padding.dart';
 import 'package:vaani/main.dart';
 import 'package:vaani/models/error_response.dart';
 import 'package:vaani/router/router.dart';
@@ -260,6 +261,9 @@ class ServerManagerPage extends HookConsumerWidget {
                   },
                 ),
               ),
+            
+              MiniPlayerBottomPadding(),
+
             ],
           ),
         ),
