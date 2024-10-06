@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:vaani/features/player/providers/audiobook_player.dart';
 
 part 'player_form.g.dart';
 
@@ -60,3 +61,20 @@ double playerHeight(
 }
 
 final audioBookMiniplayerController = MiniplayerController();
+
+@Riverpod(keepAlive: true)
+bool isPlayerActive(
+  IsPlayerActiveRef ref,
+) {
+  try {
+    final player = ref.watch(audiobookPlayerProvider);
+    if (player.book != null) {
+      return true;
+    } else {
+      final playerHeight = ref.watch(playerHeightProvider);
+      return playerHeight < playerMinHeight;
+    }
+  } catch (e) {
+    return false;
+  }
+}

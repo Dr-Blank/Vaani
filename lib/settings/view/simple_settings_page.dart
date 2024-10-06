@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vaani/features/player/view/mini_player_bottom_padding.dart';
 
 class SimpleSettingsPage extends HookConsumerWidget {
   const SimpleSettingsPage({
@@ -48,6 +49,7 @@ class SimpleSettingsPage extends HookConsumerWidget {
             ),
           // some padding at the bottom
           const SliverPadding(padding: EdgeInsets.only(bottom: 20)),
+          SliverToBoxAdapter(child: MiniPlayerBottomPadding()),
         ],
       ),
     );
