@@ -83,26 +83,32 @@ class MyApp extends ConsumerWidget {
     }
 
     if (themeSettings.useCurrentPlayerThemeThroughoutApp) {
-      final player = ref.watch(audiobookPlayerProvider);
-      if (player.book != null) {
-        final themeLight = ref.watch(
-          themeOfLibraryItemProvider(
-            player.book!.libraryItemId,
-            highContrast: shouldUseHighContrast,
-            brightness: Brightness.light,
-          ),
-        );
-        final themeDark = ref.watch(
-          themeOfLibraryItemProvider(
-            player.book!.libraryItemId,
-            highContrast: shouldUseHighContrast,
-            brightness: Brightness.dark,
-          ),
-        );
-        if (themeLight.valueOrNull != null && themeDark.valueOrNull != null) {
-          lightColorScheme = themeLight.valueOrNull!;
-          darkColorScheme = themeDark.valueOrNull!;
+      try {
+        final player = ref.watch(audiobookPlayerProvider);
+        if (player.book != null) {
+          final themeLight = ref.watch(
+            themeOfLibraryItemProvider(
+              player.book!.libraryItemId,
+              highContrast: shouldUseHighContrast,
+              brightness: Brightness.light,
+            ),
+          );
+          final themeDark = ref.watch(
+            themeOfLibraryItemProvider(
+              player.book!.libraryItemId,
+              highContrast: shouldUseHighContrast,
+              brightness: Brightness.dark,
+            ),
+          );
+          if (themeLight.valueOrNull != null && themeDark.valueOrNull != null) {
+            lightColorScheme = themeLight.valueOrNull!;
+            darkColorScheme = themeDark.valueOrNull!;
+          }
         }
+      } catch (e) {
+        debugPrintStack(stackTrace: StackTrace.current, label: e.toString());
+        appLogger.severe('not building with player theme');
+        appLogger.severe(e.toString());
       }
     }
     final appThemeLight = ThemeData(
@@ -129,6 +135,8 @@ class MyApp extends ConsumerWidget {
       );
     } catch (e) {
       debugPrintStack(stackTrace: StackTrace.current, label: e.toString());
+      appLogger.severe(e.toString());
+
       if (needOnboarding) {
         routerConfig.goNamed(Routes.onboarding.name);
       }
@@ -155,6 +163,7 @@ class _EagerInitialization extends ConsumerWidget {
       ref.watch(shakeDetectorProvider);
     } catch (e) {
       debugPrintStack(stackTrace: StackTrace.current, label: e.toString());
+      appLogger.severe(e.toString());
     }
 
     return child;
