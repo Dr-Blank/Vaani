@@ -114,38 +114,41 @@ class BookOnShelf extends HookConsumerWidget {
                                 heroTagSuffix,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: coverImage.when(
-                                data: (image) {
-                                  // return const BookCoverSkeleton();
-                                  if (image.isEmpty) {
+                              child: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 300),
+                                child: coverImage.when(
+                                  data: (image) {
+                                    // return const BookCoverSkeleton();
+                                    if (image.isEmpty) {
+                                      return const Icon(Icons.error);
+                                    }
+                                    var imageWidget = Image.memory(
+                                      image,
+                                      fit: BoxFit.fill,
+                                      cacheWidth: (height *
+                                              1.2 *
+                                              MediaQuery.of(context)
+                                                  .devicePixelRatio)
+                                          .round(),
+                                    );
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimaryContainer,
+                                      ),
+                                      child: imageWidget,
+                                    );
+                                  },
+                                  loading: () {
+                                    return const Center(
+                                      child: BookCoverSkeleton(),
+                                    );
+                                  },
+                                  error: (error, stack) {
                                     return const Icon(Icons.error);
-                                  }
-                                  var imageWidget = Image.memory(
-                                    image,
-                                    fit: BoxFit.fill,
-                                    cacheWidth: (height *
-                                            1.2 *
-                                            MediaQuery.of(context)
-                                                .devicePixelRatio)
-                                        .round(),
-                                  );
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimaryContainer,
-                                    ),
-                                    child: imageWidget,
-                                  );
-                                },
-                                loading: () {
-                                  return const Center(
-                                    child: BookCoverSkeleton(),
-                                  );
-                                },
-                                error: (error, stack) {
-                                  return const Icon(Icons.error);
-                                },
+                                  },
+                                ),
                               ),
                             ),
                           ),
