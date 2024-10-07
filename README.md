@@ -22,7 +22,12 @@ Client for [Audiobookshelf](https://github.com/advplyr/audiobookshelf) server ma
 
 Playstore App is in closed testing. To join testing
 1. [Join the Google Group](https://groups.google.com/g/vaani-app)
-2. [Join on Android](https://play.google.com/store/apps/details?id=dr.blank.vaani) Or [Join on Web](https://play.google.com/apps/testing/dr.blank.vaani)
+2. [Join on Web](https://play.google.com/apps/testing/dr.blank.vaani) (preferred) or [Join on Android](https://play.google.com/store/apps/details?id=dr.blank.vaani) by becoming a tester.
+   - Make sure it is the same account as the one you joined group.
+3. Send me an email on drblankdev@gmail.com asking for a promo code.
+   - I only have limited codes, so first come first serve.
+4. Redeem the code on Playstore and install the app.
+   
 
 ## Screencaps
 
