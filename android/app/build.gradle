@@ -46,6 +46,15 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    // see: https://gitlab.com/IzzyOnDroid/repo/-/issues/623#note_2149548690
+    // https://android.izzysoft.de/articles/named/iod-scan-apkchecks#blobs
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
+    }
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "dr.blank.vaani"
