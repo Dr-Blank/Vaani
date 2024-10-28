@@ -40,61 +40,63 @@ class OnboardingSinglePage extends HookConsumerWidget {
     }
 
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Welcome to Vaani',
-              style: Theme.of(context).textTheme.headlineSmall,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Welcome to Vaani',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
             ),
-          ),
-          const SizedBox.square(
-            dimension: 16.0,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: AnimatedSwitcher(
+            const SizedBox.square(
+              dimension: 16.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: AnimatedSwitcher(
+                duration: 500.ms,
+                transitionBuilder: fadeSlideTransitionBuilder,
+                child: canUserLogin.value
+                    ? Text(
+                        'Server connected, please login',
+                        key: const ValueKey('connected'),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      )
+                    : Text(
+                        'Please enter the URL of your AudiobookShelf Server',
+                        key: const ValueKey('not_connected'),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: AddNewServer(
+                controller: serverUriController,
+                allowEmpty: true,
+                onPressed: () {
+                  canUserLogin.value = serverUriController.text.isNotEmpty;
+                },
+              ),
+            ),
+            AnimatedSwitcher(
               duration: 500.ms,
               transitionBuilder: fadeSlideTransitionBuilder,
               child: canUserLogin.value
-                  ? Text(
-                      'Server connected, please login',
-                      key: const ValueKey('connected'),
-                      style: Theme.of(context).textTheme.bodyMedium,
+                  ? UserLoginWidget(
+                      server: audiobookshelfUri,
                     )
-                  : Text(
-                      'Please enter the URL of your AudiobookShelf Server',
-                      key: const ValueKey('not_connected'),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
+                  // ).animate().fade(duration: 600.ms).slideY(begin: 0.3, end: 0)
+                  : const RedirectToABS().animate().fadeIn().slideY(
+                        curve: Curves.easeInOut,
+                        duration: 500.ms,
+                      ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: AddNewServer(
-              controller: serverUriController,
-              allowEmpty: true,
-              onPressed: () {
-                canUserLogin.value = serverUriController.text.isNotEmpty;
-              },
-            ),
-          ),
-          AnimatedSwitcher(
-            duration: 500.ms,
-            transitionBuilder: fadeSlideTransitionBuilder,
-            child: canUserLogin.value
-                ? UserLoginWidget(
-                    server: audiobookshelfUri,
-                  )
-                // ).animate().fade(duration: 600.ms).slideY(begin: 0.3, end: 0)
-                : const RedirectToABS().animate().fadeIn().slideY(
-                      curve: Curves.easeInOut,
-                      duration: 500.ms,
-                    ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
