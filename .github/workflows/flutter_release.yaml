@@ -16,13 +16,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Checkout shelfsdk
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          repository: Dr-Blank/shelfsdk
-          path: ./shelfsdk
+          submodules: recursive
 
       - name: Set Up Java
         uses: actions/setup-java@v3.12.0
