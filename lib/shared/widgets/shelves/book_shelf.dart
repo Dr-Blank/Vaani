@@ -200,7 +200,6 @@ class BookOnShelf extends HookConsumerWidget {
 
 class _BookOnShelfPlayButton extends HookConsumerWidget {
   const _BookOnShelfPlayButton({
-    super.key,
     required this.libraryItemId,
   });
 

@@ -274,7 +274,6 @@ class ServerManagerPage extends HookConsumerWidget {
 
 class _AddUserDialog extends HookConsumerWidget {
   const _AddUserDialog({
-    super.key,
     required this.server,
   });
 

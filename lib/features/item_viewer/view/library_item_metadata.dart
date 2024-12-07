@@ -109,7 +109,6 @@ class LibraryItemMetadata extends HookConsumerWidget {
 /// key-value pair to display as column
 class _MetadataItem extends StatelessWidget {
   const _MetadataItem({
-    super.key,
     required this.title,
     required this.value,
   });

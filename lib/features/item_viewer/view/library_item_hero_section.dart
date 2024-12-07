@@ -78,7 +78,6 @@ class LibraryItemHeroSection extends HookConsumerWidget {
 
 class _BookDetails extends HookConsumerWidget {
   const _BookDetails({
-    super.key,
     required this.id,
     this.extraMap,
   });
@@ -136,7 +135,6 @@ class _BookDetails extends HookConsumerWidget {
 
 class _LibraryItemProgressIndicator extends HookConsumerWidget {
   const _LibraryItemProgressIndicator({
-    super.key,
     required this.id,
   });
 
@@ -213,7 +211,6 @@ class _LibraryItemProgressIndicator extends HookConsumerWidget {
 
 class _HeroSectionSubLabelWithIcon extends HookConsumerWidget {
   const _HeroSectionSubLabelWithIcon({
-    super.key,
     required this.icon,
     required this.text,
   });
@@ -260,7 +257,6 @@ class _HeroSectionSubLabelWithIcon extends HookConsumerWidget {
 
 class _BookSeries extends StatelessWidget {
   const _BookSeries({
-    super.key,
     required this.itemBookMetadata,
     required this.bookDetailsCached,
   });
@@ -306,7 +302,6 @@ class _BookSeries extends StatelessWidget {
 
 class _BookNarrators extends StatelessWidget {
   const _BookNarrators({
-    super.key,
     required this.itemBookMetadata,
     required this.bookDetailsCached,
   });
@@ -342,7 +337,6 @@ class _BookNarrators extends StatelessWidget {
 
 class _BookCover extends HookConsumerWidget {
   const _BookCover({
-    super.key,
     required this.itemId,
   });
 
@@ -416,7 +410,6 @@ class _BookCover extends HookConsumerWidget {
 
 class _BookTitle extends StatelessWidget {
   const _BookTitle({
-    super.key,
     required this.extraMap,
     required this.itemBookMetadata,
   });
@@ -461,7 +454,6 @@ class _BookTitle extends StatelessWidget {
 
 class _BookAuthors extends StatelessWidget {
   const _BookAuthors({
-    super.key,
     required this.itemBookMetadata,
     required this.bookDetailsCached,
   });

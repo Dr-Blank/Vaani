@@ -98,7 +98,6 @@ class BackToLoginButton extends StatelessWidget {
 
 class _SomethingWentWrong extends StatelessWidget {
   const _SomethingWentWrong({
-    super.key,
     this.message = 'Error with OAuth flow',
   });
 

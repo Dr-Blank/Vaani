@@ -425,7 +425,6 @@ class DownloadSheet extends HookConsumerWidget {
 
 class _LibraryItemPlayButton extends HookConsumerWidget {
   const _LibraryItemPlayButton({
-    super.key,
     required this.item,
   });
 
