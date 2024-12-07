@@ -6,6 +6,9 @@ on:
       - main
   pull_request:
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -14,14 +17,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: 'true'
+          # This ensures submodules are cloned
+          submodules: recursive
+
+      # Debug: Echo current directory contents
+      - name: List root directory contents
+        run: |
+          pwd
+          ls -la
+
+      # Debug: Recursive directory structure
+      - name: Show full directory structure
+        run: |
+          echo "Full directory structure:"
+          tree -L 3
+
+      # Debug: Submodule status and details
+      - name: Check submodule status
+        run: |
+          echo "Submodule status:"
+          git submodule status
+
+          echo "\nSubmodule details:"
+          git submodule foreach 'echo $path: && pwd && ls -la'
 
       - name: Decode android/upload.jks
         run: echo "${{ secrets.UPLOAD_KEYSTORE_JKS }}" | base64 --decode > android/upload.jks
 
       - name: Decode android/key.properties
         run: echo "${{ secrets.KEY_PROPERTIES }}" | base64 --decode > android/key.properties
-
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
