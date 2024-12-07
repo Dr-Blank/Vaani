@@ -1,0 +1,6 @@
+- Functional Player: Speed Control, Sleep Timer, Shake to Control Player
+- Save data with Offline listening and caching
+- Material Design
+- Extensive Settings to customize the every tiny detail
+
+Note: you need an Audiobookshelf server setup for this app to work. Please see https://www.audiobookshelf.org/ on how to setup one if not already.
