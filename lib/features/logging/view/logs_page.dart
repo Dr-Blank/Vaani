@@ -78,74 +78,77 @@ class LogsPage extends HookConsumerWidget {
               }
             },
           ),
-          IconButton(
-            tooltip: 'Download logs',
-            icon: const Icon(Icons.download),
-            onPressed: () async {
-              appLogger.info('Preparing logs for download');
 
-              if (Platform.isAndroid) {
-                final androidVersion =
-                    await ref.watch(deviceSdkVersionProvider.future);
+          // downloads disabled since manage external storage permission was removed
+          // see https://gitlab.com/IzzyOnDroid/repo/-/issues/623#note_2240386369
+          // IconButton(
+          //   tooltip: 'Download logs',
+          //   icon: const Icon(Icons.download),
+          //   onPressed: () async {
+          //     appLogger.info('Preparing logs for download');
 
-                if ((int.parse(androidVersion)) > 29) {
-                  final status = await Permission.manageExternalStorage.status;
-                  if (!status.isGranted) {
-                    appLogger
-                        .info('Requesting manageExternalStorage permission');
-                    final newStatus =
-                        await Permission.manageExternalStorage.request();
-                    if (!newStatus.isGranted) {
-                      appLogger
-                          .warning('manageExternalStorage permission denied');
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Storage permission denied'),
-                        ),
-                      );
-                      return;
-                    }
-                  }
-                } else {
-                  final status = await Permission.storage.status;
-                  if (!status.isGranted) {
-                    appLogger.info('Requesting storage permission');
-                    final newStatus = await Permission.storage.request();
-                    if (!newStatus.isGranted) {
-                      appLogger.warning('Storage permission denied');
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Storage permission denied'),
-                        ),
-                      );
-                      return;
-                    }
-                  }
-                }
-              }
-              final zipLogFilePath =
-                  await ref.read(logsProvider.notifier).getZipFilePath();
+          //     if (Platform.isAndroid) {
+          //       final androidVersion =
+          //           await ref.watch(deviceSdkVersionProvider.future);
 
-              // save to folder
-              String? outputFile = await FilePicker.platform.saveFile(
-                dialogTitle: 'Please select an output file:',
-                fileName: zipLogFilePath.split('/').last,
-                bytes: await File(zipLogFilePath).readAsBytes(),
-              );
-              if (outputFile != null) {
-                try {
-                  final file = File(outputFile);
-                  final zipFile = File(zipLogFilePath);
-                  await zipFile.copy(file.path);
-                  appLogger.info('File saved to: $outputFile');
-                } catch (e) {
-                  appLogger.severe('Error saving file: $e');
-                }
-              } else {
-                appLogger.info('Download cancelled');
-              }
-            },
-          ),
+          //       if ((int.parse(androidVersion)) > 29) {
+          //         final status = await Permission.storage.status;
+          //         if (!status.isGranted) {
+          //           appLogger
+          //               .info('Requesting storage permission');
+          //           final newStatus =
+          //               await Permission.storage.request();
+          //           if (!newStatus.isGranted) {
+          //             appLogger
+          //                 .warning('storage permission denied');
+          //             ScaffoldMessenger.of(context).showSnackBar(
+          //               const SnackBar(
+          //                 content: Text('Storage permission denied'),
+          //               ),
+          //             );
+          //             return;
+          //           }
+          //         }
+          //       } else {
+          //         final status = await Permission.storage.status;
+          //         if (!status.isGranted) {
+          //           appLogger.info('Requesting storage permission');
+          //           final newStatus = await Permission.storage.request();
+          //           if (!newStatus.isGranted) {
+          //             appLogger.warning('Storage permission denied');
+          //             ScaffoldMessenger.of(context).showSnackBar(
+          //               const SnackBar(
+          //                 content: Text('Storage permission denied'),
+          //               ),
+          //             );
+          //             return;
+          //           }
+          //         }
+          //       }
+          //     }
+          //     final zipLogFilePath =
+          //         await ref.read(logsProvider.notifier).getZipFilePath();
+
+          //     // save to folder
+          //     String? outputFile = await FilePicker.platform.saveFile(
+          //       dialogTitle: 'Please select an output file:',
+          //       fileName: zipLogFilePath.split('/').last,
+          //       bytes: await File(zipLogFilePath).readAsBytes(),
+          //     );
+          //     if (outputFile != null) {
+          //       try {
+          //         final file = File(outputFile);
+          //         final zipFile = File(zipLogFilePath);
+          //         await zipFile.copy(file.path);
+          //         appLogger.info('File saved to: $outputFile');
+          //       } catch (e) {
+          //         appLogger.severe('Error saving file: $e');
+          //       }
+          //     } else {
+          //       appLogger.info('Download cancelled');
+          //     }
+          //   },
+          // ),
           IconButton(
             tooltip: 'Refresh logs',
             icon: const Icon(Icons.refresh),
