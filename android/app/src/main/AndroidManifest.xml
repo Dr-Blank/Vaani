@@ -50,6 +50,11 @@
                 <data android:scheme="vaani" />
             </intent-filter>
 
+            <!-- for android auto -->
+            <meta-data
+                android:name="com.google.android.gms.car.application"
+                android:resource="@xml/automotive_app_desc" />
+
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
