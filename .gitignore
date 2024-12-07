@@ -44,3 +44,6 @@ app.*.map.json
 
 # separate git repo for api sdk
 /shelfsdk
+
+# secret keys
+/secrets
