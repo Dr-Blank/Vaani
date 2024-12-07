@@ -153,6 +153,20 @@ Vaani uses Git submodules to manage interconnected components. This means each s
    - Specify if changes affect specific submodules
    - Ensure all CI checks pass
 
+### Signing the app
+
+once the keystore is created, you can sign the app with the keystore.
+
+but for github action you need to make a base64 encoded string of the keystore.
+
+```bash
+# convert keystore to base64
+cat android/key.properties | base64 > key.base64
+
+# convert keystore to base64
+cat android/upload.jks | base64 > keystore.base64
+```
+
 ## Communication
 
 * [Open an Issue](https://github.com/Dr-Blank/Vaani/issues)

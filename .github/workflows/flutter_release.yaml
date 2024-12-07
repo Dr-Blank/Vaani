@@ -50,7 +50,7 @@ jobs:
         run: flutter build apk --release
 
       - name: Rename Universal APK
-        run: mv build/app/outputs/flutter-apk/{app-release,app-release-universal}.apk
+        run: mv build/app/outputs/flutter-apk/{app-release,app-universal-release}.apk
 
       - name: Build App Bundle
         run: flutter build appbundle --release
