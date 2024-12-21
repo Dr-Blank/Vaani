@@ -1,3 +1,7 @@
+<i>Vaani</i> is a client for your (self-hosted) <a href='https://github.com/advplyr/audiobookshelf'>Audiobookshelf</a> server.
+
+<b>Features:</b>
+
 - Functional Player: Speed Control, Sleep Timer, Shake to Control Player
 - Save data with Offline listening and caching
 - Material Design
