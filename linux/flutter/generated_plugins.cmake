@@ -6,6 +6,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   dynamic_color
   isar_flutter_libs
   media_kit_libs_linux
+  sqlite3_flutter_libs
   url_launcher_linux
 )
 

@@ -44,6 +44,8 @@ dependencies:
   collection: ^1.18.0
   cupertino_icons: ^1.0.6
   device_info_plus: ^10.1.0
+  drift: ^2.22.1
+  drift_flutter: ^0.2.3
   duration_picker: ^1.2.0
   dynamic_color: ^1.7.0
   easy_stepper: ^0.8.4
@@ -99,6 +101,7 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.4.9
   custom_lint: ^0.6.4
+  drift_dev: ^2.22.0
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
