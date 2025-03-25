@@ -1,28 +1,35 @@
 {
-  "workbench.colorCustomizations": {
-    "activityBar.background": "#5A1021",
-    "titleBar.activeBackground": "#7E162E",
-    "titleBar.activeForeground": "#FEFBFC"
-  },
-  "files.exclude": {
-    "**/*.freezed.dart": true,
-    "**/*.g.dart": true
-  },
+  "cmake.configureOnOpen": false,
   "cSpell.words": [
     "audioplayers",
     "autolabeler",
     "Autovalidate",
     "Checkmark",
+    "Debounceable",
     "deeplinking",
     "fullscreen",
     "Lerp",
     "miniplayer",
     "mocktail",
+    "nodename",
+    "numberpicker",
     "riverpod",
+    "Schyler",
     "shelfsdk",
+    "sysname",
     "tapable",
     "unfocus",
+    "utsname",
     "Vaani"
   ],
-  "cmake.configureOnOpen": false
+  "dart.flutterSdkPath": ".fvm/versions/3.27.4",
+  "files.exclude": {
+    "**/*.freezed.dart": true,
+    "**/*.g.dart": true
+  },
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#5A1021",
+    "titleBar.activeBackground": "#7E162E",
+    "titleBar.activeForeground": "#FEFBFC"
+  }
 }

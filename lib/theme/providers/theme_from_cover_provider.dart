@@ -1,6 +1,7 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:vaani/api/image_provider.dart';
@@ -11,7 +12,7 @@ final _logger = Logger('ThemeFromCoverProvider');
 
 @Riverpod(keepAlive: true)
 Future<FutureOr<ColorScheme?>> themeFromCover(
-  ThemeFromCoverRef ref,
+  Ref ref,
   ImageProvider<Object> img, {
   Brightness brightness = Brightness.dark,
   bool highContrast = false,
@@ -58,7 +59,7 @@ Future<FutureOr<ColorScheme?>> themeFromCover(
 
 @Riverpod(keepAlive: true)
 FutureOr<ColorScheme?> themeOfLibraryItem(
-  ThemeOfLibraryItemRef ref,
+  Ref ref,
   String? itemId, {
   Brightness brightness = Brightness.dark,
   bool highContrast = false,

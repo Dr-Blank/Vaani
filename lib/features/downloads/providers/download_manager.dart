@@ -1,4 +1,5 @@
 import 'package:background_downloader/background_downloader.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
@@ -122,7 +123,7 @@ class ItemDownloadProgress extends _$ItemDownloadProgress {
 
 @riverpod
 FutureOr<List<TaskRecord>> downloadHistory(
-  DownloadHistoryRef ref, {
+  Ref ref, {
   String? group,
 }) async {
   return await FileDownloader().database.allRecords(group: group);

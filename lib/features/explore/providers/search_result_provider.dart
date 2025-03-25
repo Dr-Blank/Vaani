@@ -1,3 +1,4 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/api_provider.dart';
@@ -8,7 +9,7 @@ part 'search_result_provider.g.dart';
 /// The provider for the search result.
 @riverpod
 FutureOr<LibrarySearchResponse?> searchResult(
-  SearchResultRef ref,
+  Ref ref,
   String query, {
   int limit = 25,
 }) async {

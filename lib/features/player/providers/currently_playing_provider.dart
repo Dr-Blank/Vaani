@@ -1,3 +1,4 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
@@ -9,7 +10,7 @@ part 'currently_playing_provider.g.dart';
 final _logger = Logger('CurrentlyPlayingProvider');
 
 @riverpod
-BookExpanded? currentlyPlayingBook(CurrentlyPlayingBookRef ref) {
+BookExpanded? currentlyPlayingBook(Ref ref) {
   try {
     final player = ref.watch(audiobookPlayerProvider);
     return player.book;
@@ -21,7 +22,7 @@ BookExpanded? currentlyPlayingBook(CurrentlyPlayingBookRef ref) {
 
 /// provided the current chapter of the book being played
 @riverpod
-BookChapter? currentPlayingChapter(CurrentPlayingChapterRef ref) {
+BookChapter? currentPlayingChapter(Ref ref) {
   final player = ref.watch(audiobookPlayerProvider);
   player.slowPositionStream.listen((_) {
     ref.invalidateSelf();
@@ -32,7 +33,7 @@ BookChapter? currentPlayingChapter(CurrentPlayingChapterRef ref) {
 
 /// provides the book metadata of the currently playing book
 @riverpod
-BookMetadataExpanded? currentBookMetadata(CurrentBookMetadataRef ref) {
+BookMetadataExpanded? currentBookMetadata(Ref ref) {
   final player = ref.watch(audiobookPlayerProvider);
   if (player.book == null) return null;
   return player.book!.metadata.asBookMetadataExpanded;

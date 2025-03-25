@@ -1,6 +1,7 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -12,7 +13,7 @@ final _logger = Logger('SystemThemeProvider');
 /// copied from [DynamicColorBuilder]
 @Riverpod(keepAlive: true)
 FutureOr<(ColorScheme light, ColorScheme dark)?> systemTheme(
-  SystemThemeRef ref, {
+  Ref ref, {
   bool highContrast = false,
 }) async {
   _logger.fine('Generating system theme');

@@ -6,7 +6,7 @@ part of 'search_result_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$searchResultHash() => r'9baa643cce24f3a5e022f42202e423373939ef95';
+String _$searchResultHash() => r'33785de298ad0d53c9d21e8fec88ba2f22f1363f';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -167,6 +167,8 @@ class SearchResultProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin SearchResultRef on AutoDisposeFutureProviderRef<LibrarySearchResponse?> {
   /// The parameter `query` of this provider.
   String get query;
@@ -186,4 +188,4 @@ class _SearchResultProviderElement
   int get limit => (origin as SearchResultProvider).limit;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

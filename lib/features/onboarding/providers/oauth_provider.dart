@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:vaani/api/api_provider.dart';
 import 'package:vaani/models/error_response.dart';
@@ -61,7 +62,7 @@ class OauthFlows extends _$OauthFlows {
 /// the code returned by the server in exchange for the verifier
 @riverpod
 Future<String?> loginInExchangeForCode(
-  LoginInExchangeForCodeRef ref, {
+  Ref ref, {
   required State oauthState,
   required Code code,
   ErrorResponseHandler? responseHandler,

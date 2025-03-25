@@ -6,7 +6,7 @@ part of 'api_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$audiobookshelfApiHash() => r'2c310ea77fea9918ccf96180a92075acd037bd95';
+String _$audiobookshelfApiHash() => r'f23a06c404e11867a7f796877eaca99b8ff25458';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -154,6 +154,8 @@ class AudiobookshelfApiProvider extends AutoDisposeProvider<AudiobookshelfApi> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin AudiobookshelfApiRef on AutoDisposeProviderRef<AudiobookshelfApi> {
   /// The parameter `baseUrl` of this provider.
   Uri? get baseUrl;
@@ -168,7 +170,7 @@ class _AudiobookshelfApiProviderElement
   Uri? get baseUrl => (origin as AudiobookshelfApiProvider).baseUrl;
 }
 
-String _$authenticatedApiHash() => r'e662465f01ab1a6384db4738a3ae49b5fab48a4f';
+String _$authenticatedApiHash() => r'5cf3329fe3074e3a09e266b4bae78b53e9c01220';
 
 /// get the api instance for the authenticated user
 ///
@@ -186,8 +188,10 @@ final authenticatedApiProvider = Provider<AudiobookshelfApi>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef AuthenticatedApiRef = ProviderRef<AudiobookshelfApi>;
-String _$isServerAliveHash() => r'6ff90b6e0febd2cd4a4d3a5209a59afc778cd3b6';
+String _$isServerAliveHash() => r'bb3a53cae1eb64b8760a56864feed47b7a3f1c29';
 
 /// ping the server to check if it is reachable
 ///
@@ -314,6 +318,8 @@ class IsServerAliveProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin IsServerAliveRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `address` of this provider.
   String get address;
@@ -327,7 +333,7 @@ class _IsServerAliveProviderElement
   String get address => (origin as IsServerAliveProvider).address;
 }
 
-String _$serverStatusHash() => r'd7079e19e68f5f61b0afa0f73a2af8807c4b3cf6';
+String _$serverStatusHash() => r'2d9c5d6f970caec555e5322d43a388ea8572619f';
 
 /// fetch status of server
 ///
@@ -467,6 +473,8 @@ class ServerStatusProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ServerStatusRef on AutoDisposeFutureProviderRef<ServerStatusResponse?> {
   /// The parameter `baseUrl` of this provider.
   Uri get baseUrl;
@@ -488,7 +496,7 @@ class _ServerStatusProviderElement
 }
 
 String _$fetchContinueListeningHash() =>
-    r'f65fe3ac3a31b8ac074330525c5d2cc4b526802d';
+    r'50aeb77369eda38d496b2f56f3df2aea135dab45';
 
 /// fetch continue listening audiobooks
 ///
@@ -505,9 +513,11 @@ final fetchContinueListeningProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchContinueListeningRef
     = AutoDisposeFutureProviderRef<GetUserSessionsResponse>;
-String _$meHash() => r'da5f40b8063b0c0a6651fdcc4ac2d192d0dc7df6';
+String _$meHash() => r'b3b6d6d940b465c60d0c29cd6e81ba2fcccab186';
 
 /// See also [me].
 @ProviderFor(me)
@@ -520,8 +530,10 @@ final meProvider = AutoDisposeFutureProvider<User>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef MeRef = AutoDisposeFutureProviderRef<User>;
-String _$loginHash() => r'eb1c4fcef1818dce994846c1adb8eca8f6ec9259';
+String _$loginHash() => r'99410c2bed9c8f412c7b47c4e655db64e0054be2';
 
 /// See also [login].
 @ProviderFor(login)
@@ -635,6 +647,8 @@ class LoginProvider extends AutoDisposeFutureProvider<LoginResponse?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin LoginRef on AutoDisposeFutureProviderRef<LoginResponse?> {
   /// The parameter `user` of this provider.
   AuthenticatedUser? get user;
@@ -667,4 +681,4 @@ final personalizedViewProvider =
 
 typedef _$PersonalizedView = AutoDisposeStreamNotifier<List<Shelf>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

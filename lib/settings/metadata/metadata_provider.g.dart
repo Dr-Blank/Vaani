@@ -6,7 +6,7 @@ part of 'metadata_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$deviceNameHash() => r'bc206a3a8c14f3da6e257e92e1ccdc79364f4e28';
+String _$deviceNameHash() => r'9e38adda74e70a91851a682f05228bd759356dcc';
 
 /// See also [deviceName].
 @ProviderFor(deviceName)
@@ -19,8 +19,10 @@ final deviceNameProvider = FutureProvider<String>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef DeviceNameRef = FutureProviderRef<String>;
-String _$deviceModelHash() => r'3d7e8ef4a37b90f98e38dc8d5f16ca30f71e15b2';
+String _$deviceModelHash() => r'922b13d9e35b5b5c5b8e96f2f2c2ae594f4f41f2';
 
 /// See also [deviceModel].
 @ProviderFor(deviceModel)
@@ -33,8 +35,10 @@ final deviceModelProvider = FutureProvider<String>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef DeviceModelRef = FutureProviderRef<String>;
-String _$deviceSdkVersionHash() => r'501b01ae679e02fc5082feabea81cea0fa74afd7';
+String _$deviceSdkVersionHash() => r'33178d80590808d1f4cca2be8a3b52c6f6724cac';
 
 /// See also [deviceSdkVersion].
 @ProviderFor(deviceSdkVersion)
@@ -48,9 +52,11 @@ final deviceSdkVersionProvider = FutureProvider<String>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef DeviceSdkVersionRef = FutureProviderRef<String>;
 String _$deviceManufacturerHash() =>
-    r'f0a57e6a92b551fbe266d0a6a29d35dc497882a9';
+    r'39250767deb8635fa7c7e18bae23576b9b863e04';
 
 /// See also [deviceManufacturer].
 @ProviderFor(deviceManufacturer)
@@ -64,6 +70,8 @@ final deviceManufacturerProvider = FutureProvider<String>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef DeviceManufacturerRef = FutureProviderRef<String>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

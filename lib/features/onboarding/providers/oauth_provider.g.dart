@@ -7,7 +7,7 @@ part of 'oauth_provider.dart';
 // **************************************************************************
 
 String _$loginInExchangeForCodeHash() =>
-    r'e931254959d9eb8196439c6b0c884c26cbe17c2f';
+    r'bfc3945529048a0f536052fd5579b76457560fcd';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -179,6 +179,8 @@ class LoginInExchangeForCodeProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin LoginInExchangeForCodeRef on AutoDisposeFutureProviderRef<String?> {
   /// The parameter `oauthState` of this provider.
   String get oauthState;
@@ -221,4 +223,4 @@ final oauthFlowsProvider =
 
 typedef _$OauthFlows = Notifier<Map<State, Flow>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

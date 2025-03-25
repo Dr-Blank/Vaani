@@ -6,7 +6,7 @@ part of 'download_manager.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$downloadHistoryHash() => r'76c449e8abfa61d57566991686f534a06dc7fef7';
+String _$downloadHistoryHash() => r'4d8b84e30f7ff5ae69d23c8e03ff24af1234a1ad';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -143,6 +143,8 @@ class DownloadHistoryProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin DownloadHistoryRef on AutoDisposeFutureProviderRef<List<TaskRecord>> {
   /// The parameter `group` of this provider.
   String? get group;
@@ -318,6 +320,8 @@ class IsItemDownloadingProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin IsItemDownloadingRef on AutoDisposeNotifierProviderRef<bool> {
   /// The parameter `id` of this provider.
   String get id;
@@ -463,6 +467,8 @@ class ItemDownloadProgressProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ItemDownloadProgressRef on AutoDisposeAsyncNotifierProviderRef<double?> {
   /// The parameter `id` of this provider.
   String get id;
@@ -607,6 +613,8 @@ class IsItemDownloadedProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin IsItemDownloadedRef on AutoDisposeAsyncNotifierProviderRef<bool> {
   /// The parameter `item` of this provider.
   LibraryItemExpanded get item;
@@ -621,4 +629,4 @@ class _IsItemDownloadedProviderElement
   LibraryItemExpanded get item => (origin as IsItemDownloadedProvider).item;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

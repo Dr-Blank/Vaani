@@ -1,12 +1,13 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'metadata_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<String> deviceName(DeviceNameRef ref) async {
+Future<String> deviceName(Ref ref) async {
   final data = await _getDeviceData(DeviceInfoPlugin());
 
   // try different keys to get the device name
@@ -27,7 +28,7 @@ Future<String> deviceName(DeviceNameRef ref) async {
 }
 
 @Riverpod(keepAlive: true)
-Future<String> deviceModel(DeviceModelRef ref) async {
+Future<String> deviceModel(Ref ref) async {
   final data = await _getDeviceData(DeviceInfoPlugin());
 
   // try different keys to get the device model
@@ -48,7 +49,7 @@ Future<String> deviceModel(DeviceModelRef ref) async {
 }
 
 @Riverpod(keepAlive: true)
-Future<String> deviceSdkVersion(DeviceSdkVersionRef ref) async {
+Future<String> deviceSdkVersion(Ref ref) async {
   final data = await _getDeviceData(DeviceInfoPlugin());
 
   // try different keys to get the device sdk version
@@ -69,7 +70,7 @@ Future<String> deviceSdkVersion(DeviceSdkVersionRef ref) async {
 }
 
 @Riverpod(keepAlive: true)
-Future<String> deviceManufacturer(DeviceManufacturerRef ref) async {
+Future<String> deviceManufacturer(Ref ref) async {
   final data = await _getDeviceData(DeviceInfoPlugin());
 
   // try different keys to get the device manufacturer

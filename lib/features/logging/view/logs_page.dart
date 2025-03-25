@@ -169,7 +169,7 @@ class LogsPage extends HookConsumerWidget {
           ),
         ],
       ),
-      // a column with listview.builder and a scrollable list of logs
+      // a column with ListView.builder and a scrollable list of logs
       body: Column(
         children: [
           // a filter for log levels, loggers, and search

@@ -27,7 +27,7 @@ extension on Ref {
 
 @Riverpod(keepAlive: true)
 Raw<ValueNotifier<double>> playerExpandProgressNotifier(
-  PlayerExpandProgressNotifierRef ref,
+  Ref ref,
 ) {
   final ValueNotifier<double> playerExpandProgress =
       ValueNotifier(playerMinHeight);
@@ -47,7 +47,7 @@ Raw<ValueNotifier<double>> playerExpandProgressNotifier(
 // a provider that will listen to the playerExpandProgressNotifier and return the percentage of the player expanded
 @Riverpod(keepAlive: true)
 double playerHeight(
-  PlayerHeightRef ref,
+  Ref ref,
 ) {
   final playerExpandProgress = ref.watch(playerExpandProgressNotifierProvider);
 
@@ -64,7 +64,7 @@ final audioBookMiniplayerController = MiniplayerController();
 
 @Riverpod(keepAlive: true)
 bool isPlayerActive(
-  IsPlayerActiveRef ref,
+  Ref ref,
 ) {
   try {
     final player = ref.watch(audiobookPlayerProvider);

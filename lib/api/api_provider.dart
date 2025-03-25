@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -34,7 +35,7 @@ Uri makeBaseUrl(String address) {
 
 /// get the api instance for the given base url
 @riverpod
-AudiobookshelfApi audiobookshelfApi(AudiobookshelfApiRef ref, Uri? baseUrl) {
+AudiobookshelfApi audiobookshelfApi(Ref ref, Uri? baseUrl) {
   // try to get the base url from app settings
   final apiSettings = ref.watch(apiSettingsProvider);
   baseUrl ??= apiSettings.activeServer?.serverUrl;
@@ -47,7 +48,7 @@ AudiobookshelfApi audiobookshelfApi(AudiobookshelfApiRef ref, Uri? baseUrl) {
 ///
 /// if the user is not authenticated throw an error
 @Riverpod(keepAlive: true)
-AudiobookshelfApi authenticatedApi(AuthenticatedApiRef ref) {
+AudiobookshelfApi authenticatedApi(Ref ref) {
   final apiSettings = ref.watch(apiSettingsProvider);
   final user = apiSettings.activeUser;
   if (user == null) {
@@ -62,7 +63,7 @@ AudiobookshelfApi authenticatedApi(AuthenticatedApiRef ref) {
 
 /// ping the server to check if it is reachable
 @riverpod
-FutureOr<bool> isServerAlive(IsServerAliveRef ref, String address) async {
+FutureOr<bool> isServerAlive(Ref ref, String address) async {
   if (address.isEmpty) {
     return false;
   }
@@ -80,7 +81,7 @@ FutureOr<bool> isServerAlive(IsServerAliveRef ref, String address) async {
 /// fetch status of server
 @riverpod
 FutureOr<ServerStatusResponse?> serverStatus(
-  ServerStatusRef ref,
+  Ref ref,
   Uri baseUrl, [
   ResponseErrorHandler? responseErrorHandler,
 ]) async {
@@ -173,7 +174,7 @@ class PersonalizedView extends _$PersonalizedView {
 /// fetch continue listening audiobooks
 @riverpod
 FutureOr<GetUserSessionsResponse> fetchContinueListening(
-  FetchContinueListeningRef ref,
+  Ref ref,
 ) async {
   final api = ref.watch(authenticatedApiProvider);
   final res = await api.me.getSessions();
@@ -185,7 +186,7 @@ FutureOr<GetUserSessionsResponse> fetchContinueListening(
 
 @riverpod
 FutureOr<User> me(
-  MeRef ref,
+  Ref ref,
 ) async {
   final api = ref.watch(authenticatedApiProvider);
   final errorResponseHandler = ErrorResponseHandler();
@@ -203,7 +204,7 @@ FutureOr<User> me(
 
 @riverpod
 FutureOr<LoginResponse?> login(
-  LoginRef ref, {
+  Ref ref, {
   AuthenticatedUser? user,
 }) async {
   if (user == null) {

@@ -7,7 +7,7 @@ part of 'player_form.dart';
 // **************************************************************************
 
 String _$playerExpandProgressNotifierHash() =>
-    r'e4817361b9a311b61ca23e51082ed11b0a1120ab';
+    r'1ac7172d90a070f96222286edd1a176be197f378';
 
 /// See also [playerExpandProgressNotifier].
 @ProviderFor(playerExpandProgressNotifier)
@@ -22,9 +22,11 @@ final playerExpandProgressNotifierProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef PlayerExpandProgressNotifierRef
     = ProviderRef<Raw<ValueNotifier<double>>>;
-String _$playerHeightHash() => r'26dbcb180d494575488d700bd5bdb58c02c224a9';
+String _$playerHeightHash() => r'3f031eaffdffbb2c6ddf7eb1aba31bf1619260fc';
 
 /// See also [playerHeight].
 @ProviderFor(playerHeight)
@@ -37,8 +39,10 @@ final playerHeightProvider = Provider<double>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef PlayerHeightRef = ProviderRef<double>;
-String _$isPlayerActiveHash() => r'147e13cd7fd6fd3823623557ce4f300dc15b6fe6';
+String _$isPlayerActiveHash() => r'2c7ca125423126fb5f0ef218d37bc8fe0ca9ec98';
 
 /// See also [isPlayerActive].
 @ProviderFor(isPlayerActive)
@@ -52,6 +56,8 @@ final isPlayerActiveProvider = Provider<bool>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef IsPlayerActiveRef = ProviderRef<bool>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

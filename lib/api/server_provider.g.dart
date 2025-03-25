@@ -7,7 +7,7 @@ part of 'server_provider.dart';
 // **************************************************************************
 
 String _$audiobookShelfServerHash() =>
-    r'0084fb72c4c54323207928b95716cfd9ca496c11';
+    r'09e7e37ddc794c45eafbaab7eba82c9dd17faa93';
 
 /// provides with a set of servers added by the user
 ///
@@ -27,4 +27,4 @@ final audiobookShelfServerProvider = AutoDisposeNotifierProvider<
 typedef _$AudiobookShelfServer
     = AutoDisposeNotifier<Set<model.AudiobookShelfServer>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

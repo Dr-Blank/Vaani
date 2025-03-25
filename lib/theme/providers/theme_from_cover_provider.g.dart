@@ -6,7 +6,7 @@ part of 'theme_from_cover_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$themeFromCoverHash() => r'f656614e2d4851acdfa16d249b3198ae0e1d6d6f';
+String _$themeFromCoverHash() => r'afdeddc4bfe2fe46a4185143d3a88a23565e33f4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -166,6 +166,8 @@ class ThemeFromCoverProvider extends FutureProvider<FutureOr<ColorScheme?>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ThemeFromCoverRef on FutureProviderRef<FutureOr<ColorScheme?>> {
   /// The parameter `img` of this provider.
   ImageProvider<Object> get img;
@@ -191,7 +193,7 @@ class _ThemeFromCoverProviderElement
 }
 
 String _$themeOfLibraryItemHash() =>
-    r'b2677daf31a6a53f3f237e5204c62dff5ec43171';
+    r'0b2df397b2938003a9de6beb6d4204401a05370c';
 
 /// See also [themeOfLibraryItem].
 @ProviderFor(themeOfLibraryItem)
@@ -329,6 +331,8 @@ class ThemeOfLibraryItemProvider extends FutureProvider<ColorScheme?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ThemeOfLibraryItemRef on FutureProviderRef<ColorScheme?> {
   /// The parameter `itemId` of this provider.
   String? get itemId;
@@ -353,4 +357,4 @@ class _ThemeOfLibraryItemProviderElement
   bool get highContrast => (origin as ThemeOfLibraryItemProvider).highContrast;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -7,7 +7,7 @@ part of 'currently_playing_provider.dart';
 // **************************************************************************
 
 String _$currentlyPlayingBookHash() =>
-    r'7440b0d54cb364f66e704783652e8f1490ae90e0';
+    r'e4258694c8f0d1e89651b330fae0f672ca13a484';
 
 /// See also [currentlyPlayingBook].
 @ProviderFor(currentlyPlayingBook)
@@ -22,9 +22,11 @@ final currentlyPlayingBookProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef CurrentlyPlayingBookRef = AutoDisposeProviderRef<BookExpanded?>;
 String _$currentPlayingChapterHash() =>
-    r'a084da724e3d8bb1b1475e867ab3200d7d61d827';
+    r'73db8b8a9058573bb0c68ec5d5f8aba9306f3d24';
 
 /// provided the current chapter of the book being played
 ///
@@ -41,9 +43,11 @@ final currentPlayingChapterProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef CurrentPlayingChapterRef = AutoDisposeProviderRef<BookChapter?>;
 String _$currentBookMetadataHash() =>
-    r'9088debba151894b61f2dcba1bba12a89244b9b1';
+    r'f537ef4ef19280bc952de658ecf6520c535ae344';
 
 /// provides the book metadata of the currently playing book
 ///
@@ -60,6 +64,8 @@ final currentBookMetadataProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef CurrentBookMetadataRef = AutoDisposeProviderRef<BookMetadataExpanded?>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

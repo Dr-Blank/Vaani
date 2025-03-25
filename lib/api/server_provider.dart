@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:vaani/api/authenticated_user_provider.dart';
@@ -50,7 +49,7 @@ class AudiobookShelfServer extends _$AudiobookShelfServer {
     if (_box.isNotEmpty) {
       final foundServers = _box.getRange(0, _box.length);
       _logger.info('found servers in box: ${foundServers.obfuscate()}');
-      return foundServers.whereNotNull().toSet();
+      return foundServers.nonNulls.toSet();
     } else {
       _logger.info('no settings found in box');
       return {};
