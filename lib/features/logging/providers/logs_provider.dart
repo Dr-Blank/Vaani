@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -28,11 +29,23 @@ class Logs extends _$Logs {
   }
 
   Future<String> getZipFilePath() async {
+    final String targetZipPath = await generateZipFilePath();
     var encoder = ZipFileEncoder();
-    encoder.create(await generateZipFilePath());
-    encoder.addFile(File(await getLoggingFilePath()));
-    encoder.close();
-    return encoder.zipPath;
+    encoder.create(targetZipPath);
+    final logFilePath = await getLoggingFilePath();
+    final logFile = File(logFilePath);
+    if (await logFile.exists()) {
+      // Check if log file exists before adding
+      await encoder.addFile(logFile);
+    } else {
+      // Handle case where log file doesn't exist? Maybe log a warning?
+      // Or create an empty file inside the zip? For now, just don't add.
+      debugPrint(
+        'Warning: Log file not found at $logFilePath, creating potentially empty zip.',
+      );
+    }
+    await encoder.close();
+    return targetZipPath;
   }
 }
 
