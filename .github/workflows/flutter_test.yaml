@@ -13,7 +13,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/actions/setup-env.yaml
+      - name: setup env
+        uses: ./.github/actions/setup-env.yaml
 
       # Debug: Echo current directory contents
       - name: List root directory contents
