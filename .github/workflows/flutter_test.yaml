@@ -14,14 +14,14 @@ on:
 jobs:
   test:
     name: Test
-
-    uses: ./.github/workflows/flutter-setup.yaml
-    secrets: inherit
-    with:
-      flutter-channel: stable
-      java-version: 17
-
+    runs-on: ubuntu-latest
     steps:
+      - name: Setup Flutter Environment
+        uses: ./.github/actions/flutter-setup # Path to the composite action directory
+        # Pass inputs if needed (optional, using defaults here)
+        # with:
+        #   flutter-channel: 'stable'
+        #   java-version: '17'
       # Debug: Echo current directory contents
       - name: List root directory contents
         run: |
