@@ -59,7 +59,12 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/flutter-setup.yaml
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup Flutter Environment
+        uses: ./.github/actions/flutter-setup # Path to the composite action directory
         with:
           flutter-channel: stable
           java-version: 17
@@ -85,6 +90,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup Flutter Environment
+        uses: ./.github/actions/flutter-setup # Path to the composite action directory
+        with:
+          flutter-channel: stable
+          java-version: 17
       - name: setup fastforge
         run: |
           dart pub global activate fastforge
