@@ -16,6 +16,11 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
       - name: Setup Flutter Environment
         uses: ./.github/actions/flutter-setup # Path to the composite action directory
         # Pass inputs if needed (optional, using defaults here)

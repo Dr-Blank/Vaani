@@ -16,15 +16,6 @@ inputs:
 runs:
   using: "composite" # Specify this is a composite action
   steps:
-    # Note: Checkout needs to happen *within the job using the composite action* usually.
-    # However, for self-contained setup, we can include it here.
-    # If you need checkout options controlled by the main workflow, move checkout
-    # to be the first step in the main workflow's job *before* calling this action.
-    - name: Checkout repository (within composite)
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
     - name: Set up Java
       uses: actions/setup-java@v4
       with:
