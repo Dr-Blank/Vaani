@@ -37,12 +37,8 @@ runs:
         key: ${{ runner.os }}-flutter-pub-${{ hashFiles('**/pubspec.lock') }}
         restore-keys: |
           ${{ runner.os }}-flutter-pub-
-      # Use shell: bash for potential cross-platform compatibility in complex commands
-      shell: bash
 
     - name: Get Flutter dependencies
       run: flutter pub get
-      # Use shell: bash for potential cross-platform compatibility in complex commands
-      shell: bash
 
     # Add other common setup steps if needed
