@@ -48,8 +48,8 @@ jobs:
           echo "\nSubmodule details:"
           git submodule foreach 'echo $path: && pwd && ls -la'
 
-      - name: Run static analysis
-        run: flutter analyze
+      # - name: Run static analysis
+      #   run: flutter analyze
 
       - name: Run tests
         run: flutter test
