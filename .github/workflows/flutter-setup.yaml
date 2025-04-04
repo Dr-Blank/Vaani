@@ -1,0 +1,49 @@
+name: 🛠️ Reusable Flutter Setup
+
+on:
+  workflow_call:
+    inputs:
+      flutter-channel:
+        description: "Flutter channel to use (stable, beta, dev, master)"
+        required: false
+        type: string
+        default: "stable"
+      java-version:
+        description: "Java version to set up"
+        required: false
+        type: string
+        default: "17"
+
+jobs:
+  setup:
+    name: Setup Flutter Environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          # Use the input value, fallback to default if not provided
+          java-version: ${{ inputs.java-version }}
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ inputs.flutter-channel }}
+          flutter-version-file: pubspec.yaml
+          cache: true # Cache Flutter SDK itself
+      - name: Cache Flutter dependencies
+        id: cache-pub # Give the step an ID to potentially reference its outputs later if needed
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.FLUTTER_HOME }}/.pub-cache
+          # Use a consistent key structure based on the lock file
+          key: ${{ runner.os }}-flutter-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-pub-
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
