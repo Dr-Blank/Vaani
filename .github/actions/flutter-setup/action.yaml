@@ -40,5 +40,7 @@ runs:
 
     - name: Get Flutter dependencies
       run: flutter pub get
+      # Use shell: bash for potential cross-platform compatibility in complex commands
+      shell: bash
 
     # Add other common setup steps if needed
