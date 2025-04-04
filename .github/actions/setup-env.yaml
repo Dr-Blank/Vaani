@@ -1,0 +1,25 @@
+name: 🛠️ Setup Env
+
+on:
+  workflow_call:
+    inputs:
+      flutter_version:
+        required: true
+        type: string
+        default: "stable"
+        description: "Flutter version to use. Default is 'stable'."
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "${{ inputs.flutter_version }}"
+          flutter-version-file: pubspec.yaml
+      - name: Install dependencies
+        run: flutter pub get
