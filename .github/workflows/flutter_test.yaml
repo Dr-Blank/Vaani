@@ -10,16 +10,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  setup:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # This ensures submodules are cloned
           submodules: recursive
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version-file: pubspec.yaml
 
+      - name: Install dependencies
+        run: flutter pub get
+
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    steps:
       # Debug: Echo current directory contents
       - name: List root directory contents
         run: |
@@ -47,28 +59,44 @@ jobs:
       - name: Decode android/key.properties
         run: echo "${{ secrets.KEY_PROPERTIES }}" | base64 --decode > android/key.properties
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: "stable"
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Run tests
+      - name: Run flutter tests
         run: flutter test
 
+  build_android:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
       - name: Set Up Java
         uses: actions/setup-java@v3.12.0
         with:
           distribution: "oracle"
           java-version: "17"
 
-      - name: Build APK
+      - name: Build Universal APK
         run: flutter build apk --release
 
-      - name: Upload APKs
+      - name: Rename Universal APK
+        run: mv build/app/outputs/flutter-apk/{app-release,app-universal-release}.apk
+
+  build_linux:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: setup fastforge
+        run: |
+          dart pub global activate fastforge
+      - name: Build Linux AppImage
+        run: fastforge package --platform linux --targets deb
+
+  upload_artifacts:
+    needs: [build_android, build_linux]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
-          path: build/app/outputs/flutter-apk/*.apk
+          name: build-artifacts
+          path: |
+            build/app/outputs/flutter-apk/*.apk
+            dist/*/*.deb
