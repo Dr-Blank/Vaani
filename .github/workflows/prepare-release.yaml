@@ -1,0 +1,130 @@
+# .github/workflows/prepare-release.yml
+name: Prepare Release (using Cider)
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        description: "Type of version bump (patch, minor, major)"
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        default: "patch"
+
+permissions:
+  contents: write # NEEDED to commit, push, and tag
+
+jobs:
+  bump_version_and_tag:
+    name: Bump Version and Tag using Cider
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Use a PAT if pushing to protected branches is restricted for GITHUB_TOKEN
+          # token: ${{ secrets.PAT_TOKEN }} # Create PAT with repo scope
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Setup Flutter/Dart environment needed to run dart pub global activate
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable" # Or match your project's channel
+          flutter-version-file: pubspec.yaml
+
+      - name: Install Cider
+        run: dart pub global activate cider
+        shell: bash
+
+      # Add pub global bin to PATH for this job
+      - name: Add pub global bin to PATH
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+        shell: bash
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        shell: bash
+
+      - name: Bump version using Cider
+        id: bump
+        run: |
+          echo "Current version:"
+          grep '^version:' pubspec.yaml
+
+          # Run cider to bump version and build number
+          # Cider modifies pubspec.yaml in place
+          cider bump ${{ github.event.inputs.bump_type }} --bump-build
+
+          echo "New version (after cider bump):"
+          # Read the *new* version directly from the modified file
+          new_version_line=$(grep '^version:' pubspec.yaml)
+          # Extract just the version string (e.g., 1.2.3+4)
+          new_version=$(echo "$new_version_line" | sed 's/version: *//')
+
+          echo "$new_version_line"
+          echo "Extracted new version: $new_version"
+
+          if [[ -z "$new_version" ]]; then
+            echo "Error: Could not extract new version after cider bump."
+            exit 1
+          fi
+
+          # Create tag name (e.g., v1.2.3 - usually tags don't include build number)
+          # Extract version part before '+' for the tag
+          version_for_tag=$(echo "$new_version" | cut -d'+' -f1)
+          new_tag="v$version_for_tag"
+          echo "New tag: $new_tag"
+
+          # Set outputs for later steps
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
+          echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Commit version bump
+        run: |
+          # Add pubspec.yaml. Add CHANGELOG.md if cider modifies it and you want to commit it.
+          git add pubspec.yaml
+          # git add CHANGELOG.md # Uncomment if needed
+
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes detected in pubspec.yaml (or CHANGELOG.md) to commit."
+          else
+            # Use the version *without* build number for the commit message usually
+            git commit -m "chore(release): bump version to ${{ steps.bump.outputs.new_tag }}"
+          fi
+        shell: bash
+
+      - name: Create Git tag
+        # Only run if the commit step actually committed something (check git status)
+        # or simply run always, it won't hurt if the commit was skipped
+        run: |
+          git tag ${{ steps.bump.outputs.new_tag }}
+        shell: bash
+
+      - name: Push changes and tag
+        run: |
+          # Push the commit first (e.g., to main branch - adjust if needed)
+          # Handle potential conflicts if main changed since checkout? (More advanced setup)
+          # Check if there are commits to push before pushing branch
+          if ! git diff --quiet HEAD^ HEAD; then
+             echo "Pushing commit to main..."
+             git push origin HEAD:main
+          else
+             echo "No new commits to push to main."
+          fi
+
+          # Always push the tag
+          echo "Pushing tag ${{ steps.bump.outputs.new_tag }}..."
+          git push origin ${{ steps.bump.outputs.new_tag }}
+        shell: bash
+
+      - name: Output New Tag
+        run: echo "Successfully tagged release ${{ steps.bump.outputs.new_tag }}"

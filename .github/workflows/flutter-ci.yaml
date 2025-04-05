@@ -1,14 +1,11 @@
-name: Flutter Test
+name: Flutter CI & Release
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+    tags: ["v*.*.*"]
   pull_request:
-    branches:
-      - main
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -75,16 +72,26 @@ jobs:
       - name: Decode android/key.properties
         run: echo "${{ secrets.KEY_PROPERTIES }}" | base64 --decode > android/key.properties
 
+      - name: Build APKs
+        run: flutter build apk --release --split-per-abi
+
       - name: Build Universal APK
         run: flutter build apk --release
 
       - name: Rename Universal APK
         run: mv build/app/outputs/flutter-apk/{app-release,app-universal-release}.apk
+
+      - name: Build App Bundle
+        run: flutter build appbundle --release
+
       - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/*.apk
+          name: android-release-artifacts
+          path: |
+            build/app/outputs/flutter-apk/*-release*.apk
+            build/app/outputs/bundle/release/*.aab
+
   build_linux:
     needs: test
     runs-on: ubuntu-latest
@@ -96,9 +103,7 @@ jobs:
           submodules: recursive
       - name: Setup Flutter Environment
         uses: ./.github/actions/flutter-setup # Path to the composite action directory
-        with:
-          flutter-channel: stable
-          java-version: 17
+
       - name: Install Linux dependencies
         run: |
           sudo apt-get update -y
@@ -113,6 +118,65 @@ jobs:
       - name: Upload deb Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
+          name: linux-release-artifacts
           path: |
             dist/*/*.deb
+
+  # Job 4: Create GitHub Release (NEW - runs only on tag pushes)
+  create_release:
+    name: Create GitHub Release
+    needs: [build_android, build_linux] # Depends on successful builds
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Need write access to create release
+    # <<< CONDITION: Only run this job if the trigger was a tag starting with 'v'
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      # No checkout needed if only downloading artifacts and using context variables
+      # - name: Checkout repository
+      #   uses: actions/checkout@v4
+
+      # Download artifacts created earlier IN THIS SAME WORKFLOW RUN
+      - name: Download Android Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: android-release-artifacts
+          path: ./release-artifacts/android
+
+      - name: Download Linux Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-release-artifacts
+          path: ./release-artifacts/linux
+
+      - name: List downloaded files (for debugging)
+        run: ls -R ./release-artifacts
+        shell: bash
+
+      # Extract version info from the tag
+      - name: Extract Version from Tag
+        id: version
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG_NAME#v}
+          echo "tag=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+        shell: bash
+
+      # Generate release notes (optional, consider its configuration for tags)
+      - name: Generate Release Notes
+        id: generate_release_notes
+        uses: release-drafter/release-drafter@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Create the GitHub Release using downloaded artifacts
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "./release-artifacts/**/*" # Use downloaded artifacts
+          name: Release v${{ steps.version.outputs.version }}
+          tag: ${{ github.ref }}
+          body: ${{ steps.generate_release_notes.outputs.body }}
+          # token: ${{ secrets.GITHUB_TOKEN }} # Usually inferred
