@@ -1,0 +1,46 @@
+# .github/actions/flutter-setup/action.yml
+name: "Flutter Setup Composite Action"
+description: "Checks out code, sets up Java/Flutter, caches, and runs pub get"
+
+# Define inputs for customization (optional, but good practice)
+inputs:
+  flutter-channel:
+    description: "Flutter channel to use (stable, beta, dev, master)"
+    required: false
+    default: "stable"
+  java-version:
+    description: "Java version to set up"
+    required: false
+    default: "17"
+
+runs:
+  using: "composite" # Specify this is a composite action
+  steps:
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: "temurin"
+        java-version: ${{ inputs.java-version }}
+
+    - name: Set up Flutter SDK
+      uses: subosito/flutter-action@v2
+      with:
+        channel: ${{ inputs.flutter-channel }}
+        flutter-version-file: pubspec.yaml
+        cache: true # Cache Flutter SDK itself
+
+    - name: Cache Flutter dependencies
+      id: cache-pub
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.FLUTTER_HOME }}/.pub-cache
+        key: ${{ runner.os }}-flutter-pub-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-flutter-pub-
+
+    - name: Get Flutter dependencies
+      run: flutter pub get
+      # Use shell: bash for potential cross-platform compatibility in complex commands
+      shell: bash
+
+    # Add other common setup steps if needed
