@@ -29,6 +29,7 @@ class UserLoginWithPassword extends HookConsumerWidget {
     final usernameController = useTextEditingController();
     final passwordController = useTextEditingController();
     final isPasswordVisibleAnimationController = useAnimationController(
+      initialValue: 1,
       duration: const Duration(milliseconds: 500),
     );
 
