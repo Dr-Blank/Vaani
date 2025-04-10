@@ -48,6 +48,10 @@ jobs:
       # - name: Run static analysis
       #   run: flutter analyze
 
+      - name: Check formatting
+        run: |
+          dart format -o none --set-exit-if-changed lib/
+
       - name: Run tests
         run: flutter test
 
