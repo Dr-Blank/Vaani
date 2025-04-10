@@ -39,7 +39,7 @@ class ExpandableDescription extends HookWidget {
           // header with carrot icon is tapable
           InkWell(
             borderRadius: BorderRadius.circular(8),
-      
+
             onTap: () {
               isDescExpanded.value = !isDescExpanded.value;
               if (isDescExpanded.value) {

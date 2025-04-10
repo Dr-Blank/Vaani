@@ -98,8 +98,10 @@ class MySearchBar extends HookConsumerWidget {
           // opacity: 0.5 for the hint text
           hintStyle: WidgetStatePropertyAll(
             Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.5),
                 ),
           ),
           textInputAction: TextInputAction.search,

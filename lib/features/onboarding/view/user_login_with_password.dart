@@ -107,7 +107,7 @@ class UserLoginWithPassword extends HookConsumerWidget {
                     color: Theme.of(context)
                         .colorScheme
                         .onSurface
-                        .withOpacity(0.8),
+                        .withValues(alpha: 0.8),
                   ),
                   border: const OutlineInputBorder(),
                 ),
@@ -127,12 +127,15 @@ class UserLoginWithPassword extends HookConsumerWidget {
                     color: Theme.of(context)
                         .colorScheme
                         .onSurface
-                        .withOpacity(0.8),
+                        .withValues(alpha: 0.8),
                   ),
                   border: const OutlineInputBorder(),
                   suffixIcon: ColorFiltered(
                     colorFilter: ColorFilter.mode(
-                      Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                      Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withValues(alpha: 0.8),
                       BlendMode.srcIn,
                     ),
                     child: InkWell(

@@ -16,5 +16,4 @@ class LibraryItemExtras with _$LibraryItemExtras {
     BookMinified? book,
     @Default('') String heroTagSuffix,
   }) = _LibraryItemExtras;
-
 }

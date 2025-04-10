@@ -199,8 +199,10 @@ class _LibraryItemProgressIndicator extends HookConsumerWidget {
             '${remainingTime.smartBinaryFormat} left',
 
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.75),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.75),
                 ),
           ),
         ],
@@ -227,7 +229,7 @@ class _HeroSectionSubLabelWithIcon extends HookConsumerWidget {
         ref.watch(appSettingsProvider).themeSettings.useMaterialThemeOnItemPage;
     final color = useMaterialThemeOnItemPage
         ? themeData.colorScheme.primary
-        : themeData.colorScheme.onSurface.withOpacity(0.75);
+        : themeData.colorScheme.onSurface.withValues(alpha: 0.75);
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Row(
@@ -443,7 +445,7 @@ class _BookTitle extends StatelessWidget {
             ? const SizedBox.shrink()
             : Text(
                 style: themeData.textTheme.titleSmall?.copyWith(
-                  color: themeData.colorScheme.onSurface.withOpacity(0.8),
+                  color: themeData.colorScheme.onSurface.withValues(alpha: 0.8),
                 ),
                 itemBookMetadata?.subtitle ?? '',
               ),

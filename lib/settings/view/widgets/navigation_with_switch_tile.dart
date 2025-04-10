@@ -40,7 +40,7 @@ class NavigationWithSwitchTile extends AbstractSettingsTile {
         child: Row(
           children: [
             VerticalDivider(
-              color: Theme.of(context).dividerColor.withOpacity(0.5),
+              color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
               indent: 8.0,
               endIndent: 8.0,
             ),

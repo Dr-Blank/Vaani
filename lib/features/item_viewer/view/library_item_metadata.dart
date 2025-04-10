@@ -96,7 +96,10 @@ class LibraryItemMetadata extends HookConsumerWidget {
               return VerticalDivider(
                 indent: 6,
                 endIndent: 6,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.6),
               );
             },
           ),
@@ -125,7 +128,7 @@ class _MetadataItem extends StatelessWidget {
       children: [
         Text(
           style: themeData.textTheme.titleMedium?.copyWith(
-            color: themeData.colorScheme.onSurface.withOpacity(0.90),
+            color: themeData.colorScheme.onSurface.withValues(alpha: 0.90),
           ),
           value,
           maxLines: 1,
@@ -133,7 +136,7 @@ class _MetadataItem extends StatelessWidget {
         ),
         Text(
           style: themeData.textTheme.bodySmall?.copyWith(
-            color: themeData.colorScheme.onSurface.withOpacity(0.7),
+            color: themeData.colorScheme.onSurface.withValues(alpha: 0.7),
           ),
           title,
           maxLines: 1,
