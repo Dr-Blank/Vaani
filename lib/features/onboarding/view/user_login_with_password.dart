@@ -92,76 +92,73 @@ class UserLoginWithPassword extends HookConsumerWidget {
     return Center(
       child: InactiveFocusScopeObserver(
         child: AutofillGroup(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextFormField(
-                  controller: usernameController,
-                  autofocus: true,
-                  autofillHints: const [AutofillHints.username],
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    labelText: 'Username',
-                    labelStyle: TextStyle(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.8),
-                    ),
-                    border: const OutlineInputBorder(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextFormField(
+                controller: usernameController,
+                autofocus: true,
+                autofillHints: const [AutofillHints.username],
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  labelStyle: TextStyle(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.8),
                   ),
+                  border: const OutlineInputBorder(),
                 ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: passwordController,
-                  autofillHints: const [AutofillHints.password],
-                  textInputAction: TextInputAction.done,
-                  obscureText: !isPasswordVisible.value,
-                  onFieldSubmitted: (_) {
-                    loginAndSave();
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    labelStyle: TextStyle(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.8),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: passwordController,
+                autofillHints: const [AutofillHints.password],
+                textInputAction: TextInputAction.done,
+                obscureText: !isPasswordVisible.value,
+                onFieldSubmitted: (_) {
+                  loginAndSave();
+                },
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  labelStyle: TextStyle(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.8),
+                  ),
+                  border: const OutlineInputBorder(),
+                  suffixIcon: ColorFiltered(
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                      BlendMode.srcIn,
                     ),
-                    border: const OutlineInputBorder(),
-                    suffixIcon: ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        Theme.of(context).colorScheme.primary.withOpacity(0.8),
-                        BlendMode.srcIn,
-                      ),
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(50),
-                        onTap: () {
-                          isPasswordVisible.value = !isPasswordVisible.value;
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 8, right: 8),
-                          child: Lottie.asset(
-                            'assets/animations/Animation - 1714930099660.json',
-                            controller: isPasswordVisibleAnimationController,
-                          ),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(50),
+                      onTap: () {
+                        isPasswordVisible.value = !isPasswordVisible.value;
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 8, right: 8),
+                        child: Lottie.asset(
+                          'assets/animations/Animation - 1714930099660.json',
+                          controller: isPasswordVisibleAnimationController,
                         ),
                       ),
                     ),
-                    suffixIconConstraints: const BoxConstraints(
-                      maxHeight: 45,
-                    ),
+                  ),
+                  suffixIconConstraints: const BoxConstraints(
+                    maxHeight: 45,
                   ),
                 ),
-                const SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: loginAndSave,
-                  child: const Text('Login'),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: loginAndSave,
+                child: const Text('Login'),
+              ),
+            ],
           ),
         ),
       ),

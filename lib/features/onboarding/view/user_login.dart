@@ -130,11 +130,11 @@ class UserLoginMultipleAuth extends HookConsumerWidget {
     return Center(
       child: InactiveFocusScopeObserver(
         child: AutofillGroup(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Wrap(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Wrap(
                   // mainAxisAlignment: MainAxisAlignment.center,
                   spacing: 10,
                   runAlignment: WrapAlignment.center,
@@ -174,10 +174,11 @@ class UserLoginMultipleAuth extends HookConsumerWidget {
                     ),
                   ],
                 ),
-                const SizedBox.square(
-                  dimension: 8,
-                ),
-                switch (methodChoice.value) {
+              ),
+              
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: switch (methodChoice.value) {
                   AuthMethodChoice.authToken => UserLoginWithToken(
                       server: server,
                       addServer: addServer,
@@ -192,8 +193,8 @@ class UserLoginMultipleAuth extends HookConsumerWidget {
                       openIDButtonText: openIDButtonText,
                     ),
                 },
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
