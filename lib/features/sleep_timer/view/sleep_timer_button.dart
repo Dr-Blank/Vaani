@@ -11,7 +11,6 @@ import 'package:vaani/features/sleep_timer/providers/sleep_timer_provider.dart'
 import 'package:vaani/main.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/shared/extensions/duration_format.dart';
-import 'package:vaani/shared/hooks.dart';
 
 class SleepTimerButton extends HookConsumerWidget {
   const SleepTimerButton({

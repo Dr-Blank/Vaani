@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:list_wheel_scroll_view_nls/list_wheel_scroll_view_nls.dart';
 import 'package:vaani/features/player/providers/audiobook_player.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
-import 'package:vaani/shared/hooks.dart';
 
 const double itemExtent = 25;
 
