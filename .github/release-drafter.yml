@@ -40,7 +40,7 @@ template: |
   **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
 
 exclude-labels:
-  - "skip-changelog"
+  - "skip changelog"
 
 exclude-contributors:
   - "Dr-Blank"
@@ -55,15 +55,15 @@ autolabeler:
     branch:
       - '/feature\/.+/'
     title:
-      - "/feat(ure)?/i"
+      - "/^feat(ure)?/i"
     body:
       - "/JIRA-[0-9]{1,4}/"
   - label: "chore"
     title:
-      - "/chore/i"
+      - "/^chore\b/i"
   - label: "ui"
     title:
       - "/^ui\b/i"
   - label: "refactor"
     title:
-      - "/refactor/i"
+      - "/^refactor/i"
