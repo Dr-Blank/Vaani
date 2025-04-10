@@ -68,7 +68,7 @@ class AddNewServer extends HookConsumerWidget {
       decoration: InputDecoration(
         labelText: 'Server URI',
         labelStyle: TextStyle(
-          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
         ),
         border: const OutlineInputBorder(),
         prefixText:

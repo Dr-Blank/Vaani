@@ -261,9 +261,7 @@ class ServerManagerPage extends HookConsumerWidget {
                   },
                 ),
               ),
-            
               MiniPlayerBottomPadding(),
-
             ],
           ),
         ),

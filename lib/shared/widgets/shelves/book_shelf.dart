@@ -255,8 +255,10 @@ class _BookOnShelfPlayButton extends HookConsumerWidget {
                 child: CircularProgressIndicator(
                   value: userProgress.progress,
                   strokeWidth: strokeWidth,
-                  backgroundColor:
-                      Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                  backgroundColor: Theme.of(context)
+                      .colorScheme
+                      .onPrimary
+                      .withValues(alpha: 0.8),
                   valueColor: AlwaysStoppedAnimation<Color>(
                     Theme.of(context).colorScheme.primary,
                   ),
@@ -274,7 +276,10 @@ class _BookOnShelfPlayButton extends HookConsumerWidget {
                   const Size(size, size),
                 ),
                 backgroundColor: WidgetStateProperty.all(
-                  Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                  Theme.of(context)
+                      .colorScheme
+                      .onPrimary
+                      .withValues(alpha: 0.9),
                 ),
               ),
               onPressed: () async {
@@ -316,9 +321,10 @@ class BookCoverSkeleton extends StatelessWidget {
       child: SizedBox(
         width: 150,
         child: Shimmer.fromColors(
-          baseColor: Theme.of(context).colorScheme.surface.withOpacity(0.3),
+          baseColor:
+              Theme.of(context).colorScheme.surface.withValues(alpha: 0.3),
           highlightColor:
-              Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+              Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
           child: Container(
             color: Theme.of(context).colorScheme.surface,
           ),

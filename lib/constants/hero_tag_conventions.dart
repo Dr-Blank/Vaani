@@ -10,5 +10,4 @@ class HeroTagPrefixes {
   static const String bookTitle = 'book_title_';
   static const String narratorName = 'narrator_name_';
   static const String libraryItemPlayButton = 'library_item_play_button_';
-
 }

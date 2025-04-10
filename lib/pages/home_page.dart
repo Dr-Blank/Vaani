@@ -76,7 +76,7 @@ class HomePage extends HookConsumerWidget {
               child: ListView.separated(
                 itemBuilder: (context, index) => shelvesToDisplay[index],
                 separatorBuilder: (context, index) => Divider(
-                  color: Theme.of(context).dividerColor.withOpacity(0.1),
+                  color: Theme.of(context).dividerColor.withValues(alpha: 0.1),
                   indent: 16,
                   endIndent: 16,
                 ),
