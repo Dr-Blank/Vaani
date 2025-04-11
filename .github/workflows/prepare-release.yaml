@@ -27,8 +27,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           # Use a PAT if pushing to protected branches is restricted for GITHUB_TOKEN
-          # token: ${{ secrets.PAT_TOKEN }} # Create PAT with repo scope
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }} # Create PAT with repo scope
+          # token: ${{ secrets.GITHUB_TOKEN }} # this does not trigger other workflows
 
       # Setup Flutter/Dart environment needed to run dart pub global activate
       - name: Setup Flutter
