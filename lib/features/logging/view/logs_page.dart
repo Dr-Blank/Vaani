@@ -1,15 +1,11 @@
-import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:vaani/features/logging/providers/logs_provider.dart';
 import 'package:vaani/main.dart';
-import 'package:vaani/settings/metadata/metadata_provider.dart';
 
 class LogsPage extends HookConsumerWidget {
   const LogsPage({super.key});
