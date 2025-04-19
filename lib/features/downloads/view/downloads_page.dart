@@ -13,7 +13,6 @@ class DownloadsPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Downloads'),
-        backgroundColor: Colors.transparent,
       ),
       body: Center(
         // history of downloads

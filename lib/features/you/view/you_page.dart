@@ -23,7 +23,6 @@ class YouPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         // title: const Text('You'),
-        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
             tooltip: 'Logs',

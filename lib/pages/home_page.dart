@@ -19,7 +19,6 @@ class HomePage extends HookConsumerWidget {
     final scrollController = useScrollController();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         title: GestureDetector(
           child: Text(
             'Vaani',

@@ -30,7 +30,6 @@ class ExplorePage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Explore'),
-        backgroundColor: Colors.transparent,
       ),
       body: const MySearchBar(),
     );

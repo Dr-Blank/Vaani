@@ -8,7 +8,6 @@ class LibraryItemSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: Colors.transparent,
       elevation: 0,
       floating: true,
       primary: true,
