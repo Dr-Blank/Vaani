@@ -6,8 +6,10 @@ import 'package:vaani/features/explore/providers/search_controller.dart';
 import 'package:vaani/features/player/providers/player_form.dart';
 import 'package:vaani/features/player/view/audiobook_player.dart';
 import 'package:vaani/features/player/view/player_when_expanded.dart';
+import 'package:vaani/features/you/view/widgets/library_switch_chip.dart';
 import 'package:vaani/main.dart';
 import 'package:vaani/router/router.dart';
+import 'package:vaani/shared/widgets/not_implemented.dart';
 
 // stack to track changes in navigationShell.currentIndex
 // home is always at index 0 and at the start and should be the last before popping
@@ -111,17 +113,26 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
             // world scenario, the items would most likely be generated from the
             // branches of the shell route, which can be fetched using
             // `navigationShell.route.branches`.
-            destinations: _navigationItems
-                .map(
-                  (item) => NavigationDestination(
-                    icon: Icon(item.icon),
-                    selectedIcon: item.activeIcon != null
-                        ? Icon(item.activeIcon)
-                        : Icon(item.icon),
-                    label: item.name,
-                  ),
-                )
-                .toList(),
+            destinations: _navigationItems.map((item) {
+              final destinationWidget = NavigationDestination(
+                icon: Icon(item.icon),
+                selectedIcon: item.activeIcon != null
+                    ? Icon(item.activeIcon)
+                    : Icon(item.icon),
+                label: item.name,
+              );
+              if (item.name == 'Library') {
+                return GestureDetector(
+                  onSecondaryTap: () => showLibrarySwitcher(context, ref),
+                  onLongPress: () => showLibrarySwitcher(context, ref),
+                  child:
+                      destinationWidget, // Wrap the actual NavigationDestination
+                );
+              } else {
+                // Return the unwrapped destination for other items
+                return destinationWidget;
+              }
+            }).toList(),
             selectedIndex: navigationShell.currentIndex,
             onDestinationSelected: (int index) => _onTap(context, index, ref),
           ),
