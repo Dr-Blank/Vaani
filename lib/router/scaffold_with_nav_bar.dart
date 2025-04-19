@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:vaani/api/library_provider.dart' show currentLibraryProvider;
 import 'package:vaani/features/explore/providers/search_controller.dart';
 import 'package:vaani/features/player/providers/player_form.dart';
 import 'package:vaani/features/player/view/audiobook_player.dart';
 import 'package:vaani/features/player/view/player_when_expanded.dart';
+import 'package:vaani/features/you/view/widgets/library_switch_chip.dart';
 import 'package:vaani/main.dart';
 import 'package:vaani/router/router.dart';
+import 'package:vaani/shared/icons/abs_icons.dart' show AbsIcons;
 
 // stack to track changes in navigationShell.currentIndex
 // home is always at index 0 and at the start and should be the last before popping
@@ -111,17 +114,39 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
             // world scenario, the items would most likely be generated from the
             // branches of the shell route, which can be fetched using
             // `navigationShell.route.branches`.
-            destinations: _navigationItems
-                .map(
-                  (item) => NavigationDestination(
-                    icon: Icon(item.icon),
-                    selectedIcon: item.activeIcon != null
-                        ? Icon(item.activeIcon)
-                        : Icon(item.icon),
-                    label: item.name,
-                  ),
-                )
-                .toList(),
+            destinations: _navigationItems.map((item) {
+              final isDestinationLibrary = item.name == 'Library';
+              var currentLibrary =
+                  ref.watch(currentLibraryProvider).valueOrNull;
+              final libraryIcon = AbsIcons.getIconByName(
+                currentLibrary?.icon,
+              );
+              final destinationWidget = NavigationDestination(
+                icon: Icon(
+                  isDestinationLibrary ? libraryIcon ?? item.icon : item.icon,
+                ),
+                selectedIcon: Icon(
+                  isDestinationLibrary
+                      ? libraryIcon ?? item.activeIcon
+                      : item.activeIcon,
+                ),
+                label: isDestinationLibrary
+                    ? currentLibrary?.name ?? item.name
+                    : item.name,
+                tooltip: item.tooltip,
+              );
+              if (isDestinationLibrary) {
+                return GestureDetector(
+                  onSecondaryTap: () => showLibrarySwitcher(context, ref),
+                  onDoubleTap: () => showLibrarySwitcher(context, ref),
+                  child:
+                      destinationWidget, // Wrap the actual NavigationDestination
+                );
+              } else {
+                // Return the unwrapped destination for other items
+                return destinationWidget;
+              }
+            }).toList(),
             selectedIndex: navigationShell.currentIndex,
             onDestinationSelected: (int index) => _onTap(context, index, ref),
           ),
@@ -191,16 +216,19 @@ const _navigationItems = [
     name: 'Library',
     icon: Icons.book_outlined,
     activeIcon: Icons.book,
+    tooltip: 'Browse your library',
   ),
   _NavigationItem(
     name: 'Explore',
     icon: Icons.search_outlined,
     activeIcon: Icons.search,
+    tooltip: 'Search and Explore',
   ),
   _NavigationItem(
     name: 'You',
     icon: Icons.account_circle_outlined,
     activeIcon: Icons.account_circle,
+    tooltip: 'Your Profile and Settings',
   ),
 ];
 
@@ -208,10 +236,12 @@ class _NavigationItem {
   const _NavigationItem({
     required this.name,
     required this.icon,
-    this.activeIcon,
+    required this.activeIcon,
+    this.tooltip,
   });
 
   final String name;
   final IconData icon;
-  final IconData? activeIcon;
+  final IconData activeIcon;
+  final String? tooltip;
 }

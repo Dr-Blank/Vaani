@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/api/api_provider.dart';
+import 'package:vaani/api/library_provider.dart' show librariesProvider;
 import 'package:vaani/features/player/view/mini_player_bottom_padding.dart';
+import 'package:vaani/features/you/view/widgets/library_switch_chip.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/constants.dart';
 import 'package:vaani/shared/utils.dart';
 import 'package:vaani/shared/widgets/not_implemented.dart';
+import 'package:vaani/shared/widgets/vaani_logo.dart';
 
 class YouPage extends HookConsumerWidget {
   const YouPage({
@@ -16,6 +19,7 @@ class YouPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final api = ref.watch(authenticatedApiProvider);
+    final librariesAsyncValue = ref.watch(librariesProvider);
     return Scaffold(
       appBar: AppBar(
         // title: const Text('You'),
@@ -63,7 +67,35 @@ class YouPage extends HookConsumerWidget {
                           context.pushNamed(Routes.userManagement.name);
                         },
                       ),
-                      // ActionChip(
+                      librariesAsyncValue.when(
+                        data: (libraries) =>
+                            LibrarySwitchChip(libraries: libraries),
+                        loading: () => const ActionChip(
+                          avatar: SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                          label: Text('Loading Libs...'),
+                          onPressed: null, // Disable while loading
+                        ),
+                        error: (error, stack) => ActionChip(
+                          avatar: Icon(
+                            Icons.error_outline,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                          label: const Text('Error Loading Libs'),
+                          onPressed: () {
+                            // Maybe show error details or allow retry
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content:
+                                    Text('Failed to load libraries: $error'),
+                              ),
+                            );
+                          },
+                        ),
+                      ), // ActionChip(
                       //   avatar: const Icon(Icons.logout),
                       //   label: const Text('Logout'),
                       //   onPressed: () {
@@ -182,32 +214,6 @@ class UserBar extends HookConsumerWidget {
       },
       loading: () => const CircularProgressIndicator(),
       error: (error, stack) => Text('Error: $error'),
-    );
-  }
-}
-
-class VaaniLogo extends StatelessWidget {
-  const VaaniLogo({
-    super.key,
-    this.size,
-    this.duration = const Duration(milliseconds: 750),
-    this.curve = Curves.fastOutSlowIn,
-  });
-
-  final double? size;
-  final Duration duration;
-  final Curve curve;
-
-  @override
-  Widget build(BuildContext context) {
-    final IconThemeData iconTheme = IconTheme.of(context);
-    final double? iconSize = size ?? iconTheme.size;
-    return AnimatedContainer(
-      width: iconSize,
-      height: iconSize,
-      duration: duration,
-      curve: curve,
-      child: Image.asset('assets/images/vaani_logo_foreground.png'),
     );
   }
 }
