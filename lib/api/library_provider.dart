@@ -24,6 +24,7 @@ Future<Library?> currentLibrary(Ref ref, String id) async {
     _logger.warning('No library found in the list of libraries');
     return null;
   }
+  _logger.fine('Fetched library: ${library}');
   return library.library;
 }
 
@@ -37,6 +38,7 @@ class Libraries extends _$Libraries {
       _logger.warning('Failed to fetch libraries');
       return [];
     }
+    _logger.fine('Fetched ${libraries.length} libraries');
     return libraries;
   }
 }

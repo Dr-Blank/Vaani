@@ -78,6 +78,14 @@ void showLibrarySwitcher(
         ),
         actions: [
           TextButton(
+            onPressed: () {
+              // Invalidate the provider to trigger a refetch
+              ref.invalidate(librariesProvider);
+              Navigator.pop(dialogContext);
+            },
+            child: const Text('Refresh'),
+          ),
+          TextButton(
             onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
@@ -110,6 +118,15 @@ void showLibrarySwitcher(
               // Allow the list to take remaining space and scroll
               child: Scrollbar(child: content),
             ),
+            const SizedBox(height: 10),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.refresh),
+              label: const Text('Refresh'),
+              onPressed: () {
+                // Invalidate the provider to trigger a refetch
+                ref.invalidate(librariesProvider);
+              },
+            ),
           ],
         ),
       ),
@@ -121,46 +138,85 @@ void showLibrarySwitcher(
 class _LibrarySelectionContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Get the current library ID from the settings
+    final librariesAsyncValue = ref.watch(librariesProvider);
     final currentLibraryId = ref.watch(
-      apiSettingsProvider.select(
-        (settings) => settings.activeLibraryId,
-      ),
+      apiSettingsProvider.select((settings) => settings.activeLibraryId),
     );
-    // Get the list of libraries from the settings
-    final libraries = ref.watch(librariesProvider).valueOrNull ??
-        []; // Use null-aware operator to handle null case
+    final errorColor = Theme.of(context).colorScheme.error;
+    return librariesAsyncValue.when(
+      // --- Loading State ---
+      loading: () => const Center(child: CircularProgressIndicator()),
 
-    // If no libraries are available, show a message
-    if (libraries.isEmpty) {
-      return const Center(
-        child: Text('No libraries available'),
-      );
-    }
-    return ListView.builder(
-      shrinkWrap: true, // Important for Dialog/BottomSheet sizing
-      itemCount: libraries.length,
-      itemBuilder: (context, index) {
-        final library = libraries[index];
-        final bool isSelected = library.id == currentLibraryId;
+      // --- Error State ---
+      error: (error, stackTrace) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.error_outline, color: errorColor),
+              const SizedBox(height: 10),
+              Text(
+                'Error loading libraries: $error',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: errorColor),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.refresh),
+                label: const Text('Retry'),
+                onPressed: () {
+                  // Invalidate the provider to trigger a refetch
+                  ref.invalidate(librariesProvider);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
 
-        return ListTile(
-          title: Text(library.name),
-          leading: Icon(AbsIcons.getIconByName(library.icon)),
-          selected: isSelected,
-          trailing: isSelected ? const Icon(Icons.check) : null,
-          onTap: () {
-            appLogger
-                .info('Selected library: ${library.name} (ID: ${library.id})');
-            // Get current settings state
-            final currentSettings = ref.read(apiSettingsProvider);
-            // Update the active library ID
-            ref.read(apiSettingsProvider.notifier).updateState(
-                  currentSettings.copyWith(activeLibraryId: library.id),
-                );
-            // Close the dialog/bottom sheet
-            Navigator.pop(context);
-          },
+      // --- Data State ---
+      data: (libraries) {
+        // Handle case where data loaded successfully but is empty
+        if (libraries.isEmpty) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text('No libraries available.'),
+            ),
+          );
+        }
+
+        // Build the list if libraries are available
+        return Scrollbar(
+          // Add scrollbar for potentially long lists
+          child: ListView.builder(
+            shrinkWrap: true, // Important for Dialog/BottomSheet sizing
+            itemCount: libraries.length,
+            itemBuilder: (context, index) {
+              final library = libraries[index];
+              final bool isSelected = library.id == currentLibraryId;
+
+              return ListTile(
+                title: Text(library.name),
+                leading: Icon(AbsIcons.getIconByName(library.icon)),
+                selected: isSelected,
+                trailing: isSelected ? const Icon(Icons.check) : null,
+                onTap: () {
+                  appLogger.info(
+                      'Selected library: ${library.name} (ID: ${library.id})');
+                  // Get current settings state
+                  final currentSettings = ref.read(apiSettingsProvider);
+                  // Update the active library ID
+                  ref.read(apiSettingsProvider.notifier).updateState(
+                        currentSettings.copyWith(activeLibraryId: library.id),
+                      );
+                  // Close the dialog/bottom sheet
+                  Navigator.pop(context);
+                },
+              );
+            },
+          ),
         );
       },
     );

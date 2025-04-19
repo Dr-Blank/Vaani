@@ -6,7 +6,7 @@ part of 'library_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentLibraryHash() => r'f37904b8b43c88a523696d1ed7acf871c3e3326f';
+String _$currentLibraryHash() => r'1b41abb16566d91cd5961973e45bccaad7c49c9a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -157,7 +157,7 @@ class _CurrentLibraryProviderElement
   String get id => (origin as CurrentLibraryProvider).id;
 }
 
-String _$librariesHash() => r'a79954d0b68a8265859c577e36d5596620a72843';
+String _$librariesHash() => r'a57828f3b875d56db6c5815d051eca93695aefe2';
 
 /// See also [Libraries].
 @ProviderFor(Libraries)
