@@ -170,7 +170,7 @@ class _AudiobookshelfApiProviderElement
   Uri? get baseUrl => (origin as AudiobookshelfApiProvider).baseUrl;
 }
 
-String _$authenticatedApiHash() => r'5cf3329fe3074e3a09e266b4bae78b53e9c01220';
+String _$authenticatedApiHash() => r'284be2c39823c20fb70035a136c430862c28fa27';
 
 /// get the api instance for the authenticated user
 ///

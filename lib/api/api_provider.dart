@@ -49,8 +49,7 @@ AudiobookshelfApi audiobookshelfApi(Ref ref, Uri? baseUrl) {
 /// if the user is not authenticated throw an error
 @Riverpod(keepAlive: true)
 AudiobookshelfApi authenticatedApi(Ref ref) {
-  final apiSettings = ref.watch(apiSettingsProvider);
-  final user = apiSettings.activeUser;
+  final user = ref.watch(apiSettingsProvider.select((s) => s.activeUser));
   if (user == null) {
     _logger.severe('No active user can not provide authenticated api');
     throw StateError('No active user');
