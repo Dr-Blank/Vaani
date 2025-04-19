@@ -4,12 +4,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:shelfsdk/audiobookshelf_api.dart' show Library;
 import 'package:vaani/api/api_provider.dart' show authenticatedApiProvider;
+import 'package:vaani/settings/api_settings_provider.dart'
+    show apiSettingsProvider;
 part 'library_provider.g.dart';
 
 final _logger = Logger('LibraryProvider');
 
 @riverpod
-Future<Library?> currentLibrary(Ref ref, String id) async {
+Future<Library?> library(Ref ref, String id) async {
   final api = ref.watch(authenticatedApiProvider);
   final library = await api.libraries.get(libraryId: id);
   if (library == null) {
@@ -29,6 +31,17 @@ Future<Library?> currentLibrary(Ref ref, String id) async {
 }
 
 @riverpod
+Future<Library?> currentLibrary(Ref ref) async {
+  final libraryId =
+      ref.watch(apiSettingsProvider.select((s) => s.activeLibraryId));
+  if (libraryId == null) {
+    _logger.warning('No active library id found');
+    return null;
+  }
+  return await ref.watch(libraryProvider(libraryId).future);
+}
+
+@riverpod
 class Libraries extends _$Libraries {
   @override
   FutureOr<List<Library>> build() async {
@@ -39,6 +52,7 @@ class Libraries extends _$Libraries {
       return [];
     }
     _logger.fine('Fetched ${libraries.length} libraries');
+    ref.keepAlive();
     return libraries;
   }
 }

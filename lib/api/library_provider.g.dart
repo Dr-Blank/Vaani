@@ -6,7 +6,7 @@ part of 'library_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentLibraryHash() => r'1b41abb16566d91cd5961973e45bccaad7c49c9a';
+String _$libraryHash() => r'b62d976f8ab83b2f5823a0fb7dac52fde8fcbffc';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,27 +29,27 @@ class _SystemHash {
   }
 }
 
-/// See also [currentLibrary].
-@ProviderFor(currentLibrary)
-const currentLibraryProvider = CurrentLibraryFamily();
+/// See also [library].
+@ProviderFor(library)
+const libraryProvider = LibraryFamily();
 
-/// See also [currentLibrary].
-class CurrentLibraryFamily extends Family<AsyncValue<Library?>> {
-  /// See also [currentLibrary].
-  const CurrentLibraryFamily();
+/// See also [library].
+class LibraryFamily extends Family<AsyncValue<Library?>> {
+  /// See also [library].
+  const LibraryFamily();
 
-  /// See also [currentLibrary].
-  CurrentLibraryProvider call(
+  /// See also [library].
+  LibraryProvider call(
     String id,
   ) {
-    return CurrentLibraryProvider(
+    return LibraryProvider(
       id,
     );
   }
 
   @override
-  CurrentLibraryProvider getProviderOverride(
-    covariant CurrentLibraryProvider provider,
+  LibraryProvider getProviderOverride(
+    covariant LibraryProvider provider,
   ) {
     return call(
       provider.id,
@@ -68,32 +68,31 @@ class CurrentLibraryFamily extends Family<AsyncValue<Library?>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'currentLibraryProvider';
+  String? get name => r'libraryProvider';
 }
 
-/// See also [currentLibrary].
-class CurrentLibraryProvider extends AutoDisposeFutureProvider<Library?> {
-  /// See also [currentLibrary].
-  CurrentLibraryProvider(
+/// See also [library].
+class LibraryProvider extends AutoDisposeFutureProvider<Library?> {
+  /// See also [library].
+  LibraryProvider(
     String id,
   ) : this._internal(
-          (ref) => currentLibrary(
-            ref as CurrentLibraryRef,
+          (ref) => library(
+            ref as LibraryRef,
             id,
           ),
-          from: currentLibraryProvider,
-          name: r'currentLibraryProvider',
+          from: libraryProvider,
+          name: r'libraryProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$currentLibraryHash,
-          dependencies: CurrentLibraryFamily._dependencies,
-          allTransitiveDependencies:
-              CurrentLibraryFamily._allTransitiveDependencies,
+                  : _$libraryHash,
+          dependencies: LibraryFamily._dependencies,
+          allTransitiveDependencies: LibraryFamily._allTransitiveDependencies,
           id: id,
         );
 
-  CurrentLibraryProvider._internal(
+  LibraryProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -107,12 +106,12 @@ class CurrentLibraryProvider extends AutoDisposeFutureProvider<Library?> {
 
   @override
   Override overrideWith(
-    FutureOr<Library?> Function(CurrentLibraryRef provider) create,
+    FutureOr<Library?> Function(LibraryRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: CurrentLibraryProvider._internal(
-        (ref) => create(ref as CurrentLibraryRef),
+      override: LibraryProvider._internal(
+        (ref) => create(ref as LibraryRef),
         from: from,
         name: null,
         dependencies: null,
@@ -125,12 +124,12 @@ class CurrentLibraryProvider extends AutoDisposeFutureProvider<Library?> {
 
   @override
   AutoDisposeFutureProviderElement<Library?> createElement() {
-    return _CurrentLibraryProviderElement(this);
+    return _LibraryProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is CurrentLibraryProvider && other.id == id;
+    return other is LibraryProvider && other.id == id;
   }
 
   @override
@@ -144,20 +143,37 @@ class CurrentLibraryProvider extends AutoDisposeFutureProvider<Library?> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin CurrentLibraryRef on AutoDisposeFutureProviderRef<Library?> {
+mixin LibraryRef on AutoDisposeFutureProviderRef<Library?> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
-class _CurrentLibraryProviderElement
-    extends AutoDisposeFutureProviderElement<Library?> with CurrentLibraryRef {
-  _CurrentLibraryProviderElement(super.provider);
+class _LibraryProviderElement extends AutoDisposeFutureProviderElement<Library?>
+    with LibraryRef {
+  _LibraryProviderElement(super.provider);
 
   @override
-  String get id => (origin as CurrentLibraryProvider).id;
+  String get id => (origin as LibraryProvider).id;
 }
 
-String _$librariesHash() => r'a57828f3b875d56db6c5815d051eca93695aefe2';
+String _$currentLibraryHash() => r'658498a531e04a01e2b3915a3319101285601118';
+
+/// See also [currentLibrary].
+@ProviderFor(currentLibrary)
+final currentLibraryProvider = AutoDisposeFutureProvider<Library?>.internal(
+  currentLibrary,
+  name: r'currentLibraryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$currentLibraryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef CurrentLibraryRef = AutoDisposeFutureProviderRef<Library?>;
+String _$librariesHash() => r'95ebd4d1ac0cc2acf7617dc22895eff0ca30600f';
 
 /// See also [Libraries].
 @ProviderFor(Libraries)
