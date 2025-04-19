@@ -124,7 +124,7 @@ class ScaffoldWithNavBar extends HookConsumerWidget {
               if (item.name == 'Library') {
                 return GestureDetector(
                   onSecondaryTap: () => showLibrarySwitcher(context, ref),
-                  onLongPress: () => showLibrarySwitcher(context, ref),
+                  onDoubleTap: () => showLibrarySwitcher(context, ref),
                   child:
                       destinationWidget, // Wrap the actual NavigationDestination
                 );
