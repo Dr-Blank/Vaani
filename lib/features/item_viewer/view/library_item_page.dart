@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vaani/api/library_item_provider.dart';
 import 'package:vaani/features/item_viewer/view/library_item_sliver_app_bar.dart';
@@ -23,19 +24,86 @@ class LibraryItemPage extends HookConsumerWidget {
 
   final String itemId;
   final Object? extra;
+  static const double _showFabThreshold = 300.0;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final additionalItemData =
         extra is LibraryItemExtras ? extra as LibraryItemExtras : null;
+    final scrollController = useScrollController();
+    final showFab = useState(false);
+
+    // Effect to listen to scroll changes and update FAB visibility
+    useEffect(() {
+      void listener() {
+        if (!scrollController.hasClients) {
+          return; // Ensure controller is attached
+        }
+        final shouldShow = scrollController.offset > _showFabThreshold;
+        // Update state only if it changes and widget is still mounted
+        if (showFab.value != shouldShow && context.mounted) {
+          showFab.value = shouldShow;
+        }
+      }
+
+      scrollController.addListener(listener);
+      // Initial check in case the view starts scrolled (less likely but safe)
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (scrollController.hasClients && context.mounted) {
+          listener();
+        }
+      });
+
+      // Cleanup: remove the listener when the widget is disposed
+      return () => scrollController.removeListener(listener);
+    }, [scrollController],); // Re-run effect if scrollController changes
+
+    // --- FAB Scroll-to-Top Logic ---
+    void scrollToTop() {
+      if (scrollController.hasClients) {
+        scrollController.animateTo(
+          0.0, // Target offset (top)
+          duration: 300.ms,
+          curve: Curves.easeInOut,
+        );
+      }
+    }
 
     return ThemeProvider(
       initTheme: Theme.of(context),
       duration: 200.ms,
       child: ThemeSwitchingArea(
         child: Scaffold(
+          floatingActionButton: AnimatedSwitcher(
+            duration: 250.ms,
+            // A common transition for FABs (fade + scale)
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return ScaleTransition(
+                scale: animation,
+                child: FadeTransition(
+                  opacity: animation,
+                  child: child,
+                ),
+              );
+            },
+            child: showFab.value
+                ? FloatingActionButton(
+                    // Key is important for AnimatedSwitcher to differentiate
+                    key: const ValueKey('fab-scroll-top'),
+                    onPressed: scrollToTop,
+                    tooltip: 'Scroll to top',
+                    child: const Icon(Icons.arrow_upward),
+                  )
+                : const SizedBox.shrink(
+                    key: ValueKey('fab-empty'),
+                  ),
+          ),
           body: CustomScrollView(
+            controller: scrollController,
             slivers: [
-              const LibraryItemSliverAppBar(),
+              LibraryItemSliverAppBar(
+                id: itemId,
+                scrollController: scrollController,
+              ),
               SliverPadding(
                 padding: const EdgeInsets.all(8),
                 sliver: LibraryItemHeroSection(
