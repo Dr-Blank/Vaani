@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/api_provider.dart';
 import 'package:vaani/api/server_provider.dart';
+import 'package:vaani/features/onboarding/view/onboarding_single_page.dart'
+    show fadeSlideTransitionBuilder;
 import 'package:vaani/features/onboarding/view/user_login_with_open_id.dart';
 import 'package:vaani/features/onboarding/view/user_login_with_password.dart';
 import 'package:vaani/features/onboarding/view/user_login_with_token.dart';
@@ -172,26 +175,33 @@ class UserLoginMultipleAuth extends HookConsumerWidget {
                         }
                       },
                     ),
-                  ],
+                  ].animate(interval: 100.ms).fadeIn(
+                        duration: 150.ms,
+                        curve: Curves.easeIn,
+                      ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: switch (methodChoice.value) {
-                  AuthMethodChoice.authToken => UserLoginWithToken(
-                      server: server,
-                      addServer: addServer,
-                    ),
-                  AuthMethodChoice.local => UserLoginWithPassword(
-                      server: server,
-                      addServer: addServer,
-                    ),
-                  AuthMethodChoice.openid => UserLoginWithOpenID(
-                      server: server,
-                      addServer: addServer,
-                      openIDButtonText: openIDButtonText,
-                    ),
-                },
+                child: AnimatedSwitcher(
+                  duration: 200.ms,
+                  transitionBuilder: fadeSlideTransitionBuilder,
+                  child: switch (methodChoice.value) {
+                    AuthMethodChoice.authToken => UserLoginWithToken(
+                        server: server,
+                        addServer: addServer,
+                      ),
+                    AuthMethodChoice.local => UserLoginWithPassword(
+                        server: server,
+                        addServer: addServer,
+                      ),
+                    AuthMethodChoice.openid => UserLoginWithOpenID(
+                        server: server,
+                        addServer: addServer,
+                        openIDButtonText: openIDButtonText,
+                      ),
+                  },
+                ),
               ),
             ],
           ),
