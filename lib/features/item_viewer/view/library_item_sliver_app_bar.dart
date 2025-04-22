@@ -21,25 +21,28 @@ class LibraryItemSliverAppBar extends HookConsumerWidget {
 
     final showTitle = useState(false);
 
-    useEffect(() {
-      void listener() {
-        final shouldShow = scrollController.hasClients &&
-            scrollController.offset > _showTitleThreshold;
-        if (showTitle.value != shouldShow) {
-          showTitle.value = shouldShow;
+    useEffect(
+      () {
+        void listener() {
+          final shouldShow = scrollController.hasClients &&
+              scrollController.offset > _showTitleThreshold;
+          if (showTitle.value != shouldShow) {
+            showTitle.value = shouldShow;
+          }
         }
-      }
 
-      scrollController.addListener(listener);
-      // Trigger listener once initially in case the view starts scrolled
-      // (though unlikely for this specific use case, it's good practice)
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (scrollController.hasClients) {
-          listener();
-        }
-      });
-      return () => scrollController.removeListener(listener);
-    }, [scrollController],);
+        scrollController.addListener(listener);
+        // Trigger listener once initially in case the view starts scrolled
+        // (though unlikely for this specific use case, it's good practice)
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (scrollController.hasClients) {
+            listener();
+          }
+        });
+        return () => scrollController.removeListener(listener);
+      },
+      [scrollController],
+    );
 
     return SliverAppBar(
       elevation: 0,
@@ -62,7 +65,8 @@ class LibraryItemSliverAppBar extends HookConsumerWidget {
                 key: const ValueKey('title-text'),
                 item?.media.metadata.title ?? '',
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium,)
+                style: Theme.of(context).textTheme.bodyMedium,
+              )
             : const SizedBox(
                 // Also give it a key for differentiation
                 key: ValueKey('empty-title'),

@@ -26,7 +26,7 @@ Future<Library?> library(Ref ref, String id) async {
     _logger.warning('No library found in the list of libraries');
     return null;
   }
-  _logger.fine('Fetched library: ${library}');
+  _logger.fine('Fetched library: $library');
   return library.library;
 }
 

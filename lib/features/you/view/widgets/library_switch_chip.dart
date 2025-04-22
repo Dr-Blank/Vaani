@@ -204,7 +204,8 @@ class _LibrarySelectionContent extends ConsumerWidget {
                 trailing: isSelected ? const Icon(Icons.check) : null,
                 onTap: () {
                   appLogger.info(
-                      'Selected library: ${library.name} (ID: ${library.id})');
+                    'Selected library: ${library.name} (ID: ${library.id})',
+                  );
                   // Get current settings state
                   final currentSettings = ref.read(apiSettingsProvider);
                   // Update the active library ID

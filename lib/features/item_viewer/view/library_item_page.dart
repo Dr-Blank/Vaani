@@ -33,29 +33,32 @@ class LibraryItemPage extends HookConsumerWidget {
     final showFab = useState(false);
 
     // Effect to listen to scroll changes and update FAB visibility
-    useEffect(() {
-      void listener() {
-        if (!scrollController.hasClients) {
-          return; // Ensure controller is attached
+    useEffect(
+      () {
+        void listener() {
+          if (!scrollController.hasClients) {
+            return; // Ensure controller is attached
+          }
+          final shouldShow = scrollController.offset > _showFabThreshold;
+          // Update state only if it changes and widget is still mounted
+          if (showFab.value != shouldShow && context.mounted) {
+            showFab.value = shouldShow;
+          }
         }
-        final shouldShow = scrollController.offset > _showFabThreshold;
-        // Update state only if it changes and widget is still mounted
-        if (showFab.value != shouldShow && context.mounted) {
-          showFab.value = shouldShow;
-        }
-      }
 
-      scrollController.addListener(listener);
-      // Initial check in case the view starts scrolled (less likely but safe)
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (scrollController.hasClients && context.mounted) {
-          listener();
-        }
-      });
+        scrollController.addListener(listener);
+        // Initial check in case the view starts scrolled (less likely but safe)
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (scrollController.hasClients && context.mounted) {
+            listener();
+          }
+        });
 
-      // Cleanup: remove the listener when the widget is disposed
-      return () => scrollController.removeListener(listener);
-    }, [scrollController],); // Re-run effect if scrollController changes
+        // Cleanup: remove the listener when the widget is disposed
+        return () => scrollController.removeListener(listener);
+      },
+      [scrollController],
+    ); // Re-run effect if scrollController changes
 
     // --- FAB Scroll-to-Top Logic ---
     void scrollToTop() {
