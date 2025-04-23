@@ -22,7 +22,7 @@ import 'package:vaani/settings/api_settings_provider.dart'
 import 'package:vaani/settings/models/models.dart' as model;
 
 class UserLoginWidget extends HookConsumerWidget {
-  UserLoginWidget({
+  const UserLoginWidget({
     super.key,
     required this.server,
     this.onSuccess,
