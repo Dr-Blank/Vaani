@@ -20,12 +20,14 @@ class UserLoginWithOpenID extends HookConsumerWidget {
     required this.server,
     required this.addServer,
     this.openIDButtonText,
+    this.onSuccess,
   });
 
   final Uri server;
   final model.AudiobookShelfServer Function() addServer;
   final String? openIDButtonText;
   final responseErrorHandler = ErrorResponseHandler(name: 'OpenID');
+  final Function(model.AuthenticatedUser)? onSuccess;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

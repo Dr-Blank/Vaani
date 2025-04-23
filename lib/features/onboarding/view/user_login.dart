@@ -2,34 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shelfsdk/audiobookshelf_api.dart';
-import 'package:vaani/api/api_provider.dart';
-import 'package:vaani/api/server_provider.dart';
+import 'package:shelfsdk/audiobookshelf_api.dart' show AuthMethod;
+import 'package:vaani/api/api_provider.dart' show serverStatusProvider;
+import 'package:vaani/api/server_provider.dart'
+    show ServerAlreadyExistsException, audiobookShelfServerProvider;
 import 'package:vaani/features/onboarding/view/onboarding_single_page.dart'
     show fadeSlideTransitionBuilder;
-import 'package:vaani/features/onboarding/view/user_login_with_open_id.dart';
-import 'package:vaani/features/onboarding/view/user_login_with_password.dart';
-import 'package:vaani/features/onboarding/view/user_login_with_token.dart';
-import 'package:vaani/hacks/fix_autofill_losing_focus.dart';
-import 'package:vaani/models/error_response.dart';
-import 'package:vaani/settings/api_settings_provider.dart';
+import 'package:vaani/features/onboarding/view/user_login_with_open_id.dart'
+    show UserLoginWithOpenID;
+import 'package:vaani/features/onboarding/view/user_login_with_password.dart'
+    show UserLoginWithPassword;
+import 'package:vaani/features/onboarding/view/user_login_with_token.dart'
+    show UserLoginWithToken;
+import 'package:vaani/hacks/fix_autofill_losing_focus.dart'
+    show InactiveFocusScopeObserver;
+import 'package:vaani/models/error_response.dart' show ErrorResponseHandler;
+import 'package:vaani/settings/api_settings_provider.dart'
+    show apiSettingsProvider;
 import 'package:vaani/settings/models/models.dart' as model;
 
 class UserLoginWidget extends HookConsumerWidget {
   UserLoginWidget({
     super.key,
     required this.server,
+    this.onSuccess,
   });
 
   final Uri server;
   final serverStatusError = ErrorResponseHandler();
+  final Function(model.AuthenticatedUser)? onSuccess;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final serverStatus =
         ref.watch(serverStatusProvider(server, serverStatusError.storeError));
-
-    final api = ref.watch(audiobookshelfApiProvider(server));
 
     return serverStatus.when(
       data: (value) {
@@ -45,6 +51,7 @@ class UserLoginWidget extends HookConsumerWidget {
           openIDAvailable:
               value.authMethods?.contains(AuthMethod.openid) ?? false,
           openIDButtonText: value.authFormData?.authOpenIDButtonText,
+          onSuccess: onSuccess,
         );
       },
       loading: () {
@@ -91,6 +98,7 @@ class UserLoginMultipleAuth extends HookConsumerWidget {
     this.openIDAvailable = false,
     this.onPressed,
     this.openIDButtonText,
+    this.onSuccess,
   });
 
   final Uri server;
@@ -98,6 +106,7 @@ class UserLoginMultipleAuth extends HookConsumerWidget {
   final bool openIDAvailable;
   final void Function()? onPressed;
   final String? openIDButtonText;
+  final Function(model.AuthenticatedUser)? onSuccess;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -190,15 +199,18 @@ class UserLoginMultipleAuth extends HookConsumerWidget {
                     AuthMethodChoice.authToken => UserLoginWithToken(
                         server: server,
                         addServer: addServer,
+                        onSuccess: onSuccess,
                       ),
                     AuthMethodChoice.local => UserLoginWithPassword(
                         server: server,
                         addServer: addServer,
+                        onSuccess: onSuccess,
                       ),
                     AuthMethodChoice.openid => UserLoginWithOpenID(
                         server: server,
                         addServer: addServer,
                         openIDButtonText: openIDButtonText,
+                        onSuccess: onSuccess,
                       ),
                   },
                 ),
