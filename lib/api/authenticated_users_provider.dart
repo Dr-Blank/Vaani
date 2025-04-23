@@ -8,15 +8,15 @@ import 'package:vaani/settings/models/audiobookshelf_server.dart';
 import 'package:vaani/settings/models/authenticated_user.dart' as model;
 import 'package:vaani/shared/extensions/obfuscation.dart';
 
-part 'authenticated_user_provider.g.dart';
+part 'authenticated_users_provider.g.dart';
 
 final _box = AvailableHiveBoxes.authenticatedUserBox;
 
-final _logger = Logger('authenticated_user_provider');
+final _logger = Logger('authenticated_users_provider');
 
 /// provides with a set of authenticated users
 @riverpod
-class AuthenticatedUser extends _$AuthenticatedUser {
+class AuthenticatedUsers extends _$AuthenticatedUsers {
   @override
   Set<model.AuthenticatedUser> build() {
     ref.listenSelf((_, __) {
@@ -56,6 +56,7 @@ class AuthenticatedUser extends _$AuthenticatedUser {
 
   void addUser(model.AuthenticatedUser user, {bool setActive = false}) {
     state = state..add(user);
+    ref.invalidateSelf();
     if (setActive) {
       final apiSettings = ref.read(apiSettingsProvider);
       ref.read(apiSettingsProvider.notifier).updateState(
@@ -82,9 +83,12 @@ class AuthenticatedUser extends _$AuthenticatedUser {
     // also remove the user from the active user
     final apiSettings = ref.read(apiSettingsProvider);
     if (apiSettings.activeUser == user) {
+      // replace the active user with the first user in the list
+      // or null if there are no users left
+      final newActiveUser = state.isNotEmpty ? state.first : null;
       ref.read(apiSettingsProvider.notifier).updateState(
             apiSettings.copyWith(
-              activeUser: null,
+              activeUser: newActiveUser,
             ),
           );
     }

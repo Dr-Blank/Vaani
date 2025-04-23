@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/api_provider.dart';
-import 'package:vaani/api/authenticated_user_provider.dart';
+import 'package:vaani/api/authenticated_users_provider.dart';
 import 'package:vaani/models/error_response.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/models/models.dart' as model;
@@ -14,11 +14,13 @@ class UserLoginWithToken extends HookConsumerWidget {
     super.key,
     required this.server,
     required this.addServer,
+    this.onSuccess,
   });
 
   final Uri server;
   final model.AudiobookShelfServer Function() addServer;
   final serverErrorResponse = ErrorResponseHandler();
+  final Function(model.AuthenticatedUser)? onSuccess;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -65,11 +67,14 @@ class UserLoginWithToken extends HookConsumerWidget {
         authToken: api.token!,
       );
 
-      ref
-          .read(authenticatedUserProvider.notifier)
-          .addUser(authenticatedUser, setActive: true);
-
-      context.goNamed(Routes.home.name);
+      if (onSuccess != null) {
+        onSuccess!(authenticatedUser);
+      } else {
+        ref
+            .read(authenticatedUsersProvider.notifier)
+            .addUser(authenticatedUser, setActive: true);
+        context.goNamed(Routes.home.name);
+      }
     }
 
     return Form(

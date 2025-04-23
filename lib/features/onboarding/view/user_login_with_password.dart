@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/api_provider.dart';
-import 'package:vaani/api/authenticated_user_provider.dart';
+import 'package:vaani/api/authenticated_users_provider.dart';
 import 'package:vaani/hacks/fix_autofill_losing_focus.dart';
 import 'package:vaani/models/error_response.dart';
 import 'package:vaani/router/router.dart';
@@ -18,11 +18,13 @@ class UserLoginWithPassword extends HookConsumerWidget {
     super.key,
     required this.server,
     required this.addServer,
+    this.onSuccess,
   });
 
   final Uri server;
   final model.AudiobookShelfServer Function() addServer;
   final serverErrorResponse = ErrorResponseHandler();
+  final Function(model.AuthenticatedUser)? onSuccess;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -81,13 +83,16 @@ class UserLoginWithPassword extends HookConsumerWidget {
         username: username,
         authToken: api.token!,
       );
-      // add the user to the list of users
-      ref
-          .read(authenticatedUserProvider.notifier)
-          .addUser(authenticatedUser, setActive: true);
 
-      // redirect to the library page
-      GoRouter.of(context).goNamed(Routes.home.name);
+      if (onSuccess != null) {
+        onSuccess!(authenticatedUser);
+      } else {
+        // add the user to the list of users
+        ref
+            .read(authenticatedUsersProvider.notifier)
+            .addUser(authenticatedUser, setActive: true);
+        context.goNamed(Routes.home.name);
+      }
     }
 
     return Center(

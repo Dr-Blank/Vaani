@@ -39,6 +39,22 @@ class OnboardingSinglePage extends HookConsumerWidget {
   }
 }
 
+Widget fadeSlideTransitionBuilder(
+  Widget child,
+  Animation<double> animation,
+) {
+  return FadeTransition(
+    opacity: animation,
+    child: SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(0, 0.3),
+        end: const Offset(0, 0),
+      ).animate(animation),
+      child: child,
+    ),
+  );
+}
+
 class OnboardingBody extends HookConsumerWidget {
   const OnboardingBody({
     super.key,
@@ -53,22 +69,6 @@ class OnboardingBody extends HookConsumerWidget {
     var audiobookshelfUri = makeBaseUrl(serverUriController.text);
 
     final canUserLogin = useState(apiSettings.activeServer != null);
-
-    fadeSlideTransitionBuilder(
-      Widget child,
-      Animation<double> animation,
-    ) {
-      return FadeTransition(
-        opacity: animation,
-        child: SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(0, 0.3),
-            end: const Offset(0, 0),
-          ).animate(animation),
-          child: child,
-        ),
-      );
-    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
