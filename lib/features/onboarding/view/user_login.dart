@@ -29,11 +29,11 @@ class UserLoginWidget extends HookConsumerWidget {
   });
 
   final Uri server;
-  final serverStatusError = ErrorResponseHandler();
   final Function(model.AuthenticatedUser)? onSuccess;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final serverStatusError = useMemoized(() => ErrorResponseHandler(), []);
     final serverStatus =
         ref.watch(serverStatusProvider(server, serverStatusError.storeError));
 
@@ -116,8 +116,6 @@ class UserLoginMultipleAuth extends HookConsumerWidget {
       localAvailable ? AuthMethodChoice.local : AuthMethodChoice.authToken,
     );
 
-    final apiSettings = ref.watch(apiSettingsProvider);
-
     model.AudiobookShelfServer addServer() {
       var newServer = model.AudiobookShelfServer(
         serverUrl: server,
@@ -131,9 +129,9 @@ class UserLoginMultipleAuth extends HookConsumerWidget {
         newServer = e.server;
       } finally {
         ref.read(apiSettingsProvider.notifier).updateState(
-              apiSettings.copyWith(
-                activeServer: newServer,
-              ),
+              ref.read(apiSettingsProvider).copyWith(
+                    activeServer: newServer,
+                  ),
             );
       }
       return newServer;
