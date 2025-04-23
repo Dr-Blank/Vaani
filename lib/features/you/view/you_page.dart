@@ -183,6 +183,10 @@ class UserBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final me = ref.watch(meProvider);
+    final api = ref.watch(authenticatedApiProvider);
+
+    final themeData = Theme.of(context);
+    final textTheme = themeData.textTheme;
 
     return me.when(
       data: (userData) {
@@ -194,19 +198,30 @@ class UserBar extends HookConsumerWidget {
               // first letter of the username
               child: Text(
                 userData.username[0].toUpperCase(),
-                style: const TextStyle(
-                  fontSize: 32,
+                style: textTheme.headlineLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             const SizedBox(width: 16),
-            Text(
-              userData.username,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  userData.username,
+                  style: textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  api.baseUrl.toString(),
+                  style: textTheme.bodyMedium?.copyWith(
+                    color:
+                        themeData.colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
+                ),
+              ],
             ),
           ],
         );
