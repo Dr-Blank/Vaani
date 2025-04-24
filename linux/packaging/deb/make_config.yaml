@@ -30,3 +30,7 @@ categories:
   - Utility
 
 startup_notify: true
+
+# https://github.com/llfbandit/app_links/blob/051f53fa6039cbfaef0fcde73df20fef9e248cab/doc/README_linux.md
+supported_mime_type:
+  - x-scheme-handler/vaani
