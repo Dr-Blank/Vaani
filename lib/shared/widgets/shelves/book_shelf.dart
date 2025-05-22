@@ -25,22 +25,15 @@ class BookHomeShelf extends HookConsumerWidget {
     super.key,
     required this.shelf,
     required this.title,
+    this.showPlayButton = false,
   });
 
   final String title;
   final LibraryItemShelf shelf;
+  final bool showPlayButton;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appSettings = ref.watch(appSettingsProvider);
-    final homePageSettings = appSettings.homePageSettings;
-
-    final bool showPlayButton;
-    if (title == 'Continue Listening' || title == 'Continue Series') {
-      showPlayButton = homePageSettings.showPlayButtonOnContinueShelves;
-    } else {
-      showPlayButton = homePageSettings.showPlayButtonOnAllShelves;
-    }
 
     return SimpleHomeShelf(
       title: title,

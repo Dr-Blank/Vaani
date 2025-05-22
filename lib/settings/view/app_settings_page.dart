@@ -124,7 +124,7 @@ class AppSettingsPage extends HookConsumerWidget {
               leading: const Icon(Icons.home_filled),
               title: const Text('Home Page Settings'),
               description: const Text(
-                'Customize the home page shelves',
+                'Customize the home page',
               ),
               onPressed: (context) {
                 context.pushNamed(Routes.homePageSettings.name);

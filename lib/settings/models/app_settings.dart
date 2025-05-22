@@ -27,17 +27,6 @@ class AppSettings with _$AppSettings {
 }
 
 @freezed
-class HomePageSettings with _$HomePageSettings {
-  const factory HomePageSettings({
-    @Default(true) bool showPlayButtonOnContinueShelves,
-    @Default(false) bool showPlayButtonOnAllShelves,
-  }) = _HomePageSettings;
-
-  factory HomePageSettings.fromJson(Map<String, dynamic> json) =>
-      _$HomePageSettingsFromJson(json);
-}
-
-@freezed
 class ThemeSettings with _$ThemeSettings {
   const factory ThemeSettings({
     @Default(ThemeMode.system) ThemeMode themeMode,
@@ -242,3 +231,16 @@ enum ShakeAction {
 }
 
 enum ShakeDetectedFeedback { vibrate, beep }
+
+@freezed
+class HomePageSettings with _$HomePageSettings {
+  const factory HomePageSettings({
+    @Default(true) bool showPlayButtonOnContinueListeningShelf,
+    @Default(false) bool showPlayButtonOnContinueSeriesShelf,
+    @Default(false) bool showPlayButtonOnAllRemainingShelves,
+    @Default(false) bool showPlayButtonOnListenAgainShelf,
+  }) = _HomePageSettings;
+
+  factory HomePageSettings.fromJson(Map<String, dynamic> json) =>
+      _$HomePageSettingsFromJson(json);
+}

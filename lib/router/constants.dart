@@ -53,7 +53,7 @@ class Routes {
     parentRoute: settings,
   );
   static const homePageSettings = _SimpleRoute(
-    pathName: 'home-page',
+    pathName: 'homePage',
     name: 'homePageSettings',
     parentRoute: settings,
   );
