@@ -30,46 +30,56 @@ class ThemeSettingsPage extends HookConsumerWidget {
           ),
           tiles: [
             // choose system , light or dark theme
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: SegmentedButton<ThemeMode>(
-                segments: [
-                  ButtonSegment<ThemeMode>(
-                    value: ThemeMode.light,
-                    icon: Icon(
-                      themeSettings.themeMode == ThemeMode.light
-                          ? Icons.check
-                          : Icons.light_mode,
+            SettingsTile(
+              title: const Text('Theme Mode'),
+              description: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: SegmentedButton<ThemeMode>(
+                  segments: [
+                    ButtonSegment<ThemeMode>(
+                      value: ThemeMode.light,
+                      icon: Icon(
+                        themeSettings.themeMode == ThemeMode.light
+                            ? Icons.check
+                            : Icons.light_mode,
+                      ),
+                      label: const Text('Light'),
                     ),
-                    label: const Text('Light'),
-                  ),
-                  ButtonSegment<ThemeMode>(
-                    value: ThemeMode.system,
-                    icon: Icon(
-                      themeSettings.themeMode == ThemeMode.system
-                          ? Icons.check
-                          : Icons.auto_awesome,
+                    ButtonSegment<ThemeMode>(
+                      value: ThemeMode.system,
+                      icon: Icon(
+                        themeSettings.themeMode == ThemeMode.system
+                            ? Icons.check
+                            : Icons.auto_awesome,
+                      ),
+                      label: const Text('System'),
                     ),
-                    label: const Text('System'),
-                  ),
-                  ButtonSegment<ThemeMode>(
-                    value: ThemeMode.dark,
-                    icon: Icon(
-                      themeSettings.themeMode == ThemeMode.dark
-                          ? Icons.check
-                          : Icons.dark_mode,
+                    ButtonSegment<ThemeMode>(
+                      value: ThemeMode.dark,
+                      icon: Icon(
+                        themeSettings.themeMode == ThemeMode.dark
+                            ? Icons.check
+                            : Icons.dark_mode,
+                      ),
+                      label: const Text('Dark'),
                     ),
-                    label: const Text('Dark'),
-                  ),
-                ],
-                selected: {themeSettings.themeMode},
-                onSelectionChanged: (Set<ThemeMode> newSelection) {
-                  ref.read(appSettingsProvider.notifier).update(
-                        appSettings.copyWith.themeSettings(
-                          themeMode: newSelection.first,
-                        ),
-                      );
-                },
+                  ],
+                  selected: {themeSettings.themeMode},
+                  onSelectionChanged: (Set<ThemeMode> newSelection) {
+                    ref.read(appSettingsProvider.notifier).update(
+                          appSettings.copyWith.themeSettings(
+                            themeMode: newSelection.first,
+                          ),
+                        );
+                  },
+                ),
+              ),
+              leading: Icon(
+                themeSettings.themeMode == ThemeMode.light
+                    ? Icons.light_mode
+                    : themeSettings.themeMode == ThemeMode.dark
+                        ? Icons.dark_mode
+                        : Icons.auto_awesome,
               ),
             ),
 
