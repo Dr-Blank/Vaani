@@ -32,47 +32,35 @@ class ThemeSettingsPage extends HookConsumerWidget {
             // choose system , light or dark theme
             SettingsTile(
               title: const Text('Theme Mode'),
-              description: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: SegmentedButton<ThemeMode>(
-                  segments: [
-                    ButtonSegment<ThemeMode>(
-                      value: ThemeMode.light,
-                      icon: Icon(
-                        themeSettings.themeMode == ThemeMode.light
-                            ? Icons.check
-                            : Icons.light_mode,
-                      ),
-                      label: const Text('Light'),
-                    ),
-                    ButtonSegment<ThemeMode>(
-                      value: ThemeMode.system,
-                      icon: Icon(
-                        themeSettings.themeMode == ThemeMode.system
-                            ? Icons.check
-                            : Icons.auto_awesome,
-                      ),
-                      label: const Text('System'),
-                    ),
-                    ButtonSegment<ThemeMode>(
-                      value: ThemeMode.dark,
-                      icon: Icon(
-                        themeSettings.themeMode == ThemeMode.dark
-                            ? Icons.check
-                            : Icons.dark_mode,
-                      ),
-                      label: const Text('Dark'),
-                    ),
-                  ],
-                  selected: {themeSettings.themeMode},
-                  onSelectionChanged: (Set<ThemeMode> newSelection) {
-                    ref.read(appSettingsProvider.notifier).update(
-                          appSettings.copyWith.themeSettings(
-                            themeMode: newSelection.first,
-                          ),
-                        );
-                  },
-                ),
+              description: SegmentedButton(
+                expandedInsets: const EdgeInsets.only(top: 8.0),
+                showSelectedIcon: true,
+                selectedIcon: const Icon(Icons.check),
+                selected: {themeSettings.themeMode},
+                onSelectionChanged: (newSelection) {
+                  ref.read(appSettingsProvider.notifier).update(
+                        appSettings.copyWith.themeSettings(
+                          themeMode: newSelection.first,
+                        ),
+                      );
+                },
+                segments: [
+                  ButtonSegment(
+                    value: ThemeMode.light,
+                    icon: Icon(Icons.light_mode),
+                    label: const Text('Light'),
+                  ),
+                  ButtonSegment(
+                    value: ThemeMode.system,
+                    icon: Icon(Icons.auto_awesome),
+                    label: const Text('System'),
+                  ),
+                  ButtonSegment(
+                    value: ThemeMode.dark,
+                    icon: Icon(Icons.dark_mode),
+                    label: const Text('Dark'),
+                  ),
+                ],
               ),
               leading: Icon(
                 themeSettings.themeMode == ThemeMode.light
