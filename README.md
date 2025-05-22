@@ -25,6 +25,11 @@ Client for [Audiobookshelf](https://github.com/advplyr/audiobookshelf) server ma
 
 *<small>Play Store version is paid if you want to support the development.</small>*
 
+### Linux
+
+[<img src="https://img.shields.io/badge/Linux%20(.deb)-Download-blue" alt="Download Linux (.deb)" height="80">](https://github.com/Dr-Blank/Vaani/releases/latest/download/fast-forge-linux-amd64.deb)
+[<img src="https://img.shields.io/badge/Linux%20(AppImage)-Download-blue" alt="Download Linux (AppImage)" height="80">](https://github.com/Dr-Blank/Vaani/releases/latest/download/fast-forge-linux-amd64.AppImage)
+
 ## Screencaps
 
 https://github.com/user-attachments/assets/2ac9ace2-4a3c-40fc-adde-55914e4cf62d

@@ -1,0 +1,33 @@
+display_name: Vaani
+package_name: vaani
+
+maintainer:
+  name: Dr.Blank
+  email: drblankdev@gmail.com
+
+priority: optional
+
+section: x11
+
+installed_size: 75700
+
+essential: false
+
+icon: assets/icon/logo.png
+
+postuninstall_scripts:
+  - echo "Sorry to see you go."
+
+keywords:
+  - Audiobook
+  - Audiobook Player
+  - Audiobookshelf
+
+generic_name: Audiobook Player
+
+categories:
+  - Media
+  - Utility
+
+startup_notify: true
+# TODO: Review and update fields for AppImage specifics (e.g., icon, metadata).
