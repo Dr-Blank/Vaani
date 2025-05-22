@@ -52,6 +52,11 @@ class Routes {
     name: 'shakeDetectorSettings',
     parentRoute: settings,
   );
+  static const homePageSettings = _SimpleRoute(
+    pathName: 'home-page',
+    name: 'homePageSettings',
+    parentRoute: settings,
+  );
 
   // search and explore
   static const search = _SimpleRoute(

@@ -19,10 +19,22 @@ class AppSettings with _$AppSettings {
     @Default(NotificationSettings()) NotificationSettings notificationSettings,
     @Default(ShakeDetectionSettings())
     ShakeDetectionSettings shakeDetectionSettings,
+    @Default(HomePageSettings()) HomePageSettings homePageSettings,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>
       _$AppSettingsFromJson(json);
+}
+
+@freezed
+class HomePageSettings with _$HomePageSettings {
+  const factory HomePageSettings({
+    @Default(true) bool showPlayButtonOnContinueShelves,
+    @Default(false) bool showPlayButtonOnAllShelves,
+  }) = _HomePageSettings;
+
+  factory HomePageSettings.fromJson(Map<String, dynamic> json) =>
+      _$HomePageSettingsFromJson(json);
 }
 
 @freezed

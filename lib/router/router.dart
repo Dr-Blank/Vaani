@@ -18,6 +18,7 @@ import 'package:vaani/settings/view/notification_settings_page.dart';
 import 'package:vaani/settings/view/player_settings_page.dart';
 import 'package:vaani/settings/view/shake_detector_settings_page.dart';
 import 'package:vaani/settings/view/theme_settings_page.dart';
+import 'package:vaani/settings/view/home_page_settings_page.dart';
 
 import 'scaffold_with_nav_bar.dart';
 import 'transitions/slide.dart';
@@ -211,6 +212,13 @@ class MyAppRouter {
                         name: Routes.shakeDetectorSettings.name,
                         pageBuilder: defaultPageBuilder(
                           const ShakeDetectorSettingsPage(),
+                        ),
+                      ),
+                      GoRoute(
+                        path: Routes.homePageSettings.pathName,
+                        name: Routes.homePageSettings.name,
+                        pageBuilder: defaultPageBuilder(
+                          const HomePageSettingsPage(),
                         ),
                       ),
                     ],

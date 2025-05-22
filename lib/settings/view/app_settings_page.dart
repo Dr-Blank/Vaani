@@ -120,6 +120,16 @@ class AppSettingsPage extends HookConsumerWidget {
                 context.pushNamed(Routes.notificationSettings.name);
               },
             ),
+            SettingsTile.navigation(
+              leading: const Icon(Icons.home_filled),
+              title: const Text('Home Page Settings'),
+              description: const Text(
+                'Customize the home page shelves',
+              ),
+              onPressed: (context) {
+                context.pushNamed(Routes.homePageSettings.name);
+              },
+            ),
           ],
         ),
 

@@ -32,6 +32,16 @@ class BookHomeShelf extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final appSettings = ref.watch(appSettingsProvider);
+    final homePageSettings = appSettings.homePageSettings;
+
+    final bool showPlayButton;
+    if (title == 'Continue Listening' || title == 'Continue Series') {
+      showPlayButton = homePageSettings.showPlayButtonOnContinueShelves;
+    } else {
+      showPlayButton = homePageSettings.showPlayButtonOnAllShelves;
+    }
+
     return SimpleHomeShelf(
       title: title,
       children: shelf.entities
@@ -41,6 +51,7 @@ class BookHomeShelf extends HookConsumerWidget {
                   item: item,
                   key: ValueKey(shelf.id + item.id),
                   heroTagSuffix: shelf.id,
+                  showPlayButton: showPlayButton,
                 ),
               _ => Container(),
             },
