@@ -30,48 +30,47 @@ class ThemeSettingsPage extends HookConsumerWidget {
           ),
           tiles: [
             // choose system , light or dark theme
-            SettingsTile.navigation(
-              title: const Text('Theme Mode'),
-              description: Text.rich(
-                TextSpan(
-                  text: themeSettings.themeMode == ThemeMode.system
-                      ? 'Using mode from '
-                      : 'Using ',
-                  children: [
-                    TextSpan(
-                      text: themeSettings.themeMode.pascalCase,
-                      style: TextStyle(
-                        color: primaryColor,
-                      ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: SegmentedButton<ThemeMode>(
+                segments: [
+                  ButtonSegment<ThemeMode>(
+                    value: ThemeMode.light,
+                    icon: Icon(
+                      themeSettings.themeMode == ThemeMode.light
+                          ? Icons.check
+                          : Icons.light_mode,
                     ),
-                    if (themeSettings.themeMode != ThemeMode.system)
-                      const TextSpan(text: ' mode'),
-                  ],
-                ),
-              ),
-              leading: const Icon(Icons.color_lens),
-              trailing: themeSettings.themeMode == ThemeMode.system
-                  ? const Icon(Icons.auto_awesome)
-                  : themeSettings.themeMode == ThemeMode.light
-                      ? const Icon(Icons.light_mode)
-                      : const Icon(Icons.dark_mode),
-              onPressed: (context) async {
-                final themeMode = await showDialog<ThemeMode>(
-                  context: context,
-                  builder: (context) {
-                    return ModeSelectionDialog(
-                      themeMode: themeSettings.themeMode,
-                    );
-                  },
-                );
-                if (themeMode != null) {
+                    label: const Text('Light'),
+                  ),
+                  ButtonSegment<ThemeMode>(
+                    value: ThemeMode.system,
+                    icon: Icon(
+                      themeSettings.themeMode == ThemeMode.system
+                          ? Icons.check
+                          : Icons.auto_awesome,
+                    ),
+                    label: const Text('System'),
+                  ),
+                  ButtonSegment<ThemeMode>(
+                    value: ThemeMode.dark,
+                    icon: Icon(
+                      themeSettings.themeMode == ThemeMode.dark
+                          ? Icons.check
+                          : Icons.dark_mode,
+                    ),
+                    label: const Text('Dark'),
+                  ),
+                ],
+                selected: {themeSettings.themeMode},
+                onSelectionChanged: (Set<ThemeMode> newSelection) {
                   ref.read(appSettingsProvider.notifier).update(
                         appSettings.copyWith.themeSettings(
-                          themeMode: themeMode,
+                          themeMode: newSelection.first,
                         ),
                       );
-                }
-              },
+                },
+              ),
             ),
 
             // high contrast mode
@@ -210,52 +209,52 @@ extension StringExtension on String {
     return Color(int.parse('0xff$substring(1)'));
   }
 }
+// ModeSelectionDialog is no longer needed as SegmentedButton handles selection directly.
+// class ModeSelectionDialog extends HookConsumerWidget {
+//   final ThemeMode themeMode;
 
-class ModeSelectionDialog extends HookConsumerWidget {
-  final ThemeMode themeMode;
+//   const ModeSelectionDialog({
+//     super.key,
+//     required this.themeMode,
+//   });
 
-  const ModeSelectionDialog({
-    super.key,
-    required this.themeMode,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedTheme = useState(themeMode);
-    // a wrap of chips to show the available modes with icons
-    return AlertDialog(
-      title: const Text('Select Theme Mode'),
-      content: Wrap(
-        spacing: 8.0,
-        runSpacing: 8.0,
-        children: ThemeMode.values
-            .map(
-              (mode) => ChoiceChip(
-                avatar: switch (mode) {
-                  ThemeMode.system => const Icon(Icons.auto_awesome),
-                  ThemeMode.light => const Icon(Icons.light_mode),
-                  ThemeMode.dark => const Icon(Icons.dark_mode),
-                },
-                showCheckmark: false,
-                label: Text(mode.pascalCase),
-                selected: mode == selectedTheme.value,
-                onSelected: (selected) {
-                  if (selected) {
-                    selectedTheme.value = mode;
-                  }
-                },
-              ),
-            )
-            .toList(),
-      ),
-      actions: [
-        CancelButton(),
-        OkButton(
-          onPressed: () {
-            Navigator.pop(context, selectedTheme.value);
-          },
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final selectedTheme = useState(themeMode);
+//     // a wrap of chips to show the available modes with icons
+//     return AlertDialog(
+//       title: const Text('Select Theme Mode'),
+//       content: Wrap(
+//         spacing: 8.0,
+//         runSpacing: 8.0,
+//         children: ThemeMode.values
+//             .map(
+//               (mode) => ChoiceChip(
+//                 avatar: switch (mode) {
+//                   ThemeMode.system => const Icon(Icons.auto_awesome),
+//                   ThemeMode.light => const Icon(Icons.light_mode),
+//                   ThemeMode.dark => const Icon(Icons.dark_mode),
+//                 },
+//                 showCheckmark: false,
+//                 label: Text(mode.pascalCase),
+//                 selected: mode == selectedTheme.value,
+//                 onSelected: (selected) {
+//                   if (selected) {
+//                     selectedTheme.value = mode;
+//                   }
+//                 },
+//               ),
+//             )
+//             .toList(),
+//       ),
+//       actions: [
+//         CancelButton(),
+//         OkButton(
+//           onPressed: () {
+//             Navigator.pop(context, selectedTheme.value);
+//           },
+//         ),
+//       ],
+//     );
+//   }
+// }
