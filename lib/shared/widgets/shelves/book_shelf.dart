@@ -34,7 +34,6 @@ class BookHomeShelf extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return SimpleHomeShelf(
       title: title,
       children: shelf.entities
