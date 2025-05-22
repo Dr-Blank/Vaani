@@ -32,6 +32,10 @@ _$AppSettingsImpl _$$AppSettingsImplFromJson(Map<String, dynamic> json) =>
           ? const ShakeDetectionSettings()
           : ShakeDetectionSettings.fromJson(
               json['shakeDetectionSettings'] as Map<String, dynamic>),
+      homePageSettings: json['homePageSettings'] == null
+          ? const HomePageSettings()
+          : HomePageSettings.fromJson(
+              json['homePageSettings'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
@@ -42,6 +46,7 @@ Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
       'downloadSettings': instance.downloadSettings,
       'notificationSettings': instance.notificationSettings,
       'shakeDetectionSettings': instance.shakeDetectionSettings,
+      'homePageSettings': instance.homePageSettings,
     };
 
 _$ThemeSettingsImpl _$$ThemeSettingsImplFromJson(Map<String, dynamic> json) =>
@@ -351,3 +356,29 @@ const _$ShakeDetectedFeedbackEnumMap = {
   ShakeDetectedFeedback.vibrate: 'vibrate',
   ShakeDetectedFeedback.beep: 'beep',
 };
+
+_$HomePageSettingsImpl _$$HomePageSettingsImplFromJson(
+        Map<String, dynamic> json) =>
+    _$HomePageSettingsImpl(
+      showPlayButtonOnContinueListeningShelf:
+          json['showPlayButtonOnContinueListeningShelf'] as bool? ?? true,
+      showPlayButtonOnContinueSeriesShelf:
+          json['showPlayButtonOnContinueSeriesShelf'] as bool? ?? false,
+      showPlayButtonOnAllRemainingShelves:
+          json['showPlayButtonOnAllRemainingShelves'] as bool? ?? false,
+      showPlayButtonOnListenAgainShelf:
+          json['showPlayButtonOnListenAgainShelf'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$$HomePageSettingsImplToJson(
+        _$HomePageSettingsImpl instance) =>
+    <String, dynamic>{
+      'showPlayButtonOnContinueListeningShelf':
+          instance.showPlayButtonOnContinueListeningShelf,
+      'showPlayButtonOnContinueSeriesShelf':
+          instance.showPlayButtonOnContinueSeriesShelf,
+      'showPlayButtonOnAllRemainingShelves':
+          instance.showPlayButtonOnAllRemainingShelves,
+      'showPlayButtonOnListenAgainShelf':
+          instance.showPlayButtonOnListenAgainShelf,
+    };

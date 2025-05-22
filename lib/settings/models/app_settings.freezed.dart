@@ -29,6 +29,7 @@ mixin _$AppSettings {
       throw _privateConstructorUsedError;
   ShakeDetectionSettings get shakeDetectionSettings =>
       throw _privateConstructorUsedError;
+  HomePageSettings get homePageSettings => throw _privateConstructorUsedError;
 
   /// Serializes this AppSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -52,7 +53,8 @@ abstract class $AppSettingsCopyWith<$Res> {
       SleepTimerSettings sleepTimerSettings,
       DownloadSettings downloadSettings,
       NotificationSettings notificationSettings,
-      ShakeDetectionSettings shakeDetectionSettings});
+      ShakeDetectionSettings shakeDetectionSettings,
+      HomePageSettings homePageSettings});
 
   $ThemeSettingsCopyWith<$Res> get themeSettings;
   $PlayerSettingsCopyWith<$Res> get playerSettings;
@@ -60,6 +62,7 @@ abstract class $AppSettingsCopyWith<$Res> {
   $DownloadSettingsCopyWith<$Res> get downloadSettings;
   $NotificationSettingsCopyWith<$Res> get notificationSettings;
   $ShakeDetectionSettingsCopyWith<$Res> get shakeDetectionSettings;
+  $HomePageSettingsCopyWith<$Res> get homePageSettings;
 }
 
 /// @nodoc
@@ -83,6 +86,7 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
     Object? downloadSettings = null,
     Object? notificationSettings = null,
     Object? shakeDetectionSettings = null,
+    Object? homePageSettings = null,
   }) {
     return _then(_value.copyWith(
       themeSettings: null == themeSettings
@@ -109,6 +113,10 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
           ? _value.shakeDetectionSettings
           : shakeDetectionSettings // ignore: cast_nullable_to_non_nullable
               as ShakeDetectionSettings,
+      homePageSettings: null == homePageSettings
+          ? _value.homePageSettings
+          : homePageSettings // ignore: cast_nullable_to_non_nullable
+              as HomePageSettings,
     ) as $Val);
   }
 
@@ -174,6 +182,16 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
       return _then(_value.copyWith(shakeDetectionSettings: value) as $Val);
     });
   }
+
+  /// Create a copy of AppSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $HomePageSettingsCopyWith<$Res> get homePageSettings {
+    return $HomePageSettingsCopyWith<$Res>(_value.homePageSettings, (value) {
+      return _then(_value.copyWith(homePageSettings: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -190,7 +208,8 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
       SleepTimerSettings sleepTimerSettings,
       DownloadSettings downloadSettings,
       NotificationSettings notificationSettings,
-      ShakeDetectionSettings shakeDetectionSettings});
+      ShakeDetectionSettings shakeDetectionSettings,
+      HomePageSettings homePageSettings});
 
   @override
   $ThemeSettingsCopyWith<$Res> get themeSettings;
@@ -204,6 +223,8 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
   $NotificationSettingsCopyWith<$Res> get notificationSettings;
   @override
   $ShakeDetectionSettingsCopyWith<$Res> get shakeDetectionSettings;
+  @override
+  $HomePageSettingsCopyWith<$Res> get homePageSettings;
 }
 
 /// @nodoc
@@ -225,6 +246,7 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
     Object? downloadSettings = null,
     Object? notificationSettings = null,
     Object? shakeDetectionSettings = null,
+    Object? homePageSettings = null,
   }) {
     return _then(_$AppSettingsImpl(
       themeSettings: null == themeSettings
@@ -251,6 +273,10 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
           ? _value.shakeDetectionSettings
           : shakeDetectionSettings // ignore: cast_nullable_to_non_nullable
               as ShakeDetectionSettings,
+      homePageSettings: null == homePageSettings
+          ? _value.homePageSettings
+          : homePageSettings // ignore: cast_nullable_to_non_nullable
+              as HomePageSettings,
     ));
   }
 }
@@ -264,7 +290,8 @@ class _$AppSettingsImpl implements _AppSettings {
       this.sleepTimerSettings = const SleepTimerSettings(),
       this.downloadSettings = const DownloadSettings(),
       this.notificationSettings = const NotificationSettings(),
-      this.shakeDetectionSettings = const ShakeDetectionSettings()});
+      this.shakeDetectionSettings = const ShakeDetectionSettings(),
+      this.homePageSettings = const HomePageSettings()});
 
   factory _$AppSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppSettingsImplFromJson(json);
@@ -287,10 +314,13 @@ class _$AppSettingsImpl implements _AppSettings {
   @override
   @JsonKey()
   final ShakeDetectionSettings shakeDetectionSettings;
+  @override
+  @JsonKey()
+  final HomePageSettings homePageSettings;
 
   @override
   String toString() {
-    return 'AppSettings(themeSettings: $themeSettings, playerSettings: $playerSettings, sleepTimerSettings: $sleepTimerSettings, downloadSettings: $downloadSettings, notificationSettings: $notificationSettings, shakeDetectionSettings: $shakeDetectionSettings)';
+    return 'AppSettings(themeSettings: $themeSettings, playerSettings: $playerSettings, sleepTimerSettings: $sleepTimerSettings, downloadSettings: $downloadSettings, notificationSettings: $notificationSettings, shakeDetectionSettings: $shakeDetectionSettings, homePageSettings: $homePageSettings)';
   }
 
   @override
@@ -309,7 +339,9 @@ class _$AppSettingsImpl implements _AppSettings {
             (identical(other.notificationSettings, notificationSettings) ||
                 other.notificationSettings == notificationSettings) &&
             (identical(other.shakeDetectionSettings, shakeDetectionSettings) ||
-                other.shakeDetectionSettings == shakeDetectionSettings));
+                other.shakeDetectionSettings == shakeDetectionSettings) &&
+            (identical(other.homePageSettings, homePageSettings) ||
+                other.homePageSettings == homePageSettings));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -321,7 +353,8 @@ class _$AppSettingsImpl implements _AppSettings {
       sleepTimerSettings,
       downloadSettings,
       notificationSettings,
-      shakeDetectionSettings);
+      shakeDetectionSettings,
+      homePageSettings);
 
   /// Create a copy of AppSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -346,7 +379,8 @@ abstract class _AppSettings implements AppSettings {
       final SleepTimerSettings sleepTimerSettings,
       final DownloadSettings downloadSettings,
       final NotificationSettings notificationSettings,
-      final ShakeDetectionSettings shakeDetectionSettings}) = _$AppSettingsImpl;
+      final ShakeDetectionSettings shakeDetectionSettings,
+      final HomePageSettings homePageSettings}) = _$AppSettingsImpl;
 
   factory _AppSettings.fromJson(Map<String, dynamic> json) =
       _$AppSettingsImpl.fromJson;
@@ -363,6 +397,8 @@ abstract class _AppSettings implements AppSettings {
   NotificationSettings get notificationSettings;
   @override
   ShakeDetectionSettings get shakeDetectionSettings;
+  @override
+  HomePageSettings get homePageSettings;
 
   /// Create a copy of AppSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -2826,4 +2862,249 @@ abstract class _ShakeDetectionSettings implements ShakeDetectionSettings {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ShakeDetectionSettingsImplCopyWith<_$ShakeDetectionSettingsImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+HomePageSettings _$HomePageSettingsFromJson(Map<String, dynamic> json) {
+  return _HomePageSettings.fromJson(json);
+}
+
+/// @nodoc
+mixin _$HomePageSettings {
+  bool get showPlayButtonOnContinueListeningShelf =>
+      throw _privateConstructorUsedError;
+  bool get showPlayButtonOnContinueSeriesShelf =>
+      throw _privateConstructorUsedError;
+  bool get showPlayButtonOnAllRemainingShelves =>
+      throw _privateConstructorUsedError;
+  bool get showPlayButtonOnListenAgainShelf =>
+      throw _privateConstructorUsedError;
+
+  /// Serializes this HomePageSettings to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of HomePageSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $HomePageSettingsCopyWith<HomePageSettings> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $HomePageSettingsCopyWith<$Res> {
+  factory $HomePageSettingsCopyWith(
+          HomePageSettings value, $Res Function(HomePageSettings) then) =
+      _$HomePageSettingsCopyWithImpl<$Res, HomePageSettings>;
+  @useResult
+  $Res call(
+      {bool showPlayButtonOnContinueListeningShelf,
+      bool showPlayButtonOnContinueSeriesShelf,
+      bool showPlayButtonOnAllRemainingShelves,
+      bool showPlayButtonOnListenAgainShelf});
+}
+
+/// @nodoc
+class _$HomePageSettingsCopyWithImpl<$Res, $Val extends HomePageSettings>
+    implements $HomePageSettingsCopyWith<$Res> {
+  _$HomePageSettingsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of HomePageSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? showPlayButtonOnContinueListeningShelf = null,
+    Object? showPlayButtonOnContinueSeriesShelf = null,
+    Object? showPlayButtonOnAllRemainingShelves = null,
+    Object? showPlayButtonOnListenAgainShelf = null,
+  }) {
+    return _then(_value.copyWith(
+      showPlayButtonOnContinueListeningShelf: null ==
+              showPlayButtonOnContinueListeningShelf
+          ? _value.showPlayButtonOnContinueListeningShelf
+          : showPlayButtonOnContinueListeningShelf // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showPlayButtonOnContinueSeriesShelf: null ==
+              showPlayButtonOnContinueSeriesShelf
+          ? _value.showPlayButtonOnContinueSeriesShelf
+          : showPlayButtonOnContinueSeriesShelf // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showPlayButtonOnAllRemainingShelves: null ==
+              showPlayButtonOnAllRemainingShelves
+          ? _value.showPlayButtonOnAllRemainingShelves
+          : showPlayButtonOnAllRemainingShelves // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showPlayButtonOnListenAgainShelf: null == showPlayButtonOnListenAgainShelf
+          ? _value.showPlayButtonOnListenAgainShelf
+          : showPlayButtonOnListenAgainShelf // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$HomePageSettingsImplCopyWith<$Res>
+    implements $HomePageSettingsCopyWith<$Res> {
+  factory _$$HomePageSettingsImplCopyWith(_$HomePageSettingsImpl value,
+          $Res Function(_$HomePageSettingsImpl) then) =
+      __$$HomePageSettingsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {bool showPlayButtonOnContinueListeningShelf,
+      bool showPlayButtonOnContinueSeriesShelf,
+      bool showPlayButtonOnAllRemainingShelves,
+      bool showPlayButtonOnListenAgainShelf});
+}
+
+/// @nodoc
+class __$$HomePageSettingsImplCopyWithImpl<$Res>
+    extends _$HomePageSettingsCopyWithImpl<$Res, _$HomePageSettingsImpl>
+    implements _$$HomePageSettingsImplCopyWith<$Res> {
+  __$$HomePageSettingsImplCopyWithImpl(_$HomePageSettingsImpl _value,
+      $Res Function(_$HomePageSettingsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of HomePageSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? showPlayButtonOnContinueListeningShelf = null,
+    Object? showPlayButtonOnContinueSeriesShelf = null,
+    Object? showPlayButtonOnAllRemainingShelves = null,
+    Object? showPlayButtonOnListenAgainShelf = null,
+  }) {
+    return _then(_$HomePageSettingsImpl(
+      showPlayButtonOnContinueListeningShelf: null ==
+              showPlayButtonOnContinueListeningShelf
+          ? _value.showPlayButtonOnContinueListeningShelf
+          : showPlayButtonOnContinueListeningShelf // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showPlayButtonOnContinueSeriesShelf: null ==
+              showPlayButtonOnContinueSeriesShelf
+          ? _value.showPlayButtonOnContinueSeriesShelf
+          : showPlayButtonOnContinueSeriesShelf // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showPlayButtonOnAllRemainingShelves: null ==
+              showPlayButtonOnAllRemainingShelves
+          ? _value.showPlayButtonOnAllRemainingShelves
+          : showPlayButtonOnAllRemainingShelves // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showPlayButtonOnListenAgainShelf: null == showPlayButtonOnListenAgainShelf
+          ? _value.showPlayButtonOnListenAgainShelf
+          : showPlayButtonOnListenAgainShelf // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$HomePageSettingsImpl implements _HomePageSettings {
+  const _$HomePageSettingsImpl(
+      {this.showPlayButtonOnContinueListeningShelf = true,
+      this.showPlayButtonOnContinueSeriesShelf = false,
+      this.showPlayButtonOnAllRemainingShelves = false,
+      this.showPlayButtonOnListenAgainShelf = false});
+
+  factory _$HomePageSettingsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$HomePageSettingsImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final bool showPlayButtonOnContinueListeningShelf;
+  @override
+  @JsonKey()
+  final bool showPlayButtonOnContinueSeriesShelf;
+  @override
+  @JsonKey()
+  final bool showPlayButtonOnAllRemainingShelves;
+  @override
+  @JsonKey()
+  final bool showPlayButtonOnListenAgainShelf;
+
+  @override
+  String toString() {
+    return 'HomePageSettings(showPlayButtonOnContinueListeningShelf: $showPlayButtonOnContinueListeningShelf, showPlayButtonOnContinueSeriesShelf: $showPlayButtonOnContinueSeriesShelf, showPlayButtonOnAllRemainingShelves: $showPlayButtonOnAllRemainingShelves, showPlayButtonOnListenAgainShelf: $showPlayButtonOnListenAgainShelf)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$HomePageSettingsImpl &&
+            (identical(other.showPlayButtonOnContinueListeningShelf,
+                    showPlayButtonOnContinueListeningShelf) ||
+                other.showPlayButtonOnContinueListeningShelf ==
+                    showPlayButtonOnContinueListeningShelf) &&
+            (identical(other.showPlayButtonOnContinueSeriesShelf,
+                    showPlayButtonOnContinueSeriesShelf) ||
+                other.showPlayButtonOnContinueSeriesShelf ==
+                    showPlayButtonOnContinueSeriesShelf) &&
+            (identical(other.showPlayButtonOnAllRemainingShelves,
+                    showPlayButtonOnAllRemainingShelves) ||
+                other.showPlayButtonOnAllRemainingShelves ==
+                    showPlayButtonOnAllRemainingShelves) &&
+            (identical(other.showPlayButtonOnListenAgainShelf,
+                    showPlayButtonOnListenAgainShelf) ||
+                other.showPlayButtonOnListenAgainShelf ==
+                    showPlayButtonOnListenAgainShelf));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      showPlayButtonOnContinueListeningShelf,
+      showPlayButtonOnContinueSeriesShelf,
+      showPlayButtonOnAllRemainingShelves,
+      showPlayButtonOnListenAgainShelf);
+
+  /// Create a copy of HomePageSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$HomePageSettingsImplCopyWith<_$HomePageSettingsImpl> get copyWith =>
+      __$$HomePageSettingsImplCopyWithImpl<_$HomePageSettingsImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$HomePageSettingsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _HomePageSettings implements HomePageSettings {
+  const factory _HomePageSettings(
+      {final bool showPlayButtonOnContinueListeningShelf,
+      final bool showPlayButtonOnContinueSeriesShelf,
+      final bool showPlayButtonOnAllRemainingShelves,
+      final bool showPlayButtonOnListenAgainShelf}) = _$HomePageSettingsImpl;
+
+  factory _HomePageSettings.fromJson(Map<String, dynamic> json) =
+      _$HomePageSettingsImpl.fromJson;
+
+  @override
+  bool get showPlayButtonOnContinueListeningShelf;
+  @override
+  bool get showPlayButtonOnContinueSeriesShelf;
+  @override
+  bool get showPlayButtonOnAllRemainingShelves;
+  @override
+  bool get showPlayButtonOnListenAgainShelf;
+
+  /// Create a copy of HomePageSettings
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$HomePageSettingsImplCopyWith<_$HomePageSettingsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

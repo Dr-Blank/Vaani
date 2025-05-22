@@ -6,6 +6,8 @@ import 'package:vaani/api/api_provider.dart';
 import 'package:vaani/main.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
+import 'package:vaani/settings/app_settings_provider.dart'
+    show appSettingsProvider;
 
 import '../shared/widgets/shelves/home_shelf.dart';
 
@@ -17,6 +19,8 @@ class HomePage extends HookConsumerWidget {
     final views = ref.watch(personalizedViewProvider);
     final apiSettings = ref.watch(apiSettingsProvider);
     final scrollController = useScrollController();
+    final appSettings = ref.watch(appSettingsProvider);
+    final homePageSettings = appSettings.homePageSettings;
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
@@ -63,9 +67,21 @@ class HomePage extends HookConsumerWidget {
                 // .where((element) => !element.id.contains('discover'))
                 .map((shelf) {
               appLogger.fine('building shelf ${shelf.label}');
+              // check if showPlayButton is enabled for the shelf
+              // using the id of the shelf
+              final showPlayButton = switch (shelf.id) {
+                'continue-listening' =>
+                  homePageSettings.showPlayButtonOnContinueListeningShelf,
+                'continue-series' =>
+                  homePageSettings.showPlayButtonOnContinueSeriesShelf,
+                'listen-again' =>
+                  homePageSettings.showPlayButtonOnListenAgainShelf,
+                _ => homePageSettings.showPlayButtonOnAllRemainingShelves,
+              };
               return HomeShelf(
                 title: shelf.label,
                 shelf: shelf,
+                showPlayButton: showPlayButton,
               );
             }).toList();
             return RefreshIndicator(

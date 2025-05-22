@@ -15,10 +15,12 @@ class HomeShelf extends HookConsumerWidget {
     super.key,
     required this.shelf,
     required this.title,
+    this.showPlayButton = false,
   });
 
   final String title;
   final Shelf shelf;
+  final bool showPlayButton;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,6 +28,7 @@ class HomeShelf extends HookConsumerWidget {
       ShelfType.book => BookHomeShelf(
           title: title,
           shelf: shelf.asLibraryItemShelf,
+          showPlayButton: showPlayButton,
         ),
       ShelfType.authors => AuthorHomeShelf(
           title: title,

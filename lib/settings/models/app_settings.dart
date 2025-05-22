@@ -19,6 +19,7 @@ class AppSettings with _$AppSettings {
     @Default(NotificationSettings()) NotificationSettings notificationSettings,
     @Default(ShakeDetectionSettings())
     ShakeDetectionSettings shakeDetectionSettings,
+    @Default(HomePageSettings()) HomePageSettings homePageSettings,
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, dynamic> json) =>
@@ -230,3 +231,16 @@ enum ShakeAction {
 }
 
 enum ShakeDetectedFeedback { vibrate, beep }
+
+@freezed
+class HomePageSettings with _$HomePageSettings {
+  const factory HomePageSettings({
+    @Default(true) bool showPlayButtonOnContinueListeningShelf,
+    @Default(false) bool showPlayButtonOnContinueSeriesShelf,
+    @Default(false) bool showPlayButtonOnAllRemainingShelves,
+    @Default(false) bool showPlayButtonOnListenAgainShelf,
+  }) = _HomePageSettings;
+
+  factory HomePageSettings.fromJson(Map<String, dynamic> json) =>
+      _$HomePageSettingsFromJson(json);
+}
