@@ -32,6 +32,10 @@ _$AppSettingsImpl _$$AppSettingsImplFromJson(Map<String, dynamic> json) =>
           ? const ShakeDetectionSettings()
           : ShakeDetectionSettings.fromJson(
               json['shakeDetectionSettings'] as Map<String, dynamic>),
+      homePageSettings: json['homePageSettings'] == null
+          ? const HomePageSettings()
+          : HomePageSettings.fromJson(
+              json['homePageSettings'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
@@ -42,6 +46,24 @@ Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
       'downloadSettings': instance.downloadSettings,
       'notificationSettings': instance.notificationSettings,
       'shakeDetectionSettings': instance.shakeDetectionSettings,
+      'homePageSettings': instance.homePageSettings,
+    };
+
+_$HomePageSettingsImpl _$$HomePageSettingsImplFromJson(
+        Map<String, dynamic> json) =>
+    _$HomePageSettingsImpl(
+      showPlayButtonOnContinueShelves:
+          json['showPlayButtonOnContinueShelves'] as bool? ?? true,
+      showPlayButtonOnAllShelves:
+          json['showPlayButtonOnAllShelves'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$$HomePageSettingsImplToJson(
+        _$HomePageSettingsImpl instance) =>
+    <String, dynamic>{
+      'showPlayButtonOnContinueShelves':
+          instance.showPlayButtonOnContinueShelves,
+      'showPlayButtonOnAllShelves': instance.showPlayButtonOnAllShelves,
     };
 
 _$ThemeSettingsImpl _$$ThemeSettingsImplFromJson(Map<String, dynamic> json) =>
