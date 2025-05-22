@@ -30,48 +30,45 @@ class ThemeSettingsPage extends HookConsumerWidget {
           ),
           tiles: [
             // choose system , light or dark theme
-            SettingsTile.navigation(
+            SettingsTile(
               title: const Text('Theme Mode'),
-              description: Text.rich(
-                TextSpan(
-                  text: themeSettings.themeMode == ThemeMode.system
-                      ? 'Using mode from '
-                      : 'Using ',
-                  children: [
-                    TextSpan(
-                      text: themeSettings.themeMode.pascalCase,
-                      style: TextStyle(
-                        color: primaryColor,
-                      ),
-                    ),
-                    if (themeSettings.themeMode != ThemeMode.system)
-                      const TextSpan(text: ' mode'),
-                  ],
-                ),
-              ),
-              leading: const Icon(Icons.color_lens),
-              trailing: themeSettings.themeMode == ThemeMode.system
-                  ? const Icon(Icons.auto_awesome)
-                  : themeSettings.themeMode == ThemeMode.light
-                      ? const Icon(Icons.light_mode)
-                      : const Icon(Icons.dark_mode),
-              onPressed: (context) async {
-                final themeMode = await showDialog<ThemeMode>(
-                  context: context,
-                  builder: (context) {
-                    return ModeSelectionDialog(
-                      themeMode: themeSettings.themeMode,
-                    );
-                  },
-                );
-                if (themeMode != null) {
+              description: SegmentedButton(
+                expandedInsets: const EdgeInsets.only(top: 8.0),
+                showSelectedIcon: true,
+                selectedIcon: const Icon(Icons.check),
+                selected: {themeSettings.themeMode},
+                onSelectionChanged: (newSelection) {
                   ref.read(appSettingsProvider.notifier).update(
                         appSettings.copyWith.themeSettings(
-                          themeMode: themeMode,
+                          themeMode: newSelection.first,
                         ),
                       );
-                }
-              },
+                },
+                segments: [
+                  ButtonSegment(
+                    value: ThemeMode.light,
+                    icon: Icon(Icons.light_mode),
+                    label: const Text('Light'),
+                  ),
+                  ButtonSegment(
+                    value: ThemeMode.system,
+                    icon: Icon(Icons.auto_awesome),
+                    label: const Text('System'),
+                  ),
+                  ButtonSegment(
+                    value: ThemeMode.dark,
+                    icon: Icon(Icons.dark_mode),
+                    label: const Text('Dark'),
+                  ),
+                ],
+              ),
+              leading: Icon(
+                themeSettings.themeMode == ThemeMode.light
+                    ? Icons.light_mode
+                    : themeSettings.themeMode == ThemeMode.dark
+                        ? Icons.dark_mode
+                        : Icons.auto_awesome,
+              ),
             ),
 
             // high contrast mode
@@ -208,54 +205,5 @@ extension ColorExtension on Color {
 extension StringExtension on String {
   Color toColor() {
     return Color(int.parse('0xff$substring(1)'));
-  }
-}
-
-class ModeSelectionDialog extends HookConsumerWidget {
-  final ThemeMode themeMode;
-
-  const ModeSelectionDialog({
-    super.key,
-    required this.themeMode,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedTheme = useState(themeMode);
-    // a wrap of chips to show the available modes with icons
-    return AlertDialog(
-      title: const Text('Select Theme Mode'),
-      content: Wrap(
-        spacing: 8.0,
-        runSpacing: 8.0,
-        children: ThemeMode.values
-            .map(
-              (mode) => ChoiceChip(
-                avatar: switch (mode) {
-                  ThemeMode.system => const Icon(Icons.auto_awesome),
-                  ThemeMode.light => const Icon(Icons.light_mode),
-                  ThemeMode.dark => const Icon(Icons.dark_mode),
-                },
-                showCheckmark: false,
-                label: Text(mode.pascalCase),
-                selected: mode == selectedTheme.value,
-                onSelected: (selected) {
-                  if (selected) {
-                    selectedTheme.value = mode;
-                  }
-                },
-              ),
-            )
-            .toList(),
-      ),
-      actions: [
-        CancelButton(),
-        OkButton(
-          onPressed: () {
-            Navigator.pop(context, selectedTheme.value);
-          },
-        ),
-      ],
-    );
   }
 }
