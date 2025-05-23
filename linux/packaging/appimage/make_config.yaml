@@ -26,8 +26,9 @@ keywords:
 generic_name: Audiobook Player
 
 categories:
-  - Media
-  - Utility
+  - AudioVideo
+  - Audio
+  - Player
 
 startup_notify: true
 # TODO: Review and update fields for AppImage specifics (e.g., icon, metadata).

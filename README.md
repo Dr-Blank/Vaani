@@ -27,8 +27,8 @@ Client for [Audiobookshelf](https://github.com/advplyr/audiobookshelf) server ma
 
 ### Linux
 
-[<img src="https://img.shields.io/badge/Linux%20(.deb)-Download-blue" alt="Download Linux (.deb)" height="80">](https://github.com/Dr-Blank/Vaani/releases/latest/download/fast-forge-linux-amd64.deb)
-[<img src="https://img.shields.io/badge/Linux%20(AppImage)-Download-blue" alt="Download Linux (AppImage)" height="80">](https://github.com/Dr-Blank/Vaani/releases/latest/download/fast-forge-linux-amd64.AppImage)
+[<img src="https://img.shields.io/badge/.deb-Download-blue" alt="Download Linux (.deb)" height="30">](https://github.com/Dr-Blank/Vaani/releases/latest/download/vaani-linux-amd64.deb)
+[<img src="https://img.shields.io/badge/AppImage-Download-blue" alt="Download Linux (AppImage)" height="30">](https://github.com/Dr-Blank/Vaani/releases/latest/download/vaani-linux-amd64.AppImage)
 
 ## Screencaps
 
