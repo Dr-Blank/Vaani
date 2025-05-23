@@ -111,20 +111,48 @@ jobs:
       - name: Install Linux dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev locate libfuse2
+          # Download and install appimagetool
+          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
+          sudo mv appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
         shell: bash
       - name: setup fastforge
         run: |
           dart pub global activate fastforge
-      - name: Build Linux AppImage
-        run: fastforge package --platform linux --targets deb
+      - name: Build Linux AppImage and deb
+        run: fastforge package --platform linux --targets deb,appimage
 
-      - name: Upload deb Artifacts
+      - name: Rename Linux Artifacts
+        run: |
+          # Find and rename .deb file
+          DEB_FILE=$(find dist/ -name "*.deb" -type f)
+          if [ -n "$DEB_FILE" ]; then
+            mv "$DEB_FILE" dist/vaani-linux-amd64.deb
+            echo "Renamed DEB: $DEB_FILE to dist/vaani-linux-amd64.deb"
+          else
+            echo "Error: .deb file not found in dist/"
+            exit 1
+          fi
+
+          # Find and rename .AppImage file
+          APPIMAGE_FILE=$(find dist/ -name "*.AppImage" -type f)
+          if [ -n "$APPIMAGE_FILE" ]; then
+            mv "$APPIMAGE_FILE" dist/vaani-linux-amd64.AppImage
+            echo "Renamed AppImage: $APPIMAGE_FILE to dist/vaani-linux-amd64.AppImage"
+          else
+            echo "Error: .AppImage file not found in dist/"
+            exit 1
+          fi
+        shell: bash
+
+      - name: Upload Linux Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: linux-release-artifacts
           path: |
-            dist/*/*.deb
+            dist/vaani-linux-amd64.deb
+            dist/vaani-linux-amd64.AppImage
 
   # Job 4: Create GitHub Release (NEW - runs only on tag pushes)
   create_release:
