@@ -5,7 +5,7 @@
       "icon": { "id": "eye-watch", "color": "terminal.ansiYellow" },
       "label": "build_runner watch",
       "type": "shell",
-      "command": "fvm dart run build_runner watch --delete-conflicting-outputs",
+      "command": "dart run build_runner watch --delete-conflicting-outputs",
       "group": {
         "kind": "build",
         "isDefault": true
