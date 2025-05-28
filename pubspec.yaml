@@ -20,7 +20,7 @@ version: 0.0.18+9
 
 environment:
   sdk: ">=3.3.4 <4.0.0"
-  flutter: 3.29.2
+  flutter: 3.32.0
 
 isar_version: &isar_version ^4.0.0-dev.13 # define the version to be used
 

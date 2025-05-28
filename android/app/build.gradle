@@ -31,7 +31,11 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "dr.blank.vaani"
     compileSdk flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    // ndkVersion flutter.ndkVersion
+    // The NDK version is set to a specific version since it was not building
+    // TODO remove when https://github.com/flutter/flutter/issues/139427 is closed
+    ndkVersion = "29.0.13113456"
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -89,3 +93,11 @@ flutter {
 }
 
 dependencies {}
+
+// https://stackoverflow.com/questions/78626580/how-to-resolve-app-execution-failure-due-to-androidx-corecore1-15-0-alpha
+configurations.all {
+    resolutionStrategy {
+        force "androidx.core:core:1.13.1"
+        force "androidx.core:core-ktx:1.13.1"
+    }
+}

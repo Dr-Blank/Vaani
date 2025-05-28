@@ -70,6 +70,10 @@ jobs:
           flutter-channel: stable
           java-version: 17
 
+      - name: Accept Android SDK Licenses
+        run: |
+          yes | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+
       - name: Decode android/upload.jks
         run: echo "${{ secrets.UPLOAD_KEYSTORE_JKS }}" | base64 --decode > android/upload.jks
 
