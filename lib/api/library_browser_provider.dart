@@ -96,26 +96,40 @@ Future<List<SimpleSeries>> librarySeries(Ref ref) async {
     return [];
   }
 
-  // Use raw API call to avoid Series deserialization issues
-  final seriesList = await api.getJson<List<SimpleSeries>>(
-    path: '/api/libraries/${currentLibrary.id}/series',
-    requiresAuth: true,
-    fromJson: (json) {
-      if (json is Map<String, dynamic> && json.containsKey('results')) {
-        final results = json['results'] as List<dynamic>;
-        return results
-            .map((e) => SimpleSeries.fromJson(e as Map<String, dynamic>))
-            .toList();
-      }
-      return <SimpleSeries>[];
-    },
-  );
+  try {
+    // Use raw API call to avoid Series deserialization issues
+    final seriesList = await api.getJson<List<SimpleSeries>>(
+      path: '/api/libraries/${currentLibrary.id}/series',
+      requiresAuth: true,
+      fromJson: (json) {
+        _logger.info('Series API response: $json');
 
-  if (seriesList == null) {
-    _logger.warning('Failed to fetch series for library ${currentLibrary.id}');
-    return [];
+        if (json is Map<String, dynamic>) {
+          if (json.containsKey('results')) {
+            final results = json['results'] as List<dynamic>;
+            _logger.info('Found ${results.length} series in results');
+            return results
+                .map((e) => SimpleSeries.fromJson(e as Map<String, dynamic>))
+                .toList();
+          } else {
+            _logger.warning('No results key in response. Keys: ${json.keys}');
+          }
+        } else {
+          _logger.warning('Response is not a Map. Type: ${json.runtimeType}');
+        }
+        return <SimpleSeries>[];
+      },
+    );
+
+    if (seriesList == null) {
+      _logger.warning('Failed to fetch series for library ${currentLibrary.id}');
+      return [];
+    }
+
+    _logger.fine('Fetched ${seriesList.length} series');
+    return seriesList;
+  } catch (e, stackTrace) {
+    _logger.severe('Error fetching series: $e', e, stackTrace);
+    rethrow;
   }
-
-  _logger.fine('Fetched ${seriesList.length} series');
-  return seriesList;
 }
