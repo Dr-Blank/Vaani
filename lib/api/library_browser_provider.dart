@@ -20,11 +20,18 @@ class SimpleSeries {
   });
 
   factory SimpleSeries.fromJson(Map<String, dynamic> json) {
-    return SimpleSeries(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      numBooks: json['numBooks'] as int?,
-    );
+    try {
+      return SimpleSeries(
+        id: json['id'] as String,
+        name: json['name'] as String,
+        numBooks: json['numBooks'] as int? ??
+                 json['num_books'] as int? ??
+                 (json['books'] as List?)?.length,
+      );
+    } catch (e) {
+      _logger.warning('Error parsing series: $e. JSON: $json');
+      rethrow;
+    }
   }
 }
 
@@ -97,12 +104,36 @@ Future<List<SimpleSeries>> librarySeries(Ref ref) async {
   }
 
   try {
-    // Use raw API call to avoid Series deserialization issues
+    // First try: Get from filterdata endpoint (same as genres)
+    final filterDataSeries = await api.getJson<List<SimpleSeries>>(
+      path: '/api/libraries/${currentLibrary.id}/filterdata',
+      requiresAuth: true,
+      fromJson: (json) {
+        _logger.info('FilterData API response keys: ${json is Map ? (json as Map).keys : json.runtimeType}');
+
+        if (json is Map<String, dynamic> && json.containsKey('series')) {
+          final seriesList = json['series'] as List<dynamic>;
+          _logger.info('Found ${seriesList.length} series in filterdata');
+          return seriesList
+              .map((e) => SimpleSeries.fromJson(e as Map<String, dynamic>))
+              .toList();
+        }
+        return <SimpleSeries>[];
+      },
+    );
+
+    if (filterDataSeries != null && filterDataSeries.isNotEmpty) {
+      _logger.fine('Fetched ${filterDataSeries.length} series from filterdata');
+      return filterDataSeries;
+    }
+
+    // Second try: Get from series endpoint
+    _logger.info('Trying series endpoint...');
     final seriesList = await api.getJson<List<SimpleSeries>>(
       path: '/api/libraries/${currentLibrary.id}/series',
       requiresAuth: true,
       fromJson: (json) {
-        _logger.info('Series API response: $json');
+        _logger.info('Series API response keys: ${json is Map ? (json as Map).keys : json.runtimeType}');
 
         if (json is Map<String, dynamic>) {
           if (json.containsKey('results')) {
@@ -111,11 +142,7 @@ Future<List<SimpleSeries>> librarySeries(Ref ref) async {
             return results
                 .map((e) => SimpleSeries.fromJson(e as Map<String, dynamic>))
                 .toList();
-          } else {
-            _logger.warning('No results key in response. Keys: ${json.keys}');
           }
-        } else {
-          _logger.warning('Response is not a Map. Type: ${json.runtimeType}');
         }
         return <SimpleSeries>[];
       },
