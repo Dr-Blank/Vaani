@@ -2,11 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logging/logging.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/api_provider.dart';
 import 'package:vaani/api/library_provider.dart';
 import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
+
+final _logger = Logger('FilteredLibraryItemsPage');
 
 /// Page that displays library items filtered by author, genre, or series
 class FilteredLibraryItemsPage extends HookConsumerWidget {
@@ -36,12 +39,17 @@ class FilteredLibraryItemsPage extends HookConsumerWidget {
             );
           }
 
+          // Determine sort parameter based on filter type
+          final sortParam = filter is SeriesFilter
+              ? 'sequence'  // Sort by series sequence number
+              : 'media.metadata.title';  // Sort alphabetically by title
+
           return FutureBuilder<GetLibrarysItemsResponse?>(
             future: api.libraries.getItems(
               libraryId: library.id,
               parameters: GetLibrarysItemsReqParams(
                 filter: filter,
-                sort: 'media.metadata.title',
+                sort: sortParam,
                 limit: 100,
               ),
             ),
@@ -114,6 +122,9 @@ class LibraryItemCard extends ConsumerWidget {
     final apiSettings = ref.watch(apiSettingsProvider);
     final media = item.media;
 
+    // Log media variant for debugging
+    _logger.info('Item ${item.id}: Media variant = ${media.variant}');
+
     // Extract book info
     String title = '';
     String? authorName;
@@ -122,6 +133,7 @@ class LibraryItemCard extends ConsumerWidget {
     media.mapOrNull(
       book: (book) {
         final metadata = book.metadata;
+        _logger.info('  Metadata variant = ${metadata.variant}');
         metadata.mapOrNull(
           book: (m) {
             title = m.title ?? 'Unknown';
@@ -134,6 +146,13 @@ class LibraryItemCard extends ConsumerWidget {
             authorName = m.authorName;
           },
           bookExpanded: (m) {
+            title = m.title ?? 'Unknown';
+            if (m.authors.isNotEmpty) {
+              authorName = m.authors.map((a) => a.name).join(', ');
+            }
+          },
+          bookSeriesFilter: (m) {
+            _logger.info('  Found bookSeriesFilter metadata variant!');
             title = m.title ?? 'Unknown';
             if (m.authors.isNotEmpty) {
               authorName = m.authors.map((a) => a.name).join(', ');
@@ -143,6 +162,7 @@ class LibraryItemCard extends ConsumerWidget {
       },
       bookMinified: (book) {
         final metadata = book.metadata;
+        _logger.info('  Metadata variant = ${metadata.variant}');
         metadata.mapOrNull(
           book: (m) {
             title = m.title ?? 'Unknown';
@@ -155,6 +175,13 @@ class LibraryItemCard extends ConsumerWidget {
             authorName = m.authorName;
           },
           bookExpanded: (m) {
+            title = m.title ?? 'Unknown';
+            if (m.authors.isNotEmpty) {
+              authorName = m.authors.map((a) => a.name).join(', ');
+            }
+          },
+          bookSeriesFilter: (m) {
+            _logger.info('  Found bookSeriesFilter metadata variant!');
             title = m.title ?? 'Unknown';
             if (m.authors.isNotEmpty) {
               authorName = m.authors.map((a) => a.name).join(', ');
@@ -164,6 +191,7 @@ class LibraryItemCard extends ConsumerWidget {
       },
       bookExpanded: (book) {
         final metadata = book.metadata;
+        _logger.info('  Metadata variant = ${metadata.variant}');
         metadata.mapOrNull(
           book: (m) {
             title = m.title ?? 'Unknown';
@@ -181,9 +209,18 @@ class LibraryItemCard extends ConsumerWidget {
               authorName = m.authors.map((a) => a.name).join(', ');
             }
           },
+          bookSeriesFilter: (m) {
+            _logger.info('  Found bookSeriesFilter metadata variant!');
+            title = m.title ?? 'Unknown';
+            if (m.authors.isNotEmpty) {
+              authorName = m.authors.map((a) => a.name).join(', ');
+            }
+          },
         );
       },
     );
+
+    _logger.info('  Extracted: title="$title", author="$authorName"');
 
     final imageUrl = apiSettings.activeServer != null
         ? '${apiSettings.activeServer!.serverUrl}/api/items/${item.id}/cover'
