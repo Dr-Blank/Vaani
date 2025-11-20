@@ -241,10 +241,10 @@ class LibraryItemListTile extends ConsumerWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (authorName != null) Text(authorName),
+            if (authorName != null) Text(authorName!),
             if (subtitle != null)
               Text(
-                subtitle,
+                subtitle!,
                 style: Theme.of(context).textTheme.bodySmall,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
