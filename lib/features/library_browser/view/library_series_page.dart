@@ -8,7 +8,7 @@ class LibrarySeriesPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final seriesAsync = ref.watch(librarySeriesProvider());
+    final seriesAsync = ref.watch(librarySeriesProvider);
 
     return Scaffold(
       appBar: AppBar(

@@ -56,7 +56,7 @@ Future<List<String>> libraryGenres(Ref ref) async {
 
 /// Provider for fetching all series in the current library
 @riverpod
-Future<GetLibrarysSeriesResponse?> librarySeries(Ref ref, {int page = 0, int limit = 50}) async {
+Future<GetLibrarysSeriesResponse?> librarySeries(Ref ref) async {
   final api = ref.watch(authenticatedApiProvider);
   final currentLibrary = await ref.watch(currentLibraryProvider.future);
 
