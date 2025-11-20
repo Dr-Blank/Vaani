@@ -51,6 +51,7 @@ class FilteredLibraryItemsPage extends HookConsumerWidget {
                 filter: filter,
                 sort: sortParam,
                 limit: 100,
+                minified: false,  // Request full metadata to get titles and authors
               ),
             ),
             builder: (context, snapshot) {
