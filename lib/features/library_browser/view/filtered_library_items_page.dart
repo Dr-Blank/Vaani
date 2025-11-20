@@ -77,7 +77,7 @@ class FilteredLibraryItemsPage extends HookConsumerWidget {
                 padding: const EdgeInsets.all(16),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  childAspectRatio: 0.75,
+                  childAspectRatio: 0.68,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 16,
                 ),
