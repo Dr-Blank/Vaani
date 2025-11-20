@@ -73,12 +73,18 @@ class FilteredLibraryItemsPage extends HookConsumerWidget {
                 );
               }
 
-              return ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+              return GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 0.65,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 16,
+                ),
                 itemCount: response.results.length,
                 itemBuilder: (context, index) {
                   final item = response.results[index];
-                  return LibraryItemListTile(item: item);
+                  return LibraryItemCard(item: item);
                 },
               );
             },
@@ -95,8 +101,8 @@ class FilteredLibraryItemsPage extends HookConsumerWidget {
   }
 }
 
-class LibraryItemListTile extends ConsumerWidget {
-  const LibraryItemListTile({
+class LibraryItemCard extends ConsumerWidget {
+  const LibraryItemCard({
     super.key,
     required this.item,
   });
@@ -110,7 +116,6 @@ class LibraryItemListTile extends ConsumerWidget {
 
     // Extract book info
     String title = '';
-    String? subtitle;
     String? authorName;
 
     // Use map to handle Media variants
@@ -120,19 +125,16 @@ class LibraryItemListTile extends ConsumerWidget {
         metadata.mapOrNull(
           book: (m) {
             title = m.title ?? 'Unknown';
-            subtitle = m.subtitle;
             if (m.authors.isNotEmpty) {
               authorName = m.authors.map((a) => a.name).join(', ');
             }
           },
           bookMinified: (m) {
             title = m.title ?? 'Unknown';
-            subtitle = m.subtitle;
             authorName = m.authorName;
           },
           bookExpanded: (m) {
             title = m.title ?? 'Unknown';
-            subtitle = m.subtitle;
             if (m.authors.isNotEmpty) {
               authorName = m.authors.map((a) => a.name).join(', ');
             }
@@ -144,19 +146,16 @@ class LibraryItemListTile extends ConsumerWidget {
         metadata.mapOrNull(
           book: (m) {
             title = m.title ?? 'Unknown';
-            subtitle = m.subtitle;
             if (m.authors.isNotEmpty) {
               authorName = m.authors.map((a) => a.name).join(', ');
             }
           },
           bookMinified: (m) {
             title = m.title ?? 'Unknown';
-            subtitle = m.subtitle;
             authorName = m.authorName;
           },
           bookExpanded: (m) {
             title = m.title ?? 'Unknown';
-            subtitle = m.subtitle;
             if (m.authors.isNotEmpty) {
               authorName = m.authors.map((a) => a.name).join(', ');
             }
@@ -168,19 +167,16 @@ class LibraryItemListTile extends ConsumerWidget {
         metadata.mapOrNull(
           book: (m) {
             title = m.title ?? 'Unknown';
-            subtitle = m.subtitle;
             if (m.authors.isNotEmpty) {
               authorName = m.authors.map((a) => a.name).join(', ');
             }
           },
           bookMinified: (m) {
             title = m.title ?? 'Unknown';
-            subtitle = m.subtitle;
             authorName = m.authorName;
           },
           bookExpanded: (m) {
             title = m.title ?? 'Unknown';
-            subtitle = m.subtitle;
             if (m.authors.isNotEmpty) {
               authorName = m.authors.map((a) => a.name).join(', ');
             }
@@ -193,72 +189,68 @@ class LibraryItemListTile extends ConsumerWidget {
         ? '${apiSettings.activeServer!.serverUrl}/api/items/${item.id}/cover'
         : null;
 
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: ListTile(
-        leading: imageUrl != null
-            ? ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  width: 48,
-                  height: 48,
-                  fit: BoxFit.cover,
-                  httpHeaders: {
-                    if (apiSettings.activeUser?.authToken != null)
-                      'Authorization':
-                          'Bearer ${apiSettings.activeUser!.authToken}',
-                  },
-                  placeholder: (context, url) => Container(
-                    width: 48,
-                    height: 48,
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    child: const Icon(Icons.book, size: 24),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    width: 48,
-                    height: 48,
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    child: const Icon(Icons.book, size: 24),
-                  ),
+    return InkWell(
+      onTap: () {
+        // Navigate to item detail page
+        context.goNamed(
+          Routes.libraryItem.name,
+          pathParameters: {'itemId': item.id},
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Book cover
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: imageUrl != null
+                  ? CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      fit: BoxFit.cover,
+                      httpHeaders: {
+                        if (apiSettings.activeUser?.authToken != null)
+                          'Authorization':
+                              'Bearer ${apiSettings.activeUser!.authToken}',
+                      },
+                      placeholder: (context, url) => Container(
+                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                        child: const Icon(Icons.book, size: 48),
+                      ),
+                    )
+                  : Container(
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      child: const Icon(Icons.book, size: 48),
+                    ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          // Book title
+          Text(
+            title,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
                 ),
-              )
-            : Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: const Icon(Icons.book, size: 24),
-              ),
-        title: Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (authorName != null) Text(authorName!),
-            if (subtitle != null)
-              Text(
-                subtitle!,
-                style: Theme.of(context).textTheme.bodySmall,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-          ],
-        ),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () {
-          // Navigate to item detail page
-          context.goNamed(
-            Routes.you.name,
-            pathParameters: {'libraryItemId': item.id},
-          );
-        },
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          // Author name
+          if (authorName != null)
+            Text(
+              authorName!,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+        ],
       ),
     );
   }
