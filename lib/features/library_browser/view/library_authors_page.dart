@@ -87,7 +87,7 @@ class AuthorCard extends HookConsumerWidget {
     // Build the image URL if imagePath is available
     String? imageUrl;
     if (imagePath != null && apiSettings.activeServer != null) {
-      imageUrl = '${apiSettings.activeServer!.url}/api/authors/${author.id}/image';
+      imageUrl = '${apiSettings.activeServer!.serverUrl}/api/authors/${author.id}/image';
     }
 
     return Card(
@@ -111,7 +111,7 @@ class AuthorCard extends HookConsumerWidget {
                   ? CachedNetworkImage(
                       imageUrl: imageUrl,
                       httpHeaders: {
-                        'Authorization': 'Bearer ${apiSettings.activeUser?.token}',
+                        'Authorization': 'Bearer ${apiSettings.activeUser?.authToken}',
                       },
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(

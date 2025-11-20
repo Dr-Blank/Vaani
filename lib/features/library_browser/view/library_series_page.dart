@@ -62,8 +62,12 @@ class SeriesListTile extends StatelessWidget {
     // Extract series data based on variant
     final String seriesName = series.name;
     final int? numBooks = series.maybeMap(
+      (s) => null, // base variant
       numBooks: (s) => s.numBooks,
       books: (s) => s.books.length,
+      sequence: (s) => null,
+      shelf: (s) => s.books.length,
+      author: (s) => s.items?.length,
       orElse: () => null,
     );
 
