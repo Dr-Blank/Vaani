@@ -113,24 +113,81 @@ class LibraryItemListTile extends ConsumerWidget {
     String? subtitle;
     String? authorName;
 
-    if (media is MediaBook) {
-      final metadata = media.metadata;
-      if (metadata is BookMetadata) {
-        title = metadata.title ?? 'Unknown';
-        subtitle = metadata.subtitle;
-        authorName = metadata.authorName;
-      } else if (metadata is BookMetadataMinified) {
-        title = metadata.title ?? 'Unknown';
-        authorName = metadata.authorName;
-      } else if (metadata is BookMetadataExpanded) {
-        title = metadata.title ?? 'Unknown';
-        subtitle = metadata.subtitle;
-        final authors = metadata.authors;
-        if (authors != null && authors.isNotEmpty) {
-          authorName = authors.map((a) => a.name).join(', ');
-        }
-      }
-    }
+    // Use map to handle Media variants
+    media.mapOrNull(
+      book: (book) {
+        final metadata = book.metadata;
+        metadata.mapOrNull(
+          book: (m) {
+            title = m.title ?? 'Unknown';
+            subtitle = m.subtitle;
+            if (m.authors.isNotEmpty) {
+              authorName = m.authors.map((a) => a.name).join(', ');
+            }
+          },
+          bookMinified: (m) {
+            title = m.title ?? 'Unknown';
+            subtitle = m.subtitle;
+            authorName = m.authorName;
+          },
+          bookExpanded: (m) {
+            title = m.title ?? 'Unknown';
+            subtitle = m.subtitle;
+            if (m.authors.isNotEmpty) {
+              authorName = m.authors.map((a) => a.name).join(', ');
+            }
+          },
+        );
+      },
+      bookMinified: (book) {
+        final metadata = book.metadata;
+        metadata.mapOrNull(
+          book: (m) {
+            title = m.title ?? 'Unknown';
+            subtitle = m.subtitle;
+            if (m.authors.isNotEmpty) {
+              authorName = m.authors.map((a) => a.name).join(', ');
+            }
+          },
+          bookMinified: (m) {
+            title = m.title ?? 'Unknown';
+            subtitle = m.subtitle;
+            authorName = m.authorName;
+          },
+          bookExpanded: (m) {
+            title = m.title ?? 'Unknown';
+            subtitle = m.subtitle;
+            if (m.authors.isNotEmpty) {
+              authorName = m.authors.map((a) => a.name).join(', ');
+            }
+          },
+        );
+      },
+      bookExpanded: (book) {
+        final metadata = book.metadata;
+        metadata.mapOrNull(
+          book: (m) {
+            title = m.title ?? 'Unknown';
+            subtitle = m.subtitle;
+            if (m.authors.isNotEmpty) {
+              authorName = m.authors.map((a) => a.name).join(', ');
+            }
+          },
+          bookMinified: (m) {
+            title = m.title ?? 'Unknown';
+            subtitle = m.subtitle;
+            authorName = m.authorName;
+          },
+          bookExpanded: (m) {
+            title = m.title ?? 'Unknown';
+            subtitle = m.subtitle;
+            if (m.authors.isNotEmpty) {
+              authorName = m.authors.map((a) => a.name).join(', ');
+            }
+          },
+        );
+      },
+    );
 
     final imageUrl = apiSettings.activeServer != null
         ? '${apiSettings.activeServer!.serverUrl}/api/items/${item.id}/cover'
