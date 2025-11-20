@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/library_browser_provider.dart';
 
 class LibrarySeriesPage extends HookConsumerWidget {
@@ -15,8 +14,8 @@ class LibrarySeriesPage extends HookConsumerWidget {
         title: const Text('Series'),
       ),
       body: seriesAsync.when(
-        data: (seriesResponse) {
-          if (seriesResponse == null || seriesResponse.results.isEmpty) {
+        data: (seriesList) {
+          if (seriesList.isEmpty) {
             return const Center(
               child: Text('No series found'),
             );
@@ -24,9 +23,9 @@ class LibrarySeriesPage extends HookConsumerWidget {
 
           return ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 8),
-            itemCount: seriesResponse.results.length,
+            itemCount: seriesList.length,
             itemBuilder: (context, index) {
-              final series = seriesResponse.results[index];
+              final series = seriesList[index];
               return SeriesListTile(series: series);
             },
           );
@@ -55,22 +54,10 @@ class SeriesListTile extends StatelessWidget {
     required this.series,
   });
 
-  final Series series;
+  final SimpleSeries series;
 
   @override
   Widget build(BuildContext context) {
-    // Extract series data based on variant
-    final String seriesName = series.name;
-    final int? numBooks = series.maybeMap(
-      (s) => null, // base variant
-      numBooks: (s) => s.numBooks,
-      books: (s) => s.books.length,
-      sequence: (s) => null,
-      shelf: (s) => s.books.length,
-      author: (s) => s.items?.length,
-      orElse: () => null,
-    );
-
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: ListTile(
@@ -87,18 +74,18 @@ class SeriesListTile extends StatelessWidget {
           ),
         ),
         title: Text(
-          seriesName,
+          series.name,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        subtitle: numBooks != null
-            ? Text('$numBooks ${numBooks == 1 ? 'book' : 'books'}')
+        subtitle: series.numBooks != null
+            ? Text('${series.numBooks} ${series.numBooks == 1 ? 'book' : 'books'}')
             : null,
         trailing: const Icon(Icons.chevron_right),
         onTap: () {
           // TODO: Navigate to series detail page
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Tapped on $seriesName'),
+              content: Text('Tapped on ${series.name}'),
               duration: const Duration(seconds: 1),
             ),
           );

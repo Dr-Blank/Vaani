@@ -25,6 +25,10 @@ class LibraryAuthorsPage extends HookConsumerWidget {
             );
           }
 
+          // Sort authors alphabetically by name
+          final sortedAuthors = List<Author>.from(authors)
+            ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+
           return GridView.builder(
             padding: const EdgeInsets.all(16),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -33,9 +37,9 @@ class LibraryAuthorsPage extends HookConsumerWidget {
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
             ),
-            itemCount: authors.length,
+            itemCount: sortedAuthors.length,
             itemBuilder: (context, index) {
-              final author = authors[index];
+              final author = sortedAuthors[index];
               return AuthorCard(author: author);
             },
           );

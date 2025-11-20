@@ -1,12 +1,32 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart' show Ref;
 import 'package:logging/logging.dart' show Logger;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shelfsdk/audiobookshelf_api.dart'
-    show Author, GetLibrarysSeriesResponse, LibraryFilterData;
+import 'package:shelfsdk/audiobookshelf_api.dart' show Author;
 import 'package:vaani/api/api_provider.dart' show authenticatedApiProvider;
 import 'package:vaani/api/library_provider.dart' show currentLibraryProvider;
 
 part 'library_browser_provider.g.dart';
+
+/// Simple series data for display purposes
+class SimpleSeries {
+  final String id;
+  final String name;
+  final int? numBooks;
+
+  SimpleSeries({
+    required this.id,
+    required this.name,
+    this.numBooks,
+  });
+
+  factory SimpleSeries.fromJson(Map<String, dynamic> json) {
+    return SimpleSeries(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      numBooks: json['numBooks'] as int?,
+    );
+  }
+}
 
 final _logger = Logger('LibraryBrowserProvider');
 
@@ -43,37 +63,59 @@ Future<List<String>> libraryGenres(Ref ref) async {
     return [];
   }
 
-  final filterData = await api.libraries.getFilterData(libraryId: currentLibrary.id);
+  // Use raw API call to avoid Series deserialization issues in LibraryFilterData
+  final genres = await api.getJson<List<String>>(
+    path: '/api/libraries/${currentLibrary.id}/filterdata',
+    requiresAuth: true,
+    fromJson: (json) {
+      if (json is Map<String, dynamic> && json.containsKey('genres')) {
+        final genresList = json['genres'] as List<dynamic>;
+        return genresList.map((e) => e.toString()).toList();
+      }
+      return <String>[];
+    },
+  );
 
-  if (filterData == null) {
-    _logger.warning('Failed to fetch filter data for library ${currentLibrary.id}');
+  if (genres == null) {
+    _logger.warning('Failed to fetch genres for library ${currentLibrary.id}');
     return [];
   }
 
-  _logger.fine('Fetched ${filterData.genres.length} genres');
-  return filterData.genres;
+  _logger.fine('Fetched ${genres.length} genres');
+  return genres;
 }
 
 /// Provider for fetching all series in the current library
 @riverpod
-Future<GetLibrarysSeriesResponse?> librarySeries(Ref ref) async {
+Future<List<SimpleSeries>> librarySeries(Ref ref) async {
   final api = ref.watch(authenticatedApiProvider);
   final currentLibrary = await ref.watch(currentLibraryProvider.future);
 
   if (currentLibrary == null) {
     _logger.warning('No current library found');
-    return null;
+    return [];
   }
 
-  final series = await api.libraries.getSeries(
-    libraryId: currentLibrary.id,
+  // Use raw API call to avoid Series deserialization issues
+  final seriesList = await api.getJson<List<SimpleSeries>>(
+    path: '/api/libraries/${currentLibrary.id}/series',
+    requiresAuth: true,
+    fromJson: (json) {
+      if (json is Map<String, dynamic> && json.containsKey('results')) {
+        final results = json['results'] as List<dynamic>;
+        return results
+            .map((e) => SimpleSeries.fromJson(e as Map<String, dynamic>))
+            .toList();
+      }
+      return <SimpleSeries>[];
+    },
   );
 
-  if (series == null) {
+  if (seriesList == null) {
     _logger.warning('Failed to fetch series for library ${currentLibrary.id}');
-    return null;
+    return [];
   }
 
-  _logger.fine('Fetched ${series.results.length} series (${series.total} total)');
-  return series;
+  _logger.fine('Fetched ${seriesList.length} series');
+  return seriesList;
 }
