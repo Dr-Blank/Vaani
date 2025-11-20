@@ -38,6 +38,7 @@ class LibrarySeriesPage extends HookConsumerWidget {
 
           return ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 8),
+            cacheExtent: 500,  // Pre-render items for smoother scrolling
             itemCount: seriesList.length,
             itemBuilder: (context, index) {
               final series = seriesList[index];

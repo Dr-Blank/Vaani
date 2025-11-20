@@ -84,6 +84,7 @@ class FilteredLibraryItemsPage extends HookConsumerWidget {
 
               return GridView.builder(
                 padding: const EdgeInsets.all(16),
+                cacheExtent: 500,  // Pre-render items for smoother scrolling
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   childAspectRatio: 0.65,
@@ -93,7 +94,9 @@ class FilteredLibraryItemsPage extends HookConsumerWidget {
                 itemCount: response.results.length,
                 itemBuilder: (context, index) {
                   final item = response.results[index];
-                  return LibraryItemCard(item: item);
+                  return RepaintBoundary(
+                    child: LibraryItemCard(item: item),
+                  );
                 },
               );
             },
@@ -247,6 +250,10 @@ class LibraryItemCard extends ConsumerWidget {
                   ? CachedNetworkImage(
                       imageUrl: imageUrl,
                       fit: BoxFit.cover,
+                      fadeInDuration: Duration.zero,  // Remove fade animation for better performance
+                      fadeOutDuration: Duration.zero,
+                      memCacheHeight: 300,  // Limit memory cache size
+                      maxHeightDiskCache: 600,  // Limit disk cache size
                       httpHeaders: {
                         if (apiSettings.activeUser?.authToken != null)
                           'Authorization':

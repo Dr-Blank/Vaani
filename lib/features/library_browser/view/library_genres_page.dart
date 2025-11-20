@@ -29,6 +29,7 @@ class LibraryGenresPage extends HookConsumerWidget {
 
           return ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 8),
+            cacheExtent: 500,  // Pre-render items for smoother scrolling
             itemCount: sortedGenres.length,
             itemBuilder: (context, index) {
               final genre = sortedGenres[index];

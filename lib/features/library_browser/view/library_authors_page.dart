@@ -37,6 +37,7 @@ class LibraryAuthorsPage extends HookConsumerWidget {
 
           return GridView.builder(
             padding: const EdgeInsets.all(16),
+            cacheExtent: 500,  // Pre-render items for smoother scrolling
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 0.75,
@@ -46,7 +47,9 @@ class LibraryAuthorsPage extends HookConsumerWidget {
             itemCount: sortedAuthors.length,
             itemBuilder: (context, index) {
               final author = sortedAuthors[index];
-              return AuthorCard(author: author);
+              return RepaintBoundary(
+                child: AuthorCard(author: author),
+              );
             },
           );
         },
@@ -125,6 +128,10 @@ class AuthorCard extends HookConsumerWidget {
                         'Authorization': 'Bearer ${apiSettings.activeUser?.authToken}',
                       },
                       fit: BoxFit.cover,
+                      fadeInDuration: Duration.zero,  // Remove fade animation for better performance
+                      fadeOutDuration: Duration.zero,
+                      memCacheHeight: 300,  // Limit memory cache size
+                      maxHeightDiskCache: 600,  // Limit disk cache size
                       placeholder: (context, url) => Container(
                         color: Theme.of(context).colorScheme.surfaceContainerHighest,
                         child: const Center(
