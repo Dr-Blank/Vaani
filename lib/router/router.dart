@@ -4,7 +4,10 @@ import 'package:vaani/features/downloads/view/downloads_page.dart';
 import 'package:vaani/features/explore/view/explore_page.dart';
 import 'package:vaani/features/explore/view/search_result_page.dart';
 import 'package:vaani/features/item_viewer/view/library_item_page.dart';
+import 'package:vaani/features/library_browser/view/library_authors_page.dart';
 import 'package:vaani/features/library_browser/view/library_browser_page.dart';
+import 'package:vaani/features/library_browser/view/library_genres_page.dart';
+import 'package:vaani/features/library_browser/view/library_series_page.dart';
 import 'package:vaani/features/logging/view/logs_page.dart';
 import 'package:vaani/features/onboarding/view/callback_page.dart';
 import 'package:vaani/features/onboarding/view/onboarding_single_page.dart';
@@ -121,6 +124,23 @@ class MyAppRouter {
                     path: Routes.libraryBrowser.localPath,
                     name: Routes.libraryBrowser.name,
                     pageBuilder: defaultPageBuilder(const LibraryBrowserPage()),
+                    routes: [
+                      GoRoute(
+                        path: Routes.libraryAuthors.pathName,
+                        name: Routes.libraryAuthors.name,
+                        pageBuilder: defaultPageBuilder(const LibraryAuthorsPage()),
+                      ),
+                      GoRoute(
+                        path: Routes.libraryGenres.pathName,
+                        name: Routes.libraryGenres.name,
+                        pageBuilder: defaultPageBuilder(const LibraryGenresPage()),
+                      ),
+                      GoRoute(
+                        path: Routes.librarySeries.pathName,
+                        name: Routes.librarySeries.name,
+                        pageBuilder: defaultPageBuilder(const LibrarySeriesPage()),
+                      ),
+                    ],
                   ),
                 ],
               ),

@@ -6,8 +6,6 @@ import 'package:vaani/features/you/view/widgets/library_switch_chip.dart'
     show showLibrarySwitcher;
 import 'package:vaani/router/router.dart' show Routes;
 import 'package:vaani/shared/icons/abs_icons.dart' show AbsIcons;
-import 'package:vaani/shared/widgets/not_implemented.dart'
-    show showNotImplementedToast;
 
 class LibraryBrowserPage extends HookConsumerWidget {
   const LibraryBrowserPage({super.key});
@@ -48,7 +46,7 @@ class LibraryBrowserPage extends HookConsumerWidget {
                   leading: const Icon(Icons.person),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
-                    showNotImplementedToast(context);
+                    GoRouter.of(context).pushNamed(Routes.libraryAuthors.name);
                   },
                 ),
                 ListTile(
@@ -56,7 +54,7 @@ class LibraryBrowserPage extends HookConsumerWidget {
                   leading: const Icon(Icons.category),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
-                    showNotImplementedToast(context);
+                    GoRouter.of(context).pushNamed(Routes.libraryGenres.name);
                   },
                 ),
                 ListTile(
@@ -64,7 +62,7 @@ class LibraryBrowserPage extends HookConsumerWidget {
                   leading: const Icon(Icons.list),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
-                    showNotImplementedToast(context);
+                    GoRouter.of(context).pushNamed(Routes.librarySeries.name);
                   },
                 ),
                 // Downloads
