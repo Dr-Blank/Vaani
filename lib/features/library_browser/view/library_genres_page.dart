@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/library_browser_provider.dart';
+import 'package:vaani/router/router.dart';
 
 class LibraryGenresPage extends HookConsumerWidget {
   const LibraryGenresPage({super.key});
@@ -82,12 +85,13 @@ class GenreListTile extends StatelessWidget {
         ),
         trailing: const Icon(Icons.chevron_right),
         onTap: () {
-          // TODO: Navigate to books in this genre
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Tapped on $genre'),
-              duration: const Duration(seconds: 1),
-            ),
+          // Navigate to filtered items page with genre filter
+          context.goNamed(
+            Routes.libraryFiltered.name,
+            extra: {
+              'filter': GenreFilter(genre),
+              'title': genre,
+            },
           );
         },
       ),

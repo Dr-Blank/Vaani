@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/api_provider.dart';
 import 'package:vaani/api/library_browser_provider.dart';
+import 'package:vaani/router/router.dart';
 import 'package:vaani/settings/api_settings_provider.dart';
 
 class LibraryAuthorsPage extends HookConsumerWidget {
@@ -25,9 +27,13 @@ class LibraryAuthorsPage extends HookConsumerWidget {
             );
           }
 
-          // Sort authors alphabetically by name
+          // Sort authors alphabetically by surname (last word in name)
           final sortedAuthors = List<Author>.from(authors)
-            ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+            ..sort((a, b) {
+              final aSurname = a.name.split(' ').last.toLowerCase();
+              final bSurname = b.name.split(' ').last.toLowerCase();
+              return aSurname.compareTo(bSurname);
+            });
 
           return GridView.builder(
             padding: const EdgeInsets.all(16),
@@ -98,12 +104,13 @@ class AuthorCard extends HookConsumerWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          // TODO: Navigate to author detail page
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Tapped on ${author.name}'),
-              duration: const Duration(seconds: 1),
-            ),
+          // Navigate to filtered items page with author filter
+          context.goNamed(
+            Routes.libraryFiltered.name,
+            extra: {
+              'filter': AuthorFilter(author.id),
+              'title': author.name,
+            },
           );
         },
         child: Column(

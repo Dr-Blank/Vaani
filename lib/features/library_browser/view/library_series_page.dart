@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/api/library_browser_provider.dart';
+import 'package:vaani/router/router.dart';
 
 class LibrarySeriesPage extends HookConsumerWidget {
   const LibrarySeriesPage({super.key});
@@ -82,12 +85,13 @@ class SeriesListTile extends StatelessWidget {
             : null,
         trailing: const Icon(Icons.chevron_right),
         onTap: () {
-          // TODO: Navigate to series detail page
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Tapped on ${series.name}'),
-              duration: const Duration(seconds: 1),
-            ),
+          // Navigate to filtered items page with series filter
+          context.goNamed(
+            Routes.libraryFiltered.name,
+            extra: {
+              'filter': SeriesFilter(series.id),
+              'title': series.name,
+            },
           );
         },
       ),

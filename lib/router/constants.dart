@@ -101,6 +101,12 @@ class Routes {
     parentRoute: libraryBrowser,
   );
 
+  static const libraryFiltered = _SimpleRoute(
+    pathName: 'filtered',
+    name: 'libraryFiltered',
+    parentRoute: libraryBrowser,
+  );
+
   // you page for the user
   static const you = _SimpleRoute(
     pathName: 'you',
