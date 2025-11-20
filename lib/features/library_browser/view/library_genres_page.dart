@@ -86,7 +86,7 @@ class GenreListTile extends StatelessWidget {
         trailing: const Icon(Icons.chevron_right),
         onTap: () {
           // Navigate to filtered items page with genre filter
-          context.goNamed(
+          context.pushNamed(
             Routes.libraryFiltered.name,
             extra: {
               'filter': GenreFilter(genre),

@@ -105,7 +105,7 @@ class AuthorCard extends HookConsumerWidget {
       child: InkWell(
         onTap: () {
           // Navigate to filtered items page with author filter
-          context.goNamed(
+          context.pushNamed(
             Routes.libraryFiltered.name,
             extra: {
               'filter': AuthorFilter(author.id),

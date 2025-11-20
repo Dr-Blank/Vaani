@@ -110,7 +110,7 @@ class SeriesListTile extends StatelessWidget {
         trailing: const Icon(Icons.chevron_right),
         onTap: () {
           // Navigate to filtered items page with series filter
-          context.goNamed(
+          context.pushNamed(
             Routes.libraryFiltered.name,
             extra: {
               'filter': SeriesFilter(series.id),

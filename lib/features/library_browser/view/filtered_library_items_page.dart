@@ -77,7 +77,7 @@ class FilteredLibraryItemsPage extends HookConsumerWidget {
                 padding: const EdgeInsets.all(16),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  childAspectRatio: 0.65,
+                  childAspectRatio: 0.75,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 16,
                 ),
@@ -192,7 +192,7 @@ class LibraryItemCard extends ConsumerWidget {
     return InkWell(
       onTap: () {
         // Navigate to item detail page
-        context.goNamed(
+        context.pushNamed(
           Routes.libraryItem.name,
           pathParameters: {'itemId': item.id},
         );
@@ -200,8 +200,9 @@ class LibraryItemCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Book cover
-          Expanded(
+          // Book cover - always square
+          AspectRatio(
+            aspectRatio: 1.0,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: imageUrl != null
