@@ -162,6 +162,11 @@ class LibraryItemCard extends ConsumerWidget {
               authorName = m.authors.map((a) => a.name).join(', ');
             }
           },
+          bookMinifiedSeriesFilter: (m) {
+            _logger.info('  Found bookMinifiedSeriesFilter metadata variant!');
+            title = m.title ?? 'Unknown';
+            authorName = m.authorName;
+          },
         );
       },
       bookMinified: (book) {
@@ -191,6 +196,11 @@ class LibraryItemCard extends ConsumerWidget {
               authorName = m.authors.map((a) => a.name).join(', ');
             }
           },
+          bookMinifiedSeriesFilter: (m) {
+            _logger.info('  Found bookMinifiedSeriesFilter metadata variant!');
+            title = m.title ?? 'Unknown';
+            authorName = m.authorName;
+          },
         );
       },
       bookExpanded: (book) {
@@ -219,6 +229,11 @@ class LibraryItemCard extends ConsumerWidget {
             if (m.authors.isNotEmpty) {
               authorName = m.authors.map((a) => a.name).join(', ');
             }
+          },
+          bookMinifiedSeriesFilter: (m) {
+            _logger.info('  Found bookMinifiedSeriesFilter metadata variant!');
+            title = m.title ?? 'Unknown';
+            authorName = m.authorName;
           },
         );
       },
