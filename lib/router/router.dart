@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shelfsdk/audiobookshelf_api.dart';
 import 'package:vaani/features/downloads/view/downloads_page.dart';
 import 'package:vaani/features/explore/view/explore_page.dart';
 import 'package:vaani/features/explore/view/search_result_page.dart';
 import 'package:vaani/features/item_viewer/view/library_item_page.dart';
+import 'package:vaani/features/library_browser/view/filtered_library_items_page.dart';
+import 'package:vaani/features/library_browser/view/library_authors_page.dart';
 import 'package:vaani/features/library_browser/view/library_browser_page.dart';
+import 'package:vaani/features/library_browser/view/library_genres_page.dart';
+import 'package:vaani/features/library_browser/view/library_series_page.dart';
 import 'package:vaani/features/logging/view/logs_page.dart';
 import 'package:vaani/features/onboarding/view/callback_page.dart';
 import 'package:vaani/features/onboarding/view/onboarding_single_page.dart';
@@ -121,6 +126,48 @@ class MyAppRouter {
                     path: Routes.libraryBrowser.localPath,
                     name: Routes.libraryBrowser.name,
                     pageBuilder: defaultPageBuilder(const LibraryBrowserPage()),
+                    routes: [
+                      GoRoute(
+                        path: Routes.libraryAuthors.pathName,
+                        name: Routes.libraryAuthors.name,
+                        pageBuilder: defaultPageBuilder(const LibraryAuthorsPage()),
+                      ),
+                      GoRoute(
+                        path: Routes.libraryGenres.pathName,
+                        name: Routes.libraryGenres.name,
+                        pageBuilder: defaultPageBuilder(const LibraryGenresPage()),
+                      ),
+                      GoRoute(
+                        path: Routes.librarySeries.pathName,
+                        name: Routes.librarySeries.name,
+                        pageBuilder: defaultPageBuilder(const LibrarySeriesPage()),
+                      ),
+                      GoRoute(
+                        path: Routes.libraryFiltered.pathName,
+                        name: Routes.libraryFiltered.name,
+                        pageBuilder: (context, state) {
+                          final extra = state.extra as Map<String, dynamic>?;
+                          final filter = extra?['filter'] as Filter?;
+                          final title = extra?['title'] as String? ?? 'Filtered Items';
+                          if (filter == null) {
+                            return MaterialPage(
+                              child: Scaffold(
+                                appBar: AppBar(title: const Text('Error')),
+                                body: const Center(
+                                  child: Text('Invalid filter'),
+                                ),
+                              ),
+                            );
+                          }
+                          return MaterialPage(
+                            child: FilteredLibraryItemsPage(
+                              filter: filter,
+                              title: title,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),

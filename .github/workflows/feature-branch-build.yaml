@@ -1,0 +1,104 @@
+name: Feature Branch Build
+
+on:
+  push:
+    branches:
+      - 'claude/**'
+      - 'feature/**'
+      - 'dev/**'
+  workflow_dispatch:
+
+jobs:
+  build_android_debug:
+    name: Build Android APK (Debug/Unsigned)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Flutter Environment
+        uses: ./.github/actions/flutter-setup
+        with:
+          flutter-channel: stable
+          java-version: 17
+
+      - name: Prepare Android debug keystore directory
+        run: |
+          mkdir -p $HOME/.config/.android
+          chmod -R 755 $HOME/.config/.android
+
+      - name: Accept Android SDK Licenses
+        run: |
+          yes | sudo $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+
+      - name: Run build_runner to generate code
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Check for keystore (for signed builds)
+        id: check_keystore
+        run: |
+          if [ -n "${{ secrets.UPLOAD_KEYSTORE_JKS }}" ]; then
+            echo "has_keystore=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_keystore=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Decode android/upload.jks (if available)
+        if: steps.check_keystore.outputs.has_keystore == 'true'
+        run: echo "${{ secrets.UPLOAD_KEYSTORE_JKS }}" | base64 --decode > android/upload.jks
+
+      - name: Decode android/key.properties (if available)
+        if: steps.check_keystore.outputs.has_keystore == 'true'
+        run: echo "${{ secrets.KEY_PROPERTIES }}" | base64 --decode > android/key.properties
+
+      - name: Build Signed APKs (if keystore available)
+        if: steps.check_keystore.outputs.has_keystore == 'true'
+        run: |
+          flutter build apk --release --split-per-abi
+          flutter build apk --release
+
+      - name: Build Debug APKs (if no keystore)
+        if: steps.check_keystore.outputs.has_keystore == 'false'
+        run: |
+          echo "Building debug APK (no keystore found)"
+          flutter build apk --debug
+
+      - name: Rename Universal APK (signed)
+        if: steps.check_keystore.outputs.has_keystore == 'true'
+        run: mv build/app/outputs/flutter-apk/{app-release,app-universal-release}.apk
+
+      - name: Get branch name
+        id: branch_name
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          SAFE_BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/[^a-zA-Z0-9_-]/_/g')
+          echo "branch=$SAFE_BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "short_sha=${GITHUB_SHA:0:7}" >> $GITHUB_OUTPUT
+
+      - name: Upload Android APK Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk-${{ steps.branch_name.outputs.branch }}-${{ steps.branch_name.outputs.short_sha }}
+          path: |
+            build/app/outputs/flutter-apk/*.apk
+          retention-days: 30
+
+      - name: Comment on commit with artifact link
+        if: steps.check_keystore.outputs.has_keystore == 'true'
+        run: |
+          echo "✅ APK build complete!"
+          echo "📦 Artifacts will be available at: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo ""
+          echo "Built files:"
+          ls -lh build/app/outputs/flutter-apk/*.apk
+
+      - name: Comment on commit with debug build notice
+        if: steps.check_keystore.outputs.has_keystore == 'false'
+        run: |
+          echo "⚠️  Debug APK build complete (no signing keystore available)"
+          echo "📦 Artifacts will be available at: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo ""
+          echo "Built files:"
+          ls -lh build/app/outputs/flutter-apk/*.apk

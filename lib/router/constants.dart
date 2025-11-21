@@ -82,6 +82,31 @@ class Routes {
     // parentRoute: library,
   );
 
+  // library browser sub-routes
+  static const libraryAuthors = _SimpleRoute(
+    pathName: 'authors',
+    name: 'libraryAuthors',
+    parentRoute: libraryBrowser,
+  );
+
+  static const libraryGenres = _SimpleRoute(
+    pathName: 'genres',
+    name: 'libraryGenres',
+    parentRoute: libraryBrowser,
+  );
+
+  static const librarySeries = _SimpleRoute(
+    pathName: 'series',
+    name: 'librarySeries',
+    parentRoute: libraryBrowser,
+  );
+
+  static const libraryFiltered = _SimpleRoute(
+    pathName: 'filtered',
+    name: 'libraryFiltered',
+    parentRoute: libraryBrowser,
+  );
+
   // you page for the user
   static const you = _SimpleRoute(
     pathName: 'you',
