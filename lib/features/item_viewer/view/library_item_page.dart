@@ -10,6 +10,7 @@ import 'package:vaani/features/item_viewer/view/library_item_sliver_app_bar.dart
 import 'package:vaani/features/player/view/mini_player_bottom_padding.dart';
 import 'package:vaani/router/models/library_item_extras.dart';
 import 'package:vaani/shared/widgets/expandable_description.dart';
+import 'package:vaani/shared/utils/html_utils.dart';
 
 import 'library_item_actions.dart';
 import 'library_item_hero_section.dart';
@@ -149,9 +150,16 @@ class LibraryItemDescription extends HookConsumerWidget {
     if (item == null) {
       return const SizedBox();
     }
+
+    // Get description and strip HTML tags
+    final rawDescription = item.media.metadata.description;
+    final cleanDescription = rawDescription != null
+        ? HtmlUtils.stripHtml(rawDescription)
+        : 'Sorry, no description found';
+
     return ExpandableDescription(
       title: 'About the Book',
-      content: item.media.metadata.description ?? 'Sorry, no description found',
+      content: cleanDescription,
     );
   }
 }
