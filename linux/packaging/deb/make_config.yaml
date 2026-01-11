@@ -15,36 +15,15 @@ essential: false
 
 icon: assets/icon/logo.png
 
-description:
-  short: Beautiful, Fast and Functional Audiobook Player for your Audiobookshelf server.
-  long: |
-    Vaani is a client for your (self-hosted) Audiobookshelf server.
-    
-    Features:
-    - Functional Player: Speed Control, Sleep Timer, Shake to Control Player
-    - Save data with Offline listening and caching
-    - Material Design
-    - Extensive Settings to customize every tiny detail
-    
-    Note: you need an Audiobookshelf server setup for this app to work.
-    Please see https://www.audiobookshelf.org/ on how to setup one if not already.
-
 postuninstall_scripts:
   - echo "Sorry to see you go."
 
-keywords:
-  - Audiobook
-  - Audiobook Player
-  - Audiobookshelf
-
 generic_name: Audiobook Player
 
-categories:
-  - AudioVideo
-  - Audio
-  - Player
-
 startup_notify: true
+
+# Reference to the AppStream metainfo file
+metainfo: linux/packaging/dr.blank.vaani.appdata.xml
 
 # https://github.com/llfbandit/app_links/blob/051f53fa6039cbfaef0fcde73df20fef9e248cab/doc/README_linux.md
 supported_mime_type:
