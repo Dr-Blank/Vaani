@@ -162,6 +162,7 @@ class SpeedWheel extends StatelessWidget {
         // a minus button to decrease the speed
         if (showIncrementButtons)
           IconButton.filledTonal(
+            tooltip: 'Decrease speed',
             icon: const Icon(Icons.remove),
             onPressed: () {
               // animate to index - 1
@@ -198,6 +199,7 @@ class SpeedWheel extends StatelessWidget {
         if (showIncrementButtons)
           // a plus button to increase the speed
           IconButton.filledTonal(
+            tooltip: 'Increase speed',
             icon: const Icon(Icons.add),
             onPressed: () {
               // animate to index + 1

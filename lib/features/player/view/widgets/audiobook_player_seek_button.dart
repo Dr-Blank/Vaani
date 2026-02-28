@@ -13,6 +13,9 @@ class AudiobookPlayerSeekButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(audiobookPlayerProvider);
     return IconButton(
+      tooltip: isForward
+          ? 'Seek forward 30 seconds'
+          : 'Seek backward 30 seconds',
       icon: Icon(
         isForward ? Icons.forward_30 : Icons.replay_30,
         size: AppElementSizes.iconSizeSmall,

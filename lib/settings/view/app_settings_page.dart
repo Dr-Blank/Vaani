@@ -235,6 +235,7 @@ class RestoreDialogue extends HookConsumerWidget {
             hintText: 'Paste the backup here',
             // clear button
             suffixIcon: IconButton(
+              tooltip: 'Clear backup',
               icon: Icon(Icons.clear),
               onPressed: () {
                 settingsInputController.clear();

@@ -206,6 +206,27 @@ class _BookOnShelfPlayButton extends HookConsumerWidget {
   /// the id of the library item of the book
   final String libraryItemId;
 
+  String getPlayTooltip({
+    required bool isCurrentBookSetInPlayer,
+    required bool isPlayingThisBook,
+    required bool isBookCompleted,
+    required bool hasProgress,
+  }) {
+    if (isCurrentBookSetInPlayer) {
+      return isPlayingThisBook ? 'Pause' : 'Resume';
+    }
+
+    if (isBookCompleted) {
+      return 'Listen again';
+    }
+
+    if (hasProgress) {
+      return 'Continue listening';
+    }
+
+    return 'Start listening';
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final me = ref.watch(meProvider);
@@ -218,6 +239,12 @@ class _BookOnShelfPlayButton extends HookConsumerWidget {
       (element) => element.libraryItemId == libraryItemId,
     );
     final isBookCompleted = userProgress?.isFinished ?? false;
+    final playTooltip = getPlayTooltip(
+      isCurrentBookSetInPlayer: isCurrentBookSetInPlayer,
+      isPlayingThisBook: isPlayingThisBook,
+      isBookCompleted: isBookCompleted,
+      hasProgress: userProgress?.progress != null,
+    );
 
     const size = 40.0;
 
@@ -268,6 +295,7 @@ class _BookOnShelfPlayButton extends HookConsumerWidget {
 
             // the play button
             IconButton(
+              tooltip: playTooltip,
               color: Theme.of(context).colorScheme.primary,
               style: ButtonStyle(
                 padding: WidgetStateProperty.all(EdgeInsets.zero),

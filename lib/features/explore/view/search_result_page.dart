@@ -7,6 +7,23 @@ import 'package:vaani/shared/extensions/model_conversions.dart';
 
 enum SearchResultCategory { books, authors, series, tags, narrators }
 
+extension SearchResultCategoryDisplay on SearchResultCategory {
+  String get displayLabel {
+    switch (this) {
+      case SearchResultCategory.books:
+        return 'Books';
+      case SearchResultCategory.authors:
+        return 'Authors';
+      case SearchResultCategory.series:
+        return 'Series';
+      case SearchResultCategory.tags:
+        return 'Tags';
+      case SearchResultCategory.narrators:
+        return 'Narrators';
+    }
+  }
+}
+
 class SearchResultPage extends HookConsumerWidget {
   const SearchResultPage({
     super.key,

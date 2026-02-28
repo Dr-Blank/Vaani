@@ -49,6 +49,7 @@ class AudiobookPlayerSeekChapterButton extends HookConsumerWidget {
     }
 
     return IconButton(
+      tooltip: isForward ? 'Next chapter' : 'Previous chapter',
       icon: Icon(
         isForward ? Icons.skip_next : Icons.skip_previous,
         size: AppElementSizes.iconSizeSmall,

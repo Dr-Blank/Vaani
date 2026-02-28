@@ -64,6 +64,7 @@ class PlayerWhenExpanded extends HookConsumerWidget {
                   IconButton(
                     iconSize: 30,
                     icon: const Icon(Icons.keyboard_arrow_down),
+                    tooltip: 'Minimize player',
                     onPressed: () {
                       // minimize the player
                       audioBookMiniplayerController.animateToHeight(
@@ -75,6 +76,7 @@ class PlayerWhenExpanded extends HookConsumerWidget {
                   // the cast button
                   IconButton(
                     icon: const Icon(Icons.cast),
+                    tooltip: 'Cast',
                     onPressed: () {
                       showNotImplementedToast(context);
                     },
@@ -108,14 +110,11 @@ class PlayerWhenExpanded extends HookConsumerWidget {
               ),
               child: SizedBox(
                 height: imageSize,
-                child: InkWell(
-                  onTap: () {},
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                      AppElementSizes.borderRadiusRegular * earlyPercentage,
-                    ),
-                    child: img,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                    AppElementSizes.borderRadiusRegular * earlyPercentage,
                   ),
+                  child: img,
                 ),
               ),
             ),

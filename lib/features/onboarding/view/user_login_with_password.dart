@@ -137,16 +137,22 @@ class UserLoginWithPassword extends HookConsumerWidget {
                       ).colorScheme.primary.withValues(alpha: 0.8),
                       BlendMode.srcIn,
                     ),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(50),
-                      onTap: () {
-                        isPasswordVisible.value = !isPasswordVisible.value;
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 8, right: 8),
-                        child: Lottie.asset(
-                          'assets/animations/Animation - 1714930099660.json',
-                          controller: isPasswordVisibleAnimationController,
+                    child: Semantics(
+                      button: true,
+                      label: isPasswordVisible.value
+                          ? 'Hide password'
+                          : 'Show password',
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(50),
+                        onTap: () {
+                          isPasswordVisible.value = !isPasswordVisible.value;
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 8, right: 8),
+                          child: Lottie.asset(
+                            'assets/animations/Animation - 1714930099660.json',
+                            controller: isPasswordVisibleAnimationController,
+                          ),
                         ),
                       ),
                     ),

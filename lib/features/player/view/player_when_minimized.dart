@@ -51,20 +51,24 @@ class PlayerWhenMinimized extends HookConsumerWidget {
                 horizontal:
                     ((availWidth - maxImgSize) / 2) * percentageMiniplayer,
               ),
-              child: InkWell(
-                onTap: () {
-                  // navigate to item page
-                  context.pushNamed(
-                    Routes.libraryItem.name,
-                    pathParameters: {
-                      Routes.libraryItem.pathParamName!:
-                          player.book!.libraryItemId,
-                    },
-                  );
-                },
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: maxImgSize),
-                  child: imgWidget,
+              child: Semantics(
+                button: true,
+                label: 'Open current book details',
+                child: InkWell(
+                  onTap: () {
+                    // navigate to item page
+                    context.pushNamed(
+                      Routes.libraryItem.name,
+                      pathParameters: {
+                        Routes.libraryItem.pathParamName!:
+                            player.book!.libraryItemId,
+                      },
+                    );
+                  },
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: maxImgSize),
+                    child: imgWidget,
+                  ),
                 ),
               ),
             ),
@@ -112,11 +116,18 @@ class PlayerWhenMinimized extends HookConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: IconButton(
+                  tooltip: 'Rewind 30 seconds',
                   icon: const Icon(
                     Icons.replay_30,
                     size: AppElementSizes.iconSizeSmall,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    player.seek(
+                      player.positionInBook > const Duration(seconds: 30)
+                          ? player.positionInBook - const Duration(seconds: 30)
+                          : Duration.zero,
+                    );
+                  },
                 ),
               ),
             ),

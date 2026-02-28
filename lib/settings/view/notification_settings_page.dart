@@ -350,6 +350,7 @@ class NotificationTitlePicker extends HookConsumerWidget {
             decoration: InputDecoration(
               helper: const Text('Select a field below to insert it'),
               suffix: IconButton(
+                tooltip: 'Clear title',
                 icon: const Icon(Icons.clear),
                 onPressed: () {
                   controller.clear();

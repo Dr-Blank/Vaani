@@ -24,6 +24,7 @@ import 'package:vaani/settings/api_settings_provider.dart';
 import 'package:vaani/settings/app_settings_provider.dart';
 import 'package:vaani/shared/extensions/model_conversions.dart';
 import 'package:vaani/shared/utils.dart';
+import 'package:vaani/shared/widgets/not_implemented.dart';
 
 class LibraryItemActions extends HookConsumerWidget {
   const LibraryItemActions({super.key, required this.id});
@@ -64,11 +65,15 @@ class LibraryItemActions extends HookConsumerWidget {
                     children: [
                       // read list button
                       IconButton(
-                        onPressed: () {},
+                        tooltip: 'Add to playlist',
+                        onPressed: () {
+                          showNotImplementedToast(context);
+                        },
                         icon: const Icon(Icons.playlist_add_rounded),
                       ),
                       // share button
                       IconButton(
+                        tooltip: 'Share item',
                         onPressed: () {
                           appLogger.fine('Sharing');
                           var currentServerUrl =
@@ -97,6 +102,7 @@ class LibraryItemActions extends HookConsumerWidget {
 
                       // more button
                       IconButton(
+                        tooltip: 'More options',
                         onPressed: () {
                           // show the bottom sheet with download history
                           showModalBottomSheet(
@@ -215,6 +221,7 @@ class LibItemDownloadButton extends HookConsumerWidget {
     return isItemDownloading
         ? ItemCurrentlyInDownloadQueue(item: item)
         : IconButton(
+            tooltip: 'Download item',
             onPressed: () {
               appLogger.fine('Pressed download button');
 
@@ -280,6 +287,7 @@ class AlreadyItemDownloadedButton extends HookConsumerWidget {
     final isBookPlaying = ref.watch(audiobookPlayerProvider).book != null;
 
     return IconButton(
+      tooltip: 'Downloaded item options',
       onPressed: () {
         appLogger.fine('Pressed already downloaded button');
         // manager.openDownloadedFile(item);

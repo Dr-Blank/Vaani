@@ -163,6 +163,7 @@ class AudiobookPlayerPlayPauseButton extends HookConsumerWidget {
         child: CircularProgressIndicator(),
       ),
       ProcessingState.completed => IconButton(
+        tooltip: 'Replay',
         onPressed: () async {
           await player.seek(const Duration(seconds: 0));
           await player.play();
@@ -170,6 +171,7 @@ class AudiobookPlayerPlayPauseButton extends HookConsumerWidget {
         icon: const Icon(Icons.replay),
       ),
       ProcessingState.ready => IconButton(
+        tooltip: player.playing ? 'Pause' : 'Play',
         onPressed: () async {
           await player.togglePlayPause();
         },

@@ -283,6 +283,7 @@ class AvailableUserTile extends HookConsumerWidget {
               context.goNamed(Routes.home.name);
             },
       trailing: IconButton(
+        tooltip: 'Remove user',
         icon: const Icon(Icons.delete),
         onPressed: () {
           showDialog(

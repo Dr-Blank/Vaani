@@ -283,6 +283,7 @@ class ShakeForceSelector extends HookConsumerWidget {
             decoration: InputDecoration(
               // clear button
               suffix: IconButton(
+                tooltip: 'Clear threshold',
                 icon: const Icon(Icons.clear),
                 onPressed: () {
                   controller.clear();
